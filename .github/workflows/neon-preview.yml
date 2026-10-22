@@ -1,0 +1,41 @@
+name: Banco de preview (Neon)
+
+# Cria uma branch do Neon por PR, aplica as migrations e apaga a branch quando o PR fecha.
+# Secrets: NEON_API_KEY. Variables: NEON_PROJECT_ID.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: neon-${{ github.event.number }}
+
+jobs:
+  criar:
+    if: github.event.action != 'closed' && vars.NEON_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - id: branch
+        uses: neondatabase/create-branch-action@v6
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          branch_name: preview/pr-${{ github.event.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+      - run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ steps.branch.outputs.db_url }}
+
+  apagar:
+    if: github.event.action == 'closed' && vars.NEON_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          branch: preview/pr-${{ github.event.number }}
+          api_key: ${{ secrets.NEON_API_KEY }}
