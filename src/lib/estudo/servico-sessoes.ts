@@ -5,6 +5,7 @@ import type { StudyMode } from "@/generated/prisma/client";
 import { ehViolacaoUnica, type Executor } from "./acao";
 import { assertDominioDoExame, assertTopicoDoDominio } from "./acesso";
 import { statusAoEstudar } from "./progresso";
+import { recalcularCiclo } from "./servico-ciclo";
 import {
   LIMITE_DIARIO_SEG,
   MAX_SESSAO_SEG,
@@ -138,6 +139,13 @@ export async function iniciarSessao(
 ): Promise<SessaoAtivaDTO> {
   await assertDominioDoExame(userId, input.examVersionId, input.domainId);
   if (input.topicId) await assertTopicoDoDominio(input.domainId, input.topicId);
+  if (input.mode === "CICLO") {
+    const noCiclo = await db.studyCycleDomain.findFirst({
+      where: { domainId: input.domainId, cycle: { userId, examVersionId: input.examVersionId, closedAt: null } },
+      select: { id: true },
+    });
+    if (!noCiclo) throw new AppError("Este domínio não está no seu ciclo aberto.", "validacao");
+  }
   const agora = new Date();
   try {
     return await db.$transaction(async (tx) => {
@@ -226,6 +234,7 @@ export async function encerrarSessao(userId: string): Promise<ResultadoEncerrame
       where: { id: s.id },
       data: { endedAt: enc.endedAt, durationSec, autoClosed: enc.autoClosed },
     });
+    await recalcularCiclo(tx, userId);
     return { id: s.id, durationSec, autoClosed: enc.autoClosed, ajustadaAoLimite: durationSec < enc.durationSec };
   });
 }
@@ -258,6 +267,7 @@ export async function confirmarTempoReal(userId: string, sessionId: string, minu
     });
     if (!s) throw new AppError("Sessão não encontrada.", "nao_encontrado");
     await tx.studySession.update({ where: { id: s.id }, data: { durationSec: segundos, autoClosed: false } });
+    await recalcularCiclo(tx, userId);
   });
 }
 
@@ -289,10 +299,11 @@ export async function lancarSessaoManual(
       },
     });
     await marcarTopicoEmEstudo(tx, userId, input.topicId);
+    await recalcularCiclo(tx, userId);
   });
 }
 
-/** Exclui uma sessão (a ativa é descartada). */
+/** Exclui uma sessão (a ativa é descartada) e recalcula o ciclo. */
 export async function excluirSessao(userId: string, sessionId: string) {
   await db.$transaction(async (tx) => {
     await travarUsuario(tx, userId);
@@ -302,5 +313,6 @@ export async function excluirSessao(userId: string, sessionId: string) {
     });
     if (!s) throw new AppError("Sessão não encontrada.", "nao_encontrado");
     await tx.studySession.delete({ where: { id: s.id } });
+    await recalcularCiclo(tx, userId);
   });
 }

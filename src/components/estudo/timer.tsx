@@ -20,7 +20,7 @@ import { MAX_SESSAO_SEG, duracaoPausaSeg, estadoPomodoro, estadoSessao, type Pom
 import { cn, formatCronometro, formatMinutos } from "@/lib/utils";
 import { ConfirmarTempoDialog } from "./confirmar-tempo";
 
-type Modo = "LIVRE" | "POMODORO" | "FOCO";
+type Modo = "LIVRE" | "POMODORO" | "FOCO" | "CICLO";
 
 function paraDatas(s: SessaoAtivaDTO) {
   return {
@@ -47,11 +47,14 @@ export function Timer({
   exames,
   pomodoro,
   inicial,
+  ciclo,
 }: {
   ativaInicial: SessaoAtivaDTO | null;
   exames: OpcaoExame[];
   pomodoro: PomodoroCfg;
   inicial: { examVersionId?: string; domainId?: string; topicId?: string; mode?: Modo };
+  /** Próximo domínio do ciclo aberto; sem ciclo, o modo "Ciclo" não aparece. */
+  ciclo: { examVersionId: string; domainId: string; rotulo: string } | null;
 }) {
   const [sessao, setSessao] = useState<SessaoAtivaDTO | null>(ativaInicial);
   const [offset, setOffset] = useState(() =>
@@ -289,7 +292,10 @@ export function Timer({
               <fieldset className="grid gap-2">
                 <legend className="mb-1 text-sm font-medium">Modo</legend>
                 <div className="flex flex-wrap gap-2">
-                  {(["LIVRE", "POMODORO", "FOCO"] as const).map((m) => (
+                  {(ciclo
+                    ? (["LIVRE", "POMODORO", "FOCO", "CICLO"] as const)
+                    : (["LIVRE", "POMODORO", "FOCO"] as const)
+                  ).map((m) => (
                     <label
                       key={m}
                       className={cn(
@@ -297,12 +303,27 @@ export function Timer({
                         modo === m ? "border-primary bg-primary-soft" : "border-input",
                       )}
                     >
-                      <input type="radio" name="modo" value={m} checked={modo === m} onChange={() => setModo(m)} />
+                      <input
+                        type="radio"
+                        name="modo"
+                        value={m}
+                        checked={modo === m}
+                        onChange={() => {
+                          setModo(m);
+                          if (m === "CICLO" && ciclo) {
+                            setExamVersionId(ciclo.examVersionId);
+                            setDomainId(ciclo.domainId);
+                            setTopicId("");
+                          }
+                        }}
+                      />
                       {m === "LIVRE"
                         ? "Livre"
                         : m === "POMODORO"
                           ? `Pomodoro ${pomodoro.trabalhoMin}/${pomodoro.pausaMin}`
-                          : "Foco (tela cheia)"}
+                          : m === "FOCO"
+                            ? "Foco (tela cheia)"
+                            : `Ciclo: ${ciclo?.rotulo}`}
                     </label>
                   ))}
                 </div>

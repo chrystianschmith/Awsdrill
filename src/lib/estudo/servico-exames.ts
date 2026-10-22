@@ -4,6 +4,8 @@ import { AppError } from "@/lib/errors";
 import type { TopicStatus } from "@/generated/prisma/client";
 import { assertExameDisponivel, assertTopicoSeguido } from "./acesso";
 import { contaComoConcluido } from "./progresso";
+import { encerrarCiclo } from "./servico-ciclo";
+import { agendarPrimeiraRevisao, cancelarRevisaoPendente } from "./servico-revisoes";
 
 /** Passa a seguir um exame publicado (idempotente). */
 export async function seguirExame(userId: string, examVersionId: string) {
@@ -15,10 +17,16 @@ export async function seguirExame(userId: string, examVersionId: string) {
   });
 }
 
-/** Deixa de seguir. Sessões e status das tarefas ficam guardados para quando voltar. */
+/**
+ * Deixa de seguir. Sessões, status das tarefas e revisões ficam guardados para quando voltar
+ * (as revisões só somem da lista); o ciclo aberto desse exame é encerrado.
+ */
 export async function deixarDeSeguir(userId: string, examVersionId: string) {
-  const r = await db.userExam.deleteMany({ where: { userId, examVersionId } });
-  if (r.count === 0) throw new AppError("Você não segue este exame.", "nao_encontrado");
+  await db.$transaction(async (tx) => {
+    const r = await tx.userExam.deleteMany({ where: { userId, examVersionId } });
+    if (r.count === 0) throw new AppError("Você não segue este exame.", "nao_encontrado");
+    await encerrarCiclo(userId, examVersionId, tx);
+  });
 }
 
 /** Data da prova (dia, 00:00 UTC) ou null para limpar. */
@@ -29,7 +37,8 @@ export async function definirDataProva(userId: string, examVersionId: string, da
 
 /**
  * Altera o status de uma task statement. A data de conclusão é a da primeira vez que
- * conclui; voltar para "não iniciado" a apaga. (A revisão espaçada entra na etapa 4b.)
+ * conclui, e concluir agenda a primeira revisão (+1 dia); voltar para "não iniciado"
+ * apaga a data e a revisão pendente.
  */
 export async function definirStatusTopico(userId: string, topicId: string, status: TopicStatus) {
   await assertTopicoSeguido(userId, topicId);
@@ -49,5 +58,7 @@ export async function definirStatusTopico(userId: string, topicId: string, statu
         ...(status === "NAO_INICIADO" ? { completedAt: null } : {}),
       },
     });
+    if (concluindo) await agendarPrimeiraRevisao(tx, userId, topicId, agora);
+    if (status === "NAO_INICIADO") await cancelarRevisaoPendente(tx, userId, topicId);
   });
 }

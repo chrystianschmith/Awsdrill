@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth/cookie";
 
-export const PRIVADAS = ["/hoje", "/estudar", "/exames", "/simulados", "/prontidao", "/revisoes", "/carteira", "/progresso", "/conta", "/admin"];
+export const PRIVADAS = ["/hoje", "/estudar", "/exames", "/simulados", "/prontidao", "/revisoes", "/ciclo", "/carteira", "/progresso", "/conta", "/admin"];
 
 /**
  * Checagem otimista de sessão (só presença do cookie) e headers de segurança.
