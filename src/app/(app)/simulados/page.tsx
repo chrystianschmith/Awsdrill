@@ -21,8 +21,9 @@ const fmt = new Intl.DateTimeFormat("pt-BR", {
   timeZone: "America/Sao_Paulo",
 });
 
-export default async function SimuladosPage() {
+export default async function SimuladosPage({ searchParams }: PageProps<"/simulados">) {
   const user = await requireUser();
+  const { exame, dominio } = await searchParams;
   const [seguidos, andamento, historico] = await Promise.all([
     examesSeguidos(user.id),
     simuladoEmAndamento(user.id),
@@ -86,7 +87,14 @@ export default async function SimuladosPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <IniciarSimulado exames={exames} />
+            <IniciarSimulado
+              exames={exames}
+              inicial={
+                typeof exame === "string" && exames.some((e) => e.id === exame)
+                  ? { examVersionId: exame, domainId: typeof dominio === "string" ? dominio : null }
+                  : undefined
+              }
+            />
           </CardContent>
         </Card>
       )}

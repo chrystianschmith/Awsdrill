@@ -49,6 +49,7 @@ model User {
   reviews                 Review[]
   mockAttempts            MockAttempt[]
   answers                 Answer[]
+  readinessScores         ReadinessScore[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -191,57 +192,59 @@ model Certification {
 
 /// O que a AWS publica de fato: código, status, formato, corte, preço e datas.
 model ExamVersion {
-  id              String         @id @default(cuid())
+  id              String           @id @default(cuid())
   certificationId String
-  code            String         @unique // "SAA-C03"
+  code            String           @unique // "SAA-C03"
   status          ExamStatus
   questionCount   Int? // total, com as não pontuadas; null = a confirmar
   scoredQuestions Int?
   durationMinutes Int?
   passingScore    Int? // escala 100–1000
-  priceUsd        Decimal?       @db.Decimal(8, 2)
-  validityMonths  Int            @default(36)
+  priceUsd        Decimal?         @db.Decimal(8, 2)
+  validityMonths  Int              @default(36)
   launchedAt      DateTime?
   retiresAt       DateTime?
   sourceUrl       String // exam guide oficial
   infoUrl         String? // página oficial da certificação (duração, preço)
   retrievedAt     DateTime // quando a fonte foi lida
-  dataStatus      DataStatus     @default(A_CONFIRMAR)
-  publishState    PublishState   @default(DRAFT)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  certification   Certification  @relation(fields: [certificationId], references: [id])
+  dataStatus      DataStatus       @default(A_CONFIRMAR)
+  publishState    PublishState     @default(DRAFT)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  certification   Certification    @relation(fields: [certificationId], references: [id])
   domains         Domain[]
   followers       UserExam[]
   studySessions   StudySession[]
   studyCycles     StudyCycle[]
   questions       Question[]
   mockAttempts    MockAttempt[]
+  readinessScores ReadinessScore[]
 
   @@index([certificationId, status])
 }
 
 /// Domínio (pai) ou task statement (folha). A folha é o "tópico" do estudo.
 model Domain {
-  id             String             @id @default(cuid())
-  examVersionId  String
-  parentId       String?
-  code           String // "1", "1.2"
-  nameEn         String
-  namePt         String?
-  order          Int
-  retiredAt      DateTime? // saiu do exam guide; fica para não perder o histórico (e o progresso, a partir da etapa 4)
-  examVersion    ExamVersion        @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
-  parent         Domain?            @relation("DomainTree", fields: [parentId], references: [id])
-  children       Domain[]           @relation("DomainTree")
-  weights        BlueprintWeight[]
-  sessions       StudySession[]     @relation("SessionDomain")
-  topicSessions  StudySession[]     @relation("SessionTopic")
-  userTopics     UserTopic[]
-  cycleItems     StudyCycleDomain[]
-  reviews        Review[]
-  questions      Question[]         @relation("QuestionDomain")
-  topicQuestions Question[]         @relation("QuestionTopic")
+  id              String             @id @default(cuid())
+  examVersionId   String
+  parentId        String?
+  code            String // "1", "1.2"
+  nameEn          String
+  namePt          String?
+  order           Int
+  retiredAt       DateTime? // saiu do exam guide; fica para não perder o histórico (e o progresso, a partir da etapa 4)
+  examVersion     ExamVersion        @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
+  parent          Domain?            @relation("DomainTree", fields: [parentId], references: [id])
+  children        Domain[]           @relation("DomainTree")
+  weights         BlueprintWeight[]
+  sessions        StudySession[]     @relation("SessionDomain")
+  topicSessions   StudySession[]     @relation("SessionTopic")
+  userTopics      UserTopic[]
+  cycleItems      StudyCycleDomain[]
+  reviews         Review[]
+  questions       Question[]         @relation("QuestionDomain")
+  topicQuestions  Question[]         @relation("QuestionTopic")
+  readinessScores ReadinessScore[]
 
   @@unique([examVersionId, code])
   @@index([parentId])
@@ -535,4 +538,25 @@ model Answer {
   @@unique([attemptId, questionId])
   @@index([userId, domainId, answeredAt])
   @@index([questionId])
+}
+
+/// Foto da prontidão (src/lib/prontidao), gravada ao encerrar um simulado. domainId nulo = exame.
+/// Escores 0–100; cobertura 0–1. É estimativa, nunca nota prevista do exame.
+model ReadinessScore {
+  id                 String      @id @default(cuid())
+  userId             String
+  examVersionId      String
+  domainId           String?
+  score              Float
+  lowerBound         Float
+  upperBound         Float
+  coverage           Float
+  sampleSize         Int
+  methodologyVersion String
+  computedAt         DateTime    @default(now())
+  user               User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion        ExamVersion @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
+  domain             Domain?     @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([userId, examVersionId, computedAt])
 }

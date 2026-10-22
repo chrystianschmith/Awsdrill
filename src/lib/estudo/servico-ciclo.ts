@@ -5,11 +5,12 @@ import { ehViolacaoUnica, type Executor } from "./acao";
 import { assertExameSeguido } from "./acesso";
 import { CicloInvalidoError, cicloCumprido, distribuirCiclo, proximoDominio } from "./ciclo";
 import { pesosEfetivos } from "./progresso";
+import { taxasDeAcerto } from "@/lib/prontidao/servico";
 
 /*
  * Ciclo de estudos (motor-de-estudo): o usuário escolhe o exame, os domínios e as horas;
- * a carga sai do peso do blueprint × desempenho. Sem questões registradas (até a etapa 5)
- * o fator de desempenho é 1. O bloqueio Pro entra com entitlements.ts na etapa 7.
+ * a carga sai do peso do blueprint × desempenho (acerto recente nos simulados; sem
+ * respostas no domínio, fator 1). O bloqueio Pro entra com entitlements.ts na etapa 7.
  */
 
 /** Ciclo aberto com o exame e os domínios na ordem do exam guide. */
@@ -28,8 +29,14 @@ export async function cicloAtual(userId: string, x: Executor = db) {
 
 export type CicloAtual = NonNullable<Awaited<ReturnType<typeof cicloAtual>>>;
 
-/** Distribuição sugerida para os domínios escolhidos de um exame (peso efetivo × fator 1). */
-async function distribuicaoSugerida(x: Executor, examVersionId: string, domainIds: string[], totalMin: number) {
+/** Distribuição sugerida para os domínios escolhidos (peso efetivo × fator de desempenho dos simulados). */
+async function distribuicaoSugerida(
+  x: Executor,
+  userId: string,
+  examVersionId: string,
+  domainIds: string[],
+  totalMin: number,
+) {
   const dominios = await x.domain.findMany({
     where: { examVersionId, parentId: null, retiredAt: null },
     orderBy: { order: "asc" },
@@ -40,9 +47,10 @@ async function distribuicaoSugerida(x: Executor, examVersionId: string, domainId
   const validos = dominios.flatMap((d, i) => (escolhidos.has(d.id) ? [{ domainId: d.id, peso: pesos[i]! }] : []));
   if (validos.length !== escolhidos.size)
     throw new AppError("Algum domínio escolhido não está disponível.", "validacao");
+  const taxas = await taxasDeAcerto(x, userId, examVersionId);
   try {
     return distribuirCiclo(
-      validos.map((d) => ({ ...d, taxaAcerto: null })),
+      validos.map((d) => ({ ...d, taxaAcerto: taxas.get(d.domainId) ?? null })),
       totalMin,
     );
   } catch (e) {
@@ -54,13 +62,13 @@ async function distribuicaoSugerida(x: Executor, examVersionId: string, domainId
 /** Prévia da distribuição, sem gravar. */
 export async function previaCiclo(userId: string, examVersionId: string, domainIds: string[], totalMin: number) {
   await assertExameSeguido(userId, examVersionId);
-  return Object.fromEntries(await distribuicaoSugerida(db, examVersionId, domainIds, totalMin));
+  return Object.fromEntries(await distribuicaoSugerida(db, userId, examVersionId, domainIds, totalMin));
 }
 
 /** Cria um ciclo (fecha o aberto, se houver). */
 export async function criarCiclo(userId: string, examVersionId: string, domainIds: string[], totalMin: number) {
   await assertExameSeguido(userId, examVersionId);
-  const dist = await distribuicaoSugerida(db, examVersionId, domainIds, totalMin);
+  const dist = await distribuicaoSugerida(db, userId, examVersionId, domainIds, totalMin);
   try {
     await db.$transaction(async (tx) => {
       const agora = new Date();
@@ -133,6 +141,7 @@ export async function recalcularCiclo(tx: Executor, userId: string): Promise<voi
   try {
     dist = await distribuicaoSugerida(
       tx,
+      userId,
       ciclo.examVersionId,
       itens.map((i) => i.domainId),
       ciclo.totalMin,

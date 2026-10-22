@@ -50,12 +50,19 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   respostas. Testes: unitários (distribuição, correção, prazo), integração (IDOR, gabarito oculto, prazo expirado) e
   e2e (prova completa → relatório; treino com feedback).
 
+- **Etapa 5b · Prontidão (2026-10-22):** `src/lib/prontidao/calculo.ts` puro (versão 1.0): acerto por tarefa com
+  decaimento (meia-vida 30 dias, janela 180), mínimo de 3 respostas equivalentes (as que faltam contam como erro),
+  faixa de Wilson 95%, domínio = média das tarefas, exame = média ponderada pelo peso efetivo; plano de correção (até 5
+  tarefas por peso × o que falta). Foto `ReadinessScore` (exame e domínios) ao encerrar cada simulado. Tela
+  `/prontidao` (estimativa com faixa, cobertura, amostra pequena, plano com atalhos para estudar e treinar o domínio,
+  histórico) e `/metodologia` pública; `docs/metodologia-prontidao.md`. O acerto recente por domínio passa a alimentar o
+  fator de desempenho do ciclo. LGPD exporta as fotos. Testes: unitários (monotonia em 300 casos, amostra pequena,
+  cobertura, decaimento), integração (foto, isolamento por usuário, ciclo) e e2e (prova → relatório → prontidão).
+
 ## Próximo
-- **Etapa 5b · Prontidão:** `src/lib/prontidao` (decaimento, limite inferior de Wilson, cobertura, `methodologyVersion`),
-  snapshot `ReadinessScore`, prontidão por domínio e exame, plano de correção, `/metodologia` e
-  `docs/metodologia-prontidao.md`; a taxa de acerto dos simulados passa a alimentar o fator de desempenho do ciclo
-  (`taxaAcerto` hoje é sempre null em `servico-ciclo.ts`).
-- Tela da fila de moderação do catálogo entra com o admin (etapa 8).
+- **Etapa 6 · Conteúdo com IA:** geração de questões e resumos com Gemini (ADR 0001), teto de gasto, fila de moderação
+  (o import por JSON da 5a é a porta de entrada) e "reportar erro".
+- Tela da fila de moderação do catálogo e das questões entra com o admin (etapa 8).
 
 ## Decisões
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
@@ -71,6 +78,8 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Simulados: um em andamento por usuário (começar outro encerra o anterior com o que foi respondido); questão não
   respondida conta como errada; prova com banco menor que o oficial usa o banco todo. Simulados são Pro pela skill,
   mas o bloqueio só entra com `entitlements.ts` (etapa 7). Moderação de questões pela CLI até o admin (etapa 8).
+- Prontidão: penalidade de amostra pequena por pseudo-amostra (3) em vez de esconder o número, para manter a
+  monotonia; tela calcula na hora e a foto serve ao histórico (`docs/metodologia-prontidao.md`).
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers

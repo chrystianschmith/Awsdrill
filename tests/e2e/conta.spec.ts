@@ -92,7 +92,7 @@ test("sair encerra a sessão no banco", async ({ context, page }) => {
 });
 
 test("telas de conta sem violações de acessibilidade", async ({ context, page }) => {
-  for (const rota of ["/entrar", "/cadastro", "/esqueci-senha", "/termos", "/privacidade"]) {
+  for (const rota of ["/entrar", "/cadastro", "/esqueci-senha", "/termos", "/privacidade", "/metodologia"]) {
     await page.goto(rota);
     expect(await violacoesA11y(page), rota).toEqual([]);
   }
