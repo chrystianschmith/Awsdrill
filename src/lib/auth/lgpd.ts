@@ -11,6 +11,9 @@ export const RELACOES_DO_USUARIO = {
   consents: "exportado",
   notificationPreference: "exportado",
   auditLogs: "exportado",
+  userExams: "exportado",
+  studySessions: "exportado",
+  userTopics: "exportado",
   emailVerificationTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
   passwordResetTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
 } as const satisfies Record<string, "exportado" | `fora: ${string}`>;
@@ -26,12 +29,41 @@ export const SELECT_EXPORTACAO = {
   emailVerifiedAt: true,
   createdAt: true,
   updatedAt: true,
+  dailyGoalMin: true,
+  streakMinMin: true,
+  pomodoroWorkMin: true,
+  pomodoroBreakMin: true,
+  pomodoroLongMin: true,
+  pomodoroLongEvery: true,
   sessions: { select: { createdAt: true, lastSeenAt: true, expiresAt: true, userAgent: true } },
   consents: { select: { kind: true, version: true, acceptedAt: true, ip: true } },
   notificationPreference: {
     select: { revisoes: true, mudancaExame: true, recertificacao: true, avisosPagamento: true },
   },
   auditLogs: { select: { action: true, ip: true, createdAt: true }, orderBy: { createdAt: "desc" } },
+  userExams: { select: { examDate: true, createdAt: true, examVersion: { select: { code: true } } } },
+  studySessions: {
+    select: {
+      mode: true,
+      manual: true,
+      startedAt: true,
+      endedAt: true,
+      durationSec: true,
+      examVersion: { select: { code: true } },
+      domain: { select: { code: true } },
+      topic: { select: { code: true } },
+      pauses: { select: { startedAt: true, endedAt: true } },
+    },
+    orderBy: { startedAt: "asc" },
+  },
+  userTopics: {
+    select: {
+      status: true,
+      completedAt: true,
+      updatedAt: true,
+      topic: { select: { code: true, examVersion: { select: { code: true } } } },
+    },
+  },
 } as const satisfies Prisma.UserSelect;
 
 export const FORMATO_EXPORTACAO = "trilha-export-v1";
