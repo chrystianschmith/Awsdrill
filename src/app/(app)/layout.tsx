@@ -1,5 +1,15 @@
 import Link from "next/link";
-import { BookOpenCheck, ChartColumn, CircleUser, ClipboardCheck, House, RefreshCw, Repeat, Timer } from "lucide-react";
+import {
+  BookOpenCheck,
+  ChartColumn,
+  CircleUser,
+  ClipboardCheck,
+  Gauge,
+  House,
+  RefreshCw,
+  Repeat,
+  Timer,
+} from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { NavLink } from "@/components/app/nav-link";
 import { RegistrarSW } from "@/components/app/registrar-sw";
@@ -7,11 +17,11 @@ import { SkipLink } from "@/components/app/skip-link";
 import { UserMenu, type LinkMenu } from "@/components/app/user-menu";
 import { requireUser } from "@/lib/auth/session";
 
-// Prontidão entra na etapa 5b.
 const PRINCIPAIS = [
   { href: "/hoje", label: "Hoje", Icone: House },
   { href: "/estudar", label: "Estudar", Icone: Timer },
   { href: "/simulados", label: "Simulados", Icone: ClipboardCheck },
+  { href: "/prontidao", label: "Prontidão", Icone: Gauge },
   { href: "/revisoes", label: "Revisões", Icone: RefreshCw },
   { href: "/ciclo", label: "Ciclo", Icone: Repeat },
   { href: "/progresso", label: "Progresso", Icone: ChartColumn },
@@ -26,6 +36,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
     { href: "/hoje", label: "Hoje" },
     { href: "/estudar", label: "Estudar" },
     { href: "/simulados", label: "Simulados" },
+    { href: "/prontidao", label: "Prontidão" },
     { href: "/revisoes", label: "Revisões" },
     { href: "/ciclo", label: "Ciclo" },
     { href: "/progresso", label: "Progresso" },

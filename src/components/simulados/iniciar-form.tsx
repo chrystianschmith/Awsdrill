@@ -17,13 +17,26 @@ export type ExameParaSimulado = {
 };
 
 /** Escolha do exame, do modo e (no treino) da quantidade e dos domínios. */
-export function IniciarSimulado({ exames }: { exames: ExameParaSimulado[] }) {
+export function IniciarSimulado({
+  exames,
+  inicial,
+}: {
+  exames: ExameParaSimulado[];
+  /** Vindo do plano de correção: exame e domínio já escolhidos. */
+  inicial?: { examVersionId: string; domainId: string | null };
+}) {
   const router = useRouter();
-  const [examVersionId, setExamVersionId] = useState(exames[0]?.id ?? "");
+  const [examVersionId, setExamVersionId] = useState(inicial?.examVersionId ?? exames[0]?.id ?? "");
   const exame = exames.find((e) => e.id === examVersionId) ?? exames[0];
   const [modo, setModo] = useState<"TREINO" | "PROVA">("TREINO");
   const [quantidade, setQuantidade] = useState("10");
-  const [dominios, setDominios] = useState<Set<string>>(new Set());
+  const [dominios, setDominios] = useState<Set<string>>(
+    new Set(
+      inicial?.domainId && exames.some((e) => e.dominios.some((d) => d.id === inicial.domainId))
+        ? [inicial.domainId]
+        : [],
+    ),
+  );
   const [erro, setErro] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
   if (!exame) return null;
