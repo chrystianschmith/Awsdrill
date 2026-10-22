@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Alert } from "@/components/ui/alert";
 import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -19,9 +20,15 @@ const COMO_FUNCIONA = [
   { titulo: "Prontidão medida", texto: "Uma estimativa por domínio, com metodologia publicada, antes de você marcar a prova." },
 ];
 
-export default function Inicio() {
+export default async function Inicio({ searchParams }: PageProps<"/">) {
+  const contaExcluida = (await searchParams).conta === "excluida";
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
+      {contaExcluida ? (
+        <Alert tone="success" role="status" className="mb-8">
+          Sua conta foi excluída e seus dados pessoais foram apagados.
+        </Alert>
+      ) : null}
       <p className="text-sm font-medium text-muted-foreground">Em construção</p>
       <h1 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
         Do primeiro exame de nuvem até a recertificação, com plano e prontidão medida

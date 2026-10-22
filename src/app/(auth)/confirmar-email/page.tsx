@@ -73,7 +73,7 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
           <BotaoReenviarConfirmacao className="w-fit" />
         </div>
       ) : null}
-      <Link href={user ? "/hoje" : "/entrar"} className="w-fit text-sm text-primary underline-offset-4 hover:underline">
+      <Link href={user ? "/hoje" : "/entrar"} className="w-fit text-sm text-primary underline underline-offset-4">
         {user ? "Ir para Hoje" : "Entrar"}
       </Link>
     </div>

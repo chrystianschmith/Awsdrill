@@ -18,7 +18,7 @@ export default async function CadastroPage() {
       <FormCadastro />
       <p className="text-sm text-muted-foreground">
         Já tem conta?{" "}
-        <Link href="/entrar" className="text-primary underline-offset-4 hover:underline">
+        <Link href="/entrar" className="text-primary underline underline-offset-4">
           Entrar
         </Link>
       </p>

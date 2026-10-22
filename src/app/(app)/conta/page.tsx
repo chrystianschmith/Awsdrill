@@ -69,7 +69,7 @@ export default async function ContaPage() {
           <CardTitle>Privacidade e dados</CardTitle>
           <CardDescription>
             Você pode baixar uma cópia de todos os seus dados ou excluir a conta a qualquer momento. Saiba mais na{" "}
-            <Link href="/privacidade" className="text-primary underline-offset-4 hover:underline">
+            <Link href="/privacidade" className="text-primary underline underline-offset-4">
               política de privacidade
             </Link>
             .

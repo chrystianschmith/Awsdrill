@@ -21,7 +21,7 @@ export default async function HojePage() {
       <AvisoEmailNaoConfirmado />
       <p className="text-sm text-muted-foreground">
         Enquanto isso, confira seus dados e preferências de e-mail em{" "}
-        <Link href="/conta" className="text-primary underline-offset-4 hover:underline">
+        <Link href="/conta" className="text-primary underline underline-offset-4">
           Conta
         </Link>
         .
