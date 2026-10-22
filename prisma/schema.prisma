@@ -45,6 +45,8 @@ model User {
   userExams               UserExam[]
   studySessions           StudySession[]
   userTopics              UserTopic[]
+  studyCycles             StudyCycle[]
+  reviews                 Review[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -210,6 +212,7 @@ model ExamVersion {
   domains         Domain[]
   followers       UserExam[]
   studySessions   StudySession[]
+  studyCycles     StudyCycle[]
 
   @@index([certificationId, status])
 }
@@ -231,6 +234,8 @@ model Domain {
   sessions      StudySession[]    @relation("SessionDomain")
   topicSessions StudySession[]    @relation("SessionTopic")
   userTopics    UserTopic[]
+  cycleItems    StudyCycleDomain[]
+  reviews       Review[]
 
   @@unique([examVersionId, code])
   @@index([parentId])
@@ -312,6 +317,7 @@ enum StudyMode {
   LIVRE
   POMODORO
   FOCO
+  CICLO
 }
 
 enum TopicStatus {
@@ -384,5 +390,54 @@ model UserTopic {
   topic       Domain      @relation(fields: [topicId], references: [id])
 
   @@unique([userId, topicId])
+  @@index([topicId])
+}
+
+// ───────────────────────── Ciclo e revisão espaçada (etapa 4b) ─────────────────────────
+
+/// Ciclo de estudos de um exame: carga por domínio. Um aberto por usuário (índice parcial na migration).
+model StudyCycle {
+  id            String             @id @default(cuid())
+  userId        String
+  examVersionId String
+  totalMin      Int
+  number        Int                @default(1)
+  startedAt     DateTime           @default(now())
+  closedAt      DateTime?
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion   ExamVersion        @relation(fields: [examVersionId], references: [id])
+  items         StudyCycleDomain[]
+
+  @@index([userId, closedAt])
+  @@index([examVersionId])
+}
+
+model StudyCycleDomain {
+  id        String     @id @default(cuid())
+  cycleId   String
+  domainId  String
+  targetMin Int
+  doneMin   Int        @default(0) // recalculado a partir das sessões registradas depois do início do ciclo
+  cycle     StudyCycle @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  domain    Domain     @relation(fields: [domainId], references: [id])
+
+  @@unique([cycleId, domainId])
+  @@index([domainId])
+}
+
+/// Revisão espaçada de uma task statement (+1, +7, +30 dias). Uma pendente por tarefa (índice parcial).
+model Review {
+  id         String    @id @default(cuid())
+  userId     String
+  topicId    String
+  step       Int       @default(0)
+  dueAt      DateTime
+  doneAt     DateTime?
+  goodResult Boolean?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic      Domain    @relation(fields: [topicId], references: [id])
+
+  @@index([userId, doneAt, dueAt])
   @@index([topicId])
 }
