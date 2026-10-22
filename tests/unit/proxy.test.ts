@@ -55,3 +55,10 @@ describe("proxy: rotas privadas", () => {
     expect(proxy(req("/hoje", "tr_sessao=abc")).status).toBe(200);
   });
 });
+
+describe("cookie de sessão", () => {
+  it("o proxy e a sessão usam o mesmo nome", async () => {
+    const { SESSION_COOKIE } = await import("@/lib/auth/cookie");
+    expect(SESSION_COOKIE).toBe("tr_sessao");
+  });
+});
