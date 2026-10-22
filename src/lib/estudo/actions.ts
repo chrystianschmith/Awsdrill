@@ -5,7 +5,9 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth/session";
 import { executar } from "./acao";
+import * as ciclos from "./servico-ciclo";
 import * as exames from "./servico-exames";
+import * as revisoes from "./servico-revisoes";
 import * as sessoes from "./servico-sessoes";
 import { STATUS_TOPICO } from "./progresso";
 
@@ -72,7 +74,7 @@ const iniciarSchema = z.object({
   examVersionId: id,
   domainId: id,
   topicId: idOpcional,
-  mode: z.enum(["LIVRE", "POMODORO", "FOCO"]),
+  mode: z.enum(["LIVRE", "POMODORO", "FOCO", "CICLO"]),
 });
 
 export async function iniciarSessaoAction(input: z.input<typeof iniciarSchema>) {
@@ -149,6 +151,51 @@ export async function excluirSessaoAction(sessionId: string) {
   const user = await requireUser();
   return executar("sessao.excluir", async () => {
     await sessoes.excluirSessao(user.id, id.parse(sessionId));
+    atualizar();
+  });
+}
+
+// ───────────────────────── Ciclo e revisões ─────────────────────────
+
+const cicloSchema = z.object({
+  examVersionId: id,
+  domainIds: z.array(id).min(1, "Escolha pelo menos um domínio.").max(20),
+  horas: z.coerce.number().min(1, "Mínimo de 1 hora.").max(100, "Máximo de 100 horas."),
+});
+
+/** Prévia da distribuição sugerida (minutos por domínio), sem gravar. */
+export async function previaCicloAction(input: z.input<typeof cicloSchema>) {
+  const user = await requireUser();
+  return executar("ciclo.previa", async () => {
+    const d = cicloSchema.parse(input);
+    return ciclos.previaCiclo(user.id, d.examVersionId, d.domainIds, Math.round(d.horas * 60));
+  });
+}
+
+export async function criarCicloAction(input: z.input<typeof cicloSchema>) {
+  const user = await requireUser();
+  return executar("ciclo.criar", async () => {
+    const d = cicloSchema.parse(input);
+    await ciclos.criarCiclo(user.id, d.examVersionId, d.domainIds, Math.round(d.horas * 60));
+    atualizar();
+  });
+}
+
+export async function encerrarCicloAction() {
+  const user = await requireUser();
+  return executar("ciclo.encerrar", async () => {
+    await ciclos.encerrarCiclo(user.id);
+    atualizar();
+  });
+}
+
+const revisaoSchema = z.object({ reviewId: id, boa: z.boolean() });
+
+export async function registrarRevisaoAction(input: z.input<typeof revisaoSchema>) {
+  const user = await requireUser();
+  return executar("revisao.registrar", async () => {
+    const d = revisaoSchema.parse(input);
+    await revisoes.registrarRevisao(user.id, d.reviewId, d.boa);
     atualizar();
   });
 }
