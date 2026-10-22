@@ -1,0 +1,11 @@
+// Schema do produto. Datas sempre em UTC; "dia" e "semana" são calculados em America/Sao_Paulo.
+// Os modelos entram por etapa (docs/estado.md): conta na etapa 2, catálogo na etapa 3, e assim por diante.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
