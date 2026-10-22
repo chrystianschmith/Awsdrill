@@ -27,9 +27,17 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   exam guide (`guia.ts`, sem IA, ADR 0005); diff entre gravado e coletado; confiança por regras (limiar 0,85); publica
   pelo mesmo `aplicarExame` ou põe na fila `CatalogReview` (aprovar/rejeitar pelo workflow até a tela de admin);
   execuções em `CatalogRun`. Tarefa que sai do guia fica com `retiredAt`. Seed só cria exame que ainda não existe.
+- **Etapa 4a · Estudo (2026-10-22):** seguir exame (`UserExam`, com data da prova); sessões controladas pelo servidor
+  (`StudySession`/`StudyPause`) por exame, domínio e tarefa opcional, modos livre, Pomodoro e foco; uma ativa por usuário
+  (índice parcial único), sem sobreposição, 4h por sessão (encerra e pede o tempo real), 4h por lançamento manual, 16h
+  por dia; meta diária e streak configuráveis; status por tarefa (`UserTopic`) e progresso do exame ponderado pelos pesos
+  do blueprint (peso "a confirmar" usa a média dos conhecidos). Telas `/hoje`, `/estudar`, `/progresso` e `/exames`.
+  `src/lib/estudo/{tempo,sessoes,metas}` vêm do Prumo; `progresso.ts` é novo. LGPD exporta os três modelos novos.
+  Testes: unitários, integração (IDOR, limites, pausas, auto-encerramento) e e2e (seguir → timer → progresso → Hoje).
 
 ## Próximo
-- **Etapa 4 · Estudo** (`motor-de-estudo`): plano por task statement, sessões, revisão espaçada.
+- **Etapa 4b · Estudo:** ciclo de estudos (distribuição por peso do blueprint × desempenho) e revisão espaçada
+  1/7/30 com revisões vencidas no "Hoje" (`motor-de-estudo`).
 - Tela da fila de moderação do catálogo entra com o admin (etapa 8).
 
 ## Decisões
@@ -37,7 +45,10 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
-- Preferências de estudo (meta diária, pomodoro) entram com a etapa de estudo, não na conta.
+- Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
+- Etapa 4 em duas partes: 4a (sessões, metas, progresso) e 4b (ciclo e revisões). Ciclo e revisões são Pro pela skill,
+  mas o bloqueio por plano só entra com `entitlements.ts` na etapa 7; até lá ficam abertos.
+- "Matéria" da skill = domínio do exam guide; "tópico" = task statement. Modo "ciclo" do timer entra com a 4b.
 - Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
