@@ -33,6 +33,11 @@ jobs:
           fetch-depth: 0
       - name: Segredos no histórico (gitleaks)
         run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.18.4 detect --source /repo --no-banner --redact
+      - name: Análise estática (semgrep)
+        run: >-
+          docker run --rm -v "$PWD:/src" -w /src semgrep/semgrep:1.182.1 semgrep scan
+          --config p/nextjs --config p/typescript --config p/secrets
+          --exclude src/generated --error --quiet src tests
       - uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
