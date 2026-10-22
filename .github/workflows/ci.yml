@@ -79,7 +79,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       # O playwright.config.ts sobe o build de produção na porta 3100 (desktop 1280px e mobile 375px).
       - run: npx playwright test
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
