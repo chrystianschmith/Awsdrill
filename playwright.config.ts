@@ -2,6 +2,7 @@ import "dotenv/config";
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { chromium, defineConfig, devices } from "@playwright/test";
+import { PASTA_EMAILS } from "./tests/e2e/apoio/constantes";
 
 const PORTA = 3100;
 const BASE_URL = `http://localhost:${PORTA}`;
@@ -36,6 +37,7 @@ const executablePath = chromiumDisponivel();
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  globalSetup: "./tests/e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,
@@ -81,6 +83,9 @@ export default defineConfig({
       ANTHROPIC_API_KEY: "",
       GEMINI_API_KEY: "",
       STRIPE_SECRET_KEY: "",
+      // E-mails vão para arquivos que os testes leem (src/lib/email/send.ts).
+      E2E: "1",
+      EMAIL_SINK_DIR: PASTA_EMAILS,
     },
   },
 });
