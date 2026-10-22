@@ -47,6 +47,8 @@ model User {
   userTopics              UserTopic[]
   studyCycles             StudyCycle[]
   reviews                 Review[]
+  mockAttempts            MockAttempt[]
+  answers                 Answer[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -189,53 +191,57 @@ model Certification {
 
 /// O que a AWS publica de fato: código, status, formato, corte, preço e datas.
 model ExamVersion {
-  id              String        @id @default(cuid())
+  id              String         @id @default(cuid())
   certificationId String
-  code            String        @unique // "SAA-C03"
+  code            String         @unique // "SAA-C03"
   status          ExamStatus
   questionCount   Int? // total, com as não pontuadas; null = a confirmar
   scoredQuestions Int?
   durationMinutes Int?
   passingScore    Int? // escala 100–1000
-  priceUsd        Decimal?      @db.Decimal(8, 2)
-  validityMonths  Int           @default(36)
+  priceUsd        Decimal?       @db.Decimal(8, 2)
+  validityMonths  Int            @default(36)
   launchedAt      DateTime?
   retiresAt       DateTime?
   sourceUrl       String // exam guide oficial
   infoUrl         String? // página oficial da certificação (duração, preço)
   retrievedAt     DateTime // quando a fonte foi lida
-  dataStatus      DataStatus    @default(A_CONFIRMAR)
-  publishState    PublishState  @default(DRAFT)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  certification   Certification @relation(fields: [certificationId], references: [id])
+  dataStatus      DataStatus     @default(A_CONFIRMAR)
+  publishState    PublishState   @default(DRAFT)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  certification   Certification  @relation(fields: [certificationId], references: [id])
   domains         Domain[]
   followers       UserExam[]
   studySessions   StudySession[]
   studyCycles     StudyCycle[]
+  questions       Question[]
+  mockAttempts    MockAttempt[]
 
   @@index([certificationId, status])
 }
 
 /// Domínio (pai) ou task statement (folha). A folha é o "tópico" do estudo.
 model Domain {
-  id            String            @id @default(cuid())
-  examVersionId String
-  parentId      String?
-  code          String // "1", "1.2"
-  nameEn        String
-  namePt        String?
-  order         Int
-  retiredAt     DateTime? // saiu do exam guide; fica para não perder o histórico (e o progresso, a partir da etapa 4)
-  examVersion   ExamVersion       @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
-  parent        Domain?           @relation("DomainTree", fields: [parentId], references: [id])
-  children      Domain[]          @relation("DomainTree")
-  weights       BlueprintWeight[]
-  sessions      StudySession[]    @relation("SessionDomain")
-  topicSessions StudySession[]    @relation("SessionTopic")
-  userTopics    UserTopic[]
-  cycleItems    StudyCycleDomain[]
-  reviews       Review[]
+  id             String             @id @default(cuid())
+  examVersionId  String
+  parentId       String?
+  code           String // "1", "1.2"
+  nameEn         String
+  namePt         String?
+  order          Int
+  retiredAt      DateTime? // saiu do exam guide; fica para não perder o histórico (e o progresso, a partir da etapa 4)
+  examVersion    ExamVersion        @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
+  parent         Domain?            @relation("DomainTree", fields: [parentId], references: [id])
+  children       Domain[]           @relation("DomainTree")
+  weights        BlueprintWeight[]
+  sessions       StudySession[]     @relation("SessionDomain")
+  topicSessions  StudySession[]     @relation("SessionTopic")
+  userTopics     UserTopic[]
+  cycleItems     StudyCycleDomain[]
+  reviews        Review[]
+  questions      Question[]         @relation("QuestionDomain")
+  topicQuestions Question[]         @relation("QuestionTopic")
 
   @@unique([examVersionId, code])
   @@index([parentId])
@@ -440,4 +446,93 @@ model Review {
 
   @@index([userId, doneAt, dueAt])
   @@index([topicId])
+}
+
+// ───────────────────────── Simulados (etapa 5) ─────────────────────────
+
+enum QuestionType {
+  SINGLE
+  MULTIPLE
+}
+
+enum AttemptMode {
+  TREINO
+  PROVA
+}
+
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED // prazo do modo prova acabou; corrigido pelo servidor com o que foi respondido
+}
+
+/// Banco próprio (nunca questão real de prova). Entra por importação JSON validada e só aparece depois de moderada.
+model Question {
+  id            String       @id @default(cuid())
+  examVersionId String
+  domainId      String // domínio (pai)
+  topicId       String? // task statement, quando a questão é de uma só
+  type          QuestionType
+  stem          String
+  options       Json // [{ key: "A", text }] validado por Zod
+  correctKeys   String[] // nunca vai ao cliente antes da resposta
+  explanation   String
+  docUrls       String[] // só https de host oficial
+  origin        String // "autoral" | "ia"
+  promptVersion String?
+  contentHash   String       @unique // deduplicação (enunciado + alternativas normalizados)
+  publishState  PublishState @default(PENDING_REVIEW)
+  reviewNote    String?
+  importedAt    DateTime     @default(now())
+  reviewedAt    DateTime?
+  examVersion   ExamVersion  @relation(fields: [examVersionId], references: [id])
+  domain        Domain       @relation("QuestionDomain", fields: [domainId], references: [id])
+  topic         Domain?      @relation("QuestionTopic", fields: [topicId], references: [id])
+  answers       Answer[]
+
+  @@index([examVersionId, domainId, publishState])
+  @@index([topicId])
+}
+
+/// Simulado (treino ou prova): sorteio congelado no início e prazo definido no servidor.
+model MockAttempt {
+  id            String        @id @default(cuid())
+  userId        String
+  examVersionId String
+  mode          AttemptMode
+  status        AttemptStatus @default(IN_PROGRESS)
+  domainFilter  String[] // vazio = exame inteiro
+  questionIds   String[] // ordem de apresentação
+  startedAt     DateTime      @default(now())
+  deadlineAt    DateTime? // só no modo prova
+  submittedAt   DateTime?
+  correctCount  Int?
+  domainReport  Json? // snapshot por domínio no envio
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion   ExamVersion   @relation(fields: [examVersionId], references: [id])
+  answers       Answer[]
+
+  @@index([userId, startedAt])
+  @@index([examVersionId])
+}
+
+/// Resposta: acerto e tempo calculados no servidor; alimenta o relatório, a prontidão e o ciclo.
+model Answer {
+  id           String      @id @default(cuid())
+  attemptId    String
+  userId       String // desnormalizado para a prontidão (o dono vem do simulado)
+  questionId   String
+  domainId     String // desnormalizado da questão
+  topicId      String?
+  selectedKeys String[]
+  isCorrect    Boolean
+  timeMs       Int
+  answeredAt   DateTime    @default(now())
+  attempt      MockAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question     Question    @relation(fields: [questionId], references: [id])
+
+  @@unique([attemptId, questionId])
+  @@index([userId, domainId, answeredAt])
+  @@index([questionId])
 }

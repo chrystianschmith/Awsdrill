@@ -29,6 +29,19 @@ npx prisma validate && npx prisma migrate status
 npm run test:e2e              # Playwright: build de produção na porta 3100 com E2E_DATABASE_URL
 ```
 
+## Banco de questões
+
+Questões entram por arquivo JSON validado (`ArquivoQuestoes` em `src/lib/simulados/schemas.ts`), sempre como pendentes,
+e só aparecem nos simulados depois de aprovadas. Toda questão cita ao menos uma fonte oficial; questão real de prova
+(dump) é proibida. Até a tela de admin (etapa 8), a moderação é pela linha de comando:
+
+```bash
+npx tsx scripts/questoes/importar.ts questoes.json          # valida e importa como pendentes
+npx tsx scripts/questoes/importar.ts --pendentes CLF-C02     # lista as pendentes do exame
+npx tsx scripts/questoes/importar.ts --aprovar <id> [<id>…]  # publica
+npx tsx scripts/questoes/importar.ts --rejeitar <id> --nota "motivo"
+```
+
 ## Custos e serviços
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,
