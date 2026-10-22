@@ -112,14 +112,14 @@ export async function certificacaoPorSlug(slug: string): Promise<CertificacaoDet
           infoUrl: true,
           retrievedAt: true,
           domains: {
-            where: { parentId: null },
+            where: { parentId: null, retiredAt: null },
             orderBy: { order: "asc" },
             select: {
               code: true,
               nameEn: true,
               namePt: true,
               weights: { orderBy: { revision: "desc" }, take: 1, select: { revision: true, weightPct: true } },
-              children: { orderBy: { order: "asc" }, select: { code: true, nameEn: true, namePt: true } },
+              children: { where: { retiredAt: null }, orderBy: { order: "asc" }, select: { code: true, nameEn: true, namePt: true } },
             },
           },
         },

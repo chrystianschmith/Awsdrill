@@ -210,6 +210,7 @@ model Domain {
   nameEn        String
   namePt        String?
   order         Int
+  retiredAt     DateTime? // saiu do exam guide; fica para não perder o histórico (e o progresso, a partir da etapa 4)
   examVersion   ExamVersion       @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
   parent        Domain?           @relation("DomainTree", fields: [parentId], references: [id])
   children      Domain[]          @relation("DomainTree")
@@ -233,4 +234,56 @@ model BlueprintWeight {
   domain        Domain     @relation(fields: [domainId], references: [id], onDelete: Cascade)
 
   @@unique([domainId, revision])
+}
+
+// ───────────────────────── Pipeline do catálogo (etapa 3b) ─────────────────────────
+// Execução mensal no GitHub Actions (scripts/pipeline/catalogo.ts). O que não pode publicar sozinho vai para a fila.
+
+enum CatalogRunStatus {
+  RUNNING
+  SUCCEEDED
+  PARTIAL
+  FAILED
+}
+
+/// Uma execução da pipeline: contadores e erros.
+model CatalogRun {
+  id              String           @id @default(cuid())
+  status          CatalogRunStatus @default(RUNNING)
+  startedAt       DateTime         @default(now())
+  finishedAt      DateTime?
+  examsChecked    Int              @default(0)
+  examsUnchanged  Int              @default(0)
+  examsPublished  Int              @default(0)
+  examsModeration Int              @default(0)
+  errors          Json             @default("[]")
+  reviews         CatalogReview[]
+
+  @@index([startedAt])
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUPERSEDED
+}
+
+/// Coleta que mudou o exame mas não passou na confiança: espera o admin aprovar ou rejeitar.
+model CatalogReview {
+  id          String       @id @default(cuid())
+  runId       String?
+  examCode    String
+  payload     Json // ExameColetado completo, aplicado por aplicarExame ao aprovar
+  payloadHash String
+  diff        Json
+  confidence  Decimal      @db.Decimal(3, 2)
+  problems    Json         @default("[]")
+  status      ReviewStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  decidedAt   DateTime?
+  run         CatalogRun?  @relation(fields: [runId], references: [id], onDelete: SetNull)
+
+  @@unique([examCode, payloadHash])
+  @@index([status, createdAt])
 }
