@@ -64,6 +64,34 @@ test("simulado em modo prova completo → relatório por domínio", async ({ con
     await expect(page.getByText(new RegExp(`\\d\\. ${nome}`)).first()).toBeVisible();
   const r = await banco().query(`SELECT status, "correctCount" FROM "MockAttempt" WHERE "userId" = $1`, [conta.id]);
   expect(r.rows[0]).toMatchObject({ status: "SUBMITTED", correctCount: 3 });
+
+  // Prontidão: foto gravada no envio e estimativa com faixa, marcada como amostra pequena.
+  await page.getByRole("link", { name: "Ver prontidão" }).click();
+  await expect(page).toHaveURL(/\/prontidao#CLF-C02$/);
+  await expect(page.getByText("estimativa", { exact: true })).toBeVisible();
+  await expect(page.getByText("responda mais 17 para sair da amostra pequena")).toBeVisible();
+  await expect(page.getByText("amostra pequena", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("img", { name: /^Prontidão no CLF-C02: estimativa \d+ de 100, faixa de \d+ a \d+$/ }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Plano de correção" })).toBeVisible();
+  await expect(page.getByText("Ao fim dos últimos simulados")).toBeVisible();
+  const fotos = await banco().query(`SELECT count(*)::int AS n FROM "ReadinessScore" WHERE "userId" = $1`, [conta.id]);
+  expect(fotos.rows[0].n).toBeGreaterThan(1);
+});
+
+test("plano de correção leva ao treino do domínio já escolhido", async ({ context, page }) => {
+  const conta = await criarConta("plano");
+  await seguir(conta.id, "CLF-C02");
+  await entrarComo(context, conta);
+  await page.goto("/prontidao");
+  await expect(page.locator("main h1")).toHaveText("Prontidão");
+  expect(await violacoesA11y(page), "/prontidao").toEqual([]);
+  const treinar = page.getByRole("link", { name: /^Treinar o domínio / }).first();
+  const dominio = (await treinar.getAttribute("aria-label"))!.replace("Treinar o domínio ", "");
+  await treinar.click();
+  await expect(page).toHaveURL(/\/simulados\?exame=.+&dominio=.+/);
+  await expect(page.getByRole("checkbox", { name: new RegExp(`^${dominio}\\. `) })).toBeChecked();
 });
 
 test("treino mostra a correção e a fonte oficial logo após responder", async ({ context, page }) => {
