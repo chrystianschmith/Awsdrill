@@ -28,9 +28,14 @@ export default async function RelatorioPage({ params }: PageProps<"/simulados/[i
         titulo={`Relatório · ${rel.examCode}`}
         descricao={`${rel.mode === "PROVA" ? "Prova" : "Treino"}${rel.status === "EXPIRED" ? " encerrada pelo tempo" : ""}. Percentual de acerto nas questões do banco próprio: é treino, não a nota oficial.`}
         acoes={
-          <Link href="/simulados" className={buttonVariants({ variant: "secondary" })}>
-            Novo simulado
-          </Link>
+          <>
+            <Link href={`/prontidao#${rel.examCode}`} className={buttonVariants({ variant: "secondary" })}>
+              Ver prontidão
+            </Link>
+            <Link href="/simulados" className={buttonVariants({ variant: "secondary" })}>
+              Novo simulado
+            </Link>
+          </>
         }
       />
       <Card>
