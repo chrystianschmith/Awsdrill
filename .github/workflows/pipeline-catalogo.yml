@@ -1,0 +1,65 @@
+name: Pipeline do catálogo
+
+# Mensal, dia 1 às 09:00 UTC (06:00 em Brasília), e manual pelo botão "Run workflow".
+# Lê os exam guides oficiais (versão .md), publica o que mudou com confiança e põe o resto na fila de moderação.
+on:
+  schedule:
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Só ler e comparar, sem gravar"
+        type: boolean
+        required: false
+        default: false
+      aprovar:
+        description: "ID de uma revisão da fila (CatalogReview) para aprovar"
+        required: false
+        default: ""
+      rejeitar:
+        description: "ID de uma revisão da fila (CatalogReview) para rejeitar"
+        required: false
+        default: ""
+
+# Nunca duas execuções ao mesmo tempo.
+concurrency:
+  group: pipeline-catalogo
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      PIPELINE_CONTACT_EMAIL: ${{ secrets.PIPELINE_CONTACT_EMAIL }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Rodar pipeline
+        env:
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_APROVAR: ${{ inputs.aprovar }}
+          INPUT_REJEITAR: ${{ inputs.rejeitar }}
+        run: |
+          if [ -z "$PIPELINE_CONTACT_EMAIL" ]; then
+            echo "::error::Defina o secret PIPELINE_CONTACT_EMAIL (vai no User-Agent da coleta)."
+            exit 1
+          fi
+          args=()
+          if [ -n "$INPUT_APROVAR" ]; then
+            args+=(--aprovar "$INPUT_APROVAR")
+          elif [ -n "$INPUT_REJEITAR" ]; then
+            args+=(--rejeitar "$INPUT_REJEITAR")
+          elif [ "$INPUT_DRY_RUN" = "true" ] || [ -z "$DATABASE_URL" ]; then
+            # Sem banco configurado ainda, a execução agendada só lê e compara com o seed.
+            args+=(--dry-run)
+          fi
+          npx tsx scripts/pipeline/catalogo.ts "${args[@]}"

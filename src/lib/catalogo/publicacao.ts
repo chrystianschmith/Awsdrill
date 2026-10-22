@@ -13,7 +13,8 @@ const data = (iso: string | null) => (iso ? new Date(`${iso}T00:00:00.000Z`) : n
 
 /**
  * Grava um exame coletado de fonte oficial (seed e pipeline), de forma idempotente:
- * certificação e versão por chave natural, domínios e tarefas por código, e uma nova
+ * certificação e versão por chave natural, domínios e tarefas por código (os ausentes ficam
+ * marcados como retirados), e uma nova
  * revisão de pesos só quando o hash do blueprint muda. Recebe o cliente para poder
  * rodar fora do Next (seed, GitHub Actions) e nos testes.
  */
@@ -62,7 +63,7 @@ export async function aplicarExame(db: PrismaClient, entrada: unknown): Promise<
       const dominio = await tx.domain.upsert({
         where: { examVersionId_code: { examVersionId: versao.id, code: d.codigo } },
         create: { examVersionId: versao.id, code: d.codigo, nameEn: d.nomeEn, namePt: d.nomePt, order: ordem },
-        update: { parentId: null, nameEn: d.nomeEn, namePt: d.nomePt, order: ordem },
+        update: { parentId: null, nameEn: d.nomeEn, namePt: d.nomePt, order: ordem, retiredAt: null },
         select: { id: true },
       });
       ordem++;
@@ -78,11 +79,18 @@ export async function aplicarExame(db: PrismaClient, entrada: unknown): Promise<
             namePt: t.nomePt,
             order: ordem,
           },
-          update: { parentId: dominio.id, nameEn: t.nomeEn, namePt: t.nomePt, order: ordem },
+          update: { parentId: dominio.id, nameEn: t.nomeEn, namePt: t.nomePt, order: ordem, retiredAt: null },
         });
         ordem++;
       }
     }
+
+    // O que saiu do guia não é apagado (histórico e, da etapa 4 em diante, progresso): só marcado.
+    const codigos = exame.dominios.flatMap((d) => [d.codigo, ...d.tarefas.map((t) => t.codigo)]);
+    await tx.domain.updateMany({
+      where: { examVersionId: versao.id, code: { notIn: codigos }, retiredAt: null },
+      data: { retiredAt: lidoEm },
+    });
 
     // Uma revisão vale para o blueprint inteiro: a mesma em todos os domínios da versão.
     const ultima = await tx.blueprintWeight.findFirst({
