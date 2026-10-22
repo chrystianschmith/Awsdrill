@@ -34,10 +34,16 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   do blueprint (peso "a confirmar" usa a média dos conhecidos). Telas `/hoje`, `/estudar`, `/progresso` e `/exames`.
   `src/lib/estudo/{tempo,sessoes,metas}` vêm do Prumo; `progresso.ts` é novo. LGPD exporta os três modelos novos.
   Testes: unitários, integração (IDOR, limites, pausas, auto-encerramento) e e2e (seguir → timer → progresso → Hoje).
+- **Etapa 4b · Ciclo e revisões (2026-10-22):** ciclo de estudos por exame (`StudyCycle`/`StudyCycleDomain`, um aberto
+  por usuário): o usuário escolhe domínios e horas, a carga segue o peso efetivo do blueprint (mín. 30 min; fator de
+  desempenho 1 até haver simulados), o feito é recalculado das sessões registradas depois do início e, cumprido, abre
+  o próximo ciclo; modo "Ciclo" no timer e "Próximo do ciclo" no Hoje. Revisão espaçada (`Review`, uma pendente por
+  tarefa): concluir agenda +1 dia, boa avança para +7/+30, difícil volta para +1 e marca "Revisar"; vencidas no Hoje e
+  em `/revisoes`, da mais atrasada. Deixar de seguir encerra o ciclo e esconde as revisões. LGPD exporta os dois.
 
 ## Próximo
-- **Etapa 4b · Estudo:** ciclo de estudos (distribuição por peso do blueprint × desempenho) e revisão espaçada
-  1/7/30 com revisões vencidas no "Hoje" (`motor-de-estudo`).
+- **Etapa 5 · Simulados e prontidão:** questões por domínio; a taxa de acerto passa a alimentar o fator de
+  desempenho do ciclo (`taxaAcerto` hoje é sempre null em `servico-ciclo.ts`).
 - Tela da fila de moderação do catálogo entra com o admin (etapa 8).
 
 ## Decisões
@@ -48,7 +54,8 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
 - Etapa 4 em duas partes: 4a (sessões, metas, progresso) e 4b (ciclo e revisões). Ciclo e revisões são Pro pela skill,
   mas o bloqueio por plano só entra com `entitlements.ts` na etapa 7; até lá ficam abertos.
-- "Matéria" da skill = domínio do exam guide; "tópico" = task statement. Modo "ciclo" do timer entra com a 4b.
+- "Matéria" da skill = domínio do exam guide; "tópico" = task statement.
+- Feito do ciclo é recalculado das sessões (não somado por delta), para não divergir ao excluir ou confirmar sessões.
 - Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 

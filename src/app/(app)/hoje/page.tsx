@@ -5,6 +5,8 @@ import { AvisoEmailNaoConfirmado } from "@/lib/auth/components";
 import { requireUser } from "@/lib/auth/session";
 import { examesSeguidos, preferenciasDeEstudo, proximaProva, segundosPorDiaRecentes } from "@/lib/estudo/consultas";
 import { calcularStreak, progressoMeta } from "@/lib/estudo/metas";
+import { cicloAtual, proximoDoCiclo } from "@/lib/estudo/servico-ciclo";
+import { revisoesVencidas } from "@/lib/estudo/servico-revisoes";
 import { obterSessaoAtiva } from "@/lib/estudo/servico-sessoes";
 import { diasEntre, getDayKey } from "@/lib/estudo/tempo";
 import { formatMinutos } from "@/lib/utils";
@@ -13,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { EmptyState } from "@/components/ui/empty-state";
 import { Progress } from "@/components/ui/progress";
 import { CabecalhoPagina, Estatistica } from "@/components/estudo/basicos";
+import { ListaVencidas } from "@/components/estudo/lista-revisoes";
 import { MetaForm } from "@/components/estudo/meta-form";
 
 export const metadata: Metadata = { title: "Hoje" };
@@ -25,16 +28,19 @@ const fmtHoje = new Intl.DateTimeFormat("pt-BR", {
   timeZone: "America/Sao_Paulo",
 });
 
-/** Painel do dia: meta, sequência, prova e exames em estudo. Revisões e ciclo entram na etapa 4b. */
+/** Painel do dia: meta, sequência, prova, próximo domínio do ciclo, revisões vencidas e exames em estudo. */
 export default async function HojePage() {
   const user = await requireUser();
   const agora = new Date();
-  const [prefs, porDia, ativa, exames] = await Promise.all([
+  const [prefs, porDia, ativa, exames, ciclo, vencidas] = await Promise.all([
     preferenciasDeEstudo(user.id),
     segundosPorDiaRecentes(user.id, 400, agora),
     obterSessaoAtiva(user.id),
     examesSeguidos(user.id),
+    cicloAtual(user.id),
+    revisoesVencidas(user.id, agora, 10),
   ]);
+  const proximo = proximoDoCiclo(ciclo);
   const hoje = porDia.get(getDayKey(agora)) ?? 0;
   const meta = progressoMeta(hoje, prefs.dailyGoalMin);
   const streak = calcularStreak(porDia, agora, prefs.streakMinMin);
@@ -95,6 +101,41 @@ export default async function HojePage() {
           )}
         </CardContent>
       </Card>
+
+      {proximo ? (
+        <Card>
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+            <div className="grid gap-0.5">
+              <p className="text-xs text-muted-foreground">Próximo do ciclo</p>
+              <p className="text-sm font-medium">
+                {proximo.examCode} · {proximo.codigo}. {proximo.nome}
+              </p>
+              <p className="tabular text-xs text-muted-foreground">faltam {formatMinutos(proximo.pendenteMin)}</p>
+            </div>
+            <Link
+              href={`/estudar?modo=CICLO&exame=${proximo.examVersionId}&dominio=${proximo.domainId}`}
+              className={buttonVariants({ size: "sm" })}
+            >
+              <Play aria-hidden />
+              Estudar agora
+            </Link>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      {vencidas.length > 0 ? (
+        <section className="grid gap-3" aria-labelledby="revisoes-hoje">
+          <div className="flex items-baseline justify-between gap-2">
+            <h2 id="revisoes-hoje" className="text-sm font-semibold">
+              Revisões para hoje <span className="tabular font-normal text-muted-foreground">({vencidas.length})</span>
+            </h2>
+            <Link href="/revisoes" className="text-xs text-primary underline underline-offset-4">
+              Ver todas
+            </Link>
+          </div>
+          <ListaVencidas vencidas={vencidas} agora={agora} />
+        </section>
+      ) : null}
 
       {exames.length === 0 ? (
         <EmptyState

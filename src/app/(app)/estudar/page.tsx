@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { historicoSessoes, opcoesDeEstudo, preferenciasDeEstudo } from "@/lib/estudo/consultas";
+import { cicloAtual, proximoDoCiclo } from "@/lib/estudo/servico-ciclo";
 import { obterSessaoAtiva, sessoesAConfirmar } from "@/lib/estudo/servico-sessoes";
 import { getDayKey } from "@/lib/estudo/tempo";
 import { formatMinutos } from "@/lib/utils";
@@ -32,13 +33,15 @@ export default async function EstudarPage({ searchParams }: PageProps<"/estudar"
   const user = await requireUser();
   const sp = await searchParams;
   const agora = new Date();
-  const [ativa, exames, prefs, pendentes, recentes] = await Promise.all([
+  const [ativa, exames, prefs, pendentes, recentes, ciclo] = await Promise.all([
     obterSessaoAtiva(user.id),
     opcoesDeEstudo(user.id),
     preferenciasDeEstudo(user.id),
     sessoesAConfirmar(user.id),
     historicoSessoes(user.id, 10),
+    cicloAtual(user.id),
   ]);
+  const proximo = proximoDoCiclo(ciclo);
 
   if (exames.length === 0 && !ativa) {
     return (
@@ -81,8 +84,20 @@ export default async function EstudarPage({ searchParams }: PageProps<"/estudar"
           examVersionId: primeiro(sp.exame),
           domainId: primeiro(sp.dominio),
           topicId: primeiro(sp.tarefa),
-          mode: modo === "POMODORO" || modo === "FOCO" || modo === "LIVRE" ? modo : undefined,
+          mode:
+            modo === "POMODORO" || modo === "FOCO" || modo === "LIVRE" || (modo === "CICLO" && proximo)
+              ? modo
+              : undefined,
         }}
+        ciclo={
+          proximo
+            ? {
+                examVersionId: proximo.examVersionId,
+                domainId: proximo.domainId,
+                rotulo: `${proximo.examCode} ${proximo.codigo}. ${proximo.nome}`,
+              }
+            : null
+        }
       />
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
