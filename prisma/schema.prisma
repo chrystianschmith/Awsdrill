@@ -28,12 +28,23 @@ model User {
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime?
 
+  // Preferências de estudo (motor-de-estudo)
+  dailyGoalMin      Int @default(120)
+  streakMinMin      Int @default(30)
+  pomodoroWorkMin   Int @default(25)
+  pomodoroBreakMin  Int @default(5)
+  pomodoroLongMin   Int @default(15)
+  pomodoroLongEvery Int @default(4)
+
   sessions                Session[]
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
   consents                Consent[]
   notificationPreference  NotificationPreference?
   auditLogs               AuditLog[]
+  userExams               UserExam[]
+  studySessions           StudySession[]
+  userTopics              UserTopic[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -197,6 +208,8 @@ model ExamVersion {
   updatedAt       DateTime      @updatedAt
   certification   Certification @relation(fields: [certificationId], references: [id])
   domains         Domain[]
+  followers       UserExam[]
+  studySessions   StudySession[]
 
   @@index([certificationId, status])
 }
@@ -215,6 +228,9 @@ model Domain {
   parent        Domain?           @relation("DomainTree", fields: [parentId], references: [id])
   children      Domain[]          @relation("DomainTree")
   weights       BlueprintWeight[]
+  sessions      StudySession[]    @relation("SessionDomain")
+  topicSessions StudySession[]    @relation("SessionTopic")
+  userTopics    UserTopic[]
 
   @@unique([examVersionId, code])
   @@index([parentId])
@@ -286,4 +302,87 @@ model CatalogReview {
 
   @@unique([examCode, payloadHash])
   @@index([status, createdAt])
+}
+
+// ───────────────────────────── Estudo (etapa 4) ─────────────────────────────
+// Regras em src/lib/estudo (motor-de-estudo). O "tópico" é a folha do blueprint (task statement).
+// Do lado do catálogo as relações são Restrict: versão e domínio nunca são apagados com estudo gravado.
+
+enum StudyMode {
+  LIVRE
+  POMODORO
+  FOCO
+}
+
+enum TopicStatus {
+  NAO_INICIADO
+  ESTUDANDO
+  CONCLUIDO
+  REVISAR
+}
+
+/// Exame que o usuário estuda, com a data de prova se ele marcou.
+model UserExam {
+  id            String      @id @default(cuid())
+  userId        String
+  examVersionId String
+  examDate      DateTime? // dia da prova, 00:00 UTC
+  createdAt     DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion   ExamVersion @relation(fields: [examVersionId], references: [id])
+
+  @@unique([userId, examVersionId])
+  @@index([examVersionId])
+}
+
+/// Sessão de estudo. Cronometrada (startedAt/pausas/endedAt do servidor) ou manual.
+/// Uma ativa por usuário (índice parcial na migration) e endedAt >= startedAt (CHECK).
+model StudySession {
+  id            String       @id @default(cuid())
+  userId        String
+  examVersionId String
+  domainId      String // domínio (pai), obrigatório
+  topicId       String? // task statement, opcional
+  mode          StudyMode    @default(LIVRE)
+  manual        Boolean      @default(false)
+  startedAt     DateTime
+  endedAt       DateTime?
+  durationSec   Int? // tempo efetivo, sem pausas
+  autoClosed    Boolean      @default(false) // encerrada em 4h pelo sistema; aguarda o tempo real
+  createdAt     DateTime     @default(now())
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion   ExamVersion  @relation(fields: [examVersionId], references: [id])
+  domain        Domain       @relation("SessionDomain", fields: [domainId], references: [id])
+  topic         Domain?      @relation("SessionTopic", fields: [topicId], references: [id])
+  pauses        StudyPause[]
+
+  @@index([userId, startedAt])
+  @@index([examVersionId])
+  @@index([domainId])
+  @@index([topicId])
+}
+
+model StudyPause {
+  id        String       @id @default(cuid())
+  sessionId String
+  startedAt DateTime
+  endedAt   DateTime?
+  session   StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
+
+/// Status do usuário em cada task statement.
+model UserTopic {
+  id          String      @id @default(cuid())
+  userId      String
+  topicId     String
+  status      TopicStatus @default(NAO_INICIADO)
+  completedAt DateTime?
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic       Domain      @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+  @@index([topicId])
 }
