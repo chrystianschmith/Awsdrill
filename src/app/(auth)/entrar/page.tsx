@@ -24,12 +24,12 @@ export default async function EntrarPage({ searchParams }: { searchParams: Promi
       {sp.redefinida === "1" ? <Alert tone="success">Senha alterada. Entre com a nova senha.</Alert> : null}
       <FormEntrar voltar={voltar} />
       <div className="grid gap-2 text-sm">
-        <Link href="/esqueci-senha" className="w-fit text-primary underline-offset-4 hover:underline">
+        <Link href="/esqueci-senha" className="w-fit text-primary underline underline-offset-4">
           Esqueci minha senha
         </Link>
         <p className="text-muted-foreground">
           Ainda não tem conta?{" "}
-          <Link href="/cadastro" className="text-primary underline-offset-4 hover:underline">
+          <Link href="/cadastro" className="text-primary underline underline-offset-4">
             Criar conta
           </Link>
         </p>

@@ -14,7 +14,7 @@ export default function EsqueciSenhaPage() {
         </p>
       </div>
       <FormEsqueci />
-      <Link href="/entrar" className="w-fit text-sm text-primary underline-offset-4 hover:underline">
+      <Link href="/entrar" className="w-fit text-sm text-primary underline underline-offset-4">
         Voltar para entrar
       </Link>
     </div>
