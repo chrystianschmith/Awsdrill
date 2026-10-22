@@ -16,6 +16,8 @@ export const RELACOES_DO_USUARIO = {
   userTopics: "exportado",
   studyCycles: "exportado",
   reviews: "exportado",
+  mockAttempts: "exportado",
+  answers: "fora: exportadas dentro de mockAttempts, junto do simulado de cada uma",
   emailVerificationTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
   passwordResetTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
 } as const satisfies Record<string, "exportado" | `fora: ${string}`>;
@@ -86,6 +88,29 @@ export const SELECT_EXPORTACAO = {
       topic: { select: { code: true, examVersion: { select: { code: true } } } },
     },
     orderBy: { dueAt: "asc" },
+  },
+  mockAttempts: {
+    select: {
+      mode: true,
+      status: true,
+      startedAt: true,
+      deadlineAt: true,
+      submittedAt: true,
+      correctCount: true,
+      domainReport: true,
+      examVersion: { select: { code: true } },
+      answers: {
+        select: {
+          selectedKeys: true,
+          isCorrect: true,
+          timeMs: true,
+          answeredAt: true,
+          question: { select: { stem: true } },
+        },
+        orderBy: { answeredAt: "asc" },
+      },
+    },
+    orderBy: { startedAt: "asc" },
   },
 } as const satisfies Prisma.UserSelect;
 
