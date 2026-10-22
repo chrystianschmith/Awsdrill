@@ -21,15 +21,20 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   Jacket por status e data, ordem da trilha) e `aplicarExame` idempotente; seed de CLF-C02, AIF-C01 e SAA-C03 com dados
   lidos das fontes oficiais em 2026-10-22 (`prisma/catalogo/exames.ts`); páginas `/certificacoes` e
   `/certificacoes/[slug]`; início lendo o catálogo do banco. ADR 0004.
+- **Etapa 3b · Pipeline do catálogo (2026-10-22):** `.github/workflows/pipeline-catalogo.yml` (mensal + manual) roda
+  `scripts/pipeline/catalogo.ts`: coletor com allowlist de host exato, só https, bloqueio de IP interno, redirects
+  revalidados (máx. 3), limite de 2 MB, robots.txt e User-Agent com contato; leitura determinística da versão `.md` do
+  exam guide (`guia.ts`, sem IA, ADR 0005); diff entre gravado e coletado; confiança por regras (limiar 0,85); publica
+  pelo mesmo `aplicarExame` ou põe na fila `CatalogReview` (aprovar/rejeitar pelo workflow até a tela de admin);
+  execuções em `CatalogRun`. Tarefa que sai do guia fica com `retiredAt`. Seed só cria exame que ainda não existe.
 
 ## Próximo
-- **Etapa 3b · Pipeline do catálogo** (ADR 0002 e 0004): GitHub Actions mensal; coleta com allowlist, bloqueio de IP
-  privado, limite de redirect/tamanho/tempo; extração do exam guide; diff entre revisões; publicação por confiança e o
-  resto para moderação; fixture de exam guide nos testes.
-- Depois, **etapa 4 · Estudo** (`motor-de-estudo`).
+- **Etapa 4 · Estudo** (`motor-de-estudo`): plano por task statement, sessões, revisão espaçada.
+- Tela da fila de moderação do catálogo entra com o admin (etapa 8).
 
 ## Decisões
-- `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo.
+- `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
+  · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) entram com a etapa de estudo, não na conta.
@@ -40,6 +45,9 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Nome definitivo do produto e domínio (hoje "Trilha", provisório em `src/lib/brand.ts`).
 - Infra a criar: projeto Neon (secret `NEON_API_KEY`, variable `NEON_PROJECT_ID` para o banco de preview por PR),
   projeto Vercel, projeto Sentry, produtos no Stripe, domínio no Resend.
+- GitHub: secrets `PIPELINE_CONTACT_EMAIL` (sem ele a pipeline do catálogo falha) e `DATABASE_URL` (sem ele a execução
+  mensal só lê e compara com o seed). A coleta real nunca rodou daqui: a rede do agente bloqueia docs.aws.amazon.com;
+  o parser foi validado com trechos dos guias lidos em 2026-10-22 (`tests/fixtures/exam-guides`).
 - Vercel: definir `CRON_SECRET` (sem ele o cron de limpeza responde 401) e `RESEND_API_KEY` (sem ela os e-mails não saem).
 - Semgrep só roda no CI (o semgrep.dev é bloqueado pela rede do ambiente do agente).
 - `npm audit` completo mostra 5 altas só em dev (braces via `eslint-config-next`), sem correção publicada; produção limpa.

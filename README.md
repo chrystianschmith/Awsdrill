@@ -33,4 +33,5 @@ npm run test:e2e              # Playwright: build de produção na porta 3100 co
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,
 Sentry (sem DSN fica desligado) e Stripe (só taxa por transação). IA: Gemini na camada grátis por padrão, com teto
-mensal em `AI_MONTHLY_BUDGET_USD` (`docs/adr/0001-ia-gemini-padrao.md`). Nada de Redis, filas, busca ou storage pagos.
+mensal em `AI_MONTHLY_BUDGET_USD` (`docs/adr/0001-ia-gemini-padrao.md`). A pipeline mensal do catálogo roda no
+GitHub Actions e não usa IA (`docs/adr/0005-pipeline-do-catalogo-sem-ia.md`). Nada de Redis, filas, busca ou storage pagos.
