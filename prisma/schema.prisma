@@ -9,3 +9,125 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// ───────────────────────────── Conta (etapa 2) ─────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String
+  email           String    @unique // normalizado: minúsculas + trim
+  passwordHash    String
+  role            Role      @default(USER)
+  emailVerifiedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  sessions                Session[]
+  emailVerificationTokens EmailVerificationToken[]
+  passwordResetTokens     PasswordResetToken[]
+  consents                Consent[]
+  notificationPreference  NotificationPreference?
+  auditLogs               AuditLog[]
+}
+
+/// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  lastSeenAt DateTime @default(now())
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum ConsentKind {
+  TERMOS
+  PRIVACIDADE
+}
+
+/// Aceite de termos e privacidade (LGPD): versão e data.
+model Consent {
+  id         String      @id @default(cuid())
+  userId     String
+  kind       ConsentKind
+  version    String
+  acceptedAt DateTime    @default(now())
+  ip         String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// E-mails opcionais. Os de segurança (confirmação, reset, senha alterada) são sempre enviados.
+model NotificationPreference {
+  userId          String  @id
+  revisoes        Boolean @default(true)
+  mudancaExame    Boolean @default(true)
+  recertificacao  Boolean @default(true)
+  avisosPagamento Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// Rate limit por janela fixa no Postgres (sem Redis).
+model RateLimit {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+}
