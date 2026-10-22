@@ -5,6 +5,7 @@ import type { AttemptMode, AttemptStatus } from "@/generated/prisma/client";
 import { ehViolacaoUnica, type Executor } from "@/lib/estudo/acao";
 import { assertExameSeguido } from "@/lib/estudo/acesso";
 import { pesosEfetivos } from "@/lib/estudo/progresso";
+import { gravarProntidao } from "@/lib/prontidao/servico";
 import {
   corrigir,
   dentroDoPrazo,
@@ -134,7 +135,13 @@ async function finalizarTx(tx: Executor, attemptId: string, status: AttemptStatu
   await travar(tx, attemptId);
   const a = await tx.mockAttempt.findUniqueOrThrow({
     where: { id: attemptId },
-    select: { status: true, questionIds: true, answers: { select: { questionId: true, isCorrect: true } } },
+    select: {
+      status: true,
+      userId: true,
+      examVersionId: true,
+      questionIds: true,
+      answers: { select: { questionId: true, isCorrect: true } },
+    },
   });
   if (a.status !== "IN_PROGRESS") return;
   const questoes = await tx.question.findMany({
@@ -157,6 +164,7 @@ async function finalizarTx(tx: Executor, attemptId: string, status: AttemptStatu
         .sort((x, y) => Number(x.codigo) - Number(y.codigo)),
     },
   });
+  await gravarProntidao(tx, a.userId, a.examVersionId, agora);
 }
 
 /** Simulado do próprio usuário; o de outro usuário é "não encontrado" (IDOR). */
