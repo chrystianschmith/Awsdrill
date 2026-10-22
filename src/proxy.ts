@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { SESSION_COOKIE } from "@/lib/auth/cookie";
 
-const SESSION_COOKIE = "tr_sessao";
 export const PRIVADAS = ["/hoje", "/estudar", "/simulados", "/prontidao", "/revisoes", "/carteira", "/progresso", "/conta", "/admin"];
 
 /**
