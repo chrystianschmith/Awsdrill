@@ -40,10 +40,21 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   o próximo ciclo; modo "Ciclo" no timer e "Próximo do ciclo" no Hoje. Revisão espaçada (`Review`, uma pendente por
   tarefa): concluir agenda +1 dia, boa avança para +7/+30, difícil volta para +1 e marca "Revisar"; vencidas no Hoje e
   em `/revisoes`, da mais atrasada. Deixar de seguir encerra o ciclo e esconde as revisões. LGPD exporta os dois.
+- **Etapa 5a · Simulados (2026-10-22):** banco de questões (`Question`) importado por JSON validado com Zod
+  (fonte oficial obrigatória, hash de conteúdo contra duplicata) e moderado por `scripts/questoes/importar.ts`; só
+  questão publicada entra no sorteio. Sorteio ponderado pelo peso efetivo do blueprint (cotas com teto pelo banco e
+  maior resto), questões ainda não vistas primeiro. Modo treino (10/20/30, filtro por domínio, gabarito, explicação e
+  links oficiais logo após responder) e modo prova (tamanho e duração oficiais, prazo e correção no servidor, troca de
+  resposta até enviar, resposta fora do prazo recusada). Gabarito fora do DTO até a resposta (treino) ou o fim (prova).
+  Relatório por domínio salvo no `MockAttempt`. Telas `/simulados`, execução e relatório. LGPD exporta tentativas e
+  respostas. Testes: unitários (distribuição, correção, prazo), integração (IDOR, gabarito oculto, prazo expirado) e
+  e2e (prova completa → relatório; treino com feedback).
 
 ## Próximo
-- **Etapa 5 · Simulados e prontidão:** questões por domínio; a taxa de acerto passa a alimentar o fator de
-  desempenho do ciclo (`taxaAcerto` hoje é sempre null em `servico-ciclo.ts`).
+- **Etapa 5b · Prontidão:** `src/lib/prontidao` (decaimento, limite inferior de Wilson, cobertura, `methodologyVersion`),
+  snapshot `ReadinessScore`, prontidão por domínio e exame, plano de correção, `/metodologia` e
+  `docs/metodologia-prontidao.md`; a taxa de acerto dos simulados passa a alimentar o fator de desempenho do ciclo
+  (`taxaAcerto` hoje é sempre null em `servico-ciclo.ts`).
 - Tela da fila de moderação do catálogo entra com o admin (etapa 8).
 
 ## Decisões
@@ -57,9 +68,14 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - "Matéria" da skill = domínio do exam guide; "tópico" = task statement.
 - Feito do ciclo é recalculado das sessões (não somado por delta), para não divergir ao excluir ou confirmar sessões.
 - Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
+- Simulados: um em andamento por usuário (começar outro encerra o anterior com o que foi respondido); questão não
+  respondida conta como errada; prova com banco menor que o oficial usa o banco todo. Simulados são Pro pela skill,
+  mas o bloqueio só entra com `entitlements.ts` (etapa 7). Moderação de questões pela CLI até o admin (etapa 8).
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers
+- Banco inicial de questões: ainda não há conteúdo real (autoral ou gerado por IA com revisão). Os testes usam questões
+  fictícias.
 - Nome definitivo do produto e domínio (hoje "Trilha", provisório em `src/lib/brand.ts`).
 - Infra a criar: projeto Neon (secret `NEON_API_KEY`, variable `NEON_PROJECT_ID` para o banco de preview por PR),
   projeto Vercel, projeto Sentry, produtos no Stripe, domínio no Resend.
