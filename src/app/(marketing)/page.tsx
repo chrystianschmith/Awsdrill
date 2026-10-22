@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Alert } from "@/components/ui/alert";
+import { listarCertificacoes } from "@/lib/catalogo/consultas";
+import { ROTULO_NIVEL } from "@/lib/catalogo/rotulos";
 import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -7,12 +10,6 @@ export const metadata: Metadata = {
   description: BRAND.tagline,
 };
 
-// Primeira fase do catálogo. Os dados de cada exame (domínios, pesos, corte) vêm do banco na etapa 3.
-const PRIMEIROS_EXAMES = [
-  { codigo: "CLF-C02", nome: "Cloud Practitioner", nivel: "Foundational" },
-  { codigo: "AIF-C01", nome: "AI Practitioner", nivel: "Foundational" },
-  { codigo: "SAA-C03", nome: "Solutions Architect – Associate", nivel: "Associate" },
-];
 
 const COMO_FUNCIONA = [
   { titulo: "Plano pelo blueprint", texto: "Estudo distribuído pelos domínios e pesos do guia oficial de cada exame." },
@@ -22,6 +19,7 @@ const COMO_FUNCIONA = [
 
 export default async function Inicio({ searchParams }: PageProps<"/">) {
   const contaExcluida = (await searchParams).conta === "excluida";
+  const exames = await listarCertificacoes();
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
       {contaExcluida ? (
@@ -40,15 +38,20 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
           Primeiros exames
         </h2>
         <ul className="mt-4 divide-y divide-border rounded-lg border border-border bg-surface">
-          {PRIMEIROS_EXAMES.map((e) => (
-            <li key={e.codigo} className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3">
-              <span className="font-medium">{e.nome}</span>
+          {exames.map((c) => (
+            <li key={c.slug} className="flex flex-wrap items-baseline justify-between gap-2 px-4 py-3">
+              <Link href={`/certificacoes/${c.slug}`} className="font-medium text-primary underline underline-offset-4">
+                {c.nome}
+              </Link>
               <span className="tabular text-sm text-muted-foreground">
-                {e.codigo} · {e.nivel}
+                {c.exame.codigo} · {ROTULO_NIVEL[c.nivel]}
               </span>
             </li>
           ))}
         </ul>
+        <Link href="/certificacoes" className="mt-3 inline-block text-sm text-primary underline underline-offset-4">
+          Ver domínios, pesos e detalhes de cada exame
+        </Link>
       </section>
 
       <section aria-labelledby="como" className="mt-12">
