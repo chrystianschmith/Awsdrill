@@ -298,7 +298,7 @@ export async function atualizarPreferencias(input: PreferenciasInput): Promise<A
   if (!parsed.success) return fail(MSG_CAMPOS, "validacao", errosDeCampo(parsed.error));
   await db.notificationPreference.upsert({
     where: { userId: user.id },
-    create: { userId: user.id, ...parsed.data },
+    create: { ...parsed.data, userId: user.id },
     update: parsed.data,
   });
   revalidatePath("/conta");
