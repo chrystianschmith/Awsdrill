@@ -1,5 +1,6 @@
 import "server-only";
 import { db } from "@/lib/db";
+import type { Prisma } from "@/generated/prisma/client";
 import { ordenarTrilha, type Nivel, type StatusExame } from "./regras";
 
 /** Leituras públicas do catálogo: só versões publicadas, em DTOs sem Decimal. */
@@ -17,6 +18,12 @@ export type ExameResumo = {
 export type CertificacaoResumo = { slug: string; nome: string; nivel: Nivel; ordem: number; exame: ExameResumo };
 
 const STATUS_VISIVEIS: StatusExame[] = ["BETA", "ACTIVE", "RETIRING"];
+
+/** Versão que aparece no site e pode ser estudada: publicada e não aposentada. */
+export const VERSAO_VISIVEL = {
+  publishState: "PUBLISHED",
+  status: { in: STATUS_VISIVEIS },
+} satisfies Prisma.ExamVersionWhereInput;
 
 function resumo(v: {
   code: string;
@@ -119,7 +126,11 @@ export async function certificacaoPorSlug(slug: string): Promise<CertificacaoDet
               nameEn: true,
               namePt: true,
               weights: { orderBy: { revision: "desc" }, take: 1, select: { revision: true, weightPct: true } },
-              children: { where: { retiredAt: null }, orderBy: { order: "asc" }, select: { code: true, nameEn: true, namePt: true } },
+              children: {
+                where: { retiredAt: null },
+                orderBy: { order: "asc" },
+                select: { code: true, nameEn: true, namePt: true },
+              },
             },
           },
         },

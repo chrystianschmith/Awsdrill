@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
 import { certificacaoPorSlug } from "@/lib/catalogo/consultas";
 import { formatarMinutos, formatarUsd, ouAConfirmar, ROTULO_NIVEL, ROTULO_STATUS } from "@/lib/catalogo/rotulos";
 
@@ -53,6 +54,9 @@ export default async function CertificacaoPage({ params }: PageProps<"/certifica
         {cert.aposentaEm ? (
           <p className="text-sm text-muted-foreground">Esta versão do exame será aposentada em {dataBR.format(cert.aposentaEm)}.</p>
         ) : null}
+        <Link href="/exames" className={buttonVariants({ className: "w-fit" })}>
+          Estudar este exame
+        </Link>
       </header>
 
       <dl className="grid grid-cols-2 gap-4 rounded-lg border border-border bg-surface p-4 sm:grid-cols-3">

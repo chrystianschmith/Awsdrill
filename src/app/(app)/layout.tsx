@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CircleUser, House } from "lucide-react";
+import { BookOpenCheck, ChartColumn, CircleUser, House, Timer } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { NavLink } from "@/components/app/nav-link";
 import { RegistrarSW } from "@/components/app/registrar-sw";
@@ -7,16 +7,24 @@ import { SkipLink } from "@/components/app/skip-link";
 import { UserMenu, type LinkMenu } from "@/components/app/user-menu";
 import { requireUser } from "@/lib/auth/session";
 
-// Os itens de estudo (simulados, revisões, prontidão) entram nas etapas 4 a 6.
+// Simulados e prontidão entram na etapa 5; revisões e ciclo na 4b.
 const PRINCIPAIS = [
   { href: "/hoje", label: "Hoje", Icone: House },
+  { href: "/estudar", label: "Estudar", Icone: Timer },
+  { href: "/progresso", label: "Progresso", Icone: ChartColumn },
+  { href: "/exames", label: "Exames", Icone: BookOpenCheck },
   { href: "/conta", label: "Conta", Icone: CircleUser },
 ] as const;
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
   const linksMenu: LinkMenu[] = [{ href: "/conta", label: "Conta" }];
-  const linksMobile: LinkMenu[] = [{ href: "/hoje", label: "Hoje" }];
+  const linksMobile: LinkMenu[] = [
+    { href: "/hoje", label: "Hoje" },
+    { href: "/estudar", label: "Estudar" },
+    { href: "/progresso", label: "Progresso" },
+    { href: "/exames", label: "Exames" },
+  ];
 
   return (
     <>
