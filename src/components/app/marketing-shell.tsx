@@ -21,6 +21,9 @@ export async function MarketingShell({ children }: { children: React.ReactNode }
             <Logo />
           </Link>
           <nav aria-label="Principal" className="flex items-center gap-1 text-sm">
+            <Link href="/certificacoes" className="hidden rounded-md px-3 py-2 text-muted-foreground hover:text-foreground sm:block">
+              Certificações
+            </Link>
             {user ? (
               <Link href="/hoje" className={buttonVariants({ size: "sm" })}>
                 Ir para o painel
@@ -50,6 +53,9 @@ export async function MarketingShell({ children }: { children: React.ReactNode }
               © {new Date().getFullYear()} {BRAND.name}
             </p>
             <nav aria-label="Rodapé" className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <Link href="/certificacoes" className="hover:text-foreground sm:hidden">
+                Certificações
+              </Link>
               <Link href="/termos" className="hover:text-foreground">
                 Termos
               </Link>
