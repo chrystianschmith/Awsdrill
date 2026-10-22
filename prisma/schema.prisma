@@ -131,3 +131,106 @@ model AuditLog {
   @@index([userId, createdAt])
   @@index([action, createdAt])
 }
+
+// ───────────────────────────── Catálogo (etapa 3) ─────────────────────────────
+// Dado, não código: cada exame é uma versão (SAA-C03) com domínios e pesos por revisão do exam guide.
+// Campo sem fonte oficial citada fica nulo e com dataStatus A_CONFIRMAR.
+
+enum CertLevel {
+  FOUNDATIONAL
+  ASSOCIATE
+  PROFESSIONAL
+  SPECIALTY
+}
+
+enum ExamStatus {
+  BETA
+  ACTIVE
+  RETIRING
+  RETIRED
+}
+
+enum PublishState {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+}
+
+enum DataStatus {
+  OFFICIAL
+  A_CONFIRMAR
+}
+
+/// Identidade estável que atravessa versões ("Solutions Architect – Associate").
+model Certification {
+  id         String        @id @default(cuid())
+  slug       String        @unique
+  name       String // nome oficial, em inglês
+  level      CertLevel
+  trackOrder Int // ordem sugerida dentro do nível
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  versions   ExamVersion[]
+}
+
+/// O que a AWS publica de fato: código, status, formato, corte, preço e datas.
+model ExamVersion {
+  id              String        @id @default(cuid())
+  certificationId String
+  code            String        @unique // "SAA-C03"
+  status          ExamStatus
+  questionCount   Int? // total, com as não pontuadas; null = a confirmar
+  scoredQuestions Int?
+  durationMinutes Int?
+  passingScore    Int? // escala 100–1000
+  priceUsd        Decimal?      @db.Decimal(8, 2)
+  validityMonths  Int           @default(36)
+  launchedAt      DateTime?
+  retiresAt       DateTime?
+  sourceUrl       String // exam guide oficial
+  infoUrl         String? // página oficial da certificação (duração, preço)
+  retrievedAt     DateTime // quando a fonte foi lida
+  dataStatus      DataStatus    @default(A_CONFIRMAR)
+  publishState    PublishState  @default(DRAFT)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  certification   Certification @relation(fields: [certificationId], references: [id])
+  domains         Domain[]
+
+  @@index([certificationId, status])
+}
+
+/// Domínio (pai) ou task statement (folha). A folha é o "tópico" do estudo.
+model Domain {
+  id            String            @id @default(cuid())
+  examVersionId String
+  parentId      String?
+  code          String // "1", "1.2"
+  nameEn        String
+  namePt        String?
+  order         Int
+  examVersion   ExamVersion       @relation(fields: [examVersionId], references: [id], onDelete: Cascade)
+  parent        Domain?           @relation("DomainTree", fields: [parentId], references: [id])
+  children      Domain[]          @relation("DomainTree")
+  weights       BlueprintWeight[]
+
+  @@unique([examVersionId, code])
+  @@index([parentId])
+}
+
+/// Peso do domínio por revisão do exam guide; o diff sai da comparação entre revisões.
+model BlueprintWeight {
+  id            String     @id @default(cuid())
+  domainId      String
+  revision      Int
+  weightPct     Decimal?   @db.Decimal(5, 2) // null = a confirmar
+  sourceUrl     String
+  sourceHash    String // SHA-256 do blueprint normalizado coletado
+  effectiveFrom DateTime
+  dataStatus    DataStatus
+  createdAt     DateTime   @default(now())
+  domain        Domain     @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, revision])
+}

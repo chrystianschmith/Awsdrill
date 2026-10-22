@@ -15,12 +15,23 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   com `userId` não for exportado nem justificado. Testes: unitários, integração no Postgres (`npm run test:integration`,
   inclui IDOR entre dois usuários) e e2e dos fluxos. Next 16.4.0 → 16.4.2 (RCE crítica GHSA-2464-fhr4-w9xw). Semgrep no CI.
 
+- **Etapa 3a · Catálogo (2026-10-22):** Certification, ExamVersion, Domain (domínio → task statement) e BlueprintWeight
+  por revisão; `src/lib/catalogo` com schema Zod do exame coletado (fontes só de `docs.aws.amazon.com`/`aws.amazon.com`),
+  regras puras (soma de pesos, "a confirmar", publicação por completude, hash do blueprint, revisões, conjunto Golden
+  Jacket por status e data, ordem da trilha) e `aplicarExame` idempotente; seed de CLF-C02, AIF-C01 e SAA-C03 com dados
+  lidos das fontes oficiais em 2026-10-22 (`prisma/catalogo/exames.ts`); páginas `/certificacoes` e
+  `/certificacoes/[slug]`; início lendo o catálogo do banco. ADR 0004.
+
 ## Próximo
-- **Etapa 3 · Catálogo de exames** (`pipeline-editais` adaptada, ADR 0002): Certification, ExamVersion, Domain e
-  BlueprintWeight; seed de CLF-C02, AIF-C01 e SAA-C03 a partir dos exam guides públicos; páginas públicas por exame.
+- **Etapa 3b · Pipeline do catálogo** (ADR 0002 e 0004): GitHub Actions mensal; coleta com allowlist, bloqueio de IP
+  privado, limite de redirect/tamanho/tempo; extração do exam guide; diff entre revisões; publicação por confiança e o
+  resto para moderação; fixture de exam guide nos testes.
+- Depois, **etapa 4 · Estudo** (`motor-de-estudo`).
 
 ## Decisões
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo.
+- Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
+  idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) entram com a etapa de estudo, não na conta.
 - Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
