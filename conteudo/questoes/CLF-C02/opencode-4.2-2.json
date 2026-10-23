@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "O Grupo Lumina tem 18 contas na mesma organização da AWS e quer receber uma única fatura, paga pela conta de gerenciamento, além de somar o uso de todas as contas para alcançar faixas de desconto por volume. Qual recurso da AWS atende diretamente a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Budgets, porque consolida as faturas das contas e aplica os descontos por volume."
+        },
+        {
+          "key": "B",
+          "text": "Consolidated billing do AWS Organizations, que reúne a cobrança e combina o uso das contas."
+        },
+        {
+          "key": "C",
+          "text": "AWS Cost Explorer, porque unifica o pagamento das contas em uma única fatura mensal."
+        },
+        {
+          "key": "D",
+          "text": "AWS Cost and Usage Report, porque agrega o uso de todas as contas em uma única fatura."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O consolidated billing do AWS Organizations é o recurso que permite uma única fatura para várias contas, com a conta de gerenciamento pagando as cobranças, e combina o uso de todas as contas para compartilhar descontos por volume, Reserved Instances e Savings Plans. O AWS Budgets (A) cria orçamentos e alertas, mas não consolida faturas nem aplica desconto por volume. O Cost Explorer (C) analisa custos e não processa pagamento ou emissão de fatura. O Cost and Usage Report (D) entrega dados detalhados de custo e uso, não uma fatura consolidada.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html",
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Solaris Contabilidade precisa apenas consultar o valor total da fatura do mês corrente e baixar as faturas dos meses anteriores em PDF, com o detalhamento de impostos, para entregar ao setor contábil. A empresa não quer analisar custos por recurso nem criar alertas. Qual recurso da AWS atende diretamente a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Cost Explorer, porque permite abrir e baixar a fatura mensal em PDF."
+        },
+        {
+          "key": "B",
+          "text": "AWS Budgets, porque envia a fatura mensal por e-mail assim que o período fecha."
+        },
+        {
+          "key": "C",
+          "text": "AWS Billing and Cost Management console, na página Bills, que permite consultar a fatura e baixar os PDFs."
+        },
+        {
+          "key": "D",
+          "text": "AWS Cost and Usage Report, porque gera a fatura oficial em PDF para o setor contábil."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A página Bills do AWS Billing and Cost Management console mostra as cobranças do mês corrente e as faturas de períodos anteriores, permite baixar os PDFs e consultar os impostos por serviço; ela é o recurso indicado para necessidades de faturamento e pagamento. O Cost Explorer (A) analisa custos de forma interativa, mas não é a página de faturas. O AWS Budgets (B) monitora limites e envia alertas, não faturas. O Cost and Usage Report (D) gera um relatório detalhado de custo e uso para um bucket do Amazon S3, não a fatura oficial em PDF.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html",
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/invoice.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Nebula Games quer receber um alerta quando o total de horas de uso de instâncias do Amazon EC2 no mês ultrapassar um limite definido pela equipe, mesmo que o custo em dólares permaneça dentro do esperado. Qual recurso da AWS permite criar esse alerta?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Cost Explorer, com um relatório de horas por serviço."
+        },
+        {
+          "key": "B",
+          "text": "AWS Cost and Usage Report, com entrega horária para o Amazon S3."
+        },
+        {
+          "key": "C",
+          "text": "AWS Pricing Calculator, com uma estimativa de horas de instâncias."
+        },
+        {
+          "key": "D",
+          "text": "AWS Budgets, com um orçamento de uso para o Amazon EC2."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Budgets permite criar orçamentos de uso, que acompanham a quantidade consumida de um ou mais serviços e enviam notificações quando o uso se aproxima ou ultrapassa o limite definido, sem depender do valor em dólares. O Cost Explorer (A) mostra custos e uso de forma analítica, mas não dispara alertas por limite. O Cost and Usage Report (B) entrega dados detalhados no Amazon S3, sem função de alerta. O Pricing Calculator (C) estima preços de arquiteturas planejadas e não monitora o uso real.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Três Rios Varejo quer projetar o gasto total do mês corrente e dos próximos meses com base no histórico de uso da conta, para planejar o fluxo de caixa. A empresa não quer definir limites nem receber alertas neste momento. Qual recurso da AWS oferece essa previsão?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Cost Explorer, que gera previsões de custo a partir do uso histórico."
+        },
+        {
+          "key": "B",
+          "text": "AWS Budgets, que é o único recurso capaz de calcular gastos futuros."
+        },
+        {
+          "key": "C",
+          "text": "AWS Cost and Usage Report, que projeta o custo futuro a partir dos arquivos entregues no Amazon S3."
+        },
+        {
+          "key": "D",
+          "text": "AWS Pricing Calculator, que projeta o gasto futuro usando os custos reais já registrados."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Cost Explorer inclui previsões que usam o histórico de uso para estimar os gastos em um período futuro; basta selecionar um intervalo de datas futuro no relatório, sem criar orçamento ou alerta. O AWS Budgets (B) também pode usar valores previstos em notificações, mas é voltado a definir limites e alertas, e não é o único recurso com previsão. O Cost and Usage Report (C) entrega dados detalhados já ocorridos e não calcula previsões. O Pricing Calculator (D) estima o preço de uma arquitetura planejada, não projeta o gasto real da conta a partir do histórico.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-forecast.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Lumen Cloud quer (1) receber um alerta por e-mail quando o gasto real acumulado do mês ultrapassar o limite aprovado e (2) investigar de forma interativa quais serviços e contas contribuíram para esse aumento, sem construir um pipeline de dados. Quais dois recursos da AWS atendem a esses requisitos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Budgets, com um orçamento de custo e notificação por e-mail."
+        },
+        {
+          "key": "B",
+          "text": "AWS Pricing Calculator, para comparar o gasto real com o limite aprovado."
+        },
+        {
+          "key": "C",
+          "text": "Consolidated billing do AWS Organizations, para enviar o alerta e detalhar os serviços."
+        },
+        {
+          "key": "D",
+          "text": "AWS Cost Explorer, para filtrar e agrupar os custos por serviço e por conta."
+        },
+        {
+          "key": "E",
+          "text": "AWS Cost and Usage Report, para receber o alerta e analisar os dados sem processamento."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "O AWS Budgets (A) atende ao alerta: um orçamento de custo pode ser configurado com notificação por e-mail quando o gasto real ultrapassar o limite. O AWS Cost Explorer (D) atende à investigação: ele permite filtrar e agrupar custos por serviço, conta e outras dimensões de forma interativa, sem pipeline. O Pricing Calculator (B) estima preços de arquiteturas planejadas, não compara gasto real. O consolidated billing (C) consolida a fatura e o pagamento, mas não envia alertas nem faz a análise detalhada. O Cost and Usage Report (E) fornece dados detalhados, porém não envia alertas e exige processamento para a análise, contrariando o requisito de não construir pipeline.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html"
+      ]
+    }
+  ]
+}

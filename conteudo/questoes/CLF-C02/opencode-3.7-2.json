@@ -1,0 +1,114 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma rede de livrarias, a Livraria Horizonte, recebe por mês cerca de 40 mil comentários de clientes em texto livre no site e no aplicativo. A equipe de experiência do cliente quer identificar automaticamente o sentimento predominante de cada comentário (positivo, neutro ou negativo), extrair as frases-chave mais citadas e localizar dados pessoais, como e-mails e números de telefone, para anonimizá-los antes de compartilhar o material com parceiros. A empresa quer uma API gerenciada de processamento de linguagem natural, sem treinar modelos próprios. Qual serviço da AWS atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Polly, configurando vozes neurais para ler os comentários e classificar o tom pelo áudio gerado."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Rekognition, usando detecção de texto e análise de conteúdo nas imagens enviadas pelos clientes."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Comprehend, usando as APIs de análise de sentimento, frases-chave e detecção de informações pessoais."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Translate, traduzindo cada comentário para um idioma neutro e inferindo o sentimento pela tradução."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Comprehend é o serviço gerenciado de NLP que já oferece, por API, detecção de sentimento, extração de frases-chave e identificação de entidades e de informações pessoais (PII) em texto, sem exigir treinamento de modelos. As alternativas erradas não atendem: o Amazon Polly apenas converte texto em fala e não classifica sentimento; o Amazon Rekognition analisa imagens e vídeos, não comentários em texto; e o Amazon Translate apenas traduz texto entre idiomas, sem produzir análise de sentimento ou detecção de PII.",
+      "fontes": ["https://docs.aws.amazon.com/comprehend/latest/dg/what-is.html", "https://aws.amazon.com/comprehend/"]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística, a Rota Clara, armazena há dois anos os logs de acesso do seu portal de clientes no Amazon S3, em arquivos JSON compactados. Os analistas de segurança querem executar consultas SQL sob demanda sobre esses arquivos, filtrando por período, endereço IP e código de resposta, sem carregar os dados em outro banco e sem provisionar nem administrar servidores. O volume de consultas é irregular e a empresa quer pagar apenas pelos dados lidos em cada consulta. Qual serviço da AWS é o mais adequado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Athena, que executa consultas SQL diretamente sobre dados no Amazon S3 e cobra por dados verificados."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Redshift, carregando os logs em tabelas de um cluster de data warehouse previamente provisionado."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Kinesis Data Firehose, que entrega os logs continuamente para um destino de análise em tempo real."
+        },
+        {
+          "key": "D",
+          "text": "Amazon QuickSight, que cria painéis visuais a partir dos arquivos sem exigir consultas SQL ad hoc."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Athena é um serviço de consulta interativa e sem servidor que executa SQL padrão diretamente sobre dados no Amazon S3, sem ETL nem infraestrutura para gerenciar, e o modelo de custo é baseado na quantidade de dados verificados por consulta — exatamente o cenário descrito. As alternativas erradas não atendem: o Amazon Redshift exige provisionar um cluster de data warehouse e carregar os dados nele; o Kinesis Data Firehose é um serviço de entrega de streaming e não executa consultas SQL ad hoc; e o QuickSight é uma ferramenta de visualização e BI, não um mecanismo de consulta SQL direta sobre arquivos no S3.",
+      "fontes": ["https://docs.aws.amazon.com/athena/latest/ug/what-is.html", "https://aws.amazon.com/athena/"]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco digital, o Banco Vale Norte, quer lançar um assistente virtual que atenda clientes tanto no chat do site quanto no telefone. O assistente deve reconhecer a intenção do cliente em linguagem natural, como consultar saldo, bloquear cartão ou pedir a segunda via de um boleto, conduzir uma conversa com perguntas de acompanhamento e coletar os dados necessários antes de acionar uma função do backend. A equipe quer um serviço gerenciado que trate o entendimento de intenções e o fluxo do diálogo, sem construir esse mecanismo do zero. Qual serviço da AWS é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Comprehend, para extrair entidades e sentimento das mensagens recebidas."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Polly, para sintetizar as respostas do assistente em voz natural."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Transcribe, para converter a fala dos clientes em texto durante a ligação."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Lex, para definir intenções, enunciados de exemplo e slots que conduzem o diálogo."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O Amazon Lex é o serviço de IA conversacional que permite modelar intenções (intents), enunciados de exemplo (utterances) e slots, além de orquestrar o fluxo de perguntas e respostas e integrar-se a funções do backend, como o AWS Lambda, para atender chat e voz. As alternativas erradas cobrem apenas partes isoladas do problema: o Comprehend faz análise de texto (entidades, sentimento) e não gerencia diálogo; o Polly só converte texto em fala; e o Transcribe só converte fala em texto, sem entender intenções nem conduzir a conversa.",
+      "fontes": ["https://docs.aws.amazon.com/lexv2/latest/dg/what-is.html", "https://aws.amazon.com/lex/"]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de marketing de uma fabricante de cosméticos, a Aurora Beauty, precisa resumir relatórios de mercado extensos e gerar rascunhos de descrições de produtos em português e em inglês. A empresa quer chamar modelos de fundação (foundation models) por API, escolhendo entre modelos de diferentes fornecedores disponíveis em uma única plataforma, sem provisionar GPUs, sem treinar modelos e mantendo os dados dentro da conta AWS. Qual serviço da AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SageMaker, criando e treinando um modelo próprio de linguagem para cada tipo de texto."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Bedrock, que oferece modelos de fundação de vários fornecedores por API gerenciada."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Comprehend, que classifica entidades e sentimento nos relatórios existentes."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Polly, que gera áudio das descrições de produtos a partir de texto."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Bedrock é o serviço gerenciado que dá acesso por API a modelos de fundação de diversos fornecedores, permitindo gerar e resumir texto sem treinar modelos nem administrar infraestrutura de inferência, com os dados processados dentro da conta AWS. As alternativas erradas não atendem: o SageMaker serve para construir, treinar e implantar modelos próprios, o que exigiria esforço de ML e não é o pedido; o Comprehend executa tarefas de NLP específicas, como sentimento e entidades, mas não gera texto; e o Polly apenas converte texto em fala.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+        "https://aws.amazon.com/bedrock/"
+      ]
+    }
+  ]
+}

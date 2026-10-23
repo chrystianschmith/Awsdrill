@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A MedCloud, empresa de software médico que processa dados de pacientes, precisa baixar os relatórios de auditoria e as certificações da própria AWS (como SOC 2 e ISO 27001) para entregar ao seu auditor externo e, no mesmo lugar, revisar e aceitar o Business Associate Addendum (BAA) exigido pela HIPAA. Qual recurso da AWS fornece esses documentos e acordos sob demanda?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Audit Manager, para gerar relatórios de auditoria da AWS sob demanda."
+        },
+        {
+          "key": "B",
+          "text": "AWS Trusted Advisor, para consultar verificações de conformidade da conta."
+        },
+        {
+          "key": "C",
+          "text": "AWS Artifact, para acessar relatórios de conformidade da AWS e gerenciar acordos como o BAA."
+        },
+        {
+          "key": "D",
+          "text": "AWS Security Hub, para exportar os achados consolidados de segurança como evidência de auditoria."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS Artifact é o portal de autoatendimento em que o cliente baixa relatórios de auditoria e certificações da própria AWS (SOC, ISO, PCI) e revisa e aceita acordos, como o BAA da HIPAA, sem abrir chamado. A está errada porque o AWS Audit Manager coleta evidências dos controles que o cliente opera na AWS, e não emite os relatórios de auditoria da AWS. B está errada porque o AWS Trusted Advisor apenas recomenda boas práticas na conta, sem fornecer documentos de conformidade. D está errada porque o AWS Security Hub agrega achados de detecção e postura de segurança, não certificações da AWS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html",
+        "https://aws.amazon.com/artifact/"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Após uma alteração indevida em produção, a fintech Pilar Crédito precisa descobrir qual identidade IAM encerrou uma instância do Amazon EC2, em que horário e a partir de qual endereço IP. A empresa quer esse histórico de chamadas de API de todas as contas da organização gravado em um bucket central do Amazon S3 por vários meses. Qual serviço fornece esse registro?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon CloudWatch, com métricas e logs de aplicação centralizados."
+        },
+        {
+          "key": "B",
+          "text": "AWS CloudTrail, com um trail de organização que envia os eventos para um bucket do Amazon S3."
+        },
+        {
+          "key": "C",
+          "text": "AWS Config, com o histórico de configuração dos recursos de cada conta."
+        },
+        {
+          "key": "D",
+          "text": "VPC Flow Logs, com os registros de tráfego IP das interfaces de rede."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O AWS CloudTrail registra as chamadas de API feitas na conta, incluindo a identidade que fez a chamada, o horário, o endereço IP de origem e o recurso afetado. Um trail de organização, gravando em um bucket central do Amazon S3, mantém esse histórico de todas as contas pelo período configurado. A está errada porque o Amazon CloudWatch trata de métricas e logs de aplicação e infraestrutura, não da autoria de chamadas de API. C está errada porque o AWS Config registra o estado e o histórico de configuração dos recursos, mas não identifica qual identidade executou a ação. D está errada porque os VPC Flow Logs mostram tráfego de rede, e não ações da API.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html",
+        "https://aws.amazon.com/cloudtrail/"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Antes de lançar um novo sistema de reservas, a rede hoteleira Travessia quer que seus arquitetos revisem o desenho da workload em relação às boas práticas da AWS, com foco no pilar de segurança, e recebam uma lista priorizada de riscos com recomendações de melhoria. A empresa quer uma ferramenta gratuita, guiada por perguntas, que registre a revisão e permita acompanhar a evolução ao longo do tempo. Qual ferramenta atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Config, com regras que avaliam a conformidade da configuração dos recursos."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Inspector, com a verificação de vulnerabilidades das cargas em execução."
+        },
+        {
+          "key": "C",
+          "text": "AWS Trusted Advisor, com verificações de boas práticas no nível da conta."
+        },
+        {
+          "key": "D",
+          "text": "AWS Well-Architected Tool, com a revisão guiada da workload e o plano de melhorias por pilar."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Well-Architected Tool conduz uma revisão estruturada, baseada em perguntas, sobre os seis pilares — inclusive segurança —, registra os riscos identificados e gera um plano de melhorias priorizado, além de guardar o histórico das revisões. A está errada porque o AWS Config avalia conformidade de configuração de recursos já implantados, sem revisar o desenho da workload. B está errada porque o Amazon Inspector busca vulnerabilidades em instâncias, imagens de contêiner e funções, sem fazer revisão arquitetural. C está errada porque o AWS Trusted Advisor verifica boas práticas no nível da conta (custos, limites, segurança), não uma análise guiada do desenho da aplicação.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html",
+        "https://aws.amazon.com/well-architected-tool/"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de segurança da varejista Casa Nortenha quer ser avisada automaticamente sempre que um security group permitir SSH (porta 22) a partir de 0.0.0.0/0 ou quando um bucket do Amazon S3 se tornar público, e precisa manter o histórico de como cada recurso estava configurado em cada momento para fins de auditoria. Qual serviço faz essa avaliação contínua de configuração e registra esse histórico?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Config, com regras de avaliação e o histórico de configuração dos recursos."
+        },
+        {
+          "key": "B",
+          "text": "AWS CloudTrail, com o registro das chamadas de API feitas na conta."
+        },
+        {
+          "key": "C",
+          "text": "Amazon GuardDuty, com a detecção de comportamento suspeito e atividade maliciosa."
+        },
+        {
+          "key": "D",
+          "text": "AWS Artifact, com os relatórios de conformidade emitidos pela AWS."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Config avalia continuamente a configuração dos recursos com regras (por exemplo, security groups sem SSH aberto ao mundo e buckets sem acesso público) e mantém o histórico de como cada recurso estava configurado ao longo do tempo, o que sustenta a auditoria. B está errada porque o AWS CloudTrail registra chamadas de API, e não o estado de conformidade da configuração dos recursos. C está errada porque o Amazon GuardDuty detecta ameaças e comportamentos anômalos, sem avaliar regras de configuração. D está errada porque o AWS Artifact disponibiliza relatórios de conformidade da AWS, não monitora os recursos do cliente.",
+      "fontes": [
+        "https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html",
+        "https://aws.amazon.com/config/"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A rede de clínicas Vida Plena está migrando dezenas de contas para uma organização no AWS Organizations. A equipe de governança precisa (1) impedir que contas membro usem serviços ou regiões não aprovados, mesmo que um administrador local tente habilitá-los, e (2) descobrir de forma contínua quais buckets do Amazon S3 e roles do IAM estão compartilhados com entidades de fora da organização. Quais dois recursos atendem a esses requisitos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Artifact, para baixar os relatórios de conformidade da AWS."
+        },
+        {
+          "key": "B",
+          "text": "Service control policies (SCPs) do AWS Organizations, para definir o limite máximo de permissões das contas membro."
+        },
+        {
+          "key": "C",
+          "text": "Amazon GuardDuty, para identificar atividades maliciosas nas contas."
+        },
+        {
+          "key": "D",
+          "text": "AWS Shield Standard, para proteger as aplicações contra ataques de negação de serviço."
+        },
+        {
+          "key": "E",
+          "text": "IAM Access Analyzer, para apontar recursos compartilhados fora da zona de confiança da conta ou da organização."
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "As SCPs definem o limite máximo de permissões das contas membro e podem negar o uso de serviços e regiões não aprovados, valendo inclusive para administradores locais (elas não se aplicam à conta de gerenciamento). O IAM Access Analyzer analisa políticas e identifica recursos como buckets do Amazon S3 e roles do IAM compartilhados com entidades externas à zona de confiança, mantendo os achados atualizados. A está errada porque o AWS Artifact apenas entrega documentos de conformidade da AWS. C está errada porque o Amazon GuardDuty detecta ameaças, mas não restringe permissões nem mapeia compartilhamentos externos. D está errada porque o AWS Shield Standard mitiga ataques DDoS, sem relação com permissões ou exposição de recursos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+      ]
+    }
+  ]
+}

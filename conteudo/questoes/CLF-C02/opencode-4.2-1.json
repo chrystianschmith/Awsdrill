@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Na Horizonte Streaming, o time de finanças quer receber um e-mail automático quando o gasto mensal previsto da conta ultrapassar um valor aprovado e também acompanhar o percentual já consumido desse orçamento. A empresa não precisa de relatórios linha a linha nem de estimativas de arquiteturas futuras. Qual recurso da AWS atende diretamente a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Cost Explorer"
+        },
+        {
+          "key": "B",
+          "text": "AWS Budgets"
+        },
+        {
+          "key": "C",
+          "text": "AWS Cost and Usage Report"
+        },
+        {
+          "key": "D",
+          "text": "AWS Pricing Calculator"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O AWS Budgets permite definir orçamentos de custo, uso ou cobertura e configurar alertas, inclusive com base no gasto previsto, por e-mail ou Amazon SNS; ele também mostra o percentual do orçamento já consumido. O Cost Explorer (A) analisa custos históricos de forma interativa, mas não envia alertas de orçamento. O Cost and Usage Report (C) entrega dados detalhados linha a linha para análise, sem função de alerta. O Pricing Calculator (D) estima o custo de arquiteturas antes do uso e não monitora o gasto real da conta.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Atlas Logística precisa analisar fora do console da AWS os custos hora a hora e por recurso de cada conta, cruzando esses dados com o volume de pedidos em uma ferramenta de BI. O time aceita configurar a entrega dos arquivos em um bucket do Amazon S3 e montar as consultas necessárias. Qual recurso fornece esse nível de detalhe?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Budgets"
+        },
+        {
+          "key": "B",
+          "text": "AWS Cost Explorer"
+        },
+        {
+          "key": "C",
+          "text": "AWS Pricing Calculator"
+        },
+        {
+          "key": "D",
+          "text": "AWS Cost and Usage Report"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Cost and Usage Report (CUR) fornece o conjunto mais detalhado de dados de custo e uso da AWS, com granularidade por hora e por recurso, e pode ser entregue em um bucket do Amazon S3 para consulta com Amazon Athena, Amazon QuickSight ou outra ferramenta de BI. O AWS Budgets (A) acompanha limites e alertas, não fornece dados linha a linha. O Cost Explorer (B) é uma visão interativa e agregada, inadequada para extrair esse nível de detalhe e cruzá-lo externamente. O Pricing Calculator (C) estima preços de arquiteturas planejadas, não os custos reais incorridos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Antes de migrar um sistema para a AWS, a Vitória Software quer estimar o custo mensal de duas configurações alternativas de instâncias, armazenamento e transferência de dados, e compartilhar o resultado com a diretoria. Nenhum recurso será criado na conta nessa fase. Qual recurso da AWS é apropriado para essa tarefa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Pricing Calculator"
+        },
+        {
+          "key": "B",
+          "text": "AWS Cost Explorer"
+        },
+        {
+          "key": "C",
+          "text": "AWS Budgets"
+        },
+        {
+          "key": "D",
+          "text": "AWS Cost and Usage Report"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Pricing Calculator cria estimativas de custo para arquiteturas planejadas, permite comparar configurações e compartilhar a estimativa por link, sem exigir a criação de recursos. O Cost Explorer (B) analisa custos reais já registrados na conta. O AWS Budgets (C) monitora gastos e emite alertas sobre limites definidos. O Cost and Usage Report (D) detalha o custo e o uso efetivamente incorridos, portanto não serve para projetar uma arquitetura que ainda não existe.",
+      "fontes": [
+        "https://docs.aws.amazon.com/pricing-calculator/latest/userguide/what-is-pricing-calculator.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/what-is-costmanagement.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Meridiano Foods executa várias aplicações na mesma conta e quer descobrir, de forma interativa, quais delas consumiram mais recursos no mês passado. Os recursos já possuem a tag \"Aplicacao\", e o time quer filtrar os custos por essa tag e comparar os últimos meses sem construir um pipeline de dados. Qual recurso atende a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Budgets"
+        },
+        {
+          "key": "B",
+          "text": "AWS Cost and Usage Report"
+        },
+        {
+          "key": "C",
+          "text": "AWS Cost Explorer"
+        },
+        {
+          "key": "D",
+          "text": "Consolidated Billing do AWS Organizations"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS Cost Explorer oferece uma visão interativa dos custos, permite filtrar e agrupar por cost allocation tags, como \"Aplicacao\", e comparar períodos sem exigir pipeline de dados. O AWS Budgets (A) serve para definir limites e alertas, não para explorar tendências por aplicação. O Cost and Usage Report (B) fornece dados detalhados, mas exige processamento para produzir essa análise. O Consolidated Billing (D) consolida a cobrança das contas de uma organização, mas não entrega a análise interativa de custos por tag.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html",
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Nuvem Clara Ltda tem 12 contas em uma organização da AWS. O time financeiro quer: (1) visualizar o custo agregado por centro de custo usando a tag \"CentroCusto\" que já existe nos recursos; e (2) receber um alerta quando o gasto previsto do mês de determinado centro de custo ultrapassar o valor aprovado. Quais duas ações atendem a esses requisitos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um AWS Cost and Usage Report e analisá-lo manualmente no console para localizar os centros de custo."
+        },
+        {
+          "key": "B",
+          "text": "Ativar a chave de tag \"CentroCusto\" como cost allocation tag e utilizá-la nos relatórios de custo."
+        },
+        {
+          "key": "C",
+          "text": "Usar o AWS Pricing Calculator para comparar o custo dos centros de custo mês a mês."
+        },
+        {
+          "key": "D",
+          "text": "Criar um AWS Budgets filtrado pela tag \"CentroCusto\", com alerta baseado no gasto previsto."
+        },
+        {
+          "key": "E",
+          "text": "Usar o AWS Trusted Advisor para receber alertas de orçamento por tag."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "A ação B é necessária porque uma tag definida pelo usuário precisa ser ativada como cost allocation tag para aparecer e ser usada na divisão de custos em relatórios como o Cost Explorer. A ação D atende ao alerta, pois o AWS Budgets pode ser filtrado por tag e configurado para notificar quando o gasto previsto ultrapassar o limite aprovado. A opção A gera dados detalhados, mas exige processamento e não envia alertas. A opção C estima preços de arquiteturas futuras, não custos reais por centro de custo. A opção E está incorreta porque o Trusted Advisor recomenda boas práticas, mas não envia alertas de orçamento filtrados por tag.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html",
+        "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html"
+      ]
+    }
+  ]
+}

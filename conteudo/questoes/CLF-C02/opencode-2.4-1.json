@@ -1,0 +1,66 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.4",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de segurança da empresa NoctisNet deseja ter um serviço gerenciado que analise continuamente logs da conta AWS em busca de atividades maliciosas ou anômalas. Qual serviço da AWS atende a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "B",
+          "text": "Amazon VPC"
+        },
+        {
+          "key": "C",
+          "text": "Amazon GuardDuty"
+        },
+        {
+          "key": "D",
+          "text": "AWS Directory Service"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon GuardDuty é um serviço gerenciado de detecção de ameaças que analisa continuamente fontes como logs do AWS CloudTrail, logs do Amazon VPC Flow Logs e logs do DNS para identificar atividades maliciosas ou potencialmente comprometidas. A) AWS WAF filtra tráfego HTTP/HTTPS com base em regras, mas não faz detecção contínua e inteligente de ameaças com base em logs. B) Amazon VPC fornece isolamento de rede, não detecção de ameaças. D) AWS Directory Service fornece integração com diretórios, não análise de logs em busca de ameaças.",
+      "fontes": ["https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html"]
+    },
+    {
+      "dominio": "2.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa Luminex precisa fortalecer a proteção da sua aplicação web exposta à internet. Para reduzir o risco de exploração em camada de aplicação e mitigar ataques volumétricos DDoS, quais dos seguintes serviços da AWS podem ser utilizados juntos para esse propósito? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "B",
+          "text": "Amazon EBS"
+        },
+        {
+          "key": "C",
+          "text": "AWS Shield"
+        },
+        {
+          "key": "D",
+          "text": "Amazon SQS"
+        },
+        {
+          "key": "E",
+          "text": "AWS Glue"
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "O AWS WAF protege aplicações web contra explorações em camada de aplicação (camada 7), permitindo filtrar e bloquear requisições com base em regras. Já o AWS Shield fornece proteção contra ataques DDoS, sendo o AWS Shield Standard incluído automaticamente na maioria dos recursos expostos. B) Amazon EBS é um serviço de armazenamento em bloco, não relacionado à proteção de aplicações web. D) Amazon SQS é um serviço de filas de mensagens, não um mecanismo de proteção contra DDoS ou exploração web. E) AWS Glue é um serviço de ETL, não voltado à segurança perimetral de aplicações web.",
+      "fontes": [
+        "https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html",
+        "https://docs.aws.amazon.com/waf/latest/developerguide/shield-chapter.html"
+      ]
+    }
+  ]
+}

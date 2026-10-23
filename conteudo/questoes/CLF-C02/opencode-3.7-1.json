@@ -1,0 +1,157 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma operadora de planos de saúde grava todas as ligações do call center em áudio. A equipe de qualidade precisa converter essas gravações em texto pesquisável, identificar automaticamente quem é o atendente e quem é o cliente e ocultar números de cartão e de documentos citados nas conversas. A empresa não quer treinar modelos de machine learning. Qual serviço da AWS é o mais adequado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Transcribe, com transcrição de áudio, identificação de locutor e remoção de informações sensíveis"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Polly, com vozes neurais para converter as gravações em texto"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Rekognition, com detecção de rostos e objetos nas gravações"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Comprehend, com análise de sentimento e extração de entidades nas ligações"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Transcribe é o serviço de fala para texto (speech-to-text) da AWS e oferece transcrição de áudios, identificação de locutores (speaker diarization) e redação de informações sensíveis, sem exigir que a equipe treine modelos. A alternativa B está errada porque o Polly faz o caminho inverso: converte texto em fala realista. A C está errada porque o Rekognition analisa imagens e vídeos, não áudio de chamadas. A D está errada porque o Comprehend processa texto já transcrito, detectando sentimento, entidades e frases-chave, mas não converte áudio em texto nem separa locutores.",
+      "fontes": [
+        "https://docs.aws.amazon.com/transcribe/latest/dg/what-is.html",
+        "https://docs.aws.amazon.com/polly/latest/dg/what-is.html"
+      ]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de software atende clientes de vários países por chat. As mensagens chegam em inglês, espanhol e japonês, e os analistas de suporte precisam lê-las em português quase em tempo real. A empresa quer um serviço gerenciado que traduza texto entre idiomas por API, sem treinar modelos próprios nem manter servidores de inferência. Qual serviço da AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Lex, para criar um chatbot que responda às mensagens automaticamente"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Transcribe, para converter as mensagens de chat em áudio"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Translate, para tradução automática de texto entre idiomas"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Comprehend, para identificar o idioma e o sentimento das mensagens"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Translate é o serviço gerenciado de tradução automática de texto da AWS: recebe o texto por API e devolve a tradução para o idioma desejado, sem que a empresa treine modelos ou administre infraestrutura. A alternativa A está errada porque o Lex serve para construir bots conversacionais com reconhecimento de intenção e fala, e não para traduzir mensagens entre idiomas. A B está errada porque o Transcribe converte áudio em texto, não texto em outro idioma. A D está errada porque o Comprehend identifica o idioma predominante e analisa sentimento e entidades, mas não produz a tradução do conteúdo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/translate/latest/dg/what-is.html",
+        "https://docs.aws.amazon.com/comprehend/latest/dg/what-is.html"
+      ]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Um supermercado online quer exibir recomendações de produtos personalizadas para cada cliente, usando o histórico de compras e de cliques que a própria empresa já possui, e atualizar as sugestões em tempo real durante a navegação. A equipe não tem cientistas de dados e não quer treinar modelos do zero. Qual serviço da AWS é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Forecast, para prever a demanda de produtos por série temporal"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Personalize, para recomendações individualizadas com base nos dados de interação"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Kendra, para buscar produtos em linguagem natural no catálogo"
+        },
+        {
+          "key": "D",
+          "text": "Amazon QuickSight, para montar painéis com o histórico de compras dos clientes"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Personalize é o serviço gerenciado de recomendações da AWS: a empresa fornece dados históricos de interações e o serviço treina e disponibiliza modelos personalizados, inclusive para recomendações em tempo real, sem exigir especialistas em machine learning. A alternativa A está errada porque o Forecast é voltado à previsão de valores futuros em séries temporais, como demanda ou estoque, e não a recomendar itens a cada usuário. A C está errada porque o Kendra é um serviço de busca inteligente em documentos e conteúdos, não um motor de recomendação baseado em comportamento. A D está errada porque o QuickSight apenas visualiza e analisa dados em painéis; ele não gera recomendações personalizadas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/personalize/latest/dg/what-is-personalize.html",
+        "https://docs.aws.amazon.com/forecast/latest/dg/what-is-forecast.html"
+      ]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma consultoria mantém milhares de políticas internas, contratos e manuais no Amazon S3 e no SharePoint. Os funcionários precisam fazer perguntas em linguagem natural e receber respostas extraídas desses documentos, com links para a fonte, usando um serviço gerenciado de busca inteligente que não exija a criação de pipelines de machine learning. Qual serviço da AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Athena, para consultar os documentos com SQL"
+        },
+        {
+          "key": "B",
+          "text": "Amazon OpenSearch Service, para indexar e pesquisar os documentos por palavras-chave"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Macie, para localizar dados sensíveis nos documentos"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kendra, para busca inteligente com respostas e links para as fontes"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O Amazon Kendra é o serviço gerenciado de busca inteligente da AWS: conecta-se a repositórios como Amazon S3 e SharePoint, usa modelos de linguagem natural para entender perguntas e retorna respostas com referência ao documento de origem, sem que a equipe construa pipelines de ML. A alternativa A está errada porque o Athena executa consultas SQL sobre dados estruturados ou semiestruturados, o que não atende a perguntas em linguagem natural sobre documentos. A B está errada porque o OpenSearch Service é um mecanismo de busca que exige indexação e ajuste de relevância, sem o recurso gerenciado de respostas em linguagem natural com citação de fontes. A C está errada porque o Macie descobre e classifica dados sensíveis para fins de segurança, e não responde perguntas dos funcionários.",
+      "fontes": [
+        "https://docs.aws.amazon.com/kendra/latest/dg/what-is-kendra.html",
+        "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html"
+      ]
+    },
+    {
+      "dominio": "3.7",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um estúdio de mídia está automatizando a produção de conteúdo e precisa de duas capacidades: gerar narração em áudio realista a partir dos textos de roteiro, com diferentes vozes e idiomas; e detectar automaticamente conteúdo impróprio, como nudez e violência, em imagens e vídeos enviados pelos usuários. A equipe quer usar serviços de IA prontos, sem treinar modelos. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Comprehend, para analisar o sentimento dos roteiros"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Polly, para converter texto em fala com vozes neurais"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Translate, para traduzir os roteiros entre idiomas"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Textract, para extrair texto de documentos digitalizados"
+        },
+        {
+          "key": "E",
+          "text": "Amazon Rekognition, para identificar conteúdo impróprio em imagens e vídeos"
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "O Amazon Polly atende à narração: converte texto em fala realista e oferece diversas vozes e idiomas por meio de APIs, sem treinamento de modelos. O Amazon Rekognition atende à moderação: analisa imagens e vídeos e detecta conteúdo impróprio, como nudez e violência, entre outras categorias. A alternativa A está errada porque o Comprehend analisa texto, como sentimento e entidades, e não gera áudio. A C está errada porque o Translate traduz textos entre idiomas, sem sintetizar fala nem analisar imagens. A D está errada porque o Textract faz OCR e extração de dados de documentos, não moderação de imagens e vídeos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/polly/latest/dg/what-is.html",
+        "https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html",
+        "https://docs.aws.amazon.com/comprehend/latest/dg/what-is.html"
+      ]
+    }
+  ]
+}

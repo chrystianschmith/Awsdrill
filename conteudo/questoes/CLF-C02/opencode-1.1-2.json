@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech Conta Clara quer testar uma nova funcionalidade de controle de gastos. Hoje, cada ambiente de teste leva semanas para ser comprado, instalado e configurado, e a equipe acaba desistindo de experimentar alternativas. Qual benefício da Nuvem AWS atende diretamente a essa dificuldade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reduzir a latência para os usuários finais, distribuindo a aplicação em várias Regions."
+        },
+        {
+          "key": "B",
+          "text": "Obter descontos por volume na compra de servidores físicos para os ambientes de teste."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar a velocidade e a agilidade, provisionando recursos em minutos e experimentando com menor custo e tempo."
+        },
+        {
+          "key": "D",
+          "text": "Garantir disponibilidade de 100% da funcionalidade, porque a AWS assume a operação do código."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: na nuvem, novos recursos de TI ficam disponíveis em minutos, em vez de semanas, o que reduz o custo e o tempo de experimentar e permite que a equipe teste mais alternativas. A não atende porque distribuir a aplicação em várias Regions melhora a latência e a proximidade dos usuários, mas não acelera a criação de ambientes de teste. B não atende porque descontos por volume na compra de servidores físicos mantêm o processo de aquisição e instalação, que é justamente o que atrasa a experimentação. D não atende porque a AWS não garante 100% de disponibilidade da aplicação nem opera o código do cliente; a arquitetura e a operação da aplicação continuam sendo responsabilidade da empresa.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/what-is-cloud-computing/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa de software Ponto Norte compara o preço por hora de uma instância sob demanda da AWS com o custo por hora de manter servidores no data center próprio. Mesmo sem contratos de longo prazo, a AWS oferece preços unitários menores do que os que a empresa conseguiria sozinha. Qual vantagem da Nuvem AWS explica esse efeito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Economias de escala massivas: o uso agregado de muitos clientes reduz os custos da AWS, que repassa parte dessa redução nos preços pagos pelo uso."
+        },
+        {
+          "key": "B",
+          "text": "Elasticidade: a empresa pode desligar recursos quando a demanda cair e, com isso, reduzir o valor cobrado por hora em todos os períodos."
+        },
+        {
+          "key": "C",
+          "text": "Presença global: a AWS pratica preços menores em Regions com pouca demanda."
+        },
+        {
+          "key": "D",
+          "text": "Alta disponibilidade: a replicação entre Availability Zones diminui o preço da computação."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: a AWS agrega o uso de centenas de milhares de clientes e, com isso, alcança economias de escala que permitem oferecer preços pagos pelo uso menores do que uma empresa conseguiria ao operar a própria infraestrutura. B não atende porque a elasticidade reduz o total da conta ao desligar recursos ociosos, mas não altera o preço unitário por hora cobrado pelo serviço. C não atende porque a presença global trata da distribuição geográfica da infraestrutura e da latência, não de preços menores em determinadas Regions. D não atende porque a replicação entre Availability Zones é uma decisão de arquitetura para disponibilidade e não provoca redução do preço da computação.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/what-is-cloud-computing/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A rede de hotéis Serra Azul renova seus servidores a cada cinco anos. A compra exige aprovação de orçamento de capital e imobiliza recursos antes de a demanda real ser conhecida. A diretoria quer eliminar esse investimento inicial e passar a pagar mensalmente conforme o consumo. Qual benefício da Nuvem AWS atende a essa mudança?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter capacidade ociosa para os picos de reservas, financiada com capital próprio."
+        },
+        {
+          "key": "B",
+          "text": "Concentrar a operação em uma única Availability Zone para reduzir o custo do hardware."
+        },
+        {
+          "key": "C",
+          "text": "Contratar Reserved Instances para transformar o gasto mensal em despesa de capital."
+        },
+        {
+          "key": "D",
+          "text": "Trocar despesa de capital por despesa variável, pagando pelo uso em vez de comprar servidores antecipadamente."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: a nuvem permite trocar o investimento fixo em data centers e servidores por despesas variáveis, cobradas conforme o consumo, sem a compra antecipada de hardware. A não atende porque manter capacidade ociosa financiada com capital próprio é exatamente o modelo que a diretoria quer abandonar. B não atende porque usar uma única Availability Zone aumenta o risco de indisponibilidade e não elimina a compra de hardware. C não atende porque Reserved Instances são um modelo de desconto por compromisso de uso; o gasto continua sendo operacional e ainda exige previsão de consumo, não se transforma em despesa de capital.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/economics/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A indústria têxtil Fio Nobre mantém um data center próprio. O CFO mostra que boa parte do orçamento de TI vai para aluguel do imóvel, energia elétrica, refrigeração e substituição de equipamentos, mesmo quando os sistemas estão ociosos. A empresa quer retirar esses custos fixos do orçamento e direcioná-los a projetos de negócio. Qual benefício da Nuvem AWS está mais alinhado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reduzir o preço das licenças de software, porque a AWS revende licenças com desconto para todos os clientes."
+        },
+        {
+          "key": "B",
+          "text": "Deixar de arcar com os custos fixos de um data center próprio, como imóvel, energia, refrigeração e equipamentos, passando a pagar pelo uso da infraestrutura da AWS."
+        },
+        {
+          "key": "C",
+          "text": "Eliminar a necessidade de backup e recuperação de desastres, pois a AWS replica automaticamente os dados dos clientes."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar a largura de banda local com AWS Direct Connect, o que zera os custos de energia e refrigeração."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: ao usar a infraestrutura da AWS, a empresa deixa de manter data centers próprios e de pagar custos fixos como imóvel, energia, refrigeração e reposição de equipamentos, passando a pagar pelo uso dos recursos. A não atende porque a AWS não revende licenças de software com desconto universal; licenciamento depende do produto e do modelo de licença. C não atende porque backup e recuperação de desastres continuam sendo responsabilidade do cliente; a AWS não replica automaticamente todos os dados de todas as aplicações. D não atende porque o AWS Direct Connect é uma conexão de rede privada e não elimina os custos de energia e refrigeração de uma infraestrutura local.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/economics/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A startup de jogos Pixel Norte quer lançar um novo jogo sem fazer grandes compras de hardware antes de conhecer a demanda e, ao mesmo tempo, reduzir o tempo entre uma ideia e o teste em produção. Quais dois benefícios da Nuvem AWS sustentam esses objetivos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Garantia de disponibilidade de 100% do jogo, porque a AWS responde pela arquitetura da aplicação."
+        },
+        {
+          "key": "B",
+          "text": "Não precisar imobilizar capital em servidores antes de conhecer a demanda, passando a pagar pelo uso."
+        },
+        {
+          "key": "C",
+          "text": "Capacidade ilimitada por padrão, o que dispensa planejamento de cotas e limites de serviço."
+        },
+        {
+          "key": "D",
+          "text": "Custo mensal sempre menor que o de um data center próprio, independentemente do consumo."
+        },
+        {
+          "key": "E",
+          "text": "Provisionar recursos em minutos, o que reduz o tempo e o custo de experimentar."
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "B e E são as corretas: o modelo de nuvem permite trocar a compra antecipada de hardware por pagamento conforme o uso, reduzindo o capital imobilizado, e disponibiliza novos recursos em minutos, o que encurta o ciclo de experimentação e o tempo até o teste em produção. A não atende porque os SLAs da AWS cobrem os serviços, não garantem 100% de disponibilidade da aplicação, cuja arquitetura é responsabilidade do cliente. C não atende porque os serviços da AWS têm cotas e limites que precisam ser planejados e, se necessário, aumentados por solicitação. D não atende porque não existe garantia de custo mensal menor; o valor depende do consumo, da arquitetura e das opções de compra utilizadas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/economics/"
+      ]
+    }
+  ]
+}

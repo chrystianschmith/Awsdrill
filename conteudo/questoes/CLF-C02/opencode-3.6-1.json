@@ -1,0 +1,157 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de análise de dados executa um conjunto de instâncias Amazon EC2 Linux distribuídas em três Availability Zones. Várias dessas instâncias precisam ler e gravar simultaneamente no mesmo conjunto de arquivos, com semântica POSIX, e a equipe não quer administrar servidores de arquivos nem replicação entre zonas. Qual serviço de armazenamento atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EBS com volumes io2 habilitados para Multi-Attach"
+        },
+        {
+          "key": "B",
+          "text": "Amazon S3 Standard com prefixos organizados por instância"
+        },
+        {
+          "key": "C",
+          "text": "Amazon EFS com mount targets nas três Availability Zones"
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server com compartilhamentos SMB"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon EFS é um sistema de arquivos gerenciado, elástico e compatível com NFS, que pode ser montado por várias instâncias Linux ao mesmo tempo e fica disponível em várias Availability Zones por meio de mount targets. Ele entrega a semântica POSIX pedida sem exigir administração de servidores de arquivos. A alternativa A está errada porque o EBS é armazenamento em blocos ligado a uma instância (o Multi-Attach, disponível apenas para io1/io2, permite no máximo 16 instâncias na mesma Availability Zone e não é um sistema de arquivos compartilhado entre zonas). A B está errada porque o S3 é armazenamento de objetos acessado por API HTTP, não um sistema de arquivos POSIX montável. A D está errada porque o FSx for Windows File Server usa SMB e é voltado a cargas Windows com Active Directory, não a clientes Linux com POSIX.",
+      "fontes": [
+        "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html",
+        "https://docs.aws.amazon.com/ebs/latest/userguide/what-is-ebs.html"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Um escritório mantém servidores de aplicação on-premises que acessam arquivos por NFS. A empresa quer continuar usando esses servidores e o mesmo protocolo, mas passar a guardar os arquivos no Amazon S3, com cache local para leituras frequentes e envio assíncrono das gravações para a nuvem. Qual solução atende a esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Storage Gateway no modo File Gateway"
+        },
+        {
+          "key": "B",
+          "text": "AWS DataSync executando uma tarefa de migração agendada"
+        },
+        {
+          "key": "C",
+          "text": "Amazon S3 Transfer Acceleration no bucket de destino"
+        },
+        {
+          "key": "D",
+          "text": "AWS Snowball Edge Storage Optimized para transferência offline"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O File Gateway é a opção do AWS Storage Gateway que expõe um bucket do S3 por meio de protocolos de arquivo (NFS ou SMB) para clientes on-premises, mantendo cache local e enviando os dados ao S3 de forma assíncrona. Isso preserva os servidores e o protocolo existentes sem reescrever as aplicações. A alternativa B está errada porque o DataSync é um serviço de transferência e sincronização de dados, não uma interface de arquivos permanente com cache para acesso contínuo. A C está errada porque o Transfer Acceleration acelera uploads para o S3 por HTTP, mas não oferece montagem NFS nem cache local. A D está errada porque o Snowball Edge é um dispositivo para movimentação em massa de dados offline, não para acesso contínuo por NFS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/storagegateway/latest/userguide/WhatIsStorageGateway.html",
+        "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma instituição financeira precisa manter registros por dez anos para fins de conformidade. Os dados são consultados, em média, uma vez por ano, e a área de negócio aceita esperar até 12 horas para obtê-los. O requisito é o menor custo de armazenamento possível, com durabilidade de várias Availability Zones. Qual classe de armazenamento do Amazon S3 é a mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "S3 Standard"
+        },
+        {
+          "key": "B",
+          "text": "S3 One Zone-Infrequent Access"
+        },
+        {
+          "key": "C",
+          "text": "S3 Glacier Instant Retrieval"
+        },
+        {
+          "key": "D",
+          "text": "S3 Glacier Deep Archive"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O S3 Glacier Deep Archive é a classe de menor custo do S3, indicada para dados raramente acessados e retenção de longo prazo, com recuperação padrão em até 12 horas e replicação em pelo menos três Availability Zones. Ela atende exatamente ao padrão de acesso anual e à tolerância de espera informados. A alternativa A está errada porque o S3 Standard é otimizado para acesso frequente e tem custo de armazenamento muito maior. A B está errada porque o One Zone-IA guarda os dados em uma única Availability Zone, o que contraria o requisito de durabilidade em várias zonas. A C está errada porque o Glacier Instant Retrieval oferece recuperação em milissegundos, recurso desnecessário aqui e mais caro que o Deep Archive.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+        "https://aws.amazon.com/s3/storage-classes/glacier/"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa vai migrar para a AWS uma aplicação legada que roda em Windows Server e acessa compartilhamentos de arquivos por SMB. A aplicação autentica usuários em um domínio Active Directory e exige alta disponibilidade entre Availability Zones, com backups automáticos. Qual serviço de armazenamento é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EFS com mount targets em várias Availability Zones"
+        },
+        {
+          "key": "B",
+          "text": "Amazon FSx for Windows File Server em implantação Multi-AZ"
+        },
+        {
+          "key": "C",
+          "text": "Amazon S3 com um bucket por servidor Windows"
+        },
+        {
+          "key": "D",
+          "text": "Volumes Amazon EBS anexados a cada instância Windows"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon FSx for Windows File Server fornece compartilhamentos SMB nativos, integração com Active Directory, suporte a Multi-AZ e backups automáticos, sendo o serviço gerenciado indicado para cargas Windows que dependem de file storage. A alternativa A está errada porque o EFS usa NFS e é voltado a clientes Linux, sem suporte nativo a SMB e Active Directory. A C está errada porque o S3 é armazenamento de objetos e não apresenta um compartilhamento SMB montável pela aplicação. A D está errada porque o EBS é armazenamento em blocos por instância, não um sistema de arquivos compartilhado com SMB e autenticação de domínio.",
+      "fontes": [
+        "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html",
+        "https://aws.amazon.com/fsx/windows/"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um arquiteto está classificando os serviços de armazenamento da AWS por modelo de acesso. Ele precisa identificar quais serviços oferecem armazenamento de arquivos gerenciado, ou seja, sistemas de arquivos compartilhados acessados por protocolos de rede. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Elastic File System (Amazon EFS)"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Elastic Block Store (Amazon EBS)"
+        },
+        {
+          "key": "C",
+          "text": "Amazon S3"
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server"
+        },
+        {
+          "key": "E",
+          "text": "Instance store do Amazon EC2"
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "O Amazon EFS e o Amazon FSx for Windows File Server são serviços de file storage: entregam sistemas de arquivos compartilhados, acessados por NFS (EFS) ou SMB (FSx), que podem ser montados por várias instâncias. A alternativa B está errada porque o EBS oferece armazenamento em blocos, apresentado como volume a uma instância, e não um sistema de arquivos de rede. A C está errada porque o S3 é armazenamento de objetos, acessado por API HTTP, sem montagem como sistema de arquivos. A E está errada porque o instance store é armazenamento em blocos efêmero, fisicamente ligado ao host da instância, e não um serviço de arquivos compartilhado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html",
+        "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html"
+      ]
+    }
+  ]
+}
