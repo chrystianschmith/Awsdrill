@@ -108,8 +108,8 @@ def confere(codigo, questoes, caminho):
             raise ValueError(f"fontes que não abrem (404 ou fora de docs.aws.amazon.com/aws.amazon.com): {mortas}")
         os.makedirs(SAIDA, exist_ok=True)
         with open(caminho, "w", encoding="utf-8") as f:
-            json.dump(arquivo, f, ensure_ascii=False, indent=1)
-            f.write("\n")
+            json.dump(arquivo, f, ensure_ascii=False, indent=2)
+        subprocess.run(["npx", "prettier", "--write", caminho], capture_output=True, check=True)
 
 
 def ja_escritos(codigo):
