@@ -1,0 +1,147 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística vai migrar um sistema de rastreamento de encomendas que hoje usa MySQL. A equipe quer um banco relacional gerenciado que mantenha automaticamente seis cópias dos dados distribuídas em três Availability Zones, faça failover automático e continue compatível com drivers e ferramentas MySQL. Qual serviço atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon DynamoDB com índices secundários globais, por ser gerenciado e replicar os dados automaticamente."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Aurora com compatibilidade MySQL, que mantém seis cópias dos dados em três Availability Zones."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Redshift, por usar armazenamento colunar e aceitar consultas SQL."
+        },
+        {
+          "key": "D",
+          "text": "Amazon RDS para MySQL com uma instância standby em outra Availability Zone."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Aurora é compatível com MySQL e mantém seis cópias dos dados distribuídas em três Availability Zones, com failover automático, o que atende exatamente ao pedido. O DynamoDB é um banco NoSQL de chave-valor e documento, não aceita drivers MySQL nem o modelo relacional do sistema. O Redshift é um data warehouse colunar voltado a consultas analíticas, não a um sistema transacional compatível com MySQL. O Amazon RDS para MySQL no modo Multi-AZ com uma instância standby mantém a cópia sincronizada em uma única outra Availability Zone, e não seis cópias em três zonas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html",
+        "https://aws.amazon.com/rds/aurora/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de telemetria recebe eventos de milhões de medidores e precisa gravar e consultar cada evento por uma chave composta (identificador do medidor e horário), com latência de milissegundos de um dígito e escala automática, sem administrar servidores. A aplicação não precisa de joins nem de transações entre tabelas. Qual serviço é o mais adequado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Redshift, por ser um data warehouse gerenciado e escalável."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Aurora MySQL, por ser um banco relacional gerenciado e compatível com SQL."
+        },
+        {
+          "key": "C",
+          "text": "Amazon ElastiCache para Redis, por manter os dados em memória e responder em baixa latência."
+        },
+        {
+          "key": "D",
+          "text": "Amazon DynamoDB, por ser um banco de chave-valor gerenciado com escala automática."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O DynamoDB atende ao padrão descrito: banco de chave-valor totalmente gerenciado, com escala automática e latência de milissegundos de um dígito para acesso por chave, sem servidores para administrar. O Redshift é otimizado para consultas analíticas sobre grandes volumes, não para gravação e leitura por chave em tempo real. O Aurora MySQL é relacional e exigiria modelagem em tabelas e escolha de capacidade, além de não ser o formato de chave-valor pedido. O ElastiCache é um cache em memória, útil para acelerar leituras, mas não é indicado como armazenamento durável de registro: os dados podem ser perdidos se o cache for reiniciado ou substituído.",
+      "fontes": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html",
+        "https://aws.amazon.com/dynamodb/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma rede de supermercados armazena cinco anos de vendas e estoque e quer que analistas executem consultas SQL de agregação e relatórios de BI sobre bilhões de linhas, sem afetar o sistema de caixa. A empresa procura um data warehouse gerenciado com armazenamento colunar. Qual serviço atende a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Redshift, um data warehouse gerenciado com armazenamento colunar."
+        },
+        {
+          "key": "B",
+          "text": "Amazon RDS para PostgreSQL com réplicas de leitura para os analistas."
+        },
+        {
+          "key": "C",
+          "text": "Amazon DynamoDB com índices secundários para as consultas de agregação."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Neptune, por permitir consultas SQL sobre grandes volumes de dados."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Redshift é o data warehouse gerenciado da AWS, com armazenamento colunar e processamento distribuído, indicado para consultas SQL analíticas e relatórios de BI sobre bilhões de linhas. O RDS para PostgreSQL é um banco transacional orientado a linhas; réplicas de leitura ajudam a dividir a carga, mas não entregam o desempenho analítico de um data warehouse colunar. O DynamoDB é um banco de chave-valor, não oferece o modelo SQL de agregação esperado pelos analistas. O Neptune é um banco de grafos, voltado a consultas de relacionamentos, e não a relatórios SQL de vendas.",
+      "fontes": ["https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html", "https://aws.amazon.com/redshift/"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco digital investiga fraudes percorrendo relacionamentos entre contas, telefones, dispositivos e transações, como cadeias de contas ligadas ao mesmo dispositivo. A equipe quer um banco de grafos gerenciado, com consultas de travessia escritas em Gremlin ou openCypher. Qual serviço atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon DocumentDB (compatível com MongoDB), por armazenar documentos JSON interligados."
+        },
+        {
+          "key": "B",
+          "text": "Amazon DynamoDB, por permitir consultas por chave com baixa latência."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Neptune, um banco de grafos gerenciado com suporte a Gremlin e openCypher."
+        },
+        {
+          "key": "D",
+          "text": "Amazon RDS para MySQL, por permitir joins entre as tabelas de contas e transações."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Neptune é o banco de grafos gerenciado da AWS e oferece linguagens de travessia como Gremlin e openCypher, próprias para percorrer cadeias de relacionamentos. O DocumentDB armazena documentos JSON no modelo do MongoDB; referências entre documentos não substituem as travessias de grafo. O DynamoDB é um banco de chave-valor: as travessias teriam de ser implementadas na aplicação, item a item. O RDS para MySQL é relacional e exigiria joins cada vez mais caros a cada nível de relacionamento, sem o modelo de grafo pedido.",
+      "fontes": ["https://docs.aws.amazon.com/neptune/latest/userguide/intro.html", "https://aws.amazon.com/neptune/"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma startup de assinaturas vai lançar um catálogo de produtos e precisa de dois bancos gerenciados: um para os documentos JSON do catálogo, compatível com MongoDB, e outro para manter as sessões dos usuários em memória, com latência de microssegundos, sem sobrecarregar o banco principal. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Redshift, para armazenar o catálogo e as sessões com consultas SQL."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Neptune, para modelar produtos e sessões como um grafo."
+        },
+        {
+          "key": "C",
+          "text": "Amazon RDS para Oracle, para o catálogo e o cache de sessões."
+        },
+        {
+          "key": "D",
+          "text": "Amazon DocumentDB, para o catálogo de documentos compatível com MongoDB."
+        },
+        {
+          "key": "E",
+          "text": "Amazon ElastiCache, para manter as sessões em memória com baixa latência."
+        }
+      ],
+      "corretas": ["D", "E"],
+      "explicacao": "O Amazon DocumentDB é o banco de documentos gerenciado compatível com MongoDB, adequado ao catálogo em JSON. O Amazon ElastiCache é o serviço de cache em memória gerenciado, usado para guardar sessões com latência muito baixa e tirar essa carga do banco principal. O Redshift é um data warehouse analítico, não serve como armazenamento de sessões nem como banco operacional do catálogo. O Neptune é um banco de grafos, modelo que não corresponde a documentos de catálogo ou a sessões. O RDS para Oracle é um banco relacional, não é compatível com MongoDB e não oferece o cache em memória pedido para as sessões.",
+      "fontes": ["https://aws.amazon.com/documentdb/", "https://aws.amazon.com/elasticache/"]
+    }
+  ]
+}

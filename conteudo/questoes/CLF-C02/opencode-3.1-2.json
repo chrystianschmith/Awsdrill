@@ -1,0 +1,124 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma analista financeira precisa, uma única vez, revisar o painel de faturamento da AWS e ativar tags de alocação de custos para o próximo fechamento. Ela não programa, não quer instalar ferramentas no notebook e prefere navegar visualmente pelos menus dos serviços. Qual método de operação da AWS é o mais adequado para essa tarefa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Management Console"
+        },
+        {
+          "key": "B",
+          "text": "AWS Command Line Interface (AWS CLI)"
+        },
+        {
+          "key": "C",
+          "text": "AWS SDK"
+        },
+        {
+          "key": "D",
+          "text": "AWS CloudFormation"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Management Console é a interface gráfica baseada em navegador, ideal para tarefas pontuais e para quem prefere navegar visualmente sem escrever código. A AWS CLI exige uso de terminal e comandos, o que não atende à preferência da analista. O AWS SDK é voltado à integração por código em aplicações. O AWS CloudFormation serve para provisionar infraestrutura de forma declarativa por meio de templates, e não para uma revisão visual e pontual do faturamento.",
+      "fontes": ["https://aws.amazon.com/console/"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma montadora precisa executar parte das cargas de trabalho dentro da própria fábrica, porque os equipamentos da linha de produção exigem baixa latência e os dados não podem ser processados em outra localidade. Ao mesmo tempo, a equipe de TI quer usar as mesmas APIs, ferramentas e serviços gerenciados da AWS que já conhece. Qual solução atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Local Zones"
+        },
+        {
+          "key": "B",
+          "text": "AWS Outposts"
+        },
+        {
+          "key": "C",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "D",
+          "text": "AWS Direct Connect"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O AWS Outposts estende a infraestrutura, os serviços, as APIs e as ferramentas da AWS para as instalações do cliente, permitindo executar cargas localmente com baixa latência e usando as mesmas interfaces da nuvem AWS. O AWS Local Zones leva serviços da AWS para áreas metropolitanas próximas, mas não para o interior das instalações do cliente. O Amazon CloudFront é uma rede de distribuição de conteúdo que faz cache nas bordas, não executa as cargas de trabalho da fábrica. O AWS Direct Connect estabelece uma conexão de rede privada com a AWS, sem fornecer capacidade de computação local.",
+      "fontes": [
+        "https://docs.aws.amazon.com/outposts/latest/userguide/what-is-outposts.html",
+        "https://aws.amazon.com/outposts/"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema interno foi escrito em uma linguagem de programação que não possui SDK oficial da AWS. A equipe precisa que esse sistema leia e grave objetos no Amazon S3 e itens no Amazon DynamoDB por meio de requisições HTTPS assinadas enviadas diretamente aos endpoints desses serviços, sem instalar a AWS CLI e sem usar o navegador. Qual método de acesso à AWS descreve essa abordagem?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Management Console"
+        },
+        {
+          "key": "B",
+          "text": "AWS Elastic Beanstalk"
+        },
+        {
+          "key": "C",
+          "text": "AWS CloudFormation"
+        },
+        {
+          "key": "D",
+          "text": "AWS API, com chamadas diretas aos endpoints dos serviços"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "As APIs da AWS expõem endpoints HTTPS que podem ser chamados diretamente por qualquer sistema capaz de assinar as requisições, e é exatamente isso que SDKs e a AWS CLI fazem internamente. O AWS Management Console é uma interface gráfica para uso humano, não para integração de sistemas. O AWS Elastic Beanstalk é voltado à implantação de aplicações, não a chamadas de dados do sistema legado. O AWS CloudFormation provisiona infraestrutura a partir de templates e não substitui as chamadas de leitura e gravação de dados nos serviços.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/Welcome.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa precisa de duas formas de interagir com a AWS: uma para automatizar tarefas administrativas em scripts executados por pipelines, sem interface gráfica; outra para que uma aplicação faça chamadas aos serviços da AWS de dentro do próprio código. Quais duas opções atendem, respectivamente, a essas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Management Console"
+        },
+        {
+          "key": "B",
+          "text": "AWS Command Line Interface (AWS CLI)"
+        },
+        {
+          "key": "C",
+          "text": "AWS Trusted Advisor"
+        },
+        {
+          "key": "D",
+          "text": "AWS Health Dashboard"
+        },
+        {
+          "key": "E",
+          "text": "AWS SDK"
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "A AWS CLI permite executar comandos e encadear operações em scripts, o que a torna adequada para pipelines de automação. O AWS SDK fornece bibliotecas para que a própria aplicação faça chamadas às APIs da AWS, com tratamento de credenciais e novas tentativas. O AWS Management Console é uma interface gráfica e não foi feito para automação em pipelines. O AWS Trusted Advisor fornece recomendações de boas práticas, e o AWS Health Dashboard informa sobre a saúde dos serviços, sem executar operações de administração ou integração por código.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html",
+        "https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/welcome.html"
+      ]
+    }
+  ]
+}

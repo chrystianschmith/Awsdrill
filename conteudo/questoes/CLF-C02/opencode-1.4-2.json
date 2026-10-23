@@ -1,0 +1,127 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma emissora de televisão armazena 400 TB de gravações no Amazon S3 Standard. Cerca de 80% desse conteúdo não é acessado há mais de 90 dias, mas precisa continuar guardado por vários anos. A equipe não quer criar processos manuais para mover ou excluir arquivos e quer reduzir o custo de armazenamento sem perder dados. Qual ação atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Ativar versionamento e replicação entre Regiões para todas as gravações."
+        },
+        {
+          "key": "B",
+          "text": "Migrar os objetos para o Amazon EFS Infrequent Access."
+        },
+        {
+          "key": "C",
+          "text": "Configurar regras do S3 Lifecycle para transicionar objetos antigos para classes de armazenamento de menor custo."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar o tamanho das instâncias que processam as gravações."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "As regras do S3 Lifecycle executam transições automáticas para classes de menor custo, como S3 Standard-IA ou S3 Glacier, depois do período definido, sem processos manuais e mantendo os objetos armazenados. Versionamento e replicação entre Regiões adicionam cópias e custos de armazenamento e transferência. O Amazon EFS é um sistema de arquivos para cargas de computação e não substitui a classe de armazenamento de objetos do S3. Aumentar as instâncias de processamento não altera o custo de armazenamento dos 400 TB.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística mantém seus bancos de dados relacionais em instâncias Amazon EC2 autogerenciadas. A equipe de operações gasta grande parte da semana instalando atualizações, configurando backups e ajustando a capacidade. A diretoria quer reduzir o custo total de propriedade (TCO) da plataforma. Qual mudança está mais alinhada aos conceitos de economia da nuvem?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Trocar as instâncias por modelos maiores, para diminuir a quantidade de servidores."
+        },
+        {
+          "key": "B",
+          "text": "Migrar os bancos para um serviço gerenciado, como o Amazon RDS, que assume backups, patches e detecção de falhas."
+        },
+        {
+          "key": "C",
+          "text": "Comprar Reserved Instances para as instâncias EC2 atuais, mantendo a administração como está."
+        },
+        {
+          "key": "D",
+          "text": "Distribuir as instâncias EC2 em várias Availability Zones com um Elastic Load Balancing."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon RDS é um serviço gerenciado que assume tarefas como backups, aplicação de patches, detecção de falhas e recuperação, reduzindo o tempo da equipe e o TCO operacional. Instâncias maiores podem diminuir a quantidade de servidores, mas não eliminam o trabalho de administração. As Reserved Instances reduzem o preço da computação, porém a empresa continuaria responsável por patches, backups e ajustes de capacidade. Distribuir as instâncias em várias Availability Zones melhora a disponibilidade, mas adiciona recursos e custo, sem reduzir o esforço operacional.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html",
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um serviço de declaração de imposto de renda processa milhões de declarações nas três semanas que antecedem o prazo final e fica com pouquíssimo uso no restante do ano. Antes da nuvem, a empresa mantinha servidores dimensionados para o pico durante os 12 meses. Qual característica da nuvem AWS explica a redução de custo obtida ao ajustar a capacidade à demanda?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Economia de escala, pois a AWS agrega o uso de muitos clientes e pratica preços menores."
+        },
+        {
+          "key": "B",
+          "text": "Alta disponibilidade, pois os recursos são distribuídos em várias Availability Zones."
+        },
+        {
+          "key": "C",
+          "text": "Bring Your Own License (BYOL), pois as licenças existentes passam a ser reaproveitadas."
+        },
+        {
+          "key": "D",
+          "text": "Elasticidade, pois a capacidade pode ser provisionada e removida conforme a demanda."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A elasticidade permite aumentar a capacidade durante as três semanas de pico e reduzi-la no restante do ano, de modo que a empresa pague apenas pela capacidade usada em cada período. A economia de escala explica preços unitários menores pelo volume agregado da AWS, mas não elimina o custo de manter capacidade para o pico o ano inteiro. A alta disponibilidade em várias Availability Zones protege contra falhas e tende a aumentar o custo. O BYOL trata do reaproveitamento de licenças de software e não ajusta a capacidade computacional.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Metalúrgica Horizonte possui licenças perpétuas de Windows Server e SQL Server e está avaliando como licenciar esses softwares ao migrar para a AWS. A empresa quer entender as opções antes de decidir. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "No modelo Bring Your Own License (BYOL), as licenças perpétuas podem ser usadas em qualquer instância compartilhada, sem observar os termos do fornecedor."
+        },
+        {
+          "key": "B",
+          "text": "No modelo Bring Your Own License (BYOL), a empresa usa licenças que já possui, desde que os termos do fornecedor e os requisitos de tenancy sejam atendidos."
+        },
+        {
+          "key": "C",
+          "text": "No modelo license included, a empresa precisa comprar licenças perpétuas separadamente antes de criar a instância."
+        },
+        {
+          "key": "D",
+          "text": "No modelo license included, o valor da licença do software já está incluído no preço cobrado pelo serviço da AWS."
+        },
+        {
+          "key": "E",
+          "text": "Instâncias Spot incluem automaticamente licenças de Windows Server e SQL Server, sem custo adicional."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "No BYOL, a empresa reutiliza licenças que já adquiriu, mas precisa respeitar os termos do fornecedor e os requisitos de tenancy; determinadas licenças, por exemplo, exigem Dedicated Hosts. Por isso, a afirmação de que qualquer instância compartilhada serve está errada. No modelo license included, a licença faz parte do preço do serviço da AWS, sem exigir a compra separada de licenças perpétuas. As Spot Instances são um modelo de compra de capacidade computacional e não incluem automaticamente licenças de software.",
+      "fontes": [
+        "https://aws.amazon.com/windows/faq/",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html"
+      ]
+    }
+  ]
+}

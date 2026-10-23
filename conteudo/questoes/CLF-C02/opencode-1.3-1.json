@@ -1,0 +1,153 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma rede de lojas de material de construção mantém um data center próprio e, a cada três anos, precisa comprar servidores novos para suportar o pico de vendas do período de reformas. Fora desse período, boa parte da capacidade fica ociosa. A diretoria quer parar de fazer esse investimento antecipado e passar a pagar somente pelo que consumir, mantendo a possibilidade de crescer rapidamente quando a demanda aumentar. Qual benefício da migração para a AWS atende diretamente a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Continuar comprando servidores com antecedência, mas com descontos por volume maiores do que os obtidos no data center próprio."
+        },
+        {
+          "key": "B",
+          "text": "Eliminar a necessidade de planejar capacidade, pois a AWS define automaticamente o porte adequado de cada instância."
+        },
+        {
+          "key": "C",
+          "text": "Trocar despesas de capital por despesas variáveis e ajustar a capacidade à demanda, pagando pelo uso efetivo."
+        },
+        {
+          "key": "D",
+          "text": "Concentrar todos os workloads em uma única Availability Zone, o que reduz a latência de rede."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A migração para a nuvem permite substituir o investimento antecipado em hardware (despesa de capital) por consumo sob demanda (despesa variável), de modo que a empresa só paga pela capacidade que usa e pode aumentar ou reduzir recursos conforme o movimento das lojas. A alternativa A mantém exatamente o problema do capex e da ociosidade. A alternativa B está errada porque o dimensionamento e o planejamento de capacidade continuam sendo responsabilidade da empresa, ainda que a nuvem facilite o ajuste. A alternativa D não é um benefício da migração: usar uma única Availability Zone reduz a resiliência e não tem relação com o objetivo financeiro descrito.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/cloud-migration/"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma fabricante de autopeças tem 120 servidores on-premises executando uma aplicação monolítica em Java. A equipe de TI é pequena, o prazo para sair do data center é de quatro meses e não há orçamento para alterar o código da aplicação nesse momento. A empresa quer mover as cargas para instâncias Amazon EC2 com o mínimo de mudanças possível e só depois avaliar otimizações. Qual estratégia de migração descreve essa abordagem?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Rehost (lift and shift), movendo as aplicações para a AWS sem alterar sua arquitetura."
+        },
+        {
+          "key": "B",
+          "text": "Replatform (lift and reshape), substituindo componentes por serviços gerenciados durante a migração."
+        },
+        {
+          "key": "C",
+          "text": "Refactor, reescrevendo a aplicação monolítica em microsserviços antes da migração."
+        },
+        {
+          "key": "D",
+          "text": "Repurchase, abandonando a aplicação atual e contratando um produto SaaS equivalente."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O cenário pede prazo curto, equipe reduzida e nenhuma alteração de código, o que caracteriza o rehost: mover os servidores para a AWS, normalmente para Amazon EC2, preservando a arquitetura e adiando otimizações. Replatform envolveria trocar componentes por serviços gerenciados e exigiria ajustes na aplicação, o que contraria a restrição de não alterar código. Refactor demandaria reescrever a aplicação, inviável no prazo e no orçamento informados. Repurchase significaria substituir o sistema por um SaaS, mudança funcional e de negócio que não foi pedida.",
+      "fontes": [
+        "https://aws.amazon.com/application-migration-service/",
+        "https://docs.aws.amazon.com/mgn/latest/ug/what-is-application-migration-service.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma operadora de planos de saúde vai migrar um banco de dados Oracle que roda em um data center próprio para o Amazon Aurora PostgreSQL. A base tem cerca de 2 TB, o sistema de origem precisa continuar atendendo os usuários durante todo o projeto e as alterações feitas nele devem ser replicadas de forma contínua para o destino até o momento do cutover, com o mínimo de interrupção. Qual serviço da AWS deve ser usado para essa migração?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS DataSync, para copiar continuamente os arquivos de dados do banco entre os ambientes."
+        },
+        {
+          "key": "B",
+          "text": "AWS Snowball Edge, para transportar a base fisicamente até a Região da AWS."
+        },
+        {
+          "key": "C",
+          "text": "AWS Backup, para restaurar o banco de dados diretamente no Amazon Aurora PostgreSQL."
+        },
+        {
+          "key": "D",
+          "text": "AWS Database Migration Service (AWS DMS), para migrar os dados e replicar alterações com a origem em operação."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS DMS foi projetado para migrar bancos de dados relacionais e não relacionais mantendo a origem disponível, com replicação contínua das alterações até o cutover, que é exatamente o requisito de mínimo downtime. O AWS DataSync move arquivos e objetos, não executa replicação lógica de um banco relacional. O AWS Snowball Edge é indicado para transferência física de grandes volumes de dados, não para replicação contínua com cutover controlado. O AWS Backup cria e restaura backups, mas não mantém a origem e o destino sincronizados durante a migração.",
+      "fontes": ["https://docs.aws.amazon.com/dms/latest/userguide/Welcome.html", "https://aws.amazon.com/dms/"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco digital mantém um sistema de compensação que processa transações reguladas. Por exigência do órgão regulador, esse sistema deve continuar no data center da própria instituição por pelo menos mais 18 meses, quando a exigência será reavaliada. A empresa está migrando o restante do portfólio para a AWS, mas esse sistema não será movido agora. Qual estratégia de migração descreve corretamente a decisão tomada para esse sistema?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Retire, desativando o sistema por não gerar mais valor para o negócio."
+        },
+        {
+          "key": "B",
+          "text": "Retain, mantendo a aplicação no ambiente atual e reavaliando a migração mais tarde."
+        },
+        {
+          "key": "C",
+          "text": "Rehost, movendo o sistema para instâncias Amazon EC2 sem alterações."
+        },
+        {
+          "key": "D",
+          "text": "Repurchase, substituindo o sistema por uma solução SaaS de mercado."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Retain é a estratégia de manter a aplicação onde está, adiando a migração, o que se aplica a sistemas com restrições regulatórias ou dependências que ainda não podem ser resolvidas. Retire significaria descomissionar o sistema, mas ele continua sendo necessário e regulado. Rehost significaria movê-lo para a AWS, contrariando a exigência do regulador. Repurchase implicaria trocar o sistema por um produto SaaS, decisão que não foi tomada e que também esbarraria na exigência de permanência no data center.",
+      "fontes": [
+        "https://aws.amazon.com/cloud-migration/",
+        "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma rede de clínicas pretende migrar 200 servidores de um data center próprio para a AWS ao longo de 12 meses. A equipe quer reduzir o risco de interrupções no atendimento e evitar custos desnecessários durante o projeto. Quais duas práticas atendem a esses objetivos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Agrupar as aplicações conforme as dependências entre elas e migrar em ondas, testando cada onda antes do cutover."
+        },
+        {
+          "key": "B",
+          "text": "Migrar todos os servidores no mesmo fim de semana, para diminuir o tempo total do projeto."
+        },
+        {
+          "key": "C",
+          "text": "Refatorar todas as aplicações para microsserviços antes de iniciar a primeira migração."
+        },
+        {
+          "key": "D",
+          "text": "Usar o AWS Application Migration Service para rehospedar os servidores e validar cada aplicação migrada antes de desligar a origem."
+        },
+        {
+          "key": "E",
+          "text": "Manter indefinidamente no data center uma cópia completa de toda a capacidade já migrada."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "Migrar em ondas definidas pelas dependências entre aplicações permite validar cada grupo antes de avançar, reduzindo o risco de indisponibilidade e facilitando a correção de problemas. O AWS Application Migration Service replica servidores para a AWS e possibilita testar as instâncias migradas antes do cutover, o que também reduz risco. A migração de tudo em um único fim de semana concentra falhas e aumenta a chance de interrupção. Refatorar todo o portfólio antes de migrar eleva custo, prazo e risco, indo contra o objetivo do projeto. Manter cópia integral e permanente da capacidade antiga duplica custos sem benefício proporcional.",
+      "fontes": [
+        "https://aws.amazon.com/application-migration-service/",
+        "https://docs.aws.amazon.com/whitepapers/latest/overview-aws-cloud-adoption-framework/welcome.html"
+      ]
+    }
+  ]
+}

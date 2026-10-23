@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech Pontal vai permitir que líderes de squad criem políticas do IAM para as pessoas de seus times. A diretoria quer garantir que ninguém consiga conceder mais permissões do que o conjunto aprovado pela equipe de segurança, mesmo que a política criada pelo líder permita ações extras. Qual recurso do IAM deve ser usado como teto dessas permissões?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma service control policy (SCP) do AWS Organizations aplicada à conta de produção."
+        },
+        {
+          "key": "B",
+          "text": "Uma permissions boundary anexada às identidades do IAM que os líderes podem gerenciar."
+        },
+        {
+          "key": "C",
+          "text": "O IAM Access Analyzer com findings periódicos sobre recursos expostos."
+        },
+        {
+          "key": "D",
+          "text": "O AWS CloudTrail com uma trilha que registre todas as chamadas de API da conta."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A permissions boundary define o limite máximo de permissões de uma identidade do IAM: a permissão efetiva é a interseção entre as políticas de identidade e a boundary, então um líder não consegue ir além do teto aprovado. A alternativa A está errada porque SCPs limitam o que as contas de uma organização podem fazer, não servem como teto por identidade dentro da conta. A alternativa C está errada porque o Access Analyzer apenas identifica acessos e recursos expostos, sem bloquear permissões. A alternativa D está errada porque o CloudTrail registra chamadas de API para auditoria, mas não restringe o que é permitido.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A Distribuidora Aurora usa várias contas na AWS e quer descobrir de forma contínua quais buckets do Amazon S3, roles do IAM e outros recursos estão acessíveis a entidades fora da sua organização, por exemplo por causa de uma política de bucket pública. Qual serviço fornece esse diagnóstico de acesso externo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS CloudTrail, com trilhas em todas as contas e regiões."
+        },
+        {
+          "key": "B",
+          "text": "Amazon GuardDuty, com detecção de ameaças e comportamento anômalo."
+        },
+        {
+          "key": "C",
+          "text": "AWS Config, com regras de conformidade sobre a configuração dos recursos."
+        },
+        {
+          "key": "D",
+          "text": "IAM Access Analyzer, com findings sobre recursos compartilhados externamente."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O IAM Access Analyzer analisa políticas baseadas em recursos e gera findings quando um bucket, uma role ou outro recurso suportado pode ser acessado por uma entidade fora da zona de confiança, o que atende exatamente ao diagnóstico pedido. A alternativa A está errada porque o CloudTrail registra quem chamou qual API, sem apontar recursos acessíveis externamente. A alternativa B está errada porque o GuardDuty procura atividade maliciosa e não faz esse tipo de análise de políticas. A alternativa C está errada porque o AWS Config avalia conformidade de configuração, mas não produz o levantamento de acesso externo entre contas e recursos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A conta de analytics da varejista Cedro precisa ler, por duas horas por dia, um bucket do Amazon S3 que pertence à conta de produção. A equipe de segurança proíbe criar usuários do IAM na conta de produção e proíbe distribuir chaves de acesso de longa duração. Qual solução concede o acesso temporário com menor esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar na conta de produção uma role do IAM que confia na conta de analytics, com política de leitura do bucket, e fazer a aplicação assumir essa role usando o AWS STS."
+        },
+        {
+          "key": "B",
+          "text": "Criar um usuário do IAM na conta de produção e embutir a chave de acesso desse usuário no código da aplicação de analytics."
+        },
+        {
+          "key": "C",
+          "text": "Tornar o bucket público e restringir o acesso pelo intervalo de endereços IP da conta de analytics."
+        },
+        {
+          "key": "D",
+          "text": "Compartilhar as credenciais do usuário root da conta de produção com a equipe de analytics durante as duas horas diárias."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A role entre contas com trust policy para a conta de analytics permite que a aplicação chame o AWS STS e receba credenciais temporárias com apenas a permissão de leitura do bucket, sem usuários extras nem chaves de longa duração. A alternativa B está errada porque cria credenciais de longa duração e viola a proibição da equipe de segurança. A alternativa C está errada porque expõe o bucket publicamente e a restrição por IP não substitui o controle de identidade. A alternativa D está errada porque o usuário root não deve ser compartilhado e suas credenciais não são temporárias nem sujeitas a menor privilégio.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_aws-accounts.html",
+        "https://docs.aws.amazon.com/STS/latest/APIReference/Welcome.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "O banco regional Cordilheira exige que qualquer pessoa com permissões administrativas use autenticação multifator (MFA) para acessar o console e a API da AWS. As políticas atuais já concedem as permissões administrativas, mas a auditoria comprovou que o acesso continua funcionando sem o segundo fator. Qual mudança garante o requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar o tamanho mínimo da senha e a complexidade na política de senhas da conta."
+        },
+        {
+          "key": "B",
+          "text": "Exigir a rotação das access keys dos administradores a cada 90 dias."
+        },
+        {
+          "key": "C",
+          "text": "Adicionar uma declaração Deny nas políticas dos administradores, condicionada a aws:MultiFactorAuthPresent ser false."
+        },
+        {
+          "key": "D",
+          "text": "Habilitar o AWS CloudTrail e criar alertas para logins sem MFA."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Uma declaração Deny explícita com a condição aws:MultiFactorAuthPresent igual a false nega as ações quando a sessão não foi autenticada com MFA, e um Deny explícito prevalece sobre qualquer Allow. A alternativa A está errada porque política de senhas mais rígida não obriga o uso do segundo fator. A alternativa B está errada porque rotação de chaves não tem relação com MFA e ainda mantém credenciais de longa duração. A alternativa D está errada porque o CloudTrail e os alertas apenas detectam o acesso sem MFA depois que ele ocorreu, sem impedi-lo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A LogiPlena mantém dezenas de projetos identificados por uma tag Project e aloca engenheiros com frequência entre eles. A empresa quer que as permissões acompanhem automaticamente o projeto de cada engenheiro, sem criar uma política nova a cada realocação e sem manter um usuário do IAM por projeto. Quais duas ações são necessárias para implementar esse controle baseado em atributos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Marcar as roles ou os usuários dos engenheiros com a tag Project correspondente ao projeto atual."
+        },
+        {
+          "key": "B",
+          "text": "Criar um usuário do IAM para cada projeto e alternar as credenciais usadas pelo engenheiro."
+        },
+        {
+          "key": "C",
+          "text": "Criar um grupo do IAM por projeto e recriar as políticas sempre que alguém mudar de time."
+        },
+        {
+          "key": "D",
+          "text": "Conceder AdministratorAccess a todos e confiar na convenção de tags para evitar acessos indevidos."
+        },
+        {
+          "key": "E",
+          "text": "Escrever políticas que usem as chaves de condição aws:PrincipalTag e aws:ResourceTag para comparar a tag do principal com a do recurso."
+        }
+      ],
+      "corretas": ["A", "E"],
+      "explicacao": "No controle de acesso baseado em atributos (ABAC), a permissão é decidida comparando tags: é preciso marcar o principal (role ou usuário) com a tag Project e escrever políticas que exijam correspondência entre aws:PrincipalTag e aws:ResourceTag, de modo que a realocação exija apenas a troca da tag. A alternativa B está errada porque multiplica identidades e credenciais de longa duração, contrariando o requisito. A alternativa C está errada porque grupos e políticas recriados manualmente repetem o trabalho que o ABAC elimina. A alternativa D está errada porque conceder acesso total não é menor privilégio e a tag não bloqueia nada por si só.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html"
+      ]
+    }
+  ]
+}

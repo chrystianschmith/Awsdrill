@@ -1,0 +1,62 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma rede de farmácias mantém, no data center próprio, um banco de dados MySQL auto-gerenciado em servidores que já estão no fim da vida útil. A equipe de TI gasta boa parte do tempo aplicando patches, configurando backups e ajustando o servidor, e quer reduzir esse esforço operacional. A empresa precisa continuar usando MySQL e pretende alterar o mínimo possível do código da aplicação. Qual estratégia de migração para a AWS atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Refatorar (refactor) a aplicação para uma arquitetura de microsserviços, reescrevendo o código e o modelo de dados antes de migrar."
+        },
+        {
+          "key": "B",
+          "text": "Recolocar (rehost) o banco de dados em instâncias Amazon EC2, mantendo a instalação, o patch e o backup do MySQL sob responsabilidade da equipe."
+        },
+        {
+          "key": "C",
+          "text": "Replataformar (replatform) o banco de dados para o Amazon RDS for MySQL, mantendo o mesmo motor e transferindo a administração da infraestrutura para a AWS."
+        },
+        {
+          "key": "D",
+          "text": "Recomprar (repurchase) o sistema, substituindo a aplicação atual por uma solução SaaS de gestão farmacêutica."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A estratégia correta é replatform (replataformar), também chamada de 'lift and reshape': a aplicação continua sendo MySQL e o código muda pouco, mas o banco passa a ser operado pelo Amazon RDS, que cuida de provisionamento, patches e backups, reduzindo o esforço operacional da equipe. A não atende porque refatorar exige reescrever código e modelo de dados, o oposto de 'mínimo de alterações'. B não atende porque o rehost em Amazon EC2 manteria a equipe responsável por patches, backups e ajustes do servidor, que é justamente o que se quer eliminar. D não atende porque trocar por um SaaS substituiria a aplicação e o modelo de dados, e não apenas a plataforma de execução.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html",
+        "https://aws.amazon.com/cloud-migration/"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um escritório de contabilidade usa, no data center próprio, um sistema de folha de pagamento cuja versão não recebe mais atualizações do fornecedor. Em vez de migrar esse sistema para a AWS, a empresa decidiu contratar uma plataforma de RH na modalidade SaaS, já disponível no mercado, e desativar a aplicação atual depois da implantação. Qual estratégia de migração descreve essa decisão?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Recomprar (repurchase), substituindo a aplicação atual por uma solução SaaS."
+        },
+        {
+          "key": "B",
+          "text": "Recolocar (rehost), movendo o sistema para instâncias Amazon EC2 sem alterações."
+        },
+        {
+          "key": "C",
+          "text": "Reter (retain), mantendo o sistema no data center até o fim do contrato."
+        },
+        {
+          "key": "D",
+          "text": "Replataformar (replatform), migrando o sistema para um serviço gerenciado e mantendo o mesmo código."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Recomprar (repurchase, ou 'drop and shop') é a estratégia em que a empresa abandona a aplicação atual e passa a usar uma solução de mercado, normalmente SaaS — exatamente o que o escritório decidiu ao contratar a plataforma de RH. Recolocar (B) manteria a aplicação como está, apenas executando em Amazon EC2. Reter (C) significaria continuar com o sistema no data center, mas a empresa decidiu desativá-lo após a implantação. Replataformar (D) pressupõe manter a mesma aplicação e mudar apenas a plataforma de execução, o que não acontece quando se adota um produto SaaS diferente.",
+      "fontes": ["https://aws.amazon.com/cloud-migration/"]
+    }
+  ]
+}

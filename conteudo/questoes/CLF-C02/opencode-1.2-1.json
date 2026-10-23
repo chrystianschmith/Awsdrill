@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A transportadora Rota Clara opera um portal de rastreamento em servidores próprios. A equipe compra servidores com base em estimativas e, a cada fim de ano, sobra capacidade ociosa; durante campanhas, o portal fica lento. A empresa quer que o ambiente acompanhe a demanda real, sem provisionar para o pior cenário. Qual princípio de design da Nuvem AWS orienta essa mudança?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Implementar uma base de identidade forte, concedendo privilégio mínimo a todos os operadores."
+        },
+        {
+          "key": "B",
+          "text": "Parar de adivinhar a capacidade e ajustar os recursos com base na demanda observada."
+        },
+        {
+          "key": "C",
+          "text": "Ir para a escala global em minutos, replicando o portal em várias regiões."
+        },
+        {
+          "key": "D",
+          "text": "Analisar e atribuir os gastos de nuvem por equipe e por produto."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: parar de adivinhar a capacidade é um princípio de design da AWS que recomenda dimensionar os recursos a partir da demanda real, usando métricas e automação, em vez de comprar hardware para o pior cenário. A não atende porque uma base de identidade forte é um princípio do pilar de segurança e trata de autorização e privilégio mínimo, não de capacidade. C não atende porque a escala global em minutos é um princípio de alcance global e latência, não de ajuste de capacidade. D não atende porque analisar e atribuir gastos traz visibilidade de custos, mas não faz o ambiente acompanhar a demanda.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech Ponto Certo quer que o serviço de pagamentos continue operando quando uma instância falhar, recupere-se automaticamente e distribua a carga entre vários nós. Qual pilar do AWS Well-Architected Framework trata diretamente desses objetivos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Excelência operacional"
+        },
+        {
+          "key": "B",
+          "text": "Segurança"
+        },
+        {
+          "key": "C",
+          "text": "Otimização de custos"
+        },
+        {
+          "key": "D",
+          "text": "Confiabilidade"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: o pilar de confiabilidade trata da capacidade de uma carga de trabalho executar sua função corretamente e de forma consistente, recuperar-se de falhas e escalar horizontalmente para manter a disponibilidade. A não atende porque excelência operacional cuida de executar, monitorar e melhorar processos e operações, não é o pilar focado em recuperação de falhas e disponibilidade. B não atende porque segurança protege dados, identidades e sistemas contra acesso indevido. C não atende porque otimização de custos busca evitar gastos desnecessários, sem garantir recuperação automática.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A loja virtual Verde Mar tem um sistema monolítico em que o checkout chama, na mesma requisição, o serviço de estoque e o de pagamento. Quando o estoque fica lento, todo o checkout falha. A equipe quer que uma falha em um componente não derrube os demais e que cada parte possa evoluir de forma independente. Qual princípio de design da AWS atende a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Desacoplar os componentes, para que as interações ocorram por meio de interfaces bem definidas e falhas não se propaguem em cascata."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar segurança em todas as camadas, com firewalls e criptografia em cada componente."
+        },
+        {
+          "key": "C",
+          "text": "Parar de gastar dinheiro em trabalho indiferenciado, usando serviços gerenciados para todas as funções."
+        },
+        {
+          "key": "D",
+          "text": "Ir para a escala global em minutos, implantando o checkout em várias regiões."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: o acoplamento frouxo (loose coupling) é um princípio de design que recomenda componentes com interfaces bem definidas e independência entre si, para que a lentidão ou a falha de um não interrompa os demais. B não atende porque segurança em todas as camadas protege contra ameaças, mas não evita que uma falha de disponibilidade se propague entre chamadas síncronas. C não atende porque reduzir trabalho indiferenciado é um princípio de otimização de custos e não resolve o encadeamento de falhas. D não atende porque replicar em várias regiões aumenta alcance e tolerância a desastres, mas mantém o acoplamento síncrono dentro de cada região.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa de mídia Cena Aberta tem três produtos digitais e não sabe qual deles consome a maior parte do gasto de nuvem. A liderança quer que cada equipe veja o custo dos recursos que usa e responda por ele, para decidir onde investir. Qual princípio de design do AWS Well-Architected Framework está mais alinhado a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Executar operações como código, automatizando a criação e a alteração de recursos."
+        },
+        {
+          "key": "B",
+          "text": "Fazer mudanças pequenas e frequentes, que possam ser revertidas com facilidade."
+        },
+        {
+          "key": "C",
+          "text": "Analisar e atribuir os gastos, criando conscientização sobre custos nas equipes."
+        },
+        {
+          "key": "D",
+          "text": "Testar procedimentos de recuperação de falhas regularmente."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: analisar e atribuir a despesa é um princípio de design do pilar de otimização de custos que torna o consumo visível por equipe ou produto e permite decisões informadas sobre onde investir. A não atende porque operações como código é um princípio de excelência operacional ligado à automação de processos. B não atende porque mudanças pequenas e reversíveis também pertencem à excelência operacional e reduzem risco de alteração, não dão visibilidade de custos. D não atende porque testar recuperação é um princípio de confiabilidade, voltado à resiliência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma equipe de plataforma quer adotar práticas do pilar de excelência operacional do AWS Well-Architected Framework. Quais duas práticas são princípios de design desse pilar? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Recuperar-se automaticamente de falhas, sem intervenção manual."
+        },
+        {
+          "key": "B",
+          "text": "Executar operações como código e versionar os procedimentos."
+        },
+        {
+          "key": "C",
+          "text": "Ir para a escala global em minutos, aproximando a aplicação dos usuários."
+        },
+        {
+          "key": "D",
+          "text": "Implementar uma base de identidade forte e aplicar privilégio mínimo."
+        },
+        {
+          "key": "E",
+          "text": "Fazer mudanças pequenas e frequentes, que possam ser revertidas com facilidade."
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "B e E são as corretas: executar operações como código e fazer mudanças pequenas, frequentes e reversíveis são princípios de design do pilar de excelência operacional, que busca automatizar processos, reduzir risco e melhorar continuamente a operação. A não atende porque recuperar-se automaticamente de falhas é um princípio do pilar de confiabilidade. C não atende porque ir para a escala global em minutos é um princípio do pilar de eficiência de desempenho. D não atende porque uma base de identidade forte com privilégio mínimo pertence ao pilar de segurança.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    }
+  ]
+}

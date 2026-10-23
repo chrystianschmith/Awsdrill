@@ -1,0 +1,123 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Clínica VidaLonga opera um portal de agendamentos em uma única Availability Zone da Região de São Paulo. Depois de uma falha de energia que derrubou o data center dessa zona, o portal ficou horas indisponível. A empresa quer que o portal continue no ar mesmo se uma única zona falhar, mantendo a operação na mesma Região por exigência contratual. Qual mudança atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Contratar instâncias maiores na mesma Availability Zone para absorver picos de carga."
+        },
+        {
+          "key": "B",
+          "text": "Distribuir os recursos em pelo menos duas Availability Zones da mesma Região, atrás de um load balancer."
+        },
+        {
+          "key": "C",
+          "text": "Publicar o portal por meio de edge locations do Amazon CloudFront."
+        },
+        {
+          "key": "D",
+          "text": "Mover o banco de dados para uma Local Zone na cidade da clínica."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "As Availability Zones de uma Região são isoladas fisicamente umas das outras, com energia, refrigeração e rede independentes, e interligadas por links de baixa latência. Colocar os recursos em duas ou mais zonas, com um load balancer distribuindo o tráfego, mantém o portal disponível quando uma zona falha, sem sair da Região exigida pelo contrato. A alternativa A não resolve nada: uma instância maior continua no mesmo data center e cai junto com ele. A C usa edge locations, que fazem cache de conteúdo para reduzir latência, mas não tornam a origem do portal redundante. A D também não atende: uma Local Zone amplia a presença da AWS para perto de uma área metropolitana, mas é uma única extensão de zona e não oferece tolerância à falha de uma zona inteira.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html",
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um arquiteto está documentando o desenho da infraestrutura global da AWS para uma equipe nova. Qual afirmação descreve corretamente uma Availability Zone?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um local de cache usado pelo Amazon CloudFront para entregar conteúdo com baixa latência aos usuários."
+        },
+        {
+          "key": "B",
+          "text": "Uma conta da AWS separada, dedicada a um único cliente, com limites de serviço próprios."
+        },
+        {
+          "key": "C",
+          "text": "Um local físico onde o hardware da AWS é instalado dentro do data center do próprio cliente."
+        },
+        {
+          "key": "D",
+          "text": "Um ou mais data centers distintos, com energia, rede e conectividade redundantes, isolados de outras zonas da mesma Região."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Uma Availability Zone é formada por um ou mais data centers distintos, cada um com energia, rede e conectividade redundantes, e é isolada fisicamente das demais zonas da mesma Região, embora conectada a elas por links de baixa latência. A alternativa A descreve uma edge location, usada por serviços como o CloudFront para cache de conteúdo. A B não corresponde a nenhum componente da infraestrutura global; contas da AWS são limites administrativos e de cobrança. A C descreve o AWS Outposts, que leva hardware e serviços da AWS para o data center do cliente.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html",
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Rede Notícia Brasil distribui vídeos e imagens para assinantes em vários continentes. O conteúdo original fica em um bucket do Amazon S3 na Região de São Paulo, e a maior parte dos acessos vem da América do Norte e da Europa. Para reduzir a latência de entrega sem replicar a aplicação de origem em outras Regiões, qual componente da infraestrutura global da AWS a empresa deve usar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma Local Zone em cada país onde houver assinantes."
+        },
+        {
+          "key": "B",
+          "text": "AWS Outposts instalados nos escritórios dos assinantes corporativos."
+        },
+        {
+          "key": "C",
+          "text": "Edge locations, por meio do Amazon CloudFront."
+        },
+        {
+          "key": "D",
+          "text": "Availability Zones adicionais na mesma Região da origem."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "As edge locations são os pontos de presença distribuídos globalmente que o Amazon CloudFront usa para manter cópias em cache do conteúdo perto dos usuários, reduzindo a latência sem exigir uma nova origem em cada continente. A alternativa A não é adequada: Local Zones são extensões de uma Região em áreas metropolitanas específicas, voltadas a cargas de computação de baixa latência, e não a cache global de conteúdo. A B também não se aplica: Outposts leva hardware da AWS ao data center do cliente, o que não ajuda espectadores espalhados pelo mundo. A D não reduz a latência internacional, porque zonas adicionais ficam dentro da mesma Região da origem e o tráfego continua cruzando continentes.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html",
+        "https://aws.amazon.com/cloudfront/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de pagamentos precisa que todos os dados de seus clientes brasileiros permaneçam armazenados no Brasil e que a aplicação use serviços gerenciados como Amazon RDS e Amazon DynamoDB. Qual decisão de infraestrutura global atende diretamente a essa exigência regulatória?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Implantar a aplicação na Região da América do Sul (São Paulo), que oferece esses serviços dentro do território brasileiro."
+        },
+        {
+          "key": "B",
+          "text": "Usar edge locations no Brasil para armazenar os dados dos clientes."
+        },
+        {
+          "key": "C",
+          "text": "Manter o banco de dados em outra Região e criar uma VPC apenas para o tráfego brasileiro."
+        },
+        {
+          "key": "D",
+          "text": "Habilitar AWS Outposts em um data center nos Estados Unidos e acessá-lo a partir de São Paulo."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A escolha da Região é o que define onde os dados ficam armazenados e quais serviços estão disponíveis. A Região da América do Sul (São Paulo) permite executar Amazon RDS, Amazon DynamoDB e a aplicação dentro do Brasil, atendendo à exigência de residência de dados. A alternativa B confunde edge location com armazenamento de dados de clientes: esses pontos de presença servem para cache de conteúdo e não substituem bancos de dados regionais. A C mantém o banco fora do país, violando a exigência. A D coloca o hardware nos Estados Unidos, o que também mantém os dados fora do Brasil e ainda adiciona dependência de rede internacional.",
+      "fontes": [
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html"
+      ]
+    }
+  ]
+}

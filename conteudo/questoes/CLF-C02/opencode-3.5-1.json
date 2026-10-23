@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de engenharia tem um data center em Campinas e precisa transferir, todos os dias, grandes volumes de dados para o Amazon S3 em uma região da AWS. A equipe quer uma conexão privada e dedicada, que não passe pela internet pública, com largura de banda estável e previsível. Qual serviço da AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Site-to-Site VPN"
+        },
+        {
+          "key": "B",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "C",
+          "text": "AWS Transit Gateway"
+        },
+        {
+          "key": "D",
+          "text": "AWS Direct Connect"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Direct Connect estabelece uma conexão de fibra dedicada entre o data center e a AWS, fora da internet pública, com largura de banda estável e previsível — exatamente o que a transferência diária de grandes volumes para o Amazon S3 exige. O AWS Site-to-Site VPN cria um túnel IPsec criptografado, mas o tráfego passa pela internet pública e a largura de banda varia conforme a rede, o que não atende ao requisito de conexão dedicada e previsível. O Amazon CloudFront é uma rede de entrega de conteúdo que faz cache de conteúdo próximo aos usuários; não é um link privado entre um data center e a AWS. O AWS Transit Gateway é um hub gerenciado que interconecta VPCs, VPNs e conexões Direct Connect, mas não fornece por si só o enlace físico privado até a AWS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html",
+        "https://aws.amazon.com/directconnect/"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa executa servidores de aplicação em sub-redes privadas de uma VPC. As instâncias precisam baixar atualizações de segurança da internet, mas não podem receber conexões iniciadas pela internet. Qual componente permite esse acesso somente de saída?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um Internet Gateway anexado à VPC"
+        },
+        {
+          "key": "B",
+          "text": "Um NAT Gateway em uma sub-rede pública"
+        },
+        {
+          "key": "C",
+          "text": "Um gateway endpoint de VPC para o Amazon S3"
+        },
+        {
+          "key": "D",
+          "text": "Uma conexão AWS Direct Connect"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O NAT Gateway permite que instâncias em sub-redes privadas iniciem tráfego de saída para a internet e recebam apenas as respostas, sem aceitar conexões iniciadas de fora, que é o comportamento pedido para baixar atualizações. O Internet Gateway conecta a VPC à internet, mas, sozinho, não dá saída a instâncias com endereço IP privado; para usá-lo diretamente seria necessário endereço público e rota, expondo as instâncias. O gateway endpoint de VPC para o Amazon S3 dá acesso privado apenas ao S3 (e a serviços compatíveis), não a servidores genéricos de atualização na internet. Uma conexão AWS Direct Connect liga o ambiente ao data center da empresa, não à internet pública.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html",
+        "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de jogos online hospeda servidores em us-east-1 e eu-central-1. Os jogadores se conectam por UDP e precisam de endereços IP estáticos que não mudem, além de failover rápido para a outra região quando houver problema. A empresa não quer depender de cache de DNS nem de TTL. Qual serviço atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Global Accelerator"
+        },
+        {
+          "key": "B",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "C",
+          "text": "Application Load Balancer"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Route 53 com política de latência"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Global Accelerator fornece endereços IP anycast estáticos e encaminha tráfego TCP e UDP pela rede global da AWS até o endpoint de melhor desempenho, com failover rápido baseado em health checks e sem depender de cache de DNS, o que atende ao cenário de jogos. O Amazon CloudFront é uma CDN voltada a conteúdo HTTP e HTTPS, não a tráfego UDP arbitrário, e não entrega IPs anycast estáticos para esse fim. O Application Load Balancer atua na camada 7, é regional e não oferece IPs globais estáticos com failover entre regiões. O Amazon Route 53 com política de latência responde consultas DNS conforme a latência, mas a seleção fica sujeita ao cache e ao TTL dos resolvedores e não fornece IPs estáticos nem failover imediato para sessões UDP.",
+      "fontes": [
+        "https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html",
+        "https://aws.amazon.com/global-accelerator/"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma instância EC2 em uma VPC precisa aceitar apenas conexões HTTPS (porta 443) vindas de um intervalo de IP específico da empresa, e o tráfego de resposta deve ser liberado automaticamente. O controle deve ser aplicado no nível da instância, com regras apenas de permissão. Qual recurso usar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Network ACL da sub-rede"
+        },
+        {
+          "key": "B",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "C",
+          "text": "Security group"
+        },
+        {
+          "key": "D",
+          "text": "AWS Shield Advanced"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O security group é aplicado no nível da instância (interface de rede), é stateful e permite apenas regras de permissão; ao liberar a porta 443 para o intervalo da empresa, o tráfego de retorno é liberado automaticamente, sem regra adicional. A network ACL atua no nível da sub-rede, é stateless e exige regras explícitas de entrada e saída, incluindo portas efêmeras para o retorno, além de permitir regras de negação. O AWS WAF filtra requisições HTTP na camada 7 e é associado a serviços como CloudFront, Application Load Balancer e API Gateway, não ao controle de porta de uma instância. O AWS Shield Advanced protege contra ataques DDoS, mas não substitui regras de permissão de porta por origem.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html",
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um grupo com 30 VPCs em várias contas e um data center próprio quer centralizar o roteamento entre todas as redes em um único ponto gerenciado, sem criar uma malha de conexões ponto a ponto. Além disso, precisa disponibilizar um serviço interno a consumidores em outras VPCs por meio de um endpoint privado, sem expor o serviço à internet. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "VPC peering"
+        },
+        {
+          "key": "B",
+          "text": "AWS Transit Gateway"
+        },
+        {
+          "key": "C",
+          "text": "Internet Gateway"
+        },
+        {
+          "key": "D",
+          "text": "AWS PrivateLink"
+        },
+        {
+          "key": "E",
+          "text": "AWS Site-to-Site VPN"
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "O AWS Transit Gateway atua como um hub gerenciado que conecta VPCs, VPNs e conexões Direct Connect em topologia hub-and-spoke, evitando a malha de conexões ponto a ponto entre 30 VPCs. O AWS PrivateLink expõe um serviço por meio de um endpoint privado (interface VPC endpoint), permitindo que consumidores em outras VPCs o acessem sem passar pela internet pública. O VPC peering é ponto a ponto e não é transitivo, portanto conectar 30 VPCs exigiria muitas conexões e roteamento manual, contrariando o requisito de um único ponto central. O Internet Gateway conecta a VPC à internet pública, exatamente o que o cenário quer evitar. O AWS Site-to-Site VPN liga o data center a uma VPC por um túnel criptografado na internet; sozinho, não centraliza o roteamento entre dezenas de VPCs nem publica um serviço de forma privada para outras VPCs.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html",
+        "https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"
+      ]
+    }
+  ]
+}

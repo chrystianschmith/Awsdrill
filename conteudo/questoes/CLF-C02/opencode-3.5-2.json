@@ -1,0 +1,157 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma produtora de conteúdo educativo armazena videoaulas e imagens em um bucket do Amazon S3 na região us-east-1. Os assinantes estão no Brasil, na Europa e no Japão e relatam lentidão para carregar as aulas. A empresa quer entregar esse conteúdo a partir de pontos próximos dos usuários, reduzir a latência e manter o bucket privado, liberando o acesso apenas por URLs assinadas. Qual serviço da AWS atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Route 53 com política de roteamento por latência"
+        },
+        {
+          "key": "B",
+          "text": "AWS Global Accelerator"
+        },
+        {
+          "key": "C",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "D",
+          "text": "AWS Direct Connect"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon CloudFront é a rede de entrega de conteúdo (CDN) da AWS: mantém cópias dos objetos em pontos de presença próximos dos usuários, reduzindo a latência, e suporta URLs e cookies assinados para que o bucket do Amazon S3 permaneça privado. A alternativa A está errada porque o Route 53 apenas resolve nomes de DNS; ele pode direcionar o usuário para uma região, mas não armazena conteúdo em cache na borda. A alternativa B está errada porque o AWS Global Accelerator otimiza o caminho de rede para tráfego TCP e UDP, sem fazer cache de conteúdo. A alternativa D está errada porque o AWS Direct Connect é uma conexão privada e dedicada entre a rede da empresa e a AWS, não um mecanismo de distribuição para assinantes na internet.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html",
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PrivateContent.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Dois times de uma empresa de logística mantêm aplicações em VPCs separadas, uma em cada conta da AWS, na mesma região. As instâncias das duas VPCs precisam se comunicar por endereços IP privados, com o tráfego permanecendo na rede da AWS e sem depender de um appliance central. Não há necessidade de roteamento transitivo para uma terceira VPC. Qual solução permite essa comunicação direta entre as duas VPCs?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "VPC peering"
+        },
+        {
+          "key": "B",
+          "text": "AWS PrivateLink"
+        },
+        {
+          "key": "C",
+          "text": "AWS Site-to-Site VPN"
+        },
+        {
+          "key": "D",
+          "text": "Internet Gateway"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O VPC peering cria uma conexão de rede direta entre duas VPCs, inclusive de contas diferentes na mesma região, permitindo que as instâncias se comuniquem por IP privado enquanto o tráfego permanece na rede da AWS. A alternativa B está errada porque o AWS PrivateLink expõe um serviço específico por meio de um endpoint privado, não fornece roteamento livre entre todas as instâncias das duas VPCs. A alternativa C está errada porque o AWS Site-to-Site VPN conecta uma rede local a uma VPC por um túnel criptografado sobre a internet, o que não é o caso de duas VPCs. A alternativa D está errada porque o Internet Gateway conecta a VPC à internet pública, exigindo endereços IP públicos e expondo o tráfego.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html",
+        "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de reservas de viagens tem duas pilhas idênticas da aplicação, uma em us-east-1 e outra em eu-west-1, e usuários espalhados pelo mundo. A empresa quer encaminhar cada usuário para a região que oferecer a menor latência de rede no momento da consulta e retirar automaticamente do DNS uma região que falhar nos health checks. Qual política de roteamento do Amazon Route 53 atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Roteamento ponderado (weighted)"
+        },
+        {
+          "key": "B",
+          "text": "Roteamento por latência (latency)"
+        },
+        {
+          "key": "C",
+          "text": "Roteamento por geolocalização (geolocation)"
+        },
+        {
+          "key": "D",
+          "text": "Roteamento de failover"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O roteamento por latência responde com o registro da região que apresenta a menor latência medida entre os resolvedores DNS dos usuários e os endpoints da AWS, e pode ser combinado com health checks para que uma região com falha deixe de ser retornada. A alternativa A está errada porque o roteamento ponderado distribui a proporção de tráfego conforme pesos definidos, sem considerar a latência real. A alternativa C está errada porque o roteamento por geolocalização decide pelo local do usuário, o que não garante a menor latência e pode enviar todos os usuários de um país para a mesma região. A alternativa D está errada porque o failover atende apenas cenários ativo-passivo, com um destino primário e um secundário, e não escolhe a região mais próxima entre várias.",
+      "fontes": [
+        "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html",
+        "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de consultoria tem funcionários que trabalham remotamente e precisam acessar, pelo notebook corporativo, instâncias e bancos de dados em sub-redes privadas de uma VPC. Cada usuário deve se autenticar individualmente, e a empresa não quer instalar equipamentos de rede na casa dos funcionários nem expor esses recursos à internet. Qual serviço da AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Site-to-Site VPN"
+        },
+        {
+          "key": "B",
+          "text": "AWS Direct Connect"
+        },
+        {
+          "key": "C",
+          "text": "VPC peering"
+        },
+        {
+          "key": "D",
+          "text": "AWS Client VPN"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Client VPN é o serviço gerenciado de VPN de acesso remoto: cada usuário conecta o próprio dispositivo por um cliente VPN e se autentica, obtendo acesso aos recursos privados da VPC sem expô-los à internet. A alternativa A está errada porque o AWS Site-to-Site VPN interliga redes inteiras e exige um dispositivo de gateway na rede local, não conexões individuais de notebooks. A alternativa B está errada porque o AWS Direct Connect é um link físico dedicado entre um data center e a AWS, inviável para funcionários em locais variados. A alternativa C está errada porque o VPC peering conecta VPCs entre si, e não usuários remotos aos recursos da VPC.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/what-is.html",
+        "https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa de jogos eletrônicos vai lançar dois serviços na AWS. O primeiro é um jogo multiplayer que usa UDP, recebe milhões de conexões por segundo e precisa preservar o endereço IP de origem do jogador para controles antifraude. O segundo é uma API HTTP usada pelo site da empresa, que precisa encerrar TLS e encaminhar as requisições para grupos de destino diferentes conforme o caminho da URL. A empresa quer usar load balancers gerenciados, um para cada serviço. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Classic Load Balancer"
+        },
+        {
+          "key": "B",
+          "text": "Network Load Balancer"
+        },
+        {
+          "key": "C",
+          "text": "Gateway Load Balancer"
+        },
+        {
+          "key": "D",
+          "text": "Application Load Balancer"
+        },
+        {
+          "key": "E",
+          "text": "Amazon Route 53 com registros multivalor"
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "O Network Load Balancer opera na camada 4 e suporta tráfego UDP em altíssimo volume, mantendo o endereço IP de origem visível para a aplicação, o que atende ao jogo. O Application Load Balancer opera na camada 7, termina TLS e permite rotear por caminho de URL ou host, o que atende à API HTTP. A alternativa A está errada porque o Classic Load Balancer é legado, não suporta UDP e não oferece roteamento por caminho. A alternativa C está errada porque o Gateway Load Balancer distribui tráfego para appliances virtuais de terceiros, como firewalls, e não para os serviços descritos. A alternativa E está errada porque o Route 53 é um serviço de DNS: registros multivalor retornam vários endereços, mas não balanceiam conexões UDP nem encerram TLS ou roteiam por URL.",
+      "fontes": [
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/load-balancer-types.html",
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html",
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html"
+      ]
+    }
+  ]
+}
