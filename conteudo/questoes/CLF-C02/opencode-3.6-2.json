@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa executa um banco de dados relacional em uma única instância Amazon EC2. O time precisa de armazenamento em nível de bloco, com baixa latência, que sobreviva à parada e ao encerramento da instância e possa ser reanexado a outra instância na mesma Availability Zone. Qual serviço atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon S3, usando um bucket dedicado para os arquivos de dados do banco"
+        },
+        {
+          "key": "B",
+          "text": "Amazon EFS, montado como sistema de arquivos compartilhado na instância"
+        },
+        {
+          "key": "C",
+          "text": "Amazon EBS, com volume anexado à instância e snapshots para backup"
+        },
+        {
+          "key": "D",
+          "text": "Instance store volumes anexados diretamente ao host da instância"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon EBS oferece volumes em nível de bloco, com baixa latência, cujo ciclo de vida é independente da instância: o volume e seus dados permanecem após stop ou terminate e podem ser anexados a outra instância na mesma Availability Zone, além de gerar snapshots para backup e recuperação. O Amazon S3 é armazenamento de objetos acessado por API HTTP, não um dispositivo de bloco anexável ao sistema operacional para os arquivos de dados de um banco relacional. O Amazon EFS é armazenamento de arquivos (NFS) compartilhado entre várias instâncias, com características de latência e semântica diferentes das de um volume de bloco dedicado. Instance store volumes são armazenamento temporário gravado no host: os dados são perdidos quando a instância é interrompida ou encerrada, o que contraria o requisito de persistência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/ebs/latest/userguide/what-is-ebs.html",
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de pesquisa executa jobs de processamento paralelo em instâncias Amazon EC2 que gravam arquivos temporários de rascunho, usados apenas enquanto o job está em execução. A equipe quer o maior desempenho de I/O possível a baixo custo e aceita perder esses arquivos caso a instância seja interrompida. Qual opção de armazenamento é a mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Instance store volumes anexados à instância"
+        },
+        {
+          "key": "B",
+          "text": "Volumes Amazon EBS io2 anexados à instância"
+        },
+        {
+          "key": "C",
+          "text": "Um bucket do Amazon S3 Standard acessado pela API"
+        },
+        {
+          "key": "D",
+          "text": "Um sistema de arquivos Amazon EFS montado na instância"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Instance store fornece armazenamento temporário em nível de bloco fisicamente conectado ao host da instância, entregando a maior performance de I/O com menor latência e custo para dados descartáveis — exatamente o caso dos arquivos de rascunho, cuja perda é aceitável. Volumes Amazon EBS io2 também são rápidos, porém são armazenamento de rede com durabilidade e custo mais altos do que o necessário para dados efêmeros. O Amazon S3 é armazenamento de objetos, acessado por API HTTP, e não se comporta como um disco local de altíssimo IOPS para arquivos temporários. O Amazon EFS é um sistema de arquivos compartilhado via rede, com latência maior que a de um volume local e cobrança por dados armazenados, sendo uma escolha ruim para scratch temporário.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html",
+        "https://docs.aws.amazon.com/ebs/latest/userguide/what-is-ebs.html"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de desenvolvimento guarda no Amazon S3 cópias de backup de ambientes de teste que podem ser recriadas a qualquer momento a partir dos dados de produção. Esses backups são lidos poucas vezes por trimestre, mas, quando necessários, precisam estar disponíveis em milissegundos. Para reduzir custos, a empresa aceita que os dados fiquem em uma única Availability Zone. Qual classe de armazenamento do Amazon S3 é a mais indicada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "S3 Standard"
+        },
+        {
+          "key": "B",
+          "text": "S3 Glacier Flexible Retrieval"
+        },
+        {
+          "key": "C",
+          "text": "S3 Intelligent-Tiering"
+        },
+        {
+          "key": "D",
+          "text": "S3 One Zone-IA"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O S3 One Zone-IA (Infrequent Access) é voltado a dados acessados com pouca frequência que precisam de acesso imediato em milissegundos e que podem ser recriados se a Availability Zone for perdida, pois armazena os objetos em uma única zona — o que reduz o custo em relação às classes multi-AZ. O S3 Standard mantém várias cópias em múltiplas zonas e tem custo maior, desnecessário para dados recriáveis e pouco acessados. O S3 Glacier Flexible Retrieval tem custo baixo, mas os tempos de recuperação variam de minutos a horas, incompatíveis com a necessidade de acesso em milissegundos. O S3 Intelligent-Tiering reduz custo ao mover objetos entre camadas conforme o padrão de acesso, porém mantém redundância em várias zonas e adiciona cobrança de monitoramento, não sendo a opção de menor custo para dados explicitamente recriáveis e de uma única zona.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+        "https://aws.amazon.com/s3/storage-classes/"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa faz backup de servidores on-premises em uma biblioteca de fitas físicas, usando um software de backup que grava diretamente em fitas. A empresa quer eliminar o hardware de fitas e a logística de transporte, mantendo o software atual e enviando as fitas virtuais já arquivadas para uma camada de baixo custo na nuvem. Qual solução da AWS atende a esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Snowball Edge Storage Optimized"
+        },
+        {
+          "key": "B",
+          "text": "AWS Storage Gateway Tape Gateway"
+        },
+        {
+          "key": "C",
+          "text": "AWS Storage Gateway File Gateway"
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Tape Gateway é a opção de AWS Storage Gateway que apresenta uma biblioteca de fitas virtual ao software de backup existente por meio das interfaces iSCSI VTL, sem exigir mudanças na ferramenta de backup. As fitas virtuais ficam no Amazon S3 e podem ser arquivadas no Amazon S3 Glacier ou no S3 Glacier Deep Archive, eliminando fitas físicas e transporte off-site. O Snowball Edge é um dispositivo de transferência de dados usado para migrações e processamento na borda, não para substituir uma biblioteca de fitas com acesso contínuo do software de backup. O File Gateway expõe compartilhamentos de arquivos (NFS/SMB) com cache local e não emula uma biblioteca de fitas para softwares de backup. O Amazon FSx for Windows File Server é um sistema de arquivos SMB gerenciado para cargas Windows, não uma solução de fitas virtuais.",
+      "fontes": [
+        "https://docs.aws.amazon.com/storagegateway/latest/tgw/WhatIsStorageGateway.html",
+        "https://aws.amazon.com/storagegateway/tape/"
+      ]
+    },
+    {
+      "dominio": "3.6",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um arquiteto está avaliando a resiliência dos serviços de armazenamento da AWS e precisa identificar quais opções, na configuração padrão, mantêm os dados replicados em várias Availability Zones, de modo que a perda de uma zona não interrompa o acesso. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Volumes Amazon EBS gp3 anexados a uma instância EC2"
+        },
+        {
+          "key": "B",
+          "text": "Objetos armazenados no Amazon S3 na classe S3 Standard"
+        },
+        {
+          "key": "C",
+          "text": "Instance store volumes de uma instância EC2"
+        },
+        {
+          "key": "D",
+          "text": "Sistemas de arquivos Amazon EFS criados na classe de armazenamento Standard"
+        },
+        {
+          "key": "E",
+          "text": "Objetos armazenados no Amazon S3 na classe S3 One Zone-IA"
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "O Amazon S3, nas classes que não são de uma única zona, armazena automaticamente cópias de cada objeto em várias Availability Zones dentro da Região, mantendo a durabilidade e a disponibilidade mesmo com a perda de uma zona. O Amazon EFS na classe Standard também distribui os dados de forma redundante entre várias Availability Zones, o que mantém o sistema de arquivos acessível se uma zona falhar. Volumes Amazon EBS são específicos de uma única Availability Zone: ficam presos à zona onde foram criados e exigem snapshots para serem recriados em outra zona. Instance store volumes residem no host físico da instância, sem redundância entre zonas, e ainda perdem os dados quando a instância é interrompida ou encerrada. O S3 One Zone-IA armazena os objetos em apenas uma Availability Zone por definição, sendo indicado somente para dados recriáveis.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/DataDurability.html",
+        "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html"
+      ]
+    }
+  ]
+}

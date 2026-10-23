@@ -1,0 +1,161 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.8",
+      "tipo": "SINGLE",
+      "enunciado": "Uma varejista recebe pedidos por um portal web e os processa em um conjunto de workers. Durante promoções, o volume de pedidos cresce muito em poucos minutos e os workers às vezes ficam indisponíveis por manutenção. A empresa precisa desacoplar o recebimento do processamento, guardar os pedidos até que os workers possam consumi-los e evitar administrar um broker de mensagens. Qual serviço atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Simple Notification Service (Amazon SNS)"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Simple Queue Service (Amazon SQS)"
+        },
+        {
+          "key": "C",
+          "text": "Amazon EventBridge"
+        },
+        {
+          "key": "D",
+          "text": "AWS Step Functions"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon SQS é um serviço de filas gerenciado: o portal grava cada pedido na fila e os workers o retiram no ritmo que conseguirem, sem perder mensagens enquanto estiverem fora do ar. A fila absorve picos de tráfego e retém as mensagens por até 14 dias, sem broker para administrar. A alternativa A está errada porque o SNS é um serviço de publicação e assinatura que envia notificações a assinantes assim que a mensagem chega; ele não funciona como fila de espera com acúmulo de mensagens para um consumidor que está indisponível. A C está errada porque o EventBridge roteia eventos para destinos com base em regras, sem oferecer o enfileiramento e a retenção de um backlog por consumidor. A D está errada porque o Step Functions orquestra etapas de um fluxo de trabalho com máquina de estados, o que não resolve o desacoplamento por buffer entre produtor e consumidor.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
+        "https://docs.aws.amazon.com/sns/latest/dg/welcome.html",
+        "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html"
+      ]
+    },
+    {
+      "dominio": "3.8",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de desenvolvimento precisa que, a cada envio de código ao repositório, sejam compilados os fontes, executados testes automatizados e gerada uma imagem de contêiner. O processo deve rodar em ambiente gerenciado, sem servidores de build mantidos pela equipe, e o resultado precisa ficar disponível para a etapa seguinte da entrega. Qual serviço executa essa etapa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS CodePipeline"
+        },
+        {
+          "key": "B",
+          "text": "AWS CodeDeploy"
+        },
+        {
+          "key": "C",
+          "text": "AWS Cloud9"
+        },
+        {
+          "key": "D",
+          "text": "AWS CodeBuild"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS CodeBuild é o serviço de build totalmente gerenciado: recebe o código, executa comandos de compilação e testes em contêineres provisionados sob demanda e produz artefatos, como uma imagem de contêiner, sem que a equipe mantenha servidores de build. A alternativa A está errada porque o CodePipeline orquestra as fases do pipeline e chama ferramentas como o CodeBuild para executar cada etapa; ele não compila nem testa o código por si. A B está errada porque o CodeDeploy automatiza a implantação de aplicações em instâncias, contêineres ou funções, não a compilação e os testes. A C está errada porque o Cloud9 é um ambiente de desenvolvimento integrado baseado em navegador, usado para escrever código, e não um serviço de integração contínua.",
+      "fontes": [
+        "https://docs.aws.amazon.com/codebuild/latest/userguide/welcome.html",
+        "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html",
+        "https://docs.aws.amazon.com/codedeploy/latest/userguide/welcome.html"
+      ]
+    },
+    {
+      "dominio": "3.8",
+      "tipo": "SINGLE",
+      "enunciado": "Um escritório de contabilidade contrata 150 auditores temporários por trimestre. Cada um precisa de uma área de trabalho Windows completa e persistente, com os aplicativos internos já instalados e autenticação no Active Directory da empresa. Os auditores usarão notebooks pessoais e a empresa não quer comprar equipamentos nem manter hosts de VDI. Qual serviço é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon WorkSpaces"
+        },
+        {
+          "key": "B",
+          "text": "Amazon AppStream 2.0"
+        },
+        {
+          "key": "C",
+          "text": "Instâncias Amazon EC2 Windows acessadas por RDP"
+        },
+        {
+          "key": "D",
+          "text": "AWS Client VPN"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon WorkSpaces oferece desktops virtuais gerenciados e persistentes, com Windows ou Linux, que os usuários acessam de notebooks pessoais. Ele se integra ao Active Directory para autenticação e mantém os dados e aplicativos do usuário entre sessões, sem que a empresa administre hosts de VDI. A alternativa B está errada porque o AppStream 2.0 entrega aplicativos individuais por streaming, com estado não persistente por padrão, e não uma área de trabalho completa e persistente. A C está errada porque instâncias EC2 com RDP exigiriam que a equipe cuidasse de imagens, patches, escala e acesso, justamente o que a empresa quer evitar. A D está errada porque o Client VPN apenas fornece conectividade de rede remota, sem entregar um desktop gerenciado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/workspaces/latest/adminguide/amazon-workspaces.html",
+        "https://docs.aws.amazon.com/appstream2/latest/developerguide/what-is-appstream.html",
+        "https://aws.amazon.com/workspaces/"
+      ]
+    },
+    {
+      "dominio": "3.8",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de serviços financeiros quer montar uma central de atendimento com 80 agentes remotos. Os clientes devem ser atendidos por voz e chat, com menu de opções, filas, roteamento para o agente adequado, gravação das chamadas e integração com o CRM. A empresa não quer operar equipamentos de telefonia nem licenças de PABX. Qual serviço atende a esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Simple Email Service (Amazon SES)"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Simple Notification Service (Amazon SNS)"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Connect"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Chime SDK"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Connect é uma central de contato omnichannel na nuvem: já traz atendimento por voz e chat, IVR, filas, roteamento, gravação e integrações com CRM, com agentes trabalhando pelo navegador e cobrança pelo uso, sem PABX nem infraestrutura de telefonia. A alternativa A está errada porque o SES envia e recebe e-mails e não oferece atendimento por voz, filas ou roteamento de agentes. A B está errada porque o SNS distribui notificações por publicação e assinatura, sem central de atendimento ou gestão de filas de chamadas. A D está errada porque o Chime SDK fornece blocos de construção de áudio, vídeo e compartilhamento de tela para incorporar em aplicações; cabe à empresa construir o roteamento, o IVR e a interface dos agentes.",
+      "fontes": [
+        "https://docs.aws.amazon.com/connect/latest/adminguide/what-is-amazon-connect.html",
+        "https://docs.aws.amazon.com/ses/latest/dg/Welcome.html",
+        "https://docs.aws.amazon.com/chime-sdk/latest/dg/what-is-chime-sdk.html"
+      ]
+    },
+    {
+      "dominio": "3.8",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma fabricante instala sensores em suas linhas de produção. Ela precisa de um broker gerenciado que conecte milhões de dispositivos por MQTT e receba telemetria na nuvem e, além disso, precisa executar modelos de detecção de anomalias nos gateways locais, mantendo a operação quando a conexão com a internet cair. Quais serviços da AWS cobrem essas duas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Kinesis Data Streams"
+        },
+        {
+          "key": "B",
+          "text": "AWS IoT Core"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Simple Notification Service (Amazon SNS)"
+        },
+        {
+          "key": "D",
+          "text": "Lambda@Edge"
+        },
+        {
+          "key": "E",
+          "text": "AWS IoT Greengrass"
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "O AWS IoT Core é o broker gerenciado que conecta dispositivos por MQTT, HTTP e WebSockets, mantém o registro dos dispositivos e recebe a telemetria em escala. O AWS IoT Greengrass leva o processamento para os gateways e dispositivos de borda, executando componentes e modelos localmente e sincronizando com a nuvem, inclusive com a conexão interrompida. A alternativa A está errada porque o Kinesis Data Streams ingere fluxos de dados para análise, mas não é um broker de dispositivos nem executa código no gateway. A C está errada porque o SNS é um serviço de publicação e assinatura para notificações e fan-out, sem registro de dispositivos ou runtime de borda. A D está errada porque o Lambda@Edge executa funções nas localizações de borda da CloudFront em resposta a requisições HTTP, não nos gateways da fábrica.",
+      "fontes": [
+        "https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html",
+        "https://docs.aws.amazon.com/greengrass/v2/developerguide/what-is-iot-greengrass.html",
+        "https://docs.aws.amazon.com/streams/latest/dev/introduction.html"
+      ]
+    }
+  ]
+}

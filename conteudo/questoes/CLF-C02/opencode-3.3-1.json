@@ -1,0 +1,127 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um site de reservas de viagens tem picos de acesso no início da manhã e quando publica promoções, mas fica com poucos usuários durante a madrugada. A aplicação roda em instâncias do Amazon EC2 e a equipe quer aumentar e reduzir a quantidade de instâncias automaticamente, conforme a demanda, sem intervenção manual. Qual recurso atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Elastic Load Balancing, para distribuir as requisições entre as instâncias existentes."
+        },
+        {
+          "key": "B",
+          "text": "Amazon EC2 Auto Scaling, para ajustar o número de instâncias com base em políticas de demanda."
+        },
+        {
+          "key": "C",
+          "text": "AWS Lambda, para executar uma função a cada requisição recebida pelo site."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Lightsail, para contratar um plano fixo de instância virtual."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon EC2 Auto Scaling adiciona ou remove instâncias do EC2 automaticamente conforme a demanda, usando políticas de escala, o que mantém o desempenho nos picos e reduz a capacidade ociosa à noite. O Elastic Load Balancing apenas distribui o tráfego entre instâncias já existentes; ele não aumenta nem reduz a frota. O AWS Lambda executa funções sob demanda e não gerencia a quantidade de instâncias do EC2 que sustentam a aplicação. O Amazon Lightsail oferece planos de instância de tamanho fixo, sem escala automática baseada na demanda do site.",
+      "fontes": [
+        "https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html",
+        "https://aws.amazon.com/ec2/autoscaling/"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe vai publicar uma aplicação web em Java e quer enviar apenas o código, deixando que a AWS crie e gerencie as instâncias do Amazon EC2, o load balancer e o Auto Scaling group necessários. A equipe também quer poder acessar e ajustar os recursos do ambiente depois da implantação. Qual serviço oferece esse modelo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS CloudFormation, para descrever o ambiente em templates e provisionar os recursos."
+        },
+        {
+          "key": "B",
+          "text": "Amazon ECS com AWS Fargate, para executar a aplicação em contêineres."
+        },
+        {
+          "key": "C",
+          "text": "AWS Lambda, para executar o código Java em funções acionadas por eventos."
+        },
+        {
+          "key": "D",
+          "text": "AWS Elastic Beanstalk, para implantar o código e gerenciar o ambiente de execução."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Elastic Beanstalk foi feito para quem quer enviar o código da aplicação e deixar que o serviço provisione e gerencie a infraestrutura, incluindo instâncias do EC2, load balancer e Auto Scaling, mantendo os recursos acessíveis para ajustes. O AWS CloudFormation é uma ferramenta de infraestrutura como código: a equipe precisa descrever e manter os recursos no template. O Amazon ECS com Fargate exige empacotar a aplicação em contêineres e não oferece o fluxo de apenas enviar o código Java. O AWS Lambda também exige adaptar o código ao modelo de funções e não cria um ambiente web com instâncias, load balancer e Auto Scaling gerenciados dessa forma.",
+      "fontes": [
+        "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/Welcome.html",
+        "https://aws.amazon.com/elasticbeanstalk/"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um pequeno escritório de arquitetura quer hospedar um site institucional em WordPress e um repositório de arquivos leves. A equipe não tem especialistas em nuvem, não espera crescimento rápido e prefere um plano mensal previsível que já inclua a instância virtual, o armazenamento e a transferência de dados. Qual serviço é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Lightsail, com planos que combinam instância virtual, armazenamento e transferência de dados."
+        },
+        {
+          "key": "B",
+          "text": "Amazon EC2 com instâncias On-Demand, configurando separadamente rede, armazenamento e segurança."
+        },
+        {
+          "key": "C",
+          "text": "AWS Lambda, executando o WordPress como uma função sob demanda."
+        },
+        {
+          "key": "D",
+          "text": "AWS Elastic Beanstalk, provisionando um ambiente completo com EC2 e load balancer."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Lightsail oferece planos mensais previsíveis que já incluem uma instância virtual, armazenamento e transferência de dados, com uma experiência simplificada para quem tem pouca familiaridade com nuvem e não precisa de escala automática. O Amazon EC2 On-Demand pode hospedar o site, mas exige configurar e administrar separadamente rede, armazenamento e segurança, além de gerar cobrança variável. O AWS Lambda não é adequado para hospedar um WordPress persistente com sistema de arquivos e banco de dados. O AWS Elastic Beanstalk simplifica a implantação, porém cria e gerencia recursos como instâncias do EC2 e load balancer, o que é mais complexo do que o plano fixo e integrado solicitado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/lightsail/latest/userguide/what-is-amazon-lightsail.html",
+        "https://aws.amazon.com/lightsail/"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa tem duas frentes de modernização. A primeira precisa executar aplicações em contêineres com manifests e APIs padrão do Kubernetes, enquanto a AWS administra o plano de controle. A segunda precisa rodar cargas de computação da AWS dentro do data center da própria empresa, para atender a uma exigência de residência de dados. Quais dois serviços atendem, respectivamente, a essas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EKS, com plano de controle do Kubernetes gerenciado pela AWS."
+        },
+        {
+          "key": "B",
+          "text": "AWS Lambda, executando funções acionadas por eventos."
+        },
+        {
+          "key": "C",
+          "text": "AWS Batch, agendando jobs em lote com capacidade sob demanda."
+        },
+        {
+          "key": "D",
+          "text": "AWS Local Zones, estendendo serviços da AWS para uma área metropolitana próxima."
+        },
+        {
+          "key": "E",
+          "text": "AWS Outposts, levando capacidade de computação e armazenamento da AWS para as instalações do cliente."
+        }
+      ],
+      "corretas": ["A", "E"],
+      "explicacao": "O Amazon EKS atende a primeira frente porque oferece um plano de controle do Kubernetes gerenciado pela AWS e compatível com as APIs e os manifests padrão do Kubernetes. O AWS Outposts atende a segunda porque instala capacidade de computação e armazenamento da AWS no data center do cliente, mantendo as cargas nas instalações da empresa. O AWS Lambda executa funções orientadas a eventos e não fornece um cluster Kubernetes nem roda no data center do cliente. O AWS Batch é voltado a jobs em lote e não substitui um ambiente Kubernetes. O AWS Local Zones aproxima serviços da AWS de uma área metropolitana, mas não os instala nas dependências da empresa, portanto não atende à exigência de manter a computação no data center próprio.",
+      "fontes": [
+        "https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html",
+        "https://docs.aws.amazon.com/outposts/latest/userguide/what-is-outposts.html"
+      ]
+    }
+  ]
+}

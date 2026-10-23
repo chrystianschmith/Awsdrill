@@ -1,0 +1,98 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um estúdio de jogos brasileiro lançou um jogo online e quer oferecer baixa latência a jogadores da Europa e da Ásia. A empresa precisa implantar a mesma aplicação em outras regiões em pouco tempo, sem construir data centers nesses continentes. Qual princípio de design da Nuvem AWS viabiliza esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Ir para a escala global em minutos, implantando a aplicação em várias regiões."
+        },
+        {
+          "key": "B",
+          "text": "Parar de gastar dinheiro em trabalho indiferenciado, terceirizando a operação de servidores."
+        },
+        {
+          "key": "C",
+          "text": "Implementar uma base de identidade forte, com privilégio mínimo."
+        },
+        {
+          "key": "D",
+          "text": "Analisar e atribuir os gastos de nuvem por equipe."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: ir para a escala global em minutos permite implantar a aplicação em regiões próximas dos jogadores sem construir infraestrutura local, reduzindo a latência. B não atende porque reduzir trabalho indiferenciado diminui a carga operacional, mas não garante presença geográfica nem baixa latência. C não atende porque uma base de identidade forte é um princípio de segurança. D não atende porque atribuir gastos é uma prática de otimização de custos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de segurança da healthtech Vitalis configura manualmente grupos de segurança e políticas de acesso a cada nova conta. O processo é lento e sujeito a erros, e a empresa quer que os controles sejam aplicados de forma consistente e automática em todas as implantações. Qual princípio de design do pilar de segurança do AWS Well-Architected Framework orienta essa mudança?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Recuperar-se automaticamente de falhas, sem intervenção manual."
+        },
+        {
+          "key": "B",
+          "text": "Fazer mudanças pequenas e frequentes, que possam ser revertidas."
+        },
+        {
+          "key": "C",
+          "text": "Analisar e atribuir os gastos de nuvem."
+        },
+        {
+          "key": "D",
+          "text": "Automatizar as práticas de segurança, aplicando controles por meio de código e ferramentas."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: automatizar as práticas de segurança é um princípio do pilar de segurança que recomenda aplicar controles por meio de código e ferramentas, garantindo consistência e reduzindo erros manuais. A não atende porque recuperação automática de falhas pertence ao pilar de confiabilidade. B não atende porque mudanças pequenas e frequentes são um princípio de excelência operacional. C não atende porque analisar e atribuir gastos é um princípio de otimização de custos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa de logística quer adotar princípios de design do pilar de eficiência de desempenho do AWS Well-Architected Framework. Quais dois princípios pertencem a esse pilar? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar arquiteturas sem servidor para reduzir a gestão de servidores."
+        },
+        {
+          "key": "B",
+          "text": "Recuperar-se automaticamente de falhas."
+        },
+        {
+          "key": "C",
+          "text": "Democratizar tecnologias avançadas, tornando-as acessíveis a mais equipes."
+        },
+        {
+          "key": "D",
+          "text": "Executar operações como código."
+        },
+        {
+          "key": "E",
+          "text": "Implementar uma base de identidade forte."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C são as corretas: usar arquiteturas sem servidor e democratizar tecnologias avançadas são princípios de design do pilar de eficiência de desempenho, que busca usar recursos de forma eficiente e facilitar o acesso a tecnologias especializadas. B não atende porque recuperar-se automaticamente de falhas é um princípio de confiabilidade. D não atende porque executar operações como código pertence à excelência operacional. E não atende porque uma base de identidade forte pertence à segurança.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html"
+      ]
+    }
+  ]
+}

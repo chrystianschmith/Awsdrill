@@ -1,0 +1,147 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "A Contoso Logística vai manter um conjunto de instâncias do Amazon EC2 para seu sistema de faturamento por três anos, com utilização estável e previsível. A empresa já reservou o orçamento e pode pagar o valor total no momento da compra. Qual opção de pagamento de Reserved Instances oferece o MAIOR desconto nesse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "No Upfront, com pagamento mensal diluído durante todo o período de três anos."
+        },
+        {
+          "key": "B",
+          "text": "Partial Upfront, com parte do valor paga antecipadamente e o restante cobrado mensalmente."
+        },
+        {
+          "key": "C",
+          "text": "All Upfront, com o valor total pago antecipadamente no momento da compra."
+        },
+        {
+          "key": "D",
+          "text": "Reserved Instance do tipo Convertible com pagamento No Upfront, por ter maior flexibilidade."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O All Upfront concentra todo o pagamento no início e, por isso, é a opção de pagamento que proporciona o maior desconto em relação ao On-Demand para um mesmo compromisso de Reserved Instance. O No Upfront tem o menor desconto entre as três opções, porque o valor é diluído mensalmente, e o Partial Upfront fica em posição intermediária. A alternativa D não atende porque Reserved Instances Convertible já oferecem desconto menor que as Standard e, combinadas com No Upfront, ficam ainda mais distantes do desconto máximo. A alternativa A também erra ao indicar a opção de menor desconto, e a B não é a de maior desconto.",
+      "fontes": [
+        "https://aws.amazon.com/ec2/pricing/reserved-instances/",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech NovaPagamento processa transações com AWS Lambda e AWS Fargate e espera manter esse uso estável pelos próximos três anos. A empresa quer reduzir custos assumindo um compromisso de gasto por hora, mas sem se limitar a uma família de instâncias ou a uma Region específica. Qual opção é a MAIS adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "EC2 Instance Savings Plans de três anos, porque cobrem qualquer serviço de computação da AWS."
+        },
+        {
+          "key": "B",
+          "text": "Spot Instances para as funções do AWS Lambda, por oferecerem o maior desconto."
+        },
+        {
+          "key": "C",
+          "text": "Dedicated Hosts reservados por três anos, para reduzir o custo por núcleo."
+        },
+        {
+          "key": "D",
+          "text": "Compute Savings Plans de três anos, que se aplicam a EC2, Fargate e Lambda."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Os Compute Savings Plans aplicam-se a Amazon EC2, AWS Fargate e AWS Lambda, independentemente de família de instância, tamanho, Region, sistema operacional ou tenancy, exatamente o que a empresa precisa. EC2 Instance Savings Plans (alternativa A) dão desconto maior por unidade, mas ficam restritos a uma família de instâncias em uma Region e não cobrem Lambda nem Fargate. Spot Instances (B) são capacidade ociosa do EC2 sujeita a interrupção e não se aplicam a funções Lambda. Dedicated Hosts (C) atendem requisitos de licenciamento e conformidade com servidores físicos dedicados, custam mais caro e não cobrem Lambda nem Fargate.",
+      "fontes": [
+        "https://aws.amazon.com/savingsplans/",
+        "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de mídia armazena um volume crescente de arquivos no Amazon S3 Standard e percebe que, quanto maior o total armazenado no mês, menor fica o preço por GB nas faixas superiores de uso. Qual princípio do modelo de preços da AWS explica esse comportamento?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Pagar menos ao usar mais, com preços por faixa de volume."
+        },
+        {
+          "key": "B",
+          "text": "Pagar menos ao reservar capacidade para cargas previsíveis."
+        },
+        {
+          "key": "C",
+          "text": "Pagar apenas pelo que se consome, sem custo inicial."
+        },
+        {
+          "key": "D",
+          "text": "Obter descontos por usar capacidade ociosa do Amazon EC2."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon S3 cobra por GB armazenado em faixas de volume mensais: os primeiros GB têm um preço por unidade e as faixas seguintes custam menos por GB. É a aplicação do princípio 'pay less when you use more'. A alternativa B descreve descontos por compromisso (Reserved Instances e Savings Plans), voltados a computação com uso previsível, e não à cobrança por faixa de armazenamento. A alternativa C descreve o modelo pay-as-you-go, que explica a ausência de custo inicial, mas não a queda do preço unitário em volumes maiores. A alternativa D se refere a Spot Instances, capacidade ociosa de EC2 com risco de interrupção, que não influencia o preço de armazenamento no S3.",
+      "fontes": ["https://aws.amazon.com/s3/pricing/", "https://aws.amazon.com/pricing/"]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa vai copiar dados da internet para buckets do Amazon S3 e também replicar parte desse conteúdo entre buckets localizados em duas Regions diferentes. Qual afirmação sobre a cobrança de transferência de dados está correta?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Toda transferência de dados para dentro da AWS pela internet é cobrada por GB."
+        },
+        {
+          "key": "B",
+          "text": "A transferência entre Regions é cobrada, enquanto a entrada de dados pela internet normalmente não tem custo."
+        },
+        {
+          "key": "C",
+          "text": "A transferência de dados entre Availability Zones da mesma Region é sempre gratuita."
+        },
+        {
+          "key": "D",
+          "text": "A transferência de dados da AWS para a internet é gratuita em qualquer volume."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A AWS cobra a saída de dados: transferência para a internet e tráfego entre Regions geram custo. Já a entrada de dados pela internet para serviços como o Amazon S3 normalmente não é cobrada, o que torna a alternativa B correta. A alternativa A inverte essa lógica e afirma que a entrada é cobrada. A alternativa C está errada porque o tráfego entre Availability Zones de uma mesma Region é tarifado. A alternativa D também está errada: a saída para a internet é justamente o tipo de transferência mais sujeito a cobrança, e não uma categoria gratuita e ilimitada.",
+      "fontes": ["https://aws.amazon.com/ec2/pricing/on-demand/", "https://aws.amazon.com/s3/pricing/"]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A HealthData está comparando o modelo de preços da AWS com o de um datacenter próprio e quer confirmar quais características realmente fazem parte da forma como a AWS cobra pelos serviços. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Todos os serviços da AWS são cobrados por uma assinatura mensal fixa, independentemente do consumo."
+        },
+        {
+          "key": "B",
+          "text": "No uso sob demanda, o cliente paga apenas pelos recursos que consome, sem contrato de longo prazo."
+        },
+        {
+          "key": "C",
+          "text": "A AWS exige um compromisso mínimo de três anos para qualquer carga de trabalho em produção."
+        },
+        {
+          "key": "D",
+          "text": "As economias de escala da AWS podem resultar em reduções de preço repassadas aos clientes."
+        },
+        {
+          "key": "E",
+          "text": "Toda transferência de dados, de entrada e de saída, é gratuita em qualquer direção."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "O modelo da AWS combina pagamento pelo uso, sem investimento inicial e sem contrato de longo prazo no modo On-Demand, com a ideia de repassar ganhos de escala na forma de reduções de preço ao longo do tempo. Por isso B e D estão corretas. A alternativa A é falsa: a cobrança é baseada em consumo (por hora, por GB, por requisição), não em uma assinatura fixa única. A alternativa C é falsa, pois o uso sob demanda não exige compromisso plurianual — apenas Reserved Instances e Savings Plans envolvem compromisso opcional de um ou três anos. A alternativa E é falsa: a saída de dados para a internet e o tráfego entre Regions são cobrados.",
+      "fontes": ["https://aws.amazon.com/pricing/"]
+    }
+  ]
+}

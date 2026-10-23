@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "A rede de clínicas Bem Viver precisa modernizar o sistema de agendamentos, mas não quer comprar servidores nem assumir um investimento inicial alto. A diretoria quer pagar conforme o uso e ajustar o gasto ao movimento de cada mês. Qual característica do modelo de nuvem AWS atende diretamente a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Montar um data center de colocation e comprar os servidores com antecedência para obter desconto por volume."
+        },
+        {
+          "key": "B",
+          "text": "Usar o AWS Direct Connect para trocar o investimento em servidores por uma conexão de rede dedicada."
+        },
+        {
+          "key": "C",
+          "text": "Substituir o investimento fixo em infraestrutura por gastos variáveis, pagando pelos recursos conforme o consumo."
+        },
+        {
+          "key": "D",
+          "text": "Adquirir Reserved Instances de três anos para todo o ambiente antes de conhecer a demanda real."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: na nuvem AWS a empresa troca o investimento de capital (compra de servidores e espaço físico) por despesas operacionais variáveis, cobradas conforme o uso, o que elimina o gasto inicial alto e permite acompanhar o movimento de cada mês. A não atende porque a colocation continua exigindo compra antecipada de hardware e um contrato de espaço físico, ou seja, mantém o investimento inicial que a clínica quer evitar. B não atende porque o AWS Direct Connect é apenas uma conexão de rede privada entre o ambiente local e a AWS e não substitui a compra de capacidade de computação. D não atende porque Reserved Instances são um mecanismo de desconto para uso previsível de um ou três anos; exigem compromisso antecipado e não fazem sentido antes de a demanda ser conhecida.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/pricing/"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "A startup de logística Rota Certa precisa de capacidade de computação, mas não tem volume suficiente para negociar descontos de hardware com fornecedores. Ao usar a AWS, a empresa passa a se beneficiar dos preços mais baixos que a AWS consegue ao agregar a demanda de milhares de clientes. Qual conceito de economia de nuvem descreve esse benefício?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Economies of scale, em que o provedor de nuvem dilui seus custos em uma base muito grande de clientes e repassa parte dessa economia."
+        },
+        {
+          "key": "B",
+          "text": "Elasticidade horizontal, que adiciona instâncias automaticamente durante picos de demanda."
+        },
+        {
+          "key": "C",
+          "text": "Reserved Instances, que trocam a compra de hardware por um compromisso de um ou três anos."
+        },
+        {
+          "key": "D",
+          "text": "AWS Snowball Edge, que reduz o custo de transferir grandes volumes de dados para a nuvem."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: economies of scale é o ganho obtido quando um provedor compra e opera recursos em escala muito maior do que um cliente individual conseguiria, diluindo custos fixos e permitindo preços unitários menores. A Rota Certa se beneficia desse poder de compra sem precisar negociar diretamente com fabricantes. B não atende porque elasticidade horizontal é a capacidade de acrescentar instâncias para absorver picos, o que resolve desempenho e não o poder de compra descrito. C não atende porque Reserved Instances são um modelo de desconto por compromisso de uso, não o efeito de agregar a demanda de vários clientes. D não atende porque o AWS Snowball Edge é um dispositivo de transferência de dados e não tem relação com escala de compra de capacidade computacional.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/economics/"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma loja virtual usa instâncias Amazon EC2 superdimensionadas: o uso médio de CPU fica em 15%, e os ambientes de desenvolvimento e teste permanecem ligados 24 horas por dia, mesmo sem uso à noite e nos fins de semana. A empresa quer reduzir a fatura mensal sem prejudicar a experiência dos clientes na produção. Qual ação está mais alinhada às práticas de otimização de custos na AWS?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Migrar todas as instâncias para Dedicated Hosts, que têm preço menor por vCPU em qualquer cenário."
+        },
+        {
+          "key": "B",
+          "text": "Comprar Reserved Instances de três anos para o parque atual, mantendo os tamanhos e a operação como estão."
+        },
+        {
+          "key": "C",
+          "text": "Ativar o AWS CloudTrail em todas as regiões para identificar instâncias ociosas automaticamente."
+        },
+        {
+          "key": "D",
+          "text": "Redimensionar as instâncias para tipos adequados à carga e desligar os ambientes de desenvolvimento e teste fora do horário de uso."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: rightsizing ajusta o tipo da instância à carga real, eliminando capacidade paga e não usada, e desligar ambientes de desenvolvimento e teste fora do expediente evita cobrança por horas ociosas, sem afetar a produção. A não atende porque Dedicated Hosts são servidores físicos dedicados, usados para licenciamento e requisitos de isolamento, e costumam custar mais, não menos. B não atende porque Reserved Instances reduzem o preço por hora, mas mantêm o compromisso sobre o tamanho atual; aplicadas a instâncias superdimensionadas, apenas consolidam o desperdício por um ou três anos. C não atende porque o AWS CloudTrail registra chamadas de API para auditoria e não mede utilização nem reduz custos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html",
+        "https://aws.amazon.com/aws-cost-management/aws-cost-explorer/"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "SINGLE",
+      "enunciado": "O portal de notícias Diário do Vale tem um conjunto de servidores web que roda de forma constante, 24 horas por dia, há mais de um ano, e cuja demanda é estável. Além disso, há picos imprevisíveis em dias de grandes eventos. A empresa quer o menor custo possível para a carga estável, mantendo a liberdade de adicionar capacidade sob demanda nos picos. Qual estratégia de compra atende a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar apenas On-Demand para todo o ambiente, porque essa é a modalidade mais barata para cargas previsíveis."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar Savings Plans ou Reserved Instances à linha de base estável e usar On-Demand para a capacidade adicional dos picos."
+        },
+        {
+          "key": "C",
+          "text": "Usar Spot Instances para toda a carga, inclusive para o site principal, porque o preço é sempre menor."
+        },
+        {
+          "key": "D",
+          "text": "Contratar Dedicated Hosts para toda a carga, porque eles acompanham a demanda automaticamente."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: a parte previsível e constante se encaixa em Savings Plans ou Reserved Instances, que dão desconto em troca de compromisso de uso, enquanto a capacidade extra dos picos continua em On-Demand e pode ser adicionada e removida conforme a necessidade. A não atende porque On-Demand é a modalidade mais flexível, porém mais cara por hora, e deixa de aproveitar o desconto disponível para a carga estável. C não atende porque Spot Instances podem ser interrompidas pela AWS com pouco aviso, o que é inadequado para o site principal de um portal de notícias. D não atende porque Dedicated Hosts não escalam sozinhos e são indicados para licenciamento e isolamento físico, não para reduzir o custo de uma carga web comum.",
+      "fontes": [
+        "https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html",
+        "https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A fabricante de móveis Casa Nativa está avaliando o custo total de propriedade (TCO) de migrar seu data center para a AWS. A equipe financeira quer identificar fatores que costumam reduzir o TCO nessa migração. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Deixar de comprar servidores e equipamentos de rede com antecedência, trocando gastos de capital por despesas operacionais variáveis."
+        },
+        {
+          "key": "B",
+          "text": "Transferir para a AWS a responsabilidade de corrigir o sistema operacional convidado e de configurar os grupos de segurança das instâncias."
+        },
+        {
+          "key": "C",
+          "text": "Eliminar os custos de transferência de dados entre regiões, que não são cobrados na AWS."
+        },
+        {
+          "key": "D",
+          "text": "Reduzir a capacidade ociosa ao dimensionar os recursos conforme a demanda e desligar o que não está em uso."
+        },
+        {
+          "key": "E",
+          "text": "Manter o hardware próprio para a produção e usar a nuvem apenas como cópia de segurança, evitando custos de migração."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "A e D são as corretas. A reduz o TCO porque elimina compras antecipadas de servidores, storage e equipamentos de rede, além de custos de espaço, energia e refrigeração, convertendo investimento fixo em gasto variável. D reduz o TCO porque o dimensionamento conforme a demanda e o desligamento de recursos ociosos evitam pagar por capacidade que não é usada. B não atende porque, no modelo de responsabilidade compartilhada, o cliente continua responsável pelo sistema operacional convidado, pelas configurações e pelos dados, independentemente de estar na nuvem. C não atende porque a transferência de dados entre regiões é cobrada; não existe isenção geral para esse tráfego. E não atende porque manter o data center próprio preserva justamente os custos fixos que a migração busca eliminar, além de somar os custos da cópia na nuvem.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://docs.aws.amazon.com/whitepapers/latest/cost-optimization-laying-the-foundation/welcome.html"
+      ]
+    }
+  ]
+}

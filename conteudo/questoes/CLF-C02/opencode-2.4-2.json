@@ -1,0 +1,118 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.4",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Paveris está lançando um aplicativo móvel de entregas e precisa que os clientes finais criem conta e entrem com e-mail e senha ou com login social, além de poderem habilitar autenticação multifator (MFA). A equipe não quer construir nem manter um serviço de autenticação próprio. Qual recurso da AWS atende a esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS IAM Identity Center"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Cognito"
+        },
+        {
+          "key": "C",
+          "text": "AWS Directory Service"
+        },
+        {
+          "key": "D",
+          "text": "AWS Identity and Access Management (IAM)"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Cognito oferece user pools, um diretório gerenciado para usuários de aplicações, com cadastro, login, federação com provedores de identidade social, MFA e emissão de tokens, sem que a equipe precise construir o serviço de autenticação. A) AWS IAM Identity Center é voltado ao acesso de força de trabalho a contas e aplicações corporativas, não ao cadastro de clientes finais de um aplicativo. C) AWS Directory Service fornece diretórios como o Microsoft Active Directory gerenciado, não autenticação de clientes de aplicativos móveis. D) O IAM gerencia identidades e permissões para recursos da AWS (pessoas e workloads que operam a conta), e não o cadastro e login de usuários finais da aplicação.",
+      "fontes": ["https://docs.aws.amazon.com/cognito/latest/developerguide/what-is-amazon-cognito.html"]
+    },
+    {
+      "dominio": "2.4",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Ferrolho mantém hoje as credenciais de acesso ao banco de dados Amazon RDS em um arquivo de configuração da aplicação. A equipe quer eliminar esse arquivo, recuperar as credenciais em tempo de execução e fazer a rotação automática dessas credenciais sem interromper a aplicação. Qual serviço da AWS deve ser utilizado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Key Management Service (AWS KMS)"
+        },
+        {
+          "key": "B",
+          "text": "AWS CloudTrail"
+        },
+        {
+          "key": "C",
+          "text": "AWS Systems Manager Session Manager"
+        },
+        {
+          "key": "D",
+          "text": "AWS Secrets Manager"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Secrets Manager foi criado para armazenar e recuperar segredos, como credenciais de banco de dados, por meio de chamadas de API com controle de acesso, e oferece rotação automática integrada a mecanismos como o Amazon RDS. A) O AWS KMS gerencia chaves criptográficas usadas para criptografar dados, e não credenciais de banco de dados com rotação. B) O AWS CloudTrail registra chamadas de API para auditoria, mas não armazena nem rotaciona segredos. C) O Session Manager permite acesso interativo a instâncias sem abrir portas, não é um repositório de credenciais com rotação automática.",
+      "fontes": ["https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html"]
+    },
+    {
+      "dominio": "2.4",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Maré Azul precisa criptografar dados em repouso armazenados no Amazon S3 e em volumes do Amazon EBS, mantendo controle sobre as chaves, com políticas de acesso próprias, rotação e registro do uso das chaves para auditoria. Qual serviço da AWS fornece chaves criptográficas gerenciadas e integradas a esses serviços?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Certificate Manager"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Inspector"
+        },
+        {
+          "key": "C",
+          "text": "AWS Key Management Service (AWS KMS)"
+        },
+        {
+          "key": "D",
+          "text": "AWS Secrets Manager"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS KMS cria e gerencia chaves criptográficas com políticas de acesso, rotação e registro de uso no AWS CloudTrail, e é integrado nativamente a serviços como Amazon S3 e Amazon EBS para criptografia em repouso. A) O AWS Certificate Manager gerencia certificados TLS para conexões, não chaves de criptografia de dados armazenados. B) O Amazon Inspector identifica vulnerabilidades em workloads, não fornece chaves de criptografia. D) O AWS Secrets Manager armazena segredos como credenciais, mas não é o serviço que fornece as chaves usadas para criptografar objetos do S3 ou volumes do EBS.",
+      "fontes": ["https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"]
+    },
+    {
+      "dominio": "2.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa Orvalho Digital quer identificar riscos no ambiente antes que sejam explorados. Precisa detectar vulnerabilidades de software em instâncias EC2 e em imagens de contêiner e, separadamente, verificar quais recursos se desviam de uma linha de base de configuração, como volumes EBS sem criptografia. Quais dois serviços da AWS atendem, respectivamente, a essas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon GuardDuty"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Inspector"
+        },
+        {
+          "key": "C",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "D",
+          "text": "AWS Shield"
+        },
+        {
+          "key": "E",
+          "text": "AWS Config"
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "O Amazon Inspector avalia continuamente instâncias EC2, imagens de contêiner no Amazon ECR e funções Lambda em busca de vulnerabilidades de software e exposições de rede. O AWS Config registra o estado dos recursos e avalia a conformidade com regras, permitindo identificar, por exemplo, volumes EBS sem criptografia ou buckets com acesso público indevido. A) O Amazon GuardDuty detecta atividade maliciosa ou anômala a partir de logs, sem fazer varredura de vulnerabilidades nem avaliar conformidade de configuração. C) O AWS WAF filtra requisições HTTP/HTTPS para aplicações web, não inspeciona vulnerabilidades de instâncias ou contêineres. D) O AWS Shield protege contra ataques DDoS, não realiza avaliação de vulnerabilidades ou de configuração.",
+      "fontes": [
+        "https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html",
+        "https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html"
+      ]
+    }
+  ]
+}
