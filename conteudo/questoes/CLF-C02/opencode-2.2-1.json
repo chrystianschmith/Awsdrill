@@ -1,0 +1,157 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech Pilar Pagamentos precisa reunir, de forma contínua e automatizada, evidências dos controles que ela própria opera na AWS — como revisões de acesso e verificação de criptografia — e organizá-las em relatórios prontos para auditores, mapeados a normas como PCI DSS. Qual serviço deve ser usado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Artifact, para baixar os relatórios de conformidade emitidos pela AWS."
+        },
+        {
+          "key": "B",
+          "text": "AWS Audit Manager, para coletar evidências e organizar avaliações de conformidade."
+        },
+        {
+          "key": "C",
+          "text": "AWS CloudTrail, para registrar todas as chamadas de API feitas na conta."
+        },
+        {
+          "key": "D",
+          "text": "AWS Config, para avaliar a configuração dos recursos e sinalizar desvios."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: o AWS Audit Manager foi criado para coletar e organizar evidências dos controles operados pelo cliente, mapeando-as para frameworks de auditoria como PCI DSS e gerando relatórios prontos para auditores. A não atende porque o AWS Artifact disponibiliza relatórios e acordos de conformidade emitidos pela própria AWS, e não as evidências dos controles internos da empresa. C não atende porque o CloudTrail registra chamadas de API, mas não seleciona, organiza nem mapeia esses registros para normas de auditoria. D não atende porque o AWS Config avalia configurações e aponta desvios, porém não monta a avaliação de conformidade com evidências e relatórios para o auditor; ele pode alimentar o Audit Manager, mas não substitui essa função.",
+      "fontes": [
+        "https://aws.amazon.com/audit-manager/",
+        "https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um grupo varejista está estruturando uma nova presença na AWS com dezenas de contas por unidade de negócio. A equipe quer criar contas de forma padronizada, com uma landing zone que já inclua log centralizado, identidade federada e guardrails de governança recomendados pela AWS, sem montar tudo manualmente. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Artifact, para centralizar os acordos e relatórios de conformidade das contas."
+        },
+        {
+          "key": "B",
+          "text": "AWS Organizations, para criar a landing zone e aplicar automaticamente os guardrails de segurança."
+        },
+        {
+          "key": "C",
+          "text": "AWS Control Tower, para provisionar uma landing zone com guardrails e contas padronizadas."
+        },
+        {
+          "key": "D",
+          "text": "AWS Trusted Advisor, para criar as contas e verificar boas práticas de segurança."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: o AWS Control Tower cria uma landing zone baseada em melhores práticas, usa o Account Factory para provisionar contas padronizadas e aplica guardrails preventivos e detectivos, integrando ainda log centralizado e identidade federada. A não atende porque o AWS Artifact apenas disponibiliza relatórios e acordos de conformidade. B não atende porque o AWS Organizations organiza contas e permite aplicar SCPs, mas não monta sozinho uma landing zone com log centralizado, acesso federado e guardrails pré-configurados. D não atende porque o Trusted Advisor somente recomenda boas práticas, sem provisionar contas ou aplicar guardrails.",
+      "fontes": [
+        "https://aws.amazon.com/controltower/",
+        "https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "O time de segurança da healthtech BemViver usa Amazon GuardDuty, Amazon Inspector e Amazon Macie em 12 contas. Os analistas querem um único painel que reúna os achados desses serviços e também avalie continuamente as contas contra padrões como o CIS AWS Foundations Benchmark, priorizando o que precisa de correção. Qual serviço atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Security Hub, para centralizar achados e avaliar padrões de segurança."
+        },
+        {
+          "key": "B",
+          "text": "AWS Trusted Advisor, para receber recomendações de boas práticas da conta."
+        },
+        {
+          "key": "C",
+          "text": "AWS CloudTrail, para consultar o histórico de chamadas de API das contas."
+        },
+        {
+          "key": "D",
+          "text": "AWS Config, para manter o inventário e o histórico de configurações."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: o AWS Security Hub centraliza achados de serviços como GuardDuty, Inspector e Macie, inclusive entre contas, e executa verificações contínuas contra padrões como o CIS AWS Foundations Benchmark, atribuindo pontuações e prioridades. B não atende porque o Trusted Advisor oferece recomendações de boas práticas, sem agregar achados desses serviços nem avaliar padrões de segurança. C não atende porque o CloudTrail registra chamadas de API, e não achados de ameaças ou vulnerabilidades. D não atende porque o AWS Config acompanha configurações e regras, mas não reúne os achados dos serviços de segurança em um painel único de postura.",
+      "fontes": [
+        "https://aws.amazon.com/security-hub/",
+        "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A startup de logística Rota Clara quer uma avaliação periódica da conta com recomendações priorizadas nas categorias de segurança, desempenho, tolerância a falhas e custo. A equipe não quer construir um painel próprio nem agregar achados de detecção de ameaças. Qual recurso oferece esse conjunto de recomendações?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Security Hub, para centralizar achados e verificar padrões de segurança."
+        },
+        {
+          "key": "B",
+          "text": "Amazon GuardDuty, para detectar atividades maliciosas e comportamentos suspeitos."
+        },
+        {
+          "key": "C",
+          "text": "AWS Config, para manter o histórico das configurações dos recursos."
+        },
+        {
+          "key": "D",
+          "text": "AWS Trusted Advisor, para receber recomendações de boas práticas em várias categorias."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: o AWS Trusted Advisor analisa a conta e apresenta recomendações priorizadas em categorias como segurança, desempenho, tolerância a falhas e otimização de custos, sem exigir a construção de um painel próprio. A não atende porque o Security Hub concentra achados de segurança e avaliação de padrões, mas não entrega recomendações de custo e desempenho. B não atende porque o GuardDuty apenas detecta ameaças e comportamentos anômalos. C não atende porque o AWS Config registra e avalia configurações, sem produzir esse conjunto de recomendações de boas práticas.",
+      "fontes": [
+        "https://aws.amazon.com/premiumsupport/technology/trusted-advisor/",
+        "https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A operadora de planos de saúde Corpo Leve vai guardar arquivos com dados de beneficiários em buckets do Amazon S3. Para atender aos requisitos de privacidade, a equipe precisa descobrir e classificar automaticamente onde há dados pessoais sensíveis e garantir que os objetos sejam criptografados em repouso com chaves controladas pela empresa. Quais dois serviços devem ser usados? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Macie, para descobrir e classificar dados sensíveis armazenados no Amazon S3."
+        },
+        {
+          "key": "B",
+          "text": "AWS Shield Advanced, para criptografar os objetos e bloquear acessos não autorizados."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Inspector, para localizar dados pessoais nos objetos e aplicar a criptografia."
+        },
+        {
+          "key": "D",
+          "text": "AWS CloudTrail, para criptografar os objetos e registrar o uso das chaves."
+        },
+        {
+          "key": "E",
+          "text": "AWS KMS, para criar e controlar as chaves usadas na criptografia em repouso."
+        }
+      ],
+      "corretas": ["A", "E"],
+      "explicacao": "A e E são as corretas: o Amazon Macie usa aprendizado de máquina e correspondência de padrões para descobrir e classificar dados sensíveis no Amazon S3, enquanto o AWS KMS permite criar, controlar e auditar as chaves usadas na criptografia em repouso dos objetos. B não atende porque o Shield Advanced mitiga ataques DDoS e não criptografa objetos. C não atende porque o Inspector procura vulnerabilidades em cargas de trabalho, não localiza dados pessoais nem aplica criptografia. D não atende porque o CloudTrail registra chamadas de API; ele não criptografa objetos, embora possa registrar o uso de chaves do KMS.",
+      "fontes": [
+        "https://aws.amazon.com/macie/",
+        "https://aws.amazon.com/kms/",
+        "https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"
+      ]
+    }
+  ]
+}

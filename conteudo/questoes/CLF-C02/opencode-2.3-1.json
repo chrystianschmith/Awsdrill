@@ -1,0 +1,157 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A rede de laboratórios LabVita tem 400 funcionários cadastrados em um diretório corporativo e usa cinco contas da AWS. A equipe quer que as pessoas entrem no console com as mesmas credenciais do diretório, recebendo permissões diferentes conforme a conta, sem criar uma identidade separada na AWS para cada funcionário. Qual solução atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um usuário do IAM para cada funcionário em cada uma das cinco contas, com senhas administradas pela equipe de TI."
+        },
+        {
+          "key": "B",
+          "text": "Compartilhar as credenciais do usuário root de cada conta com os líderes de equipe, que as repassariam aos demais funcionários."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar o IAM Identity Center, conectar o diretório corporativo como provedor de identidade e atribuir permission sets a usuários ou grupos em cada conta."
+        },
+        {
+          "key": "D",
+          "text": "Emitir access keys de longa duração para cada funcionário e configurá-las no AWS CLI de suas máquinas."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: o IAM Identity Center centraliza o acesso da força de trabalho, conecta um diretório corporativo ou provedor de identidade compatível e permite atribuir permission sets por usuário ou grupo em cada conta, sem duplicar identidades na AWS. A não atende porque criar um usuário do IAM por funcionário em cada conta multiplica credenciais e torna a revogação e a auditoria trabalhosas. B não atende porque credenciais do usuário root dão controle total da conta e nunca devem ser compartilhadas ou usadas por várias pessoas. D não atende porque access keys de longa duração nas máquinas ampliam a exposição e não entregam o login federado solicitado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html",
+        "https://aws.amazon.com/iam/identity-center/"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação executada em instâncias Amazon EC2 precisa ler objetos de um bucket do Amazon S3. A política de segurança da empresa proíbe gravar credenciais de longa duração nas instâncias ou no código-fonte. Qual abordagem concede o acesso de forma alinhada às práticas recomendadas da AWS?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar uma role do IAM com permissão de leitura no bucket e anexá-la à instância por meio de um instance profile."
+        },
+        {
+          "key": "B",
+          "text": "Criar um usuário do IAM e armazenar sua access key em um arquivo de configuração dentro da instância."
+        },
+        {
+          "key": "C",
+          "text": "Usar a access key do usuário root da conta, guardada em uma variável de ambiente da instância."
+        },
+        {
+          "key": "D",
+          "text": "Desativar o bloqueio de acesso público do bucket para que a instância leia os objetos sem precisar de credenciais."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: com uma role do IAM anexada à instância por um instance profile, a aplicação obtém credenciais temporárias, renovadas automaticamente, sem manter chaves de longa duração no código ou no disco. B não atende porque access keys de usuário do IAM são credenciais de longa duração e ficam expostas no sistema de arquivos da instância. C não atende porque o usuário root não deve ser usado por aplicações nem ter access keys; um vazamento comprometeria a conta inteira. D não atende porque liberar acesso público expõe os dados a qualquer pessoa e não autentica a instância.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A consultoria Nortear mantém engenheiros em times de projeto que mudam com frequência. O administrador quer conceder permissões por função — como desenvolvedor, auditor e suporte — e, ao mover uma pessoa de time, garantir que ela receba apenas as permissões do novo time, sem editar políticas individuais. Qual recurso do IAM atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Permission boundaries, que definem o limite máximo de permissões de cada pessoa e substituem a concessão de acesso por time."
+        },
+        {
+          "key": "B",
+          "text": "AWS IAM Access Analyzer, que atribui automaticamente as permissões de cada função com base no uso observado."
+        },
+        {
+          "key": "C",
+          "text": "Credenciais temporárias do AWS STS, emitidas manualmente para cada engenheiro a cada mudança de time."
+        },
+        {
+          "key": "D",
+          "text": "Grupos do IAM, com as políticas anexadas ao grupo e os usuários incluídos ou removidos conforme o time."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: as políticas são anexadas ao grupo, e não a cada pessoa; ao trocar de time, basta remover o usuário de um grupo e adicioná-lo a outro para que as permissões mudem sem reescrever políticas individuais. A não atende porque permission boundaries apenas limitam o máximo de permissões que uma identidade pode receber; elas não concedem acesso nem representam um time. B não atende porque o IAM Access Analyzer identifica acessos e pode sugerir políticas, mas não organiza usuários em times nem atribui permissões por conta própria. C não atende porque credenciais temporárias do AWS STS não definem quais ações são permitidas e a emissão manual não automatiza a troca de time.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A conta de produção da Editora Mirante foi criada há dois anos e o usuário root só foi usado naquela ocasião. A equipe quer reduzir o risco de comprometimento da conta e manter as tarefas administrativas do dia a dia funcionando. Qual conjunto de práticas é recomendado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar access keys para o usuário root e usá-las no pipeline de implantação, mantendo a senha do root com o time financeiro."
+        },
+        {
+          "key": "B",
+          "text": "Ativar a autenticação multifator (MFA) no usuário root, não criar access keys para ele e executar as tarefas diárias com identidades do IAM que tenham apenas as permissões necessárias."
+        },
+        {
+          "key": "C",
+          "text": "Compartilhar a senha do root entre os administradores e desativar a MFA para evitar perda de acesso."
+        },
+        {
+          "key": "D",
+          "text": "Usar o usuário root em todas as atividades administrativas, pois ele já possui todas as permissões e dispensa políticas do IAM."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: a AWS recomenda proteger o usuário root com MFA, não criar access keys para ele e reservá-lo para as poucas tarefas que exigem root, usando identidades do IAM com privilégio mínimo no dia a dia. A não atende porque access keys do root são credenciais de longa duração com poder total e não devem existir para pipelines. C não atende porque compartilhar a senha elimina a responsabilização individual e desativar a MFA aumenta o risco de invasão. D não atende porque usar o root diariamente contraria o menor privilégio e amplia o impacto de qualquer erro ou vazamento.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+      ]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Metalúrgica Horizonte está revisando como pessoas e aplicações obtêm credenciais na AWS. A diretriz da empresa é reduzir o uso de credenciais de longa duração e aplicar o menor privilégio. Quais duas práticas estão alinhadas a essa diretriz? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Distribuir access keys de longa duração aos desenvolvedores e embuti-las nas aplicações para simplificar a configuração."
+        },
+        {
+          "key": "B",
+          "text": "Criar roles do IAM e permitir que aplicações em execução na AWS as assumam para obter credenciais temporárias."
+        },
+        {
+          "key": "C",
+          "text": "Anexar a política AdministratorAccess a todos os usuários do IAM e revisar as permissões apenas uma vez por ano."
+        },
+        {
+          "key": "D",
+          "text": "Usar o IAM Identity Center para oferecer acesso federado às pessoas, com permission sets por equipe."
+        },
+        {
+          "key": "E",
+          "text": "Guardar as access keys do usuário root em um cofre e usá-las nas integrações com serviços de terceiros."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "B e D são as corretas: roles do IAM permitem que aplicações assumam permissões e recebam credenciais temporárias, sem chaves fixas; o IAM Identity Center oferece acesso federado para pessoas e permission sets que refletem as necessidades de cada equipe. A não atende porque access keys de longa duração embutidas em aplicações são difíceis de rotacionar e costumam vazar. C não atende porque conceder AdministratorAccess a todos viola o menor privilégio e amplia o impacto de um comprometimento. E não atende porque o usuário root não deve ter access keys nem ser usado em integrações, mesmo que a chave fique em um cofre.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html",
+        "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de mídia mantém um sistema de recomendações de conteúdo em Apache Cassandra no data center próprio. A equipe quer migrar as tabelas para um serviço gerenciado que aceite comandos CQL e os drivers Cassandra já usados pela aplicação, escale automaticamente a capacidade de leitura e gravação e elimine a administração de nós. Qual serviço da AWS atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Neptune"
+        },
+        {
+          "key": "B",
+          "text": "Amazon DynamoDB"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Keyspaces (for Apache Cassandra)"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Redshift"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Keyspaces (for Apache Cassandra) é um banco wide-column totalmente gerenciado e sem servidor, compatível com CQL, drivers e ferramentas do Apache Cassandra. A capacidade de leitura e gravação escala automaticamente e não há nós para provisionar ou administrar, o que atende aos três requisitos do cenário. O Amazon Neptune é um banco de grafos voltado a travessias de relacionamentos; não aceita CQL nem hospeda tabelas Cassandra. O Amazon DynamoDB é um banco chave-valor e de documentos com API própria, o que exigiria remodelar os dados e reescrever a aplicação, pois não expõe endpoint compatível com Cassandra. O Amazon Redshift é um data warehouse colunar para consultas analíticas, não um banco operacional compatível com Cassandra.",
+      "fontes": [
+        "https://docs.aws.amazon.com/keyspaces/latest/devguide/what-is-keyspaces.html",
+        "https://aws.amazon.com/keyspaces/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística mantém o portal de rastreamento em um banco Amazon Aurora PostgreSQL na região us-east-1. Clientes na Europa e na Ásia relatam leituras lentas, e a diretoria exige que, em caso de falha de toda a região, outra região assuma a operação com perda máxima de cerca de um segundo de dados. A equipe quer réplicas somente leitura em outras regiões sem administrar replicação própria. Qual recurso da AWS atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Aurora Global Database"
+        },
+        {
+          "key": "B",
+          "text": "Implantação Multi-AZ do Amazon RDS na mesma região"
+        },
+        {
+          "key": "C",
+          "text": "Réplicas de leitura do Aurora criadas na mesma região do banco primário"
+        },
+        {
+          "key": "D",
+          "text": "Amazon ElastiCache Global Datastore"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Aurora Global Database replica um cluster Aurora para regiões adicionais com replicação dedicada de baixa latência, permitindo leituras locais próximas dos usuários e promoção de uma região secundária em caso de desastre, com RPO típico de cerca de um segundo. A implantação Multi-AZ do RDS mantém uma instância em espera em outra Availability Zone da mesma região; ela não serve leituras nem sobrevive à perda da região inteira. Réplicas de leitura na mesma região apenas distribuem carga de leitura localmente e não oferecem leitura regional nem failover entre regiões. O ElastiCache Global Datastore replica um cache Redis entre regiões, não um banco relacional, portanto não substitui o Aurora como fonte de verdade nem oferece consultas SQL.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html",
+        "https://aws.amazon.com/rds/aurora/global-database/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma varejista online quer que os clientes encontrem produtos digitando texto livre, com resultados ordenados por relevância, tolerância a erros de digitação e filtros por categoria. A equipe de operações também precisa de painéis para analisar os termos mais buscados e as taxas de conversão por busca. Qual serviço da AWS é o mais adequado para essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon DynamoDB"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Redshift"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Athena"
+        },
+        {
+          "key": "D",
+          "text": "Amazon OpenSearch Service"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O Amazon OpenSearch Service é um mecanismo de busca e análise baseado em índice invertido, com ordenação por relevância, tolerância a erros de digitação, agregações e painéis integrados, exatamente o que a busca de produtos e a análise de termos exigem. O Amazon DynamoDB atende consultas por chave com latência de milissegundos, mas não faz busca textual por relevância nem tolerância a erros de digitação. O Amazon Redshift é um data warehouse colunar voltado a relatórios e BI sobre grandes volumes estruturados, não a buscas interativas por texto livre a cada tecla digitada. O Amazon Athena executa SQL diretamente sobre dados no Amazon S3, sem índice de busca e com latência de consulta inadequada para uma experiência de busca em tempo real.",
+      "fontes": [
+        "https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html",
+        "https://aws.amazon.com/opensearch-service/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API serverless baseada em AWS Lambda acessa um banco Amazon RDS for PostgreSQL. Nos horários de pico, milhares de invocações simultâneas abrem conexões diretas com o banco, esgotam o limite de conexões e geram erros para os usuários. A equipe precisa de um componente gerenciado que compartilhe e reutilize conexões, mantenha o pool disponível durante failovers e exija apenas a troca do endpoint na aplicação. Qual serviço atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Réplicas de leitura do Amazon RDS"
+        },
+        {
+          "key": "B",
+          "text": "Amazon RDS Proxy"
+        },
+        {
+          "key": "C",
+          "text": "Amazon DynamoDB Accelerator (DAX)"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Aurora Serverless v2"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon RDS Proxy é um proxy gerenciado que mantém um pool de conexões com o banco e multiplexa as conexões das funções Lambda, reduzindo o número de conexões abertas no RDS. Ele também melhora a disponibilidade ao preservar conexões durante failovers e é adotado apenas pela troca do endpoint, sem alterar o código. Réplicas de leitura ampliam a capacidade de leitura, mas cada invocação continua abrindo uma conexão direta, o que não resolve o esgotamento do limite e pode até agravá-lo. O DAX é um cache em memória para o Amazon DynamoDB e não se aplica a um banco PostgreSQL. O Aurora Serverless v2 é um modelo de capacity scaling para clusters Aurora; não é um pool de conexões e não se aplica a uma instância RDS for PostgreSQL.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html",
+        "https://aws.amazon.com/rds/proxy/"
+      ]
+    }
+  ]
+}

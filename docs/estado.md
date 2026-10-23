@@ -57,7 +57,11 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   `/prontidao` (estimativa com faixa, cobertura, amostra pequena, plano com atalhos para estudar e treinar o domínio,
   histórico) e `/metodologia` pública; `docs/metodologia-prontidao.md`. O acerto recente por domínio passa a alimentar o
   fator de desempenho do ciclo. LGPD exporta as fotos. Testes: unitários (monotonia em 300 casos, amostra pequena,
-  cobertura, decaimento), integração (foto, isolamento por usuário, ciclo) e e2e (prova → relatório → prontidão).
+  cobertura, decaimento), integração (foto, isolamento por usuário, ciclo) e e2e (prova → relatório → prontidão).- **Banco inicial de questões · CLF-C02 (2026-10-23):** 165 questões (133 SINGLE, 32 MULTIPLE) em
+  `conteudo/questoes/CLF-C02/`, de 5 a 10 por tarefa, escritas pelo OpenCode (modelo grátis) com
+  `scripts/questoes/opencode-lotes.py` e revisadas uma a uma contra a documentação (185 escritas, 20 descartadas por
+  serviço fechado a novos clientes, repetição, tarefa errada ou gabarito errado; 5 corrigidas). Todas importam sem
+  erro; entram pendentes e só aparecem depois de `--aprovar`.
 
 ## Próximo
 - **Etapa 6 · Conteúdo com IA:** geração de questões e resumos com Gemini (ADR 0001), teto de gasto, fila de moderação
@@ -83,8 +87,11 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers
-- Banco inicial de questões: ainda não há conteúdo real (autoral ou gerado por IA com revisão). Os testes usam questões
-  fictícias.
+- Banco de questões: AIF-C01 e SAA-C03 sem questões e a tarefa 4.3 do CLF-C02 com uma rodada só: a cota grátis do
+  OpenCode acabou em 2026-10-23. Retomar com `python3 scripts/questoes/opencode-lotes.py <EXAME> 2` quando renovar
+  (ou com OpenCode Go). Questões de 4.3 citam os planos de suporte atuais (Business Support+, Enterprise, Unified
+  Operations): conferir na moderação se o CLF-C02 ainda cobra Developer/Business.
+- Sem banco de produção (Neon), a importação e a moderação só rodam no Postgres local.
 - Nome definitivo do produto e domínio (hoje "Trilha", provisório em `src/lib/brand.ts`).
 - Infra a criar: projeto Neon (secret `NEON_API_KEY`, variable `NEON_PROJECT_ID` para o banco de preview por PR),
   projeto Vercel, projeto Sentry, produtos no Stripe, domínio no Resend.

@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma rede de clínicas mantém, no data center próprio, um sistema de prontuário que por exigência regulatória não pode sair das instalações. Para analisar dados agregados, a empresa passou a usar Amazon S3 e Amazon Athena na AWS, integrando esses serviços ao sistema local. Qual modelo de implantação descreve essa arquitetura?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Nuvem (cloud), porque os dados analíticos são processados na AWS."
+        },
+        {
+          "key": "B",
+          "text": "On-premises, porque o sistema de prontuário continua no data center da empresa."
+        },
+        {
+          "key": "C",
+          "text": "Multi-Region, porque a empresa usa recursos em mais de um local."
+        },
+        {
+          "key": "D",
+          "text": "Híbrido (hybrid), porque integra recursos no data center da empresa a recursos na AWS."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O modelo híbrido é o que combina cargas no data center da empresa com cargas na nuvem, integradas entre si, exatamente como no cenário. O modelo cloud exigiria que as cargas estivessem inteiramente na nuvem; a presença do sistema local não impede o uso da AWS, mas torna o conjunto híbrido. On-premises descreveria apenas o ambiente local, ignorando os serviços usados na AWS. Multi-Region não é um modelo de implantação, e sim o uso de várias Regions da AWS, o que não é indicado no cenário.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/types-of-cloud-computing.html",
+        "https://aws.amazon.com/what-is/hybrid-cloud/"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de defesa decidiu manter todas as suas cargas de trabalho em um data center próprio, sem contratar nuvem pública, e opera uma plataforma de virtualização administrada pela própria equipe nesse data center. Qual modelo de implantação ela utiliza?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "On-premises (nuvem privada), porque os recursos são provisionados e operados no data center da própria empresa."
+        },
+        {
+          "key": "B",
+          "text": "Nuvem pública, porque a virtualização usada é a mesma empregada por provedores de nuvem."
+        },
+        {
+          "key": "C",
+          "text": "Híbrido, porque combina virtualização com automação de TI."
+        },
+        {
+          "key": "D",
+          "text": "Nuvem comunitária, porque os recursos são compartilhados com outras empresas do mesmo setor."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A nuvem privada on-premises é operada no data center da própria organização, com recursos dedicados e administrados por ela, o que corresponde ao cenário. A nuvem pública é oferecida por um provedor terceirizado e acessada pela internet, o que a empresa decidiu não contratar; usar a mesma tecnologia de virtualização não transforma um ambiente local em nuvem pública. O modelo híbrido exigiria integrar o ambiente local a uma nuvem pública, o que não ocorre aqui. A nuvem comunitária é compartilhada por organizações com interesses comuns, e o cenário descreve recursos exclusivos da empresa.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/types-of-cloud-computing.html",
+        "https://aws.amazon.com/what-is/private-cloud/"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um engenheiro de operações precisa executar comandos pontuais e pequenos scripts em um terminal Linux para criar e consultar recursos na AWS. Ele não quer usar o navegador e não precisa escrever uma aplicação para isso. Qual opção de acesso atende diretamente a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Management Console, acessado por um navegador web."
+        },
+        {
+          "key": "B",
+          "text": "AWS CloudFormation, com templates declarativos de infraestrutura."
+        },
+        {
+          "key": "C",
+          "text": "AWS Command Line Interface (AWS CLI), executada no terminal."
+        },
+        {
+          "key": "D",
+          "text": "AWS SDK para Python (Boto3), embutido no código da aplicação."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A AWS CLI é a ferramenta de linha de comando que permite executar comandos e scripts no terminal para criar e consultar recursos da AWS, sem navegador e sem escrever uma aplicação. O AWS Management Console é uma interface gráfica no navegador, justamente o que o engenheiro quer evitar. O AWS CloudFormation serve para descrever e provisionar infraestrutura de forma declarativa e repetível, não para comandos pontuais digitados no terminal. O AWS SDK é usado dentro do código de uma aplicação; o cenário pede comandos de shell, não uma aplicação em Python.",
+      "fontes": [
+        "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html",
+        "https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain3.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe criou um bucket do Amazon S3 apenas para um teste que durará duas semanas. Ao final, o bucket precisa ser excluído uma única vez; a operação não fará parte de nenhuma implantação futura. Qual abordagem é a mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um template do AWS CloudFormation e mantê-lo versionado para executar a exclusão em todas as implantações."
+        },
+        {
+          "key": "B",
+          "text": "Executar a exclusão uma vez pelo AWS Management Console ou pela AWS CLI."
+        },
+        {
+          "key": "C",
+          "text": "Montar um pipeline de CI/CD que exclua o bucket a cada execução."
+        },
+        {
+          "key": "D",
+          "text": "Configurar o AWS Elastic Beanstalk para excluir o bucket ao encerrar o ambiente."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Como a exclusão é uma operação única e não recorrente, a forma mais simples e adequada é executá-la diretamente uma vez pelo AWS Management Console ou pela AWS CLI. Criar um template do AWS CloudFormation faria sentido para um provisionamento repetível e versionado, não para uma ação isolada. Um pipeline de CI/CD é destinado a processos repetíveis e automatizados e adicionaria complexidade sem necessidade. O AWS Elastic Beanstalk gerencia a implantação de aplicações e não é a ferramenta indicada para excluir um bucket de teste de forma avulsa.",
+      "fontes": [
+        "https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain3.html",
+        "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa cria hoje os ambientes de desenvolvimento, teste e produção manualmente no AWS Management Console, seguindo um checklist, e isso tem gerado diferenças de configuração entre eles. A empresa quer tornar o provisionamento repetível e consistente. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Documentar o passo a passo em um wiki e repetir os mesmos cliques no console em cada ambiente."
+        },
+        {
+          "key": "B",
+          "text": "Criar os ambientes uma única vez e evitar mudanças posteriores para preservar a configuração."
+        },
+        {
+          "key": "C",
+          "text": "Aplicar os mesmos templates por meio de um pipeline automatizado, com revisão das mudanças antes da implantação."
+        },
+        {
+          "key": "D",
+          "text": "Usar uma conta AWS separada para cada ambiente, sem compartilhar templates ou processos."
+        },
+        {
+          "key": "E",
+          "text": "Definir a infraestrutura em templates versionados, como no AWS CloudFormation, e reutilizá-los nos ambientes."
+        }
+      ],
+      "corretas": ["C", "E"],
+      "explicacao": "Definir a infraestrutura em templates versionados e reaplicá-los nos três ambientes (E) elimina a variação causada por cliques manuais e permite reproduzir a mesma configuração. Aplicar esses templates por um pipeline automatizado, com revisão das mudanças (C), torna o processo repetível e reduz erros humanos. Documentar cliques no console (A) mantém o trabalho manual e continua sujeito a divergências. Criar os ambientes uma única vez (B) não estabelece um processo repetível para novas implantações. Separar contas por ambiente (D) pode isolar recursos, mas, sem templates ou processos compartilhados, não garante consistência entre eles.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html",
+        "https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain3.html"
+      ]
+    }
+  ]
+}

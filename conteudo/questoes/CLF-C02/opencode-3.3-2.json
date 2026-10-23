@@ -1,0 +1,125 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de classificados de imóveis permite que os usuários enviem fotos dos imóveis. A cada upload, a empresa precisa gerar três versões redimensionadas da imagem e remover seus metadados. O volume de uploads varia bastante ao longo do dia, e a equipe não quer provisionar nem administrar servidores, pagando apenas pelo processamento realizado. Qual serviço é o mais adequado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EC2 com Auto Scaling, para manter um conjunto de instâncias que processa as imagens."
+        },
+        {
+          "key": "B",
+          "text": "AWS Batch, para enfileirar cada upload e executar o processamento em jobs agendados."
+        },
+        {
+          "key": "C",
+          "text": "AWS Lambda, para executar uma função acionada pelo upload de cada imagem."
+        },
+        {
+          "key": "D",
+          "text": "AWS Elastic Beanstalk, para implantar a aplicação de processamento em um ambiente gerenciado de instâncias."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS Lambda executa código sem exigir provisionamento ou administração de servidores, escala automaticamente conforme o volume de eventos e cobra pelo tempo de execução das funções. Ele se encaixa no processamento imediato de cada imagem enviada, mesmo com demanda imprevisível. O Amazon EC2 com Auto Scaling continua exigindo que a equipe gerencie instâncias, sistema operacional e políticas de escala, além de manter capacidade ociosa. O AWS Batch é voltado a jobs em lote enfileirados e com requisitos de agendamento, não ao processamento imediato de cada upload. O AWS Elastic Beanstalk é indicado para implantar aplicações web e provisiona recursos do EC2 por trás do ambiente, sem oferecer uma função acionada por evento de objeto.",
+      "fontes": ["https://docs.aws.amazon.com/lambda/latest/dg/welcome.html", "https://aws.amazon.com/lambda/"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa vai executar no Amazon EC2 um banco de dados em memória que mantém grandes conjuntos de dados na RAM. A carga exige uma proporção elevada de memória por vCPU para evitar trocas de página e manter o desempenho. Qual família de tipos de instância EC2 é a mais indicada para esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Accelerated computing, com GPUs ou FPGAs para machine learning e processamento gráfico."
+        },
+        {
+          "key": "B",
+          "text": "Memory optimized, com mais memória por vCPU para cargas que mantêm grandes volumes em RAM."
+        },
+        {
+          "key": "C",
+          "text": "Compute optimized, com processadores de alto desempenho para cargas intensivas de CPU."
+        },
+        {
+          "key": "D",
+          "text": "Storage optimized, com alta taxa de IOPS e armazenamento local para cargas intensivas de disco."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "As instâncias memory optimized são projetadas para cargas que precisam de grande quantidade de memória em relação ao número de vCPUs, como bancos de dados em memória e caches de grande porte. As accelerated computing oferecem GPUs ou FPGAs para processamento especializado e não priorizam a proporção de memória por vCPU. As compute optimized priorizam desempenho de CPU para cargas ligadas a processamento, não a conjuntos de dados mantidos em RAM. As storage optimized priorizam IOPS e armazenamento local para cargas com muita leitura e gravação em disco, sem resolver o requisito de memória.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html",
+        "https://aws.amazon.com/ec2/instance-types/"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma instituição de pesquisa processa milhares de arquivos de sequenciamento genético todas as noites. Os jobs têm dependências entre si, duram de minutos a algumas horas, precisam entrar em uma fila e devem usar capacidade de computação que aumente e diminua automaticamente. A equipe não quer criar nem manter um cluster próprio de servidores. Qual serviço atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Batch, que enfileira e agenda os jobs, com dependências, e dimensiona a capacidade de computação automaticamente."
+        },
+        {
+          "key": "B",
+          "text": "AWS Lambda, para executar cada job como uma função independente, sem servidores."
+        },
+        {
+          "key": "C",
+          "text": "Amazon EC2 Auto Scaling, para manter um cluster de instâncias EC2 dimensionado conforme a fila."
+        },
+        {
+          "key": "D",
+          "text": "AWS Fargate, para executar os jobs em contêineres sem provisionar instâncias."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS Batch é um serviço gerenciado para planejar, enfileirar e agendar cargas de computação em lote, incluindo dependências entre jobs, e para provisionar e dimensionar automaticamente os recursos de computação necessários. O AWS Lambda tem limite de execução de até 15 minutos e é orientado a eventos, o que não atende a jobs que podem durar horas nem ao agendamento com dependências. O Amazon EC2 Auto Scaling ajusta a quantidade de instâncias, mas não oferece fila de jobs nem controle de dependências, e ainda exige que a equipe mantenha o cluster. O AWS Fargate fornece capacidade para contêineres sem servidores, porém não é, sozinho, um agendador de jobs em lote com fila e dependências.",
+      "fontes": [
+        "https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html",
+        "https://aws.amazon.com/batch/"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma startup vai executar uma API em contêineres na AWS. A equipe não quer adotar Kubernetes, não quer administrar o plano de controle do orquestrador e também não quer provisionar nem manter instâncias do Amazon EC2 para as tarefas. Quais dois serviços, usados em conjunto, atendem a esses requisitos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EKS, para executar os contêineres com Kubernetes e plano de controle gerenciado."
+        },
+        {
+          "key": "B",
+          "text": "Amazon ECR, para armazenar as imagens e executar as tarefas em contêineres."
+        },
+        {
+          "key": "C",
+          "text": "Amazon ECS, para orquestrar os contêineres com um plano de controle gerenciado pela AWS."
+        },
+        {
+          "key": "D",
+          "text": "Amazon EC2 Auto Scaling, para criar e remover instâncias conforme a carga de trabalho."
+        },
+        {
+          "key": "E",
+          "text": "AWS Fargate, para fornecer capacidade de computação aos contêineres sem instâncias do EC2."
+        }
+      ],
+      "corretas": ["C", "E"],
+      "explicacao": "O Amazon ECS fornece orquestração de contêineres com um plano de controle gerenciado pela AWS, sem exigir a adoção de Kubernetes. O AWS Fargate fornece capacidade de computação para as tarefas em contêineres sem que a equipe provisione ou administre instâncias do EC2. Juntos, atendem ao cenário. O Amazon EKS também tem plano de controle gerenciado, mas é baseado em Kubernetes, que a equipe não quer adotar. O Amazon ECR é um registro de imagens de contêiner e não executa as tarefas. O Amazon EC2 Auto Scaling gerencia instâncias do EC2, justamente o que a equipe quer evitar.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html",
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html",
+        "https://aws.amazon.com/fargate/"
+      ]
+    }
+  ]
+}

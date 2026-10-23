@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A rede de clínicas Vitalis mantém prontuários em tabelas do Amazon DynamoDB e processa exames em funções do AWS Lambda. Para a auditoria, a equipe de segurança precisa separar o que a AWS já faz do que continua com a clínica. Qual controle é de responsabilidade da AWS nesse ambiente?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Definir, no IAM, quais analistas podem consultar cada tabela."
+        },
+        {
+          "key": "B",
+          "text": "Escolher a chave do AWS KMS usada para criptografar as tabelas."
+        },
+        {
+          "key": "C",
+          "text": "Garantir a segurança física dos data centers onde o DynamoDB e o Lambda são executados."
+        },
+        {
+          "key": "D",
+          "text": "Monitorar os registros de auditoria em busca de acessos indevidos aos prontuários."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: no modelo de responsabilidade compartilhada, a AWS é responsável pela segurança \"da\" nuvem, o que inclui instalações físicas, hardware, rede e a camada de virtualização que sustentam serviços gerenciados como DynamoDB e Lambda. A não atende porque definir quem acessa os dados por meio de políticas do IAM é uma decisão do cliente. B não atende porque a escolha da chave do AWS KMS para criptografar as tabelas é feita pelo cliente, ainda que o serviço seja gerenciado. D não atende porque monitorar os acessos e reagir a eles é atividade operacional do cliente, dono dos dados.",
+      "fontes": [
+        "https://aws.amazon.com/compliance/shared-responsibility-model/",
+        "https://docs.aws.amazon.com/lambda/latest/dg/lambda-security.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A loja online Cesta Boa executa suas aplicações em instâncias Amazon EC2 com Amazon Linux. O time de operações quer documentar corretamente a divisão de tarefas com a AWS. Qual tarefa é responsabilidade do cliente?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aplicar atualizações de segurança no sistema operacional convidado e nas aplicações instaladas nas instâncias."
+        },
+        {
+          "key": "B",
+          "text": "Manter a camada de virtualização que isola cada instância das demais."
+        },
+        {
+          "key": "C",
+          "text": "Proteger fisicamente os racks e os data centers onde as instâncias são executadas."
+        },
+        {
+          "key": "D",
+          "text": "Garantir que o hypervisor receba as correções de segurança da plataforma."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: em instâncias EC2, a AWS cuida da infraestrutura física e da virtualização, enquanto o cliente administra o sistema operacional convidado, as aplicações, os dados e as configurações de acesso — incluindo aplicar patches de segurança no Amazon Linux e no software instalado. B, C e D não atendem porque a camada de virtualização, a proteção física dos data centers e as correções do hypervisor fazem parte da segurança \"da\" nuvem, sob responsabilidade da AWS, e não do cliente.",
+      "fontes": [
+        "https://aws.amazon.com/compliance/shared-responsibility-model/",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "O escritório contábil Lume armazena demonstrativos financeiros de clientes em buckets do Amazon S3. Durante uma revisão de conformidade, o sócio responsável quer confirmar quais tarefas de segurança competem ao escritório, e não à AWS. Qual tarefa cabe ao cliente?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Garantir a durabilidade dos objetos replicando-os internamente dentro da região."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar patches no sistema operacional dos servidores que armazenam os objetos."
+        },
+        {
+          "key": "C",
+          "text": "Manter a segurança física das instalações onde os dados ficam gravados."
+        },
+        {
+          "key": "D",
+          "text": "Configurar políticas de bucket e bloquear o acesso público quando não for necessário."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: com o Amazon S3, a AWS opera a infraestrutura do serviço, mas o cliente controla o acesso aos próprios dados, o que inclui políticas de bucket, bloqueio de acesso público, permissões do IAM e opções de criptografia. A não atende porque a durabilidade e a replicação interna dos objetos são atributos operados pela AWS. B não atende porque o cliente não tem acesso ao sistema operacional da infraestrutura do S3. C não atende porque a segurança física das instalações é responsabilidade da AWS.",
+      "fontes": [
+        "https://aws.amazon.com/compliance/shared-responsibility-model/",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A seguradora Serra Azul migrou o sistema de apólices para o Amazon RDS para PostgreSQL e precisa registrar, no plano de segurança, o que a AWS administra nesse serviço gerenciado. Qual controle permanece a cargo da AWS?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar e revogar usuários do banco de dados e definir suas senhas."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar patches no sistema operacional e no motor do PostgreSQL gerenciado."
+        },
+        {
+          "key": "C",
+          "text": "Configurar as regras de firewall do banco por meio de security groups."
+        },
+        {
+          "key": "D",
+          "text": "Habilitar a criptografia em repouso e escolher a chave do AWS KMS."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: no Amazon RDS, a AWS administra a infraestrutura subjacente e aplica patches no sistema operacional e no motor do banco de dados, restando ao cliente cuidar dos dados e das configurações de acesso. A não atende porque a gestão de usuários e senhas do banco é feita pelo cliente. C não atende porque as regras de security group que liberam acesso ao banco são definidas pelo cliente. D não atende porque habilitar a criptografia em repouso e escolher a chave do AWS KMS é uma decisão do cliente no momento da configuração.",
+      "fontes": [
+        "https://aws.amazon.com/compliance/shared-responsibility-model/",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A startup ViaOrbe opera uma plataforma de entregas inteiramente sobre serviços gerenciados: funções do AWS Lambda, tabelas do Amazon DynamoDB e buckets do Amazon S3. Antes de uma auditoria, a equipe precisa listar as atividades que continuam sob responsabilidade da própria ViaOrbe. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aplicar patches de segurança no hypervisor dos servidores que executam as funções."
+        },
+        {
+          "key": "B",
+          "text": "Classificar os dados e definir os requisitos de proteção para cada tipo de informação."
+        },
+        {
+          "key": "C",
+          "text": "Manter a segurança física das Availability Zones onde os serviços são executados."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar patches no motor do banco de dados usado pelo DynamoDB."
+        },
+        {
+          "key": "E",
+          "text": "Conceder permissões com privilégio mínimo nas políticas do IAM."
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "B e E são as corretas: mesmo com serviços gerenciados, o cliente continua responsável pelos dados — incluindo classificá-los e definir como protegê-los — e por controlar quem pode acessá-los, o que exige políticas do IAM com privilégio mínimo. A não atende porque o hypervisor faz parte da infraestrutura operada pela AWS. C não atende porque a segurança física das Availability Zones é responsabilidade da AWS. D não atende porque, no DynamoDB, a AWS administra a infraestrutura e o motor do banco; o cliente não aplica patches nessa camada.",
+      "fontes": [
+        "https://aws.amazon.com/compliance/shared-responsibility-model/",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+      ]
+    }
+  ]
+}

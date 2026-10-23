@@ -42,6 +42,11 @@ npx tsx scripts/questoes/importar.ts --aprovar <id> [<id>…]  # publica
 npx tsx scripts/questoes/importar.ts --rejeitar <id> --nota "motivo"
 ```
 
+Os lotes ficam em `conteudo/questoes/<EXAME>/`. Rascunhos com IA saem de `scripts/questoes/opencode-lotes.py` (no Mac,
+modelo grátis do OpenCode, sem ferramentas; instruções em `conteudo/questoes/instrucoes.md`), que só grava o que passa
+em `scripts/questoes/validar.ts` (formato, códigos do exam guide, duplicatas) e cujas fontes respondem 200. Todo lote é
+revisado contra a documentação antes do commit e ainda passa pela moderação ao importar.
+
 ## Custos e serviços
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,

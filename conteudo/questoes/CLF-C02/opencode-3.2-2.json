@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística opera cargas de trabalho em duas Regiões da AWS, uma nos Estados Unidos e outra na Europa. O plano de continuidade de negócios precisa registrar por escrito por que um evento que afete a Região dos Estados Unidos não deve, por si só, interromper a operação europeia. Qual característica da infraestrutura global da AWS sustenta essa premissa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "As duas Regiões compartilham os mesmos data centers, e o isolamento vem apenas do uso de contas da AWS diferentes para cada uma."
+        },
+        {
+          "key": "B",
+          "text": "As Regiões são isoladas entre si por design, cada uma com suas próprias Availability Zones, e a comunicação entre elas depende de links externos, como a internet ou conexões dedicadas."
+        },
+        {
+          "key": "C",
+          "text": "Um único plano de controle global atende todas as Regiões, de modo que a indisponibilidade de uma delas é absorvida automaticamente pelas demais."
+        },
+        {
+          "key": "D",
+          "text": "As Availability Zones de uma Região se estendem fisicamente até a Região vizinha, o que garante replicação automática dos dados entre continentes."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B está correta: cada Região da AWS é uma partição isolada, formada por um conjunto próprio de Availability Zones, e a AWS não replica dados nem tráfego entre Regiões sem ação do cliente. Por isso, um evento que atinge a Região dos Estados Unidos não derruba a Região europeia, embora a empresa precise configurar replicação e failover se quiser continuidade de negócios de fato. A está errada porque Regiões não compartilham data centers: cada uma tem sua própria infraestrutura física, e contas separadas não são o que garante o isolamento. C está errada porque não existe um plano de controle global único que absorva falhas; os serviços são, em sua maioria, regionais, e cada Região é operada de forma independente. D está errada porque as Availability Zones ficam dentro da própria Região, em locais físicos distintos e próximos, e a replicação entre Regiões não é automática, precisa ser planejada e configurada pela empresa.",
+      "fontes": [
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de treinamento corporativo usa simulações 3D interativas que precisam responder em poucos milissegundos para usuários concentrados em uma cidade onde a AWS não tem uma Região. A equipe quer manter a carga de trabalho administrada a partir da Região em que já opera, com as mesmas APIs e ferramentas da AWS, e não pode instalar nem manter equipamentos próprios no local. Qual opção atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar uma AWS Wavelength Zone, que posiciona os recursos dentro da rede 5G de uma operadora de telecomunicações."
+        },
+        {
+          "key": "B",
+          "text": "Replicar a aplicação em uma segunda Região da AWS, que passará a atender os usuários daquela cidade."
+        },
+        {
+          "key": "C",
+          "text": "Instalar um AWS Outposts no data center da própria empresa e executar as simulações nele."
+        },
+        {
+          "key": "D",
+          "text": "Usar uma AWS Local Zone, extensão da Região que coloca recursos de compute e storage mais próximos daquela cidade."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D está correta: as Local Zones são extensões de uma Região que aproximam compute, storage e outros serviços do usuário final em áreas metropolitanas, e continuam sendo administradas pela Região pai, com as mesmas APIs e ferramentas. Elas atendem justamente ao caso de latência de um dígito de milissegundo sem exigir equipamentos do cliente. A está errada porque Wavelength Zones ficam dentro de redes 5G de operadoras e são voltadas a cargas de dispositivos móveis conectados a essa rede, não a usuários fixos de uma cidade. B está errada porque uma Região adicional fica, por definição, em outra área geográfica ampla, o que não resolve a distância até aquela cidade e ainda duplica o custo e a operação. C está errada porque o Outposts exige que a empresa instale e mantenha hardware nas próprias instalações, o que foi descartado no enunciado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/local-zones/latest/ug/what-is-aws-local-zones.html",
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de leilões online recebe lances em tempo real de clientes em quatro continentes. O tráfego é TCP, não pode ser cacheado e precisa entrar na rede global da AWS o mais perto possível de cada usuário. A empresa também quer endereços IP estáticos, que não mudam quando um endpoint precisa ser trocado, e failover rápido entre endpoints em duas Regiões. Qual serviço atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Global Accelerator"
+        },
+        {
+          "key": "B",
+          "text": "Amazon CloudFront com uma política de cache para conteúdo dinâmico"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Route 53 com política de roteamento por latência"
+        },
+        {
+          "key": "D",
+          "text": "AWS Direct Connect com uma conexão dedicada a partir de cada continente"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A está correta: o Global Accelerator anuncia endereços IP anycast a partir das edge locations da AWS, o que faz o tráfego TCP e UDP do usuário entrar na rede global da AWS próximo dele, sem depender de cache, e permite mover o tráfego para outro endpoint regional com failover rápido. B está errada porque o CloudFront é voltado à distribuição de conteúdo HTTP/HTTPS e ao cache; ele não atende tráfego TCP arbitrário não cacheável e não fornece IPs estáticos para failover de endpoints. C está errada porque o Route 53 apenas responde consultas DNS: a latência depende do cache dos resolvedores, os IPs retornados mudam e não há entrada antecipada na rede global da AWS. D está errada porque o Direct Connect cria um link dedicado a partir de um local específico do cliente, o que não aproxima usuários dispersos em quatro continentes nem resolve failover entre Regiões.",
+      "fontes": [
+        "https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html",
+        "https://aws.amazon.com/global-accelerator/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma fabricante mantém em suas instalações uma linha de montagem que usa visão computacional para inspecionar peças em tempo real. Por exigência contratual, as imagens dos sensores não podem sair do prédio, e a empresa quer usar serviços e APIs da AWS, incluindo Amazon EC2 e Amazon S3, para processar esses dados localmente, sem assumir a compra e a manutenção do hardware. Qual solução atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma AWS Local Zone na cidade mais próxima, acessada pela Região pai"
+        },
+        {
+          "key": "B",
+          "text": "Uma AWS Wavelength Zone, integrada à rede 5G de uma operadora parceira"
+        },
+        {
+          "key": "C",
+          "text": "Um AWS Outposts instalado nas dependências da fábrica"
+        },
+        {
+          "key": "D",
+          "text": "Uma Região da AWS conectada por AWS Direct Connect, com replicação das imagens para os serviços gerenciados"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C está correta: o Outposts leva hardware e serviços da AWS, como Amazon EC2 e Amazon S3, para dentro das instalações do cliente, com a AWS responsável pelo equipamento, e permite processar os dados sem que as imagens saiam do prédio. A está errada porque uma Local Zone pertence à infraestrutura da AWS em uma área metropolitana, e não às dependências da empresa, o que violaria a exigência de manter os dados no local. B está errada porque a Wavelength Zone fica dentro da rede 5G de uma operadora e não resolve processamento local na fábrica. D está errada porque os dados seriam enviados para serviços na Região, deixando o prédio, além de acrescentar latência de rede ao processamento em tempo real.",
+      "fontes": [
+        "https://docs.aws.amazon.com/outposts/latest/userguide/what-is-outposts.html",
+        "https://aws.amazon.com/outposts/"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa de vídeo-monitoramento veicular transmite alertas para motoristas que usam celulares em redes 5G e precisa processar parte das imagens a poucos milissegundos do dispositivo, sem levar o tráfego até uma Região distante. Um arquiteto está avaliando o uso de AWS Wavelength Zones. Quais duas afirmações descrevem corretamente esse componente da infraestrutura global da AWS? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "São o mesmo componente que as edge locations usadas pelo Amazon CloudFront, voltadas ao cache de objetos estáticos."
+        },
+        {
+          "key": "B",
+          "text": "Estendem uma Região da AWS para dentro da rede 5G de uma operadora de telecomunicações parceira."
+        },
+        {
+          "key": "C",
+          "text": "Substituem as Availability Zones e passam a ser o único lugar onde é possível criar VPCs na Região."
+        },
+        {
+          "key": "D",
+          "text": "Só podem ser usadas por cargas de trabalho que não precisam de nenhuma conexão com a Região pai."
+        },
+        {
+          "key": "E",
+          "text": "Permitem executar recursos como instâncias Amazon EC2 e volumes Amazon EBS próximos aos dispositivos móveis, reduzindo a latência."
+        }
+      ],
+      "corretas": ["B", "E"],
+      "explicacao": "B e E estão corretas: uma Wavelength Zone é uma extensão de uma Região posicionada dentro da rede 5G de uma operadora parceira, e nela é possível executar serviços como Amazon EC2 e Amazon EBS, de modo que o tráfego do dispositivo móvel não precise atravessar a rede até uma Região distante. A está errada porque as edge locations são pontos de presença usados por serviços como o CloudFront para cache e entrega de conteúdo, um componente diferente das Wavelength Zones. C está errada porque as Wavelength Zones não substituem as Availability Zones: elas convivem com as zonas da Região pai, que continua sendo usada para os recursos regionais. D está errada porque a Wavelength Zone é uma extensão da Região e depende dela para serviços regionais, controle e conectividade; não é uma implantação sem vínculo com a Região pai.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wavelength/latest/developerguide/what-is-wavelength.html",
+        "https://aws.amazon.com/wavelength/"
+      ]
+    }
+  ]
+}

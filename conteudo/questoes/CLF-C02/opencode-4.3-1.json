@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "A Aurora Logística opera cargas de trabalho de produção na AWS e precisa de acesso 24 horas por dia, 7 dias por semana, a Cloud Support Engineers por telefone, chat e e-mail, do conjunto completo de verificações do AWS Trusted Advisor e de suporte a software de terceiros. Qual é o plano de suporte de MENOR custo que atende a todos esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Basic Support, que já acompanha todas as contas e inclui suporte técnico por telefone."
+        },
+        {
+          "key": "B",
+          "text": "AWS Business Support+."
+        },
+        {
+          "key": "C",
+          "text": "AWS Enterprise Support."
+        },
+        {
+          "key": "D",
+          "text": "AWS Unified Operations."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: o AWS Business Support+ é o plano de menor custo que inclui acesso 24/7 a Cloud Support Engineers por telefone, web, chat e e-mail, o conjunto completo de verificações do Trusted Advisor e suporte a software de terceiros. A não atende porque o Basic Support cobre apenas questões de conta e cobrança, fóruns, verificações de saúde do serviço e documentação; ele não dá acesso a engenheiros de suporte nem ao conjunto completo do Trusted Advisor. C e D também oferecem os recursos pedidos, mas são planos superiores e mais caros, portanto não são a opção de menor custo.",
+      "fontes": [
+        "https://aws.amazon.com/premiumsupport/plans/",
+        "https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de arquitetura da Brava Saúde quer avaliar o desenho de uma nova carga de trabalho nos seis pilares do AWS Well-Architected Framework, registrar marcos de melhoria e obter um plano de ações priorizado, tudo em modo self-service e sem custo adicional. Qual recurso da AWS atende a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Trusted Advisor, que executa verificações automáticas nos recursos da conta."
+        },
+        {
+          "key": "B",
+          "text": "AWS Health Dashboard, que informa eventos de manutenção e disponibilidade."
+        },
+        {
+          "key": "C",
+          "text": "AWS Support Center, que centraliza a abertura e o acompanhamento de casos."
+        },
+        {
+          "key": "D",
+          "text": "AWS Well-Architected Tool, que conduz a revisão da carga de trabalho com base no framework."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: o AWS Well-Architected Tool permite revisar uma carga de trabalho em relação aos seis pilares do framework, salvar marcos, acompanhar melhorias e gerar um plano de ações, sem custo adicional. A não atende porque o Trusted Advisor faz verificações automáticas de boas práticas nos recursos da conta, mas não avalia o desenho arquitetural da carga de trabalho nem produz um plano baseado nos pilares. B não atende porque o AWS Health Dashboard informa eventos e manutenções, sem revisar arquitetura. C não atende porque o Support Center serve para abrir e acompanhar casos de suporte, não para conduzir uma revisão arquitetural.",
+      "fontes": [
+        "https://aws.amazon.com/well-architected-tool/",
+        "https://docs.aws.amazon.com/wellarchitected/latest/userguide/intro.html"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de operações da Cédula Payments quer ser avisada sobre manutenções programadas e eventos que afetam recursos específicos da sua conta AWS, além de ver orientações para mitigar o impacto. O time precisa de uma visão personalizada, disponível sem custo adicional para todos os clientes. Qual recurso oferece essa visão?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Health Dashboard, na visão de saúde da conta (account health)."
+        },
+        {
+          "key": "B",
+          "text": "AWS Service Health Dashboard, que mostra o status público dos serviços."
+        },
+        {
+          "key": "C",
+          "text": "AWS Trusted Advisor, que recomenda boas práticas para os recursos."
+        },
+        {
+          "key": "D",
+          "text": "AWS Well-Architected Tool, que revisa a arquitetura das cargas de trabalho."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: a visão de account health do AWS Health Dashboard exige autenticação, mostra eventos e mudanças programadas que afetam os serviços e recursos específicos da conta e oferece orientações para mitigar o impacto, sem custo adicional para todos os clientes. B não atende porque o Service Health Dashboard exibe o status geral dos serviços por Região para o público, sem personalização por conta. C não atende porque o Trusted Advisor avalia boas práticas e recomenda melhorias nos recursos, mas não é a fonte de eventos de saúde e manutenção. D não atende porque o Well-Architected Tool serve para revisar o desenho arquitetural, não para acompanhar eventos operacionais.",
+      "fontes": [
+        "https://docs.aws.amazon.com/health/latest/ug/what-is-aws-health.html",
+        "https://aws.amazon.com/premiumsupport/faqs/"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um desenvolvedor da Vila Nova Games enfrenta um erro comum de configuração e quer pesquisar, por conta própria, artigos oficiais com soluções passo a passo e também perguntas técnicas respondidas pela comunidade, sem abrir um caso de suporte. Qual recurso da AWS ele deve usar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Support Center."
+        },
+        {
+          "key": "B",
+          "text": "AWS Trusted Advisor."
+        },
+        {
+          "key": "C",
+          "text": "AWS re:Post, que reúne o AWS Knowledge Center e a comunidade de perguntas e respostas."
+        },
+        {
+          "key": "D",
+          "text": "AWS Health Dashboard."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: o AWS re:Post reúne artigos oficiais do AWS Knowledge Center, perguntas e respostas da comunidade e conteúdo técnico, e pode ser consultado sem abrir um caso de suporte. A não atende porque o Support Center serve para criar e acompanhar casos; casos técnicos exigem um plano de suporte pago. B não atende porque o Trusted Advisor executa verificações de boas práticas nos recursos da conta, não é uma base de conhecimento para erros de configuração. D não atende porque o AWS Health Dashboard informa eventos de saúde e manutenção dos serviços, sem artigos de solução de problemas.",
+      "fontes": [
+        "https://aws.amazon.com/premiumsupport/knowledge-center/",
+        "https://aws.amazon.com/premiumsupport/plans/"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma pequena empresa acabou de criar uma conta AWS e pretende continuar no AWS Basic Support. Quais benefícios estão incluídos nesse plano sem custo adicional? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Acesso 24/7 a Cloud Support Engineers por telefone, chat e e-mail."
+        },
+        {
+          "key": "B",
+          "text": "Respostas a perguntas de conta e cobrança."
+        },
+        {
+          "key": "C",
+          "text": "Um Technical Account Manager (TAM) designado."
+        },
+        {
+          "key": "D",
+          "text": "Acesso a documentação, whitepapers e guias de boas práticas."
+        },
+        {
+          "key": "E",
+          "text": "Conjunto completo de verificações do AWS Trusted Advisor."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "B e D são as corretas: o AWS Basic Support inclui respostas individuais a perguntas de conta e cobrança, fóruns de suporte, verificações de saúde do serviço e acesso a documentação, whitepapers e guias de boas práticas. A não está incluída porque o acesso 24/7 a Cloud Support Engineers por telefone, chat e e-mail começa no AWS Business Support+. C não está incluída porque um TAM designado faz parte do AWS Enterprise Support. E não está incluída porque o Basic oferece apenas verificações de limites de serviço e algumas verificações de segurança e tolerância a falhas; o conjunto completo do Trusted Advisor exige AWS Business Support+ ou superior.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awssupport/latest/user/aws-support-plans.html",
+        "https://aws.amazon.com/premiumsupport/plans/"
+      ]
+    }
+  ]
+}

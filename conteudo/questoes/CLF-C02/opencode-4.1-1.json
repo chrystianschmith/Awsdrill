@@ -1,0 +1,123 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma startup precisa executar um ambiente de testes por apenas duas semanas. O tráfego é imprevisível e não há previsão de uso contínuo após esse período. Qual modelo de preço da AWS é o MAIS adequado para esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reserved Instances"
+        },
+        {
+          "key": "B",
+          "text": "Amazon EC2 On-Demand Instances"
+        },
+        {
+          "key": "C",
+          "text": "EC2 Instance Savings Plans com compromisso de 3 anos"
+        },
+        {
+          "key": "D",
+          "text": "Standard Reserved Instances com pagamento antecipado"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Amazon EC2 On-Demand Instances permitem pagar apenas pelo tempo de computação utilizado, sem compromisso de longo prazo, sendo ideais para cargas de trabalho curtas ou imprevisíveis. A alternativa A (Reserved Instances) exige um compromisso de 1 ou 3 anos e oferece desconto em troca da reserva, o que não é vantajoso para uso de apenas duas semanas. A alternativa C (EC2 Instance Savings Plans com compromisso de 3 anos) também exige compromisso de longo prazo. A alternativa D (Standard Reserved Instances com pagamento antecipado) tem compromisso e pagamento adiantado, inadequados para uso temporário e sem previsão futura.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html",
+        "https://aws.amazon.com/ec2/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem um aplicativo em produção com carga de trabalho estável e previsível para os próximos 12 meses. Ela deseja reduzir custos em relação ao modelo On-Demand, mantendo a flexibilidade para alterar o tipo de instância se necessário. Qual opção atende melhor a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EC2 Spot Instances"
+        },
+        {
+          "key": "B",
+          "text": "AWS Free Tier"
+        },
+        {
+          "key": "C",
+          "text": "Dedicated Hosts"
+        },
+        {
+          "key": "D",
+          "text": "Convertible Reserved Instances"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Convertible Reserved Instances oferecem desconto significativo em relação ao On-Demand em troca de um compromisso de 1 ou 3 anos, e permitem alterar atributos da instância (como família, tipo ou sistema operacional) durante o período de compromisso, atendendo à necessidade de flexibilidade. A alternativa A (Spot Instances) é voltada a cargas tolerantes a interrupção e não garante disponibilidade contínua para produção crítica. A alternativa B (AWS Free Tier) não é um modelo de preço para redução de custos em larga escala com compromisso. A alternativa C (Dedicated Hosts) foca em licenciamento e isolamento físico, não sendo o modelo primário para redução de custos por carga previsível com flexibilidade de tipo de instância.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/reserved-instances-types.html",
+        "https://aws.amazon.com/ec2/pricing/reserved-instances/"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe precisa processar um grande volume de dados em jobs em lote. Esses jobs podem ser interrompidos a qualquer momento sem impacto crítico para o negócio. Qual modelo de precificação do Amazon EC2 oferece o maior potencial de redução de custos para esse tipo de carga?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EC2 Spot Instances"
+        },
+        {
+          "key": "B",
+          "text": "On-Demand Instances"
+        },
+        {
+          "key": "C",
+          "text": "Standard Reserved Instances"
+        },
+        {
+          "key": "D",
+          "text": "Dedicated Instances"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Amazon EC2 Spot Instances aproveitam a capacidade ociosa da AWS com descontos significativos em relação ao On-Demand, sendo ideais para cargas de trabalho tolerantes a interrupção, como processamento em lote. A alternativa B (On-Demand) não oferece os maiores descontos. A alternativa C (Standard Reserved Instances) exige compromisso de longo prazo e não se baseia em capacidade ociosa com descontos dinâmicos para cargas interrompíveis. A alternativa D (Dedicated Instances) foca em isolamento de hardware, geralmente com custo mais alto, não sendo voltada a maximizar economia para jobs interrompíveis.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html",
+        "https://aws.amazon.com/ec2/spot/"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa precisa executar instâncias do Amazon EC2 em hardware dedicado por requisitos de conformidade e para utilizar licenças de software baseadas em socket ou núcleo. Qual modelo de precificação é o MAIS adequado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Spot Instances"
+        },
+        {
+          "key": "B",
+          "text": "Compute Savings Plans"
+        },
+        {
+          "key": "C",
+          "text": "AWS Dedicated Hosts"
+        },
+        {
+          "key": "D",
+          "text": "On-Demand Instances"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "AWS Dedicated Hosts permitem alocar um servidor físico dedicado para uso exclusivo, oferecendo visibilidade dos sockets, núcleos e hosts físicos, o que é fundamental para licenças baseadas em host/socket e para atender a determinados requisitos de conformidade. A alternativa A (Spot Instances) usa capacidade ociosa compartilhada e pode ser interrompida. A alternativa B (Compute Savings Plans) oferece desconto por compromisso de uso, mas não garante hardware dedicado nem visibilidade por socket para fins de licenciamento. A alternativa D (On-Demand) pode ser executado em hardware compartilhado ou em opções dedicadas, mas Dedicated Hosts é o modelo específico que atende visibilidade física e casos de licenciamento por host.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html",
+        "https://aws.amazon.com/ec2/dedicated-hosts/"
+      ]
+    }
+  ]
+}

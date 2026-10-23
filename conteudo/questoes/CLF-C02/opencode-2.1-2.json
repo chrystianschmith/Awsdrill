@@ -1,0 +1,147 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A fintech PagLeve passou por uma auditoria de segurança e precisa documentar quem protege as instalações físicas onde os serviços da AWS são executados. A auditoria quer evidências sobre controle de acesso às salas, monitoramento e descarte de mídias de armazenamento. Segundo o modelo de responsabilidade compartilhada, esse conjunto de controles é de responsabilidade:",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "da PagLeve, pois os dados financeiros que ela armazena pertencem à fintech."
+        },
+        {
+          "key": "B",
+          "text": "do provedor de internet contratado pela PagLeve, que transporta o tráfego até a AWS."
+        },
+        {
+          "key": "C",
+          "text": "da AWS, que opera e protege a infraestrutura física que sustenta os serviços."
+        },
+        {
+          "key": "D",
+          "text": "da PagLeve e da AWS em partes iguais, com a fintech instalando câmeras e seguranças nos data centers."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A alternativa C está correta: a AWS é responsável pela segurança da nuvem, o que inclui instalações físicas, controle de acesso, monitoramento e descarte seguro de mídias. A não se aplica porque a titularidade dos dados não transfere à fintech a operação dos data centers. B não se aplica porque o provedor de internet apenas transporta o tráfego e não administra as instalações da AWS. D não se aplica porque o cliente não tem acesso físico aos data centers nem participa desses controles.",
+      "fontes": ["https://aws.amazon.com/compliance/shared-responsibility-model/", "https://aws.amazon.com/security/"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A plataforma de análise de dados Datalume executa contêineres no Amazon ECS com AWS Fargate. A equipe de operações está revisando o processo de atualização de componentes e quer saber o que precisa corrigir por conta própria. Qual atividade de atualização é responsabilidade da Datalume?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Corrigir vulnerabilidades na imagem de contêiner da aplicação e nas bibliotecas que ela utiliza."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar atualizações de segurança no sistema operacional host das tarefas, administrado pelo Fargate."
+        },
+        {
+          "key": "C",
+          "text": "Atualizar o hipervisor dos servidores físicos onde as tarefas são executadas."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar patches no software do plano de controle do Amazon ECS."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A está correta: no AWS Fargate, a AWS administra o host e o runtime, mas o cliente continua responsável pela imagem do contêiner, pelas dependências e pela configuração segura da aplicação. B, C e D estão erradas porque o sistema operacional host, o hipervisor e o plano de controle do Amazon ECS são administrados pela AWS nesse modelo.",
+      "fontes": ["https://aws.amazon.com/fargate/", "https://aws.amazon.com/compliance/shared-responsibility-model/"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A varejista CasaNova executa sua loja virtual em sub-redes privadas de uma Amazon VPC. O time de segurança quer separar as configurações que devem ser revisadas internamente das que ficam a cargo da AWS. Qual configuração é responsabilidade da CasaNova?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter a proteção física dos roteadores e switches que compõem a rede da AWS."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar atualizações de segurança no hipervisor que executa as instâncias da loja."
+        },
+        {
+          "key": "C",
+          "text": "Garantir a redundância física do backbone de rede entre as Availability Zones."
+        },
+        {
+          "key": "D",
+          "text": "Definir as regras dos security groups e das network ACLs que controlam o tráfego das sub-redes."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D está correta: security groups e network ACLs são configurações de rede criadas e mantidas pelo cliente dentro da Amazon VPC. A, B e C são controles de infraestrutura da AWS, que responde pela proteção física, pelo hipervisor e pelo backbone de rede entre as Availability Zones.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html",
+        "https://aws.amazon.com/compliance/shared-responsibility-model/"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "O laboratório de pesquisas Bioma usa diversas contas da AWS e concede acesso a cientistas e parceiros externos. Antes de uma revisão de conformidade, a equipe precisa confirmar qual atividade de gestão de identidade continua sob sua responsabilidade. Qual atividade é da Bioma?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Operar e proteger a infraestrutura física dos servidores que hospedam o serviço AWS IAM."
+        },
+        {
+          "key": "B",
+          "text": "Criar usuários e funções, atribuir permissões e revogar credenciais que não são mais necessárias."
+        },
+        {
+          "key": "C",
+          "text": "Aplicar patches de segurança no software do serviço de autenticação da AWS."
+        },
+        {
+          "key": "D",
+          "text": "Emitir e renovar automaticamente os certificados TLS dos endpoints públicos da AWS."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B está correta: a AWS opera a infraestrutura do AWS IAM, mas o cliente administra identidades, políticas, credenciais e a aplicação do princípio do menor privilégio. A, C e D tratam da operação e da proteção da infraestrutura do serviço, que são responsabilidade da AWS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html",
+        "https://aws.amazon.com/compliance/shared-responsibility-model/"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa de energia solar HelioSul está treinando novos analistas de segurança sobre o modelo de responsabilidade compartilhada da AWS. Quais duas afirmações devem ser apresentadas como corretas no material do treinamento? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "A AWS responde pela configuração das políticas do IAM e pela rotação das credenciais dos usuários do cliente."
+        },
+        {
+          "key": "B",
+          "text": "Em serviços gerenciados, a AWS assume integralmente a responsabilidade pelos dados armazenados pelo cliente."
+        },
+        {
+          "key": "C",
+          "text": "A AWS responde pela segurança física das instalações e pela camada de virtualização que sustenta os serviços."
+        },
+        {
+          "key": "D",
+          "text": "O cliente responde por aplicar patches no hipervisor e no hardware dos data centers da AWS."
+        },
+        {
+          "key": "E",
+          "text": "O cliente responde pela classificação dos dados e pelas decisões de quem pode acessá-los."
+        }
+      ],
+      "corretas": ["C", "E"],
+      "explicacao": "C e E estão corretas: a AWS protege a infraestrutura física e a camada de virtualização, enquanto o cliente mantém a responsabilidade pelos dados, pela classificação e pelas decisões de acesso. A está errada porque as políticas do IAM e as credenciais dos usuários são administradas pelo cliente. B está errada porque a AWS não assume a titularidade nem a classificação dos dados do cliente, mesmo em serviços gerenciados. D está errada porque patches de hipervisor e hardware são responsabilidade da AWS.",
+      "fontes": ["https://aws.amazon.com/compliance/shared-responsibility-model/", "https://aws.amazon.com/security/"]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "3.7",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de marketing precisa criar painéis interativos com gráficos, filtros e relatórios a partir dos dados consolidados da empresa, e disponibilizá-los para diferentes áreas, com controle de permissões por usuário. O objetivo é ter uma solução totalmente gerenciada, sem a necessidade de instalar ou manter ferramentas de Business Intelligence (BI) em servidores. Qual serviço da AWS é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon QuickSight"
+        },
+        {
+          "key": "B",
+          "text": "AWS Glue DataBrew"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Kinesis Data Analytics"
+        },
+        {
+          "key": "D",
+          "text": "AWS Data Pipeline"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon QuickSight é um serviço de Business Intelligence (BI) totalmente gerenciado e sem servidor, que permite criar visualizações, painéis interativos e relatórios com controle de acesso granular. O AWS Glue DataBrew (B) é voltado à limpeza e preparação visual de dados, não à criação de painéis interativos para consumo corporativo. O Amazon Kinesis Data Analytics (C) destina-se à análise em tempo real de dados em streaming. O AWS Data Pipeline (D) é utilizado para orquestrar movimentação e transformação de dados entre serviços da AWS, e não para visualização.",
+      "fontes": ["https://docs.aws.amazon.com/quicksight/latest/user/welcome.html"]
+    },
+    {
+      "dominio": "3.8",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa precisa automatizar a transferência de grandes volumes de arquivos entre seu armazenamento NFS on-premises e o Amazon S3, com agendamento, validação e monitoramento centralizados. Além disso, precisa enviar e-mails transacionais confiáveis a partir de suas aplicações sem operar um servidor de correio próprio. Quais dois serviços da AWS cobrem essas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS DataSync"
+        },
+        {
+          "key": "B",
+          "text": "AWS Glue"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Athena"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Simple Email Service (Amazon SES)"
+        },
+        {
+          "key": "E",
+          "text": "Amazon QuickSight"
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "O AWS DataSync (A) automatiza e acelera a transferência de dados entre ambientes on-premises e serviços de armazenamento da AWS, como o Amazon S3, oferecendo agendamento, criptografia, validação e visibilidade das transferências. O Amazon Simple Email Service (Amazon SES) (D) é um serviço de envio de e-mails transacionais e de marketing totalmente gerenciado, sem a necessidade de manter um servidor SMTP próprio. O AWS Glue (B) é utilizado para ETL e catalogação de dados. O Amazon Athena (C) realiza consultas SQL sobre dados no S3. O Amazon QuickSight (E) é uma ferramenta de Business Intelligence para visualização de dados.",
+      "fontes": [
+        "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html",
+        "https://docs.aws.amazon.com/ses/latest/dg/Welcome.html"
+      ]
+    }
+  ]
+}

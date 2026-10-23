@@ -1,0 +1,156 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v1",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A Padaria Aurora tem um site de pedidos com poucos acessos na maior parte do ano, mas com picos de tráfego nos feriados. Hoje a empresa mantém servidores próprios dimensionados para o pior cenário e desperdiça capacidade no restante do ano. Qual benefício da Nuvem AWS resolve diretamente esse problema?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Contratar AWS Direct Connect para ampliar a largura de banda do site durante os feriados."
+        },
+        {
+          "key": "B",
+          "text": "Ajustar a capacidade sob demanda, aumentando os recursos nos picos e reduzindo depois, pagando apenas pelo que for usado."
+        },
+        {
+          "key": "C",
+          "text": "Mover o site para Dedicated Hosts, que oferecem servidores físicos exclusivos para os períodos de pico."
+        },
+        {
+          "key": "D",
+          "text": "Migrar o site para uma única instância maior antes de cada feriado e mantê-la ligada o ano inteiro."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: a elasticidade da nuvem permite acompanhar a demanda, provisionando mais capacidade nos picos e menos fora deles, com cobrança pelo uso, sem comprar hardware para o cenário de pior caso. A não atende porque o AWS Direct Connect é uma conexão de rede privada entre o ambiente local e a AWS, não adiciona capacidade de computação ao site. C não atende porque Dedicated Hosts existem para requisitos de licenciamento e isolamento físico, não para acompanhar picos de demanda, e continuam exigindo provisionamento antecipado. D não atende porque manter a instância maior ligada o ano todo reproduz o desperdício de capacidade ociosa do modelo atual.",
+      "fontes": [
+        "https://aws.amazon.com/what-is-cloud-computing/",
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A Healthtech Vitalis mantém um data center próprio, e a equipe de TI gasta boa parte do tempo trocando discos e servidores, aplicando atualizações de hypervisor e planejando capacidade. A liderança quer que essa equipe atue em projetos que diferenciem o produto. Qual benefício da Nuvem AWS está mais alinhado a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "A AWS passa a ser responsável pela segurança dos dados dos pacientes e pelas credenciais da aplicação."
+        },
+        {
+          "key": "B",
+          "text": "A empresa deixa de precisar de profissionais de TI, porque a AWS opera a aplicação e o código."
+        },
+        {
+          "key": "C",
+          "text": "A empresa mantém os servidores físicos, mas passa a provisioná-los em minutos por meio de automação."
+        },
+        {
+          "key": "D",
+          "text": "A empresa deixa de cuidar de tarefas indiferenciadas de infraestrutura, como manutenção de hardware, e direciona a equipe para o que agrega valor ao negócio."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: ao usar serviços gerenciados na nuvem, a AWS assume a manutenção da infraestrutura subjacente, e a equipe interna deixa de gastar tempo com trabalho indiferenciado para se concentrar em diferenciais do produto. A não atende porque, no modelo de responsabilidade compartilhada, a segurança dos dados e das credenciais da aplicação continua sendo responsabilidade do cliente. B não atende porque a AWS não opera o código nem as decisões de negócio da aplicação; a empresa segue responsável por ela. C não atende porque automatizar servidores que continuam no data center próprio não elimina a troca de hardware, o patching físico nem o planejamento de capacidade.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html",
+        "https://aws.amazon.com/compliance/shared-responsibility-model/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A Loja Vitrine Verde vende online apenas no Brasil e quer atender clientes na Europa e na Ásia com baixa latência, sem construir e operar data centers nesses continentes. Qual benefício da Nuvem AWS atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Presença global: implantar a aplicação em Regions próximas aos usuários e aproveitar a infraestrutura global da AWS para reduzir a latência."
+        },
+        {
+          "key": "B",
+          "text": "Contratar um AWS Direct Connect por continente para levar os servidores da loja até a rede da AWS."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o tamanho das instâncias no Brasil para que o tráfego internacional chegue mais rápido."
+        },
+        {
+          "key": "D",
+          "text": "Ativar o AWS Shield Advanced nas instâncias atuais para acelerar a entrega de conteúdo na Europa e na Ásia."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: a infraestrutura global da AWS permite executar a aplicação em Regions mais próximas dos clientes, encurtando a distância de rede e reduzindo a latência, sem construir data centers próprios. B não atende porque o AWS Direct Connect é uma conexão dedicada entre a rede local do cliente e a AWS, o que não coloca a aplicação em outros continentes nem substitui a necessidade de recursos nas Regions. C não atende porque aumentar instâncias no Brasil não reduz a distância entre os servidores e os usuários no exterior. D não atende porque o AWS Shield Advanced protege contra ataques DDoS e não melhora o tempo de resposta internacional.",
+      "fontes": [
+        "https://aws.amazon.com/about-aws/global-infrastructure/",
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/global-infrastructure.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Transportadora Rota Sul está migrando seu sistema de rastreamento para a AWS e quer comparar o modelo de nuvem com o data center próprio. Quais dois benefícios são próprios da Nuvem AWS? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Elasticidade para aumentar ou reduzir a capacidade conforme a demanda, pagando pelo uso."
+        },
+        {
+          "key": "B",
+          "text": "Disponibilidade garantida de 100%, porque a AWS é responsável pela arquitetura da aplicação."
+        },
+        {
+          "key": "C",
+          "text": "Capacidade ilimitada por padrão, o que dispensa planejamento de limites e cotas de serviço."
+        },
+        {
+          "key": "D",
+          "text": "Alcance global, permitindo implantar a aplicação em novas Regions em pouco tempo."
+        },
+        {
+          "key": "E",
+          "text": "Garantia contratual de que o custo mensal será sempre menor que o do data center atual."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "A e D são as corretas: a elasticidade permite acompanhar a demanda com cobrança pelo uso, e a infraestrutura global da AWS permite colocar a aplicação em novas Regions rapidamente, sem comprar ou construir instalações. B não atende porque a AWS oferece SLAs para os serviços, mas não garante 100% de disponibilidade da aplicação; a arquitetura e a resiliência do sistema continuam sendo decisão do cliente. C não atende porque os serviços da AWS têm limites e cotas que precisam ser dimensionados e, se necessário, aumentados por solicitação. E não atende porque não existe garantia contratual de custo menor; o custo depende do uso, da arquitetura e das escolhas de compra.",
+      "fontes": [
+        "https://aws.amazon.com/what-is-cloud-computing/",
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A Editora Horizonte mantém seu portal de assinaturas em uma única sala de servidores alugada, com nobreak e gerador. O conselho quer continuar no ar mesmo se a sala ficar indisponível, sem construir uma segunda unidade própria. Qual benefício da Nuvem AWS atende a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Contratar o plano AWS Business Support para que a AWS assuma a operação do portal em caso de incidente."
+        },
+        {
+          "key": "B",
+          "text": "Enviar backups diários para o Amazon S3 Glacier Deep Archive e restaurar o portal depois da falha."
+        },
+        {
+          "key": "C",
+          "text": "Executar o portal em várias Availability Zones da mesma Region, aproveitando o isolamento de falhas da infraestrutura da AWS."
+        },
+        {
+          "key": "D",
+          "text": "Concentrar o portal em uma única Availability Zone com instâncias maiores, para reduzir o número de pontos de falha."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: as Availability Zones de uma Region são isoladas umas das outras, de modo que distribuir a aplicação entre elas mantém o portal disponível mesmo com a perda de uma zona, sem que a empresa construa uma segunda instalação própria. A não atende porque o AWS Support presta suporte técnico e orientação, mas não opera a aplicação do cliente nem a mantém no ar durante um incidente. B não atende porque backup é recuperação de dados a médio prazo, não continuidade do serviço; restaurar um portal leva tempo e não evita a indisponibilidade. D não atende porque concentrar tudo em uma única zona cria um ponto único de falha e agrava o risco.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-overview/global-infrastructure.html",
+        "https://aws.amazon.com/about-aws/global-infrastructure/"
+      ]
+    }
+  ]
+}
