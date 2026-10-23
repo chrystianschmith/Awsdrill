@@ -1,7 +1,7 @@
 """Escreve questões por tarefa do exam guide com um modelo grátis do OpenCode. Tudo sai pendente de moderação.
 
 Uso: python3 scripts/questoes/opencode-lotes.py <EXAME> [rodadas=2] [filtro-de-tarefa=*] [modelo=opencode/big-pickle]
-Saída: conteudo/questoes/<EXAME>/opencode-<tarefa>-<rodada>.json (ArquivoQuestoes, origem "ia", versaoPrompt "opencode-v1").
+Saída: conteudo/questoes/<EXAME>/opencode-<tarefa>-<rodada>.json (ArquivoQuestoes, origem "ia", versaoPrompt "opencode-v2").
 
 Cada chamada pede 5 questões de uma tarefa (4 SINGLE de 4 alternativas e 1 MULTIPLE de 5 com 2 corretas) e recebe os
 enunciados já escritos da tarefa para não repetir. A resposta passa por scripts/questoes/validar.ts (schema, código da
@@ -20,9 +20,11 @@ FILTRO = sys.argv[3] if len(sys.argv) > 3 else "*"
 MODELO = sys.argv[4] if len(sys.argv) > 4 else "opencode/big-pickle"
 RESERVA = os.environ.get("OPENCODE_RESERVA", "opencode/big-pickle")
 TENTATIVAS = [MODELO] * 3 + [RESERVA] * 2
-VERSAO_PROMPT = "opencode-v1"
+VERSAO_PROMPT = "opencode-v2"  # v2: regra de serviços fechados a novos clientes
 SAIDA = f"conteudo/questoes/{EXAME}"
 HOSTS = {"docs.aws.amazon.com", "aws.amazon.com"}
+# Fechados a novos clientes (conferido na documentação em 2026-10-23): não podem ser a resposta correta.
+FECHADOS = ("Snowball", "Migration Hub", "Cloud9")
 
 PASTA = os.environ.get("OPENCODE_PASTA", os.path.join(os.path.dirname(os.path.abspath(".")), "aws-saas-escritor"))
 os.makedirs(PASTA, exist_ok=True)
@@ -91,6 +93,9 @@ def confere(codigo, questoes, caminho):
         n = len(q.get("alternativas") or [])
         if (q["tipo"] == "SINGLE" and n != 4) or (q["tipo"] == "MULTIPLE" and (n != 5 or len(q.get("corretas") or []) != 2)):
             raise ValueError(f"questão {i}: SINGLE tem 4 alternativas; MULTIPLE tem 5 e 2 corretas")
+        certas = " ".join(a["text"] for a in q["alternativas"] if a["key"] in q.get("corretas", []))
+        if any(f in certas for f in FECHADOS):
+            raise ValueError(f"questão {i}: a resposta correta usa serviço fechado a novos clientes ({', '.join(FECHADOS)})")
     arquivo = {"exame": EXAME, "origem": "ia", "versaoPrompt": VERSAO_PROMPT, "questoes": questoes}
     with trava_validacao:
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
@@ -140,6 +145,9 @@ def escreve(dominio, tarefa, rodada):
                 r = subprocess.run([*OPENCODE, "run", "-m", m, pedido], capture_output=True, text=True, timeout=900,
                                    stdin=subprocess.DEVNULL, cwd=PASTA)
                 saida = (r.stdout or "") + (r.stderr or "")
+                if "Free usage limit reached" in saida:
+                    print(f"{codigo}-{rodada} parado: cota grátis do OpenCode esgotada", flush=True)
+                    return False
                 if any(s in saida for s in ("Rate limit exceeded", "Upstream request failed")) and esperas < 12:
                     print(f"{codigo}-{rodada} limite/falha do OpenCode; aguardando {espera}s", flush=True)
                     time.sleep(espera)
