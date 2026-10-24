@@ -20,8 +20,11 @@ export type ExameParaSimulado = {
 export function IniciarSimulado({
   exames,
   inicial,
+  plano = { modoProva: true, treinoEsgotado: false },
 }: {
   exames: ExameParaSimulado[];
+  /** Só reflete o plano; o servidor recusa de novo ao iniciar. */
+  plano?: { modoProva: boolean; treinoEsgotado: boolean };
   /** Vindo do plano de correção: exame e domínio já escolhidos. */
   inicial?: { examVersionId: string; domainId: string | null };
 }) {
@@ -106,28 +109,36 @@ export function IniciarSimulado({
                   : "Duração oficial a confirmar.",
               ],
             ] as const
-          ).map(([valor, titulo, descricao]) => (
-            <label
-              key={valor}
-              className={cn(
-                "flex cursor-pointer gap-3 rounded-md border p-3 text-sm",
-                modo === valor ? "border-primary bg-primary-soft" : "border-input",
-              )}
-            >
-              <input
-                type="radio"
-                name="modo"
-                value={valor}
-                checked={modo === valor}
-                onChange={() => setModo(valor)}
-                className="mt-1"
-              />
-              <span className="grid gap-0.5">
-                <span className="font-medium">{titulo}</span>
-                <span className="text-muted-foreground">{descricao}</span>
-              </span>
-            </label>
-          ))}
+          ).map(([valor, titulo, descricao]) => {
+            const bloqueado = valor === "PROVA" && !plano.modoProva;
+            return (
+              <label
+                key={valor}
+                className={cn(
+                  "flex gap-3 rounded-md border p-3 text-sm",
+                  bloqueado ? "cursor-not-allowed opacity-60" : "cursor-pointer",
+                  modo === valor ? "border-primary bg-primary-soft" : "border-input",
+                )}
+              >
+                <input
+                  type="radio"
+                  name="modo"
+                  value={valor}
+                  checked={modo === valor}
+                  disabled={bloqueado}
+                  onChange={() => setModo(valor)}
+                  className="mt-1"
+                />
+                <span className="grid gap-0.5">
+                  <span className="font-medium">
+                    {titulo}
+                    {bloqueado ? <span className="font-normal text-muted-foreground"> · plano Pro</span> : null}
+                  </span>
+                  <span className="text-muted-foreground">{descricao}</span>
+                </span>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
 
@@ -168,7 +179,7 @@ export function IniciarSimulado({
         </p>
       ) : null}
       <div>
-        <Button type="submit" disabled={enviando || banco === 0}>
+        <Button type="submit" disabled={enviando || banco === 0 || (modo === "TREINO" && plano.treinoEsgotado)}>
           {enviando ? "Preparando..." : modo === "PROVA" ? "Começar prova" : "Começar treino"}
         </Button>
       </div>

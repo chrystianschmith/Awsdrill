@@ -3,6 +3,9 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { examesParaSeguir, examesSeguidos } from "@/lib/estudo/consultas";
 import { getDayKey } from "@/lib/estudo/tempo";
+import { limiteDoPlano } from "@/lib/assinaturas/plano";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { CabecalhoPagina } from "@/components/estudo/basicos";
@@ -12,7 +15,12 @@ export const metadata: Metadata = { title: "Exames" };
 
 export default async function ExamesPage() {
   const user = await requireUser();
-  const [seguidos, disponiveis] = await Promise.all([examesSeguidos(user.id), examesParaSeguir(user.id)]);
+  const [seguidos, disponiveis, limite] = await Promise.all([
+    examesSeguidos(user.id),
+    examesParaSeguir(user.id),
+    limiteDoPlano(user.id, "maxExamesSeguidos"),
+  ]);
+  const noLimite = seguidos.length >= limite;
   const hoje = getDayKey(new Date());
 
   return (
@@ -72,14 +80,23 @@ export default async function ExamesPage() {
           <h2 id="disponiveis" className="text-sm font-semibold">
             Disponíveis
           </h2>
+          {noLimite ? (
+            <UpgradeCta
+              feature="maxExamesSeguidos"
+              description={`No plano Grátis você segue ${limite} exame por vez. Deixe de seguir o atual para trocar, ou assine o Pro para estudar vários.`}
+            />
+          ) : null}
           <ul className="divide-y divide-border rounded-lg border border-border bg-surface">
             {disponiveis.map((e) => (
               <li key={e.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
                 <div className="grid">
-                  <span className="font-medium">{e.codigo}</span>
+                  <span className="inline-flex items-center gap-2 font-medium">
+                    {e.codigo}
+                    {e.pausado ? <Badge>Pausado</Badge> : null}
+                  </span>
                   <span className="text-sm text-muted-foreground">{e.nome}</span>
                 </div>
-                <SeguirExame examVersionId={e.id} codigo={e.codigo} />
+                {noLimite ? null : <SeguirExame examVersionId={e.id} codigo={e.codigo} retomar={e.pausado} />}
               </li>
             ))}
           </ul>

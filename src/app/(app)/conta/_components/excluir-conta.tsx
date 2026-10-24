@@ -61,7 +61,11 @@ export function ExcluirConta() {
               {...register("senha")}
             />
           </Field>
-          <Field label='Digite "EXCLUIR" para confirmar' htmlFor="excluir-confirmacao" error={errors.confirmacao?.message}>
+          <Field
+            label='Digite "EXCLUIR" para confirmar'
+            htmlFor="excluir-confirmacao"
+            error={errors.confirmacao?.message}
+          >
             <Input
               id="excluir-confirmacao"
               autoComplete="off"

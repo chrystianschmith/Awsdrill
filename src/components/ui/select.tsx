@@ -5,7 +5,10 @@ import { cn } from "@/lib/utils";
 export function NativeSelect({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
-      className={cn("flex h-10 w-full rounded-md border border-input bg-surface px-3 text-sm disabled:opacity-50", className)}
+      className={cn(
+        "flex h-10 w-full rounded-md border border-input bg-surface px-3 text-sm disabled:opacity-50",
+        className,
+      )}
       {...props}
     />
   );

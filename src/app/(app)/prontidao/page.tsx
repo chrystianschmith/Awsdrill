@@ -4,6 +4,8 @@ import { requireUser } from "@/lib/auth/session";
 import { examesSeguidos } from "@/lib/estudo/consultas";
 import { MINIMO_EXAME } from "@/lib/prontidao/calculo";
 import { prontidaoDoExame, type ItemCorrecaoDTO } from "@/lib/prontidao/servico";
+import { temRecurso } from "@/lib/assinaturas/plano";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,7 +26,10 @@ const MOTIVO: Record<ItemCorrecaoDTO["motivo"], string> = {
 
 export default async function ProntidaoPage() {
   const user = await requireUser();
-  const seguidos = await examesSeguidos(user.id);
+  const [seguidos, porDominio] = await Promise.all([
+    examesSeguidos(user.id),
+    temRecurso(user.id, "prontidaoPorDominio"),
+  ]);
   const exames = await Promise.all(
     seguidos.map(async (e) => ({ ...e, p: await prontidaoDoExame(user.id, e.examVersionId) })),
   );
@@ -81,81 +86,90 @@ export default async function ProntidaoPage() {
             </div>
             <FaixaProntidao {...p} rotulo={`Prontidão no ${codigo}`} />
 
-            <section className="grid gap-3" aria-labelledby={`dom-${examVersionId}`}>
-              <h2 id={`dom-${examVersionId}`} className="text-sm font-semibold">
-                Por domínio
-              </h2>
-              <ul className="grid gap-4">
-                {p.dominios.map((d) => {
-                  const r = p.rotulos[d.domainId]!;
-                  return (
-                    <li key={d.domainId} className="grid gap-1.5">
-                      <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
-                        <span className="font-medium">
-                          {r.codigo}. {r.nome}
-                        </span>
-                        <span className="tabular text-xs text-muted-foreground">
-                          {textoFaixa(d)} · peso {Math.round(d.peso)}% · cobertura {pct(d.coverage)}
-                        </span>
-                      </div>
-                      <FaixaProntidao {...d} rotulo={`${r.codigo}. ${r.nome}`} />
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
+            {porDominio ? (
+              <>
+                <section className="grid gap-3" aria-labelledby={`dom-${examVersionId}`}>
+                  <h2 id={`dom-${examVersionId}`} className="text-sm font-semibold">
+                    Por domínio
+                  </h2>
+                  <ul className="grid gap-4">
+                    {p.dominios.map((d) => {
+                      const r = p.rotulos[d.domainId]!;
+                      return (
+                        <li key={d.domainId} className="grid gap-1.5">
+                          <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                            <span className="font-medium">
+                              {r.codigo}. {r.nome}
+                            </span>
+                            <span className="tabular text-xs text-muted-foreground">
+                              {textoFaixa(d)} · peso {Math.round(d.peso)}% · cobertura {pct(d.coverage)}
+                            </span>
+                          </div>
+                          <FaixaProntidao {...d} rotulo={`${r.codigo}. ${r.nome}`} />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
 
-            <section className="grid gap-3" aria-labelledby={`plano-${examVersionId}`}>
-              <h2 id={`plano-${examVersionId}`} className="text-sm font-semibold">
-                Plano de correção
-              </h2>
-              {p.plano.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  Todas as tarefas cobertas e com 70 ou mais. Mantenha com simulados em modo prova.
-                </p>
-              ) : (
-                <ol className="divide-y divide-border rounded-lg border border-border text-sm">
-                  {p.plano.map((item) => (
-                    <li
-                      key={item.topicId ?? item.domainId}
-                      className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
-                    >
-                      <span className="grid min-w-0 flex-1 gap-0.5">
-                        <span>
-                          <span className="tabular text-muted-foreground">{item.codigo}</span> {item.nome}
-                        </span>
-                        <span className="text-xs text-muted-foreground">{MOTIVO[item.motivo]}</span>
-                      </span>
-                      <span className="flex items-center gap-3 text-xs">
-                        {item.topicId ? (
-                          <Link
-                            href={`/material/${item.topicId}`}
-                            className="text-primary underline underline-offset-4"
-                            aria-label={`Material de ${item.codigo}`}
-                          >
-                            Material
-                          </Link>
-                        ) : null}
-                        <Link
-                          href={`/estudar?exame=${examVersionId}&dominio=${item.domainId}${item.topicId ? `&tarefa=${item.topicId}` : ""}`}
-                          className="text-primary underline underline-offset-4"
-                          aria-label={`Estudar ${item.codigo}`}
+                <section className="grid gap-3" aria-labelledby={`plano-${examVersionId}`}>
+                  <h2 id={`plano-${examVersionId}`} className="text-sm font-semibold">
+                    Plano de correção
+                  </h2>
+                  {p.plano.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Todas as tarefas cobertas e com 70 ou mais. Mantenha com simulados em modo prova.
+                    </p>
+                  ) : (
+                    <ol className="divide-y divide-border rounded-lg border border-border text-sm">
+                      {p.plano.map((item) => (
+                        <li
+                          key={item.topicId ?? item.domainId}
+                          className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
                         >
-                          Estudar
-                        </Link>
-                        <Link
-                          href={`/simulados?exame=${examVersionId}&dominio=${item.domainId}`}
-                          className="text-primary underline underline-offset-4"
-                          aria-label={`Treinar o domínio ${item.dominio}`}
-                        >
-                          Treinar
-                        </Link>
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              )}
-            </section>
+                          <span className="grid min-w-0 flex-1 gap-0.5">
+                            <span>
+                              <span className="tabular text-muted-foreground">{item.codigo}</span> {item.nome}
+                            </span>
+                            <span className="text-xs text-muted-foreground">{MOTIVO[item.motivo]}</span>
+                          </span>
+                          <span className="flex items-center gap-3 text-xs">
+                            {item.topicId ? (
+                              <Link
+                                href={`/material/${item.topicId}`}
+                                className="text-primary underline underline-offset-4"
+                                aria-label={`Material de ${item.codigo}`}
+                              >
+                                Material
+                              </Link>
+                            ) : null}
+                            <Link
+                              href={`/estudar?exame=${examVersionId}&dominio=${item.domainId}${item.topicId ? `&tarefa=${item.topicId}` : ""}`}
+                              className="text-primary underline underline-offset-4"
+                              aria-label={`Estudar ${item.codigo}`}
+                            >
+                              Estudar
+                            </Link>
+                            <Link
+                              href={`/simulados?exame=${examVersionId}&dominio=${item.domainId}`}
+                              className="text-primary underline underline-offset-4"
+                              aria-label={`Treinar o domínio ${item.dominio}`}
+                            >
+                              Treinar
+                            </Link>
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </section>
+              </>
+            ) : (
+              <UpgradeCta
+                feature="prontidaoPorDominio"
+                description="Veja a prontidão de cada domínio e um plano de correção com as tarefas que mais pedem atenção."
+              />
+            )}
 
             {p.historico.length > 0 ? (
               <section className="grid gap-2" aria-labelledby={`hist-${examVersionId}`}>

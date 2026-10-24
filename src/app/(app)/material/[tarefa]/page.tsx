@@ -5,6 +5,8 @@ import { requireUser } from "@/lib/auth/session";
 import { iaDisponivel } from "@/lib/ai/cliente";
 import { lerMaterial, tarefaDoUsuario } from "@/lib/ai/servico-material";
 import { AppError } from "@/lib/errors";
+import { temRecurso } from "@/lib/assinaturas/plano";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,7 +31,6 @@ export default async function MaterialPage({ params }: PageProps<"/material/[tar
     if (e instanceof AppError) notFound();
     throw e;
   });
-  const material = await lerMaterial(tarefa.id);
   const titulo = `${tarefa.exame.codigo} · ${tarefa.codigo} ${tarefa.nome}`;
   const atalhos = (
     <div className="flex flex-wrap gap-2">
@@ -48,6 +49,23 @@ export default async function MaterialPage({ params }: PageProps<"/material/[tar
     </div>
   );
 
+  if (!(await temRecurso(user.id, "conteudoIA"))) {
+    return (
+      <div className="grid gap-6">
+        <CabecalhoPagina
+          titulo={titulo}
+          descricao={`Domínio ${tarefa.dominio.codigo}. ${tarefa.dominio.nome}`}
+          acoes={atalhos}
+        />
+        <UpgradeCta
+          feature="conteudoIA"
+          description="Resumo e flashcards de cada tarefa do exam guide, com as fontes oficiais citadas."
+        />
+      </div>
+    );
+  }
+
+  const material = await lerMaterial(tarefa.id);
   if (!material) {
     return (
       <div className="grid gap-6">
