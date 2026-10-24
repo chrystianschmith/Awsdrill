@@ -33,3 +33,24 @@ export function arquivoFicticio(exame: string, codigos: string[], porDominio: nu
     ),
   };
 }
+
+/** Resposta válida da IA para o material de uma tarefa (fictícia, para os mocks). */
+export function materialFicticio(tarefa: string, semente = "a") {
+  return {
+    resumo: {
+      texto: [
+        `### Resumo fictício ${tarefa}-${semente}`,
+        "Parágrafo de teste com **negrito** e `código`, escrito só para validar o formato do material.",
+        ...Array.from({ length: 8 }, (_, i) => `- Item de teste ${i + 1} do resumo fictício, com algumas palavras.`),
+      ].join("\n"),
+      fontes: ["https://docs.aws.amazon.com/whitepapers/latest/aws-overview/introduction.html"],
+    },
+    flashcards: Array.from({ length: 5 }, (_, i) => ({
+      frente: `Pergunta fictícia ${i + 1} (${semente})`,
+      verso: `Resposta ${i + 1}`,
+    })),
+    questoes: Array.from({ length: 5 }, (_, i) =>
+      questaoFicticia(tarefa, i + 100 * semente.charCodeAt(0), i === 4 ? "MULTIPLE" : "SINGLE"),
+    ),
+  };
+}

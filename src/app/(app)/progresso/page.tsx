@@ -68,6 +68,13 @@ export default async function ProgressoPage() {
                       </span>
                       <div className="flex items-center gap-2">
                         <Link
+                          href={`/material/${t.id}`}
+                          className="text-xs text-primary underline underline-offset-4"
+                          aria-label={`Material de ${t.codigo}`}
+                        >
+                          Material
+                        </Link>
+                        <Link
                           href={`/estudar?exame=${e.examVersionId}&dominio=${d.id}&tarefa=${t.id}`}
                           className="text-xs text-primary underline underline-offset-4"
                           aria-label={`Estudar ${t.codigo}`}
