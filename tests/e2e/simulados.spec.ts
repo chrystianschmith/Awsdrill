@@ -32,7 +32,7 @@ async function marcarCerta(page: Page) {
 }
 
 test("simulado em modo prova completo → relatório por domínio", async ({ context, page }) => {
-  const conta = await criarConta("prova");
+  const conta = await criarConta("prova", { pro: true });
   await seguir(conta.id, "CLF-C02");
   await entrarComo(context, conta);
 
@@ -81,7 +81,7 @@ test("simulado em modo prova completo → relatório por domínio", async ({ con
 });
 
 test("plano de correção leva ao treino do domínio já escolhido", async ({ context, page }) => {
-  const conta = await criarConta("plano");
+  const conta = await criarConta("plano", { pro: true });
   await seguir(conta.id, "CLF-C02");
   await entrarComo(context, conta);
   await page.goto("/prontidao");
@@ -129,7 +129,7 @@ test("treino mostra a correção e a fonte oficial logo após responder", async 
 });
 
 test("simulados sem violações de acessibilidade", async ({ context, page }) => {
-  const conta = await criarConta("a11y-simulado");
+  const conta = await criarConta("a11y-simulado", { pro: true });
   await seguir(conta.id, "CLF-C02");
   await entrarComo(context, conta);
   await page.goto("/simulados");

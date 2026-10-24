@@ -8,7 +8,10 @@ test.afterAll(async () => {
 });
 
 async function sairPeloMenu(page: Page) {
-  await page.getByRole("button", { name: /^Menu de/ }).filter({ visible: true }).click();
+  await page
+    .getByRole("button", { name: /^Menu de/ })
+    .filter({ visible: true })
+    .click();
   await page.getByRole("menuitem", { name: "Sair" }).click();
   await expect(page).toHaveURL(/\/entrar/);
 }

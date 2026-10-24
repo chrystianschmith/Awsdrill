@@ -8,12 +8,15 @@ test("lista as certificações por nível e abre o detalhe com domínios, pesos 
   await expect(page.getByRole("heading", { level: 1, name: "Certificações" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Foundational" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "Associate" })).toBeVisible();
-  for (const codigo of ["CLF-C02", "AIF-C01", "SAA-C03"]) await expect(page.getByText(codigo, { exact: true })).toBeVisible();
+  for (const codigo of ["CLF-C02", "AIF-C01", "SAA-C03"])
+    await expect(page.getByText(codigo, { exact: true })).toBeVisible();
   expect(await violacoesA11y(page)).toEqual([]);
 
   await page.getByRole("link", { name: "AWS Certified Solutions Architect – Associate" }).click();
   await expect(page).toHaveURL(/\/certificacoes\/solutions-architect-associate$/);
-  await expect(page.getByRole("heading", { level: 1, name: "AWS Certified Solutions Architect – Associate" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "AWS Certified Solutions Architect – Associate" }),
+  ).toBeVisible();
   await expect(page.getByText("720 de 1000")).toBeVisible();
   await expect(page.getByText("130 min")).toBeVisible();
 
@@ -28,7 +31,9 @@ test("lista as certificações por nível e abre o detalhe com domínios, pesos 
     /^https:\/\/docs\.aws\.amazon\.com\/aws-certification\//,
   );
   expect(await violacoesA11y(page)).toEqual([]);
-  const largura = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  const largura = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
   expect(largura).toBeLessThanOrEqual(0);
 });
 
