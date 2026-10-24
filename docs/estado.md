@@ -87,11 +87,23 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   (plano efetivo por linha da tabela, webhook repetido sem efeito duplo, carência, e-mails, funil), integração (limites
   do Grátis, dois "seguir" simultâneos, downgrade e retorno) e e2e com Stripe falso (limite → assina → Pro → cancela →
   Grátis sem perder dados).
+- **Etapa 8 · Carteira, admin e métricas (2026-10-24):** `/carteira` (Grátis e Pro) com as certificações feitas
+  (`UserCertification`, autodeclarada): aprovado vale 3 anos a partir da data do exame (`validityMonths` do catálogo,
+  conferido em aws.amazon.com/certification/recertification em 2026-10-24), situação válida / vence em breve (90 dias) /
+  vencida, badge só https. Lembrete de recertificação a 180, 90, 30 e 7 dias e no vencimento, um e-mail por dia por
+  usuário no cron diário, respeitando a preferência. Admin em `/admin` (404 para quem não é admin, em página e em
+  action): visão geral (usuários, pagantes, em teste, MRR e churn estimados, filas, custo de IA, exames mais seguidos),
+  questões pendentes (aprovar uma ou a página, rejeitar com motivo), reports do material (resolver, republicar, apagar
+  para gerar de novo), revisões e execuções da pipeline do catálogo, custo de IA por mês e modelo, usuários com plano
+  efetivo. Toda decisão vai para `AuditLog`. LGPD exporta a carteira. Testes: unitários (vencimento, situação,
+  estágios de lembrete, MRR e churn), integração (IDOR e validação da carteira, lembretes agrupados e sem repetir,
+  recusa de não-admin em toda action) e e2e (não-admin recebe 404, admin aprova questão, carteira com axe).
 
 ## Próximo
 
-- **Etapa 8 · Carteira, admin e métricas.**
-- Flashcards no agendador de revisão (acertei/errei) e fila de reports e de questões geradas na tela de admin (etapa 8).
+- **Etapa 9 · Entrega:** E2E do fluxo crítico ponta a ponta, Lighthouse mobile ≥ 90, revisão de UI, auditoria
+  `seguranca-vibecoding` completa, README e deploy (deploy só com o OK do Chrytian e a infra criada).
+- Flashcards no agendador de revisão (acertei/errei).
 - Para ligar a geração em produção: `GEMINI_API_KEY` e `ADMIN_ALERT_EMAIL` na Vercel (decisão do Chrytian).
 - Teste ponta a ponta em Stripe test mode real (com Stripe CLI) quando houver conta; o Pix anual não tem e2e.
 
@@ -112,6 +124,8 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   semanal) para o produto ser útil sem assinar; modo prova é Pro. Moderação de questões pela CLI até o admin (etapa 8).
 - Prontidão: penalidade de amostra pequena por pseudo-amostra (3) em vez de esconder o número, para manter a
   monotonia; tela calcula na hora e a foto serve ao histórico (`docs/metodologia-prontidao.md`).
+- Admin só lê usuários e assinaturas: mudança de plano vem sempre do Stripe. MRR e churn são estimados do estado atual
+  (sem histórico de status); trial não entra no MRR. Moderação de questões passa a ser pela tela, e a CLI continua valendo.
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers

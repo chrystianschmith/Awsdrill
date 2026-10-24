@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { SESSION_COOKIE } from "./cookie";
 import { gerarToken, hashToken } from "./tokens";
@@ -101,9 +101,9 @@ export async function requireUser(): Promise<CurrentUser> {
   return user;
 }
 
-/** Exige papel ADMIN, checado no servidor. */
+/** Exige papel ADMIN, checado no servidor. Para quem não é admin, a área não existe (404). */
 export async function requireAdmin(): Promise<CurrentUser> {
   const user = await requireUser();
-  if (user.role !== "ADMIN") redirect("/hoje");
+  if (user.role !== "ADMIN") notFound();
   return user;
 }
