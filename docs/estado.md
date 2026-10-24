@@ -3,6 +3,7 @@
 Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6YQRyixxPy1ESp4tVWi
 
 ## Feito
+
 - **Etapa 1 · Fundação (2026-10-22):** base copiada do Prumo sem o domínio de concursos; tokens (primária azul-marinho),
   layout, início "em construção", 404, erro, offline e PWA; CSP com nonce e headers de segurança em `src/proxy.ts`;
   Sentry opcional por DSN; Prisma 7 com migration inicial vazia; CI com gitleaks, lint, typecheck, testes, build,
@@ -63,20 +64,35 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   serviço fechado a novos clientes, repetição, tarefa errada ou gabarito errado; 5 corrigidas). Todas importam sem
   erro; entram pendentes e só aparecem depois de `--aprovar`.
 
+- **Etapa 6 · Material com IA (2026-10-24):** `/material/<tarefa>` com resumo, 5 a 10 flashcards e 5 questões por task
+  statement, gerados uma vez sob demanda e compartilhados (advisory lock por tarefa). Camada de IA do Prumo em
+  `src/lib/ai` (Gemini grátis, Claude como alternativa, `max_tokens`, instruções cacheadas, dados delimitados contra
+  prompt injection); saída validada por Zod com fontes só de host oficial; questões entram pendentes pelo import da 5a.
+  Teto `AI_MONTHLY_BUDGET_USD` com alerta ao admin, custo por chamada em `AiUsageLog`, 10 gerações/hora por usuário.
+  Selo "Gerado por IA", fontes oficiais, "reportar erro" (`ContentReport`; acima de 3 abertos o material sai do ar e é
+  refeito). Markdown restrito sem HTML (ADR 0006). Links "Material" no progresso e no plano da prontidão. LGPD exporta
+  os reports. Testes: unitários (schema, correção, recusa, teto, custo, markdown, prompt injection, rede bloqueada em
+  toda a suíte), integração (geração única com duas requisições simultâneas, teto antes da chamada, saída inválida não
+  grava, IDOR, reports) e e2e (tela, selo, texto escapado, report, 404 para quem não segue).
+
 ## Próximo
-- **Etapa 6 · Conteúdo com IA:** geração de questões e resumos com Gemini (ADR 0001), teto de gasto, fila de moderação
-  (o import por JSON da 5a é a porta de entrada) e "reportar erro".
-- Tela da fila de moderação do catálogo e das questões entra com o admin (etapa 8).
+
+- **Etapa 7 · Planos e Stripe:** `entitlements.ts`; material com IA, ciclo e revisões passam a exigir Pro.
+- Flashcards no agendador de revisão (acertei/errei) e fila de reports e de questões geradas na tela de admin (etapa 8).
+- Para ligar a geração em produção: `GEMINI_API_KEY` e `ADMIN_ALERT_EMAIL` na Vercel (decisão do Chrytian).
 
 ## Decisões
+
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
-  · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA.
+  · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA · `0006` markdown restrito no conteúdo de IA.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
 - Etapa 4 em duas partes: 4a (sessões, metas, progresso) e 4b (ciclo e revisões). Ciclo e revisões são Pro pela skill,
   mas o bloqueio por plano só entra com `entitlements.ts` na etapa 7; até lá ficam abertos.
 - "Matéria" da skill = domínio do exam guide; "tópico" = task statement.
+- Material com IA é gerado por um botão na primeira visita, não ao abrir a página: prefetch e robôs não gastam IA. Até
+  a etapa 7 fica aberto a quem segue o exame, limitado por usuário, pelo teto mensal e pela geração única.
 - Feito do ciclo é recalculado das sessões (não somado por delta), para não divergir ao excluir ou confirmar sessões.
 - Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
 - Simulados: um em andamento por usuário (começar outro encerra o anterior com o que foi respondido); questão não
@@ -87,6 +103,7 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers
+
 - Banco de questões: AIF-C01 e SAA-C03 sem questões e a tarefa 4.3 do CLF-C02 com uma rodada só: a cota grátis do
   OpenCode acabou em 2026-10-23. Retomar com `python3 scripts/questoes/opencode-lotes.py <EXAME> 2` quando renovar
   (ou com OpenCode Go). Questões de 4.3 citam os planos de suporte atuais (Business Support+, Enterprise, Unified
