@@ -72,15 +72,7 @@ describe("cotas do sorteio", () => {
       ...Array.from({ length: 30 }, (_, i) => ({ id: `b${i}`, domainId: "b", vista: false })),
       { id: "fora", domainId: "z", vista: false },
     ];
-    const ids = sortearQuestoes(
-      banco,
-      new Map([
-        ["a", 75],
-        ["b", 25],
-      ]),
-      20,
-      semente(42),
-    );
+    const ids = sortearQuestoes(banco, new Map([["a", 75], ["b", 25]]), 20, semente(42));
     expect(ids).toHaveLength(20);
     expect(new Set(ids).size).toBe(20);
     expect(ids).not.toContain("fora");

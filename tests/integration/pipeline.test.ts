@@ -49,9 +49,7 @@ describe("executarPipeline", () => {
     expect(v.retrievedAt.toISOString().slice(0, 10)).toBe("2026-11-01");
     const run = await db.catalogRun.findUniqueOrThrow({ where: { id: r.runId! } });
     expect(run).toMatchObject({ status: "SUCCEEDED", examsChecked: 1, examsUnchanged: 1 });
-    expect(
-      await db.blueprintWeight.count({ where: { domain: { examVersion: { code: e.codigo } }, revision: 2 } }),
-    ).toBe(0);
+    expect(await db.blueprintWeight.count({ where: { domain: { examVersion: { code: e.codigo } }, revision: 2 } })).toBe(0);
   });
 
   it("mudança coerente de peso e tarefa publica sozinha uma revisão nova e retira a tarefa que saiu", async () => {
@@ -127,11 +125,7 @@ describe("executarPipeline", () => {
 
   it("erro em um exame não para a execução e fica registrado", async () => {
     const e = await exameNoBanco("F");
-    const r = await executarPipeline(db, {
-      buscar: buscarEm(new Map()),
-      hoje: "2026-11-01",
-      codigos: [e.codigo, "NAO-EXISTE"],
-    });
+    const r = await executarPipeline(db, { buscar: buscarEm(new Map()), hoje: "2026-11-01", codigos: [e.codigo, "NAO-EXISTE"] });
     runs.push(r.runId!);
     expect(r.erros.map((x) => x.codigo)).toEqual([e.codigo, "NAO-EXISTE"]);
     expect((await db.catalogRun.findUniqueOrThrow({ where: { id: r.runId! } })).status).toBe("FAILED");
@@ -142,12 +136,7 @@ describe("executarPipeline", () => {
     const novo = structuredClone(e);
     novo.dominios[0]!.peso = 22;
     novo.dominios[1]!.peso = 32;
-    const r = await executarPipeline(db, {
-      buscar: buscarEm(guiaEmMarkdown(novo)),
-      hoje: "2026-11-01",
-      codigos: [e.codigo],
-      dryRun: true,
-    });
+    const r = await executarPipeline(db, { buscar: buscarEm(guiaEmMarkdown(novo)), hoje: "2026-11-01", codigos: [e.codigo], dryRun: true });
     expect(r).toMatchObject({ runId: null, publicados: 1 });
     expect((await exameGravado(db, e.codigo))!.dominios[0]!.peso).toBe(24);
   });

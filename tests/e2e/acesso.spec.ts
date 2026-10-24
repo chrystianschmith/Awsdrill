@@ -11,14 +11,7 @@ test.describe("sem sessão", () => {
 
   test("cookie forjado não abre área logada nem exportação", async ({ context, page }) => {
     await context.addCookies([
-      {
-        name: SESSION_COOKIE_E2E,
-        value: "A".repeat(43),
-        domain: "localhost",
-        path: "/",
-        httpOnly: true,
-        sameSite: "Lax",
-      },
+      { name: SESSION_COOKIE_E2E, value: "A".repeat(43), domain: "localhost", path: "/", httpOnly: true, sameSite: "Lax" },
     ]);
     await page.goto("/conta");
     await expect(page).toHaveURL(/\/entrar/);

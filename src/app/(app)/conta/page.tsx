@@ -78,14 +78,8 @@ export default async function ContaPage() {
         <CardContent className="grid gap-6">
           <div className="grid gap-2">
             <p className="text-sm font-medium">Exportar meus dados</p>
-            <p className="text-sm text-muted-foreground">
-              Arquivo JSON com cadastro, aceites, preferências e histórico de acesso.
-            </p>
-            <a
-              href="/api/conta/exportar"
-              download
-              className={buttonVariants({ variant: "secondary", className: "w-fit" })}
-            >
+            <p className="text-sm text-muted-foreground">Arquivo JSON com cadastro, aceites, preferências e histórico de acesso.</p>
+            <a href="/api/conta/exportar" download className={buttonVariants({ variant: "secondary", className: "w-fit" })}>
               Baixar meus dados
             </a>
           </div>

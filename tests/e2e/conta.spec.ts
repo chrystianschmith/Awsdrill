@@ -27,9 +27,7 @@ test("exportar meus dados baixa um JSON só com os dados da conta, sem hashes", 
   expect(texto).not.toMatch(/passwordHash|tokenHash|argon2/);
   expect(texto).not.toContain(outra.email);
 
-  const log = await banco().query(`SELECT 1 FROM "AuditLog" WHERE "userId" = $1 AND action = 'conta.exportada'`, [
-    conta.id,
-  ]);
+  const log = await banco().query(`SELECT 1 FROM "AuditLog" WHERE "userId" = $1 AND action = 'conta.exportada'`, [conta.id]);
   expect(log.rowCount).toBe(1);
 });
 

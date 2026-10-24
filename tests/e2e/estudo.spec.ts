@@ -49,10 +49,9 @@ test("escolher exame → estudar com timer → marcar tarefa → ver progresso e
   await page.getByRole("button", { name: "Encerrar" }).click();
   await expect(page.getByText(/Sessão salva/)).toBeVisible();
 
-  const sessoes = await banco().query(
-    `SELECT "durationSec" FROM "StudySession" WHERE "userId" = $1 AND "endedAt" IS NOT NULL`,
-    [conta.id],
-  );
+  const sessoes = await banco().query(`SELECT "durationSec" FROM "StudySession" WHERE "userId" = $1 AND "endedAt" IS NOT NULL`, [
+    conta.id,
+  ]);
   expect(sessoes.rowCount).toBe(1);
 
   await page.goto("/progresso");
@@ -60,9 +59,7 @@ test("escolher exame → estudar com timer → marcar tarefa → ver progresso e
   await clicarAte(
     () => status.selectOption("CONCLUIDO", { timeout: 2_000 }),
     async () => {
-      const r = await banco().query(`SELECT status FROM "UserTopic" WHERE "userId" = $1 AND status = 'CONCLUIDO'`, [
-        conta.id,
-      ]);
+      const r = await banco().query(`SELECT status FROM "UserTopic" WHERE "userId" = $1 AND status = 'CONCLUIDO'`, [conta.id]);
       expect(r.rowCount).toBe(1);
     },
   );
@@ -97,9 +94,7 @@ test("lançamento manual sobreposto é recusado com mensagem", async ({ context,
     () => expect(page.getByText("Estudo lançado.")).toBeVisible({ timeout: 2_000 }),
   );
   await preencher("08:30", "09:30");
-  await expect(
-    page.getByRole("alert").filter({ hasText: "Já existe uma sessão de estudo nesse horário." }),
-  ).toBeVisible();
+  await expect(page.getByRole("alert").filter({ hasText: "Já existe uma sessão de estudo nesse horário." })).toBeVisible();
 });
 
 test("telas de estudo sem violações de acessibilidade", async ({ context, page }) => {

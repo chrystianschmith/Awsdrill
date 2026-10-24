@@ -34,10 +34,7 @@ export function DialogContent({
           {description ? <D.Description className="text-sm text-muted-foreground">{description}</D.Description> : null}
         </div>
         {children}
-        <D.Close
-          className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-surface-muted"
-          aria-label="Fechar"
-        >
+        <D.Close className="absolute right-3 top-3 rounded-md p-1 text-muted-foreground hover:bg-surface-muted" aria-label="Fechar">
           <X className="size-4" />
         </D.Close>
       </D.Content>
