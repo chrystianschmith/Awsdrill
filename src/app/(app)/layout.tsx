@@ -7,6 +7,7 @@ import {
   Gauge,
   House,
   RefreshCw,
+  Wallet,
   Repeat,
   Timer,
 } from "lucide-react";
@@ -26,6 +27,7 @@ const PRINCIPAIS = [
   { href: "/ciclo", label: "Ciclo", Icone: Repeat },
   { href: "/progresso", label: "Progresso", Icone: ChartColumn },
   { href: "/exames", label: "Exames", Icone: BookOpenCheck },
+  { href: "/carteira", label: "Carteira", Icone: Wallet },
   { href: "/conta", label: "Conta", Icone: CircleUser },
 ] as const;
 
@@ -34,6 +36,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
   const linksMenu: LinkMenu[] = [
     { href: "/conta", label: "Conta" },
     { href: "/conta/assinatura", label: "Assinatura" },
+    ...(user.role === "ADMIN" ? [{ href: "/admin", label: "Administração" }] : []),
   ];
   const linksMobile: LinkMenu[] = [
     { href: "/hoje", label: "Hoje" },
@@ -44,6 +47,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
     { href: "/ciclo", label: "Ciclo" },
     { href: "/progresso", label: "Progresso" },
     { href: "/exames", label: "Exames" },
+    { href: "/carteira", label: "Carteira" },
   ];
 
   return (

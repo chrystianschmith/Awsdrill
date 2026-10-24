@@ -3,6 +3,7 @@ import { limparRateLimit } from "@/lib/auth/rate-limit";
 import { executarCarencia } from "@/lib/assinaturas/carencia";
 import { enviarEmailAssinatura } from "@/lib/assinaturas/emails";
 import { repoPrisma } from "@/lib/assinaturas/repo-prisma";
+import { enviarLembretesRecertificacao } from "@/lib/carteira/servico";
 import { cronAutorizado } from "@/lib/cron";
 import { db } from "@/lib/db";
 import { log } from "@/lib/log";
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * Diário (o Vercel Hobby só tem cron diário, então um job faz tudo): downgrade de quem passou da
- * carência ou do fim do acesso Pix, lembrete de renovação do Pix, e limpeza de sessões expiradas,
+ * carência ou do fim do acesso Pix, lembretes de renovação do Pix e de recertificação, e limpeza de sessões expiradas,
  * tokens usados ou vencidos e janelas antigas de rate limit.
  */
 export async function GET(request: Request) {
@@ -25,12 +26,14 @@ export async function GET(request: Request) {
   ]);
   const rateLimit = await limparRateLimit();
   const carencia = await executarCarencia({ repo: repoPrisma, enviarEmail: enviarEmailAssinatura, agora });
+  const recertificacao = await enviarLembretesRecertificacao(agora);
   const resultado = {
     sessoes: sessoes.count,
     tokensVerificacao: verificacao.count,
     tokensReset: reset.count,
     rateLimit,
     carencia,
+    recertificacao,
   };
   log("info", "cron.limpeza", resultado);
   return NextResponse.json(resultado);
