@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema de pagamentos recebe eventos de cobrança que devem ser processados exatamente uma vez e na ordem em que chegaram para cada cliente; eventos de clientes diferentes podem ser processados em paralelo. O volume é de algumas centenas de mensagens por segundo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fila Amazon SQS standard com vários consumidores e deduplicação no banco de dados."
+        },
+        {
+          "key": "B",
+          "text": "Tópico Amazon SNS standard com uma assinatura do AWS Lambda por cliente."
+        },
+        {
+          "key": "C",
+          "text": "Fila Amazon SQS FIFO usando o ID do cliente como MessageGroupId e deduplicação por MessageDeduplicationId."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kinesis Data Streams com uma única shard para todos os clientes."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: a fila FIFO garante ordem dentro de cada grupo de mensagens e processamento exatamente uma vez com deduplicação, e grupos diferentes (um por cliente) são consumidos em paralelo; centenas de mensagens por segundo cabem nos limites da FIFO. A não garante ordem e entrega pelo menos uma vez. B não garante ordem nem exatamente uma vez. D mantém a ordem, mas serializa todos os clientes em uma shard, limitando o paralelismo, e não oferece exatamente uma vez.",
+      "fontes": ["https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um processo de abertura de conta tem seis etapas: validação de documentos, consulta a birôs de crédito em paralelo, aprovação manual que pode levar até três dias, criação da conta e notificação. Cada etapa precisa de novas tentativas com backoff e o time quer enxergar o estado de cada solicitação. Qual abordagem atende com o MENOR esforço de código de orquestração?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Funções AWS Lambda que chamam a próxima função diretamente, guardando o estado em variáveis de ambiente."
+        },
+        {
+          "key": "B",
+          "text": "Um workflow Standard do AWS Step Functions com estados Parallel e Retry e uma etapa de espera pelo callback com task token para a aprovação manual."
+        },
+        {
+          "key": "C",
+          "text": "Um workflow Express do AWS Step Functions para todo o processo."
+        },
+        {
+          "key": "D",
+          "text": "Filas Amazon SQS entre as etapas e uma tabela do DynamoDB com o estado, mantidas por código próprio."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o workflow Standard dura até um ano, tem retry com backoff declarativo, executa ramos em paralelo, espera a aprovação manual pelo padrão de callback com task token e mostra o histórico de cada execução. A acopla as funções e não guarda estado de forma confiável. C não serve, porque workflows Express duram no máximo cinco minutos. D funciona, mas exige escrever e manter a orquestração, o estado e os retries.",
+      "fontes": [
+        "https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html",
+        "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Workers em um Auto Scaling group processam mensagens de uma fila Amazon SQS. Cada mensagem leva cerca de 2 segundos, e o volume varia de zero a 50 mil mensagens por hora sem padrão. Escalar por CPU deixa a fila acumulando por minutos. A empresa quer manter a latência de processamento abaixo de 1 minuto sem superdimensionar. Qual política de escalonamento atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Target tracking com uma métrica personalizada de backlog por instância (ApproximateNumberOfMessagesVisible dividido pelo número de instâncias), com o alvo calculado pela latência aceitável."
+        },
+        {
+          "key": "B",
+          "text": "Scheduled scaling com mais instâncias no horário comercial."
+        },
+        {
+          "key": "C",
+          "text": "Target tracking por utilização média de CPU em 40%."
+        },
+        {
+          "key": "D",
+          "text": "Grupo com tamanho fixo dimensionado para o pico de 50 mil mensagens por hora."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o backlog por instância mede diretamente o trabalho pendente; com alvo igual à latência aceitável dividida pelo tempo por mensagem, o grupo cresce assim que a fila sobe e encolhe quando ela esvazia. B não acompanha um volume sem padrão. C reage a um sinal indireto, que é o problema observado. D paga a capacidade de pico o tempo todo.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-using-sqs-queue.html"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa quer receber eventos do Zendesk e do próprio sistema de pedidos, rotear cada tipo de evento para destinos diferentes (Lambda, Step Functions e uma fila SQS) com base no conteúdo, e conseguir reprocessar os eventos dos últimos 7 dias quando um destino falhar. Qual serviço atende com o MENOR esforço?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SNS com filtros de assinatura e uma fila de dead-letter."
+        },
+        {
+          "key": "B",
+          "text": "Amazon SQS standard com consumidores que leem e repassam cada mensagem ao destino certo."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Kinesis Data Streams com um consumidor que aplica regras de roteamento em código."
+        },
+        {
+          "key": "D",
+          "text": "Amazon EventBridge, com a fonte de eventos de parceiro do Zendesk, regras por padrão de evento e um archive com replay."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o EventBridge recebe eventos de parceiros SaaS como o Zendesk e de aplicações próprias, roteia por regras baseadas no conteúdo para vários destinos e permite arquivar e reproduzir eventos de um período. A filtra por conteúdo, mas não tem integração nativa com parceiros SaaS nem replay. B e C exigem código próprio de roteamento e de reprocessamento.",
+      "fontes": [
+        "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-saas.html",
+        "https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-archive.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma API recebe pedidos de geração de relatórios em PDF que levam de 3 a 10 minutos. Hoje a requisição HTTP fica aberta até o relatório ficar pronto, as conexões estouram o tempo limite nos picos e uma falha no meio do processamento perde o pedido. Quais DUAS mudanças tornam a arquitetura fracamente acoplada e resiliente? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Gravar o pedido em uma fila Amazon SQS e responder imediatamente ao cliente com um ID de job (HTTP 202)."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar a instância da API para gerar os relatórios mais rápido."
+        },
+        {
+          "key": "C",
+          "text": "Ter workers consumindo a fila, gravando o status do job no Amazon DynamoDB e o PDF no Amazon S3, para o cliente consultar o status ou ser notificado."
+        },
+        {
+          "key": "D",
+          "text": "Manter a requisição síncrona e adicionar retentativas automáticas no cliente."
+        },
+        {
+          "key": "E",
+          "text": "Guardar os pedidos pendentes na memória da instância da API até haver capacidade livre."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a fila desacopla o recebimento do processamento e guarda o pedido até ser consumido com sucesso (com reprocessamento e dead-letter queue), e os workers independentes registram o status para consulta, sem manter a conexão aberta. B só reduz o problema e mantém o acoplamento síncrono. D multiplica a carga nos picos. E perde os pedidos se a instância falhar.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+      ]
+    }
+  ]
+}

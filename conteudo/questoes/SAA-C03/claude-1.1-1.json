@@ -1,0 +1,141 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 80 contas em uma organização no AWS Organizations. A auditoria exige que nenhuma conta membro consiga desligar o AWS CloudTrail nem sair da organização, inclusive usuários e roles com AdministratorAccess dentro da própria conta. A solução deve impedir a ação, não apenas detectá-la, com o MENOR esforço de manutenção. O que o arquiteto deve fazer?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Anexar a cada usuário e role das 80 contas uma política do IAM que negue cloudtrail:StopLogging e organizations:LeaveOrganization."
+        },
+        {
+          "key": "B",
+          "text": "Criar regras do AWS Config que detectem trilhas desligadas e acionem uma correção automática."
+        },
+        {
+          "key": "C",
+          "text": "Aplicar uma service control policy (SCP) na raiz ou nas OUs negando cloudtrail:StopLogging, cloudtrail:DeleteTrail e organizations:LeaveOrganization."
+        },
+        {
+          "key": "D",
+          "text": "Exigir permissions boundaries em todos os administradores das contas membro."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: a SCP define o limite máximo de permissões das contas membro e vale para todos os usuários e roles delas, inclusive administradores, que não podem removê-la; uma única política na raiz ou nas OUs cobre as 80 contas. A pode ser alterada ou removida pelos próprios administradores de cada conta e exige manutenção em milhares de identidades. B detecta e corrige depois, mas não impede a ação. D só vale para as identidades em que o boundary foi anexado, e um administrador da conta pode removê-lo.",
+      "fontes": ["https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa com 3.000 funcionários gerencia as identidades no Microsoft Entra ID e tem 60 contas AWS. Ela quer que cada pessoa entre com o login corporativo, receba credenciais temporárias e tenha permissões diferentes por conta conforme o grupo no diretório, e que o desligamento no diretório remova o acesso automaticamente. Qual solução atende com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar usuários do IAM em cada conta e sincronizá-los com o diretório por um script noturno."
+        },
+        {
+          "key": "B",
+          "text": "Configurar o AWS IAM Identity Center com o Entra ID como provedor de identidade externo (SAML e provisionamento SCIM) e atribuir permission sets aos grupos em cada conta."
+        },
+        {
+          "key": "C",
+          "text": "Criar um provedor SAML e roles federadas manualmente em cada uma das 60 contas."
+        },
+        {
+          "key": "D",
+          "text": "Usar um user pool do Amazon Cognito federado ao Entra ID para dar acesso ao console."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o IAM Identity Center centraliza o acesso a todas as contas da organização, federa com o Entra ID, recebe usuários e grupos por SCIM (o desligamento no diretório remove o acesso) e entrega credenciais temporárias conforme os permission sets atribuídos a cada grupo e conta. A cria credenciais de longa duração e um processo frágil. C funciona, mas multiplica a configuração por 60 contas. D serve para identidades de clientes em aplicações, não para acesso de funcionários ao console e às contas.",
+      "fontes": ["https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Os líderes técnicos de uma empresa precisam criar roles do IAM para as próprias aplicações sem depender da equipe de segurança. A segurança quer garantir que nenhuma role criada por eles tenha mais permissões do que um conjunto aprovado, nem que eles consigam usar uma role nova para escalar os próprios privilégios. Qual abordagem atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Dar aos líderes iam:CreateRole e iam:PutRolePolicy com a condição iam:PermissionsBoundary exigindo um boundary aprovado em toda role criada, e aplicar esse mesmo boundary às roles dos líderes."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar uma SCP que negue todas as ações iam:* nas contas de aplicação."
+        },
+        {
+          "key": "C",
+          "text": "Conceder AdministratorAccess aos líderes e revisar semanalmente os eventos do CloudTrail."
+        },
+        {
+          "key": "D",
+          "text": "Executar o IAM Access Analyzer toda semana para encontrar roles com permissões excessivas."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: exigir, por condição, que toda role criada leve um permissions boundary aprovado limita as permissões efetivas de qualquer role nova ao conjunto permitido, e o boundary nas roles dos líderes impede que eles removam essa restrição ou escalem privilégios. B bloqueia a criação de roles, contrariando a delegação. C é só detectivo e permite a escalada antes da revisão. D aponta problemas depois que já existem, sem impedir.",
+      "fontes": ["https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um aplicativo móvel deixa usuários autenticados enviarem fotos direto para o Amazon S3, cada um só no próprio prefixo (usuarios/<id-do-usuário>/). A empresa não quer manter um backend só para intermediar uploads nem guardar credenciais da AWS no aplicativo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Embutir no aplicativo as access keys de um usuário do IAM com permissão de PutObject no bucket."
+        },
+        {
+          "key": "B",
+          "text": "Tornar o bucket público para gravação e validar o prefixo com uma função Lambda depois do upload."
+        },
+        {
+          "key": "C",
+          "text": "Criar uma bucket policy que permita PutObject a qualquer principal autenticado em qualquer conta AWS."
+        },
+        {
+          "key": "D",
+          "text": "Usar um identity pool do Amazon Cognito para trocar o login do usuário por credenciais temporárias de uma role cuja política limite o acesso ao prefixo com a variável ${cognito-identity.amazonaws.com:sub}."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o identity pool troca a autenticação do usuário por credenciais temporárias de uma role, e a variável de política com o ID do usuário restringe cada um ao próprio prefixo, sem backend intermediário e sem chaves fixas no app. A expõe credenciais de longa duração que qualquer um pode extrair do aplicativo. B deixa o bucket aberto para gravação. C permite gravação por qualquer conta AWS e não separa os prefixos por usuário.",
+      "fontes": ["https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-identity.html"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma ferramenta SaaS de monitoramento precisa ler métricas do Amazon CloudWatch e descrever instâncias EC2 nas contas dos clientes. O fornecedor atende milhares de clientes a partir da própria conta AWS e quer evitar o problema do confused deputy. Quais DUAS medidas o cliente deve adotar? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar uma role do IAM confiando na conta do fornecedor, com a condição sts:ExternalId igual ao valor único informado pelo fornecedor para aquele cliente."
+        },
+        {
+          "key": "B",
+          "text": "Criar um usuário do IAM e enviar as access keys ao fornecedor por e-mail criptografado."
+        },
+        {
+          "key": "C",
+          "text": "Anexar à role apenas as permissões de leitura necessárias (por exemplo, cloudwatch:GetMetricData e ec2:DescribeInstances)."
+        },
+        {
+          "key": "D",
+          "text": "Conceder à role a política gerenciada AdministratorAccess para evitar falhas de permissão."
+        },
+        {
+          "key": "E",
+          "text": "Compartilhar as credenciais do usuário root com MFA virtual cadastrado no fornecedor."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a role com trust policy para a conta do fornecedor e a condição de External ID único por cliente impede que outro cliente induza o fornecedor a acessar a sua conta (confused deputy), e as permissões mínimas limitam o que a ferramenta pode fazer. B cria credenciais de longa duração fora do controle do cliente. D viola o menor privilégio. E entrega o controle total da conta.",
+      "fontes": ["https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html"]
+    }
+  ]
+}
