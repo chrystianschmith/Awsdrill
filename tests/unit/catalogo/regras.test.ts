@@ -23,7 +23,10 @@ describe("blueprint", () => {
       expect(problemasDoBlueprint(e.dominios), e.codigo).toEqual([]);
       expect(statusDosDados(e), e.codigo).toBe("OFFICIAL");
       expect(estadoDePublicacao(e), e.codigo).toBe("PUBLISHED");
-      expect(e.dominios.reduce((s, d) => s + (d.peso ?? 0), 0), e.codigo).toBe(100);
+      expect(
+        e.dominios.reduce((s, d) => s + (d.peso ?? 0), 0),
+        e.codigo,
+      ).toBe(100);
     }
   });
 
@@ -84,7 +87,12 @@ describe("revisões de pesos", () => {
 
 describe("Golden Jacket e trilha", () => {
   const agora = new Date("2026-10-22T12:00:00Z");
-  const cert = (slug: string, level: "FOUNDATIONAL" | "ASSOCIATE" | "SPECIALTY", trackOrder: number, versions: Parameters<typeof versaoVigente>[0][]) => ({
+  const cert = (
+    slug: string,
+    level: "FOUNDATIONAL" | "ASSOCIATE" | "SPECIALTY",
+    trackOrder: number,
+    versions: Parameters<typeof versaoVigente>[0][],
+  ) => ({
     slug,
     level,
     trackOrder,
