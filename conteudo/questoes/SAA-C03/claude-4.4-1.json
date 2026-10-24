@@ -1,0 +1,156 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa distribui atualizações de software (arquivos de 500 MB a 2 GB) a partir de um bucket do Amazon S3 em us-east-1 para milhões de dispositivos no mundo todo. A transferência de dados de saída do S3 virou o maior custo da conta, e o bucket precisa ficar privado. Quais DUAS ações reduzem o custo de rede? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Servir os arquivos pelo Amazon CloudFront com origin access control (OAC) e o bucket bloqueado para acesso público."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket."
+        },
+        {
+          "key": "C",
+          "text": "Publicar cada versão com nome único (com hash ou número de versão) e cache com TTL longo no CloudFront, para aumentar a taxa de acerto."
+        },
+        {
+          "key": "D",
+          "text": "Replicar o bucket para todas as regiões com S3 Cross-Region Replication e servir de cada região."
+        },
+        {
+          "key": "E",
+          "text": "Habilitar Requester Pays para que os dispositivos paguem o download."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a transferência do S3 para o CloudFront não é cobrada, a entrega pelo CloudFront tem preço por GB menor que a saída direta do S3 para a internet, e o OAC mantém o bucket privado; nomes únicos com TTL longo deixam os arquivos em cache nas edge locations, reduzindo idas à origem. B acrescenta cobrança por GB acelerado. D soma transferência entre regiões e armazenamento duplicado. E exige que quem baixa seja uma conta AWS autenticada, o que não serve a dispositivos de clientes.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html",
+        "https://aws.amazon.com/cloudfront/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa envia todo mês cerca de 200 TB de resultados de processamento da AWS para o seu data center em São Paulo, pela internet. A saída de dados pela internet é um dos maiores custos, e a banda varia muito ao longo do dia. A empresa quer reduzir o custo por GB e ter banda consistente. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Site-to-Site VPN pela conexão de internet atual."
+        },
+        {
+          "key": "B",
+          "text": "Uma conexão AWS Direct Connect entre a região e o data center."
+        },
+        {
+          "key": "C",
+          "text": "S3 Transfer Acceleration para os downloads feitos pelo data center."
+        },
+        {
+          "key": "D",
+          "text": "AWS Global Accelerator na frente dos endpoints de onde os dados são baixados."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: a transferência de dados para fora da AWS pelo Direct Connect é cobrada com preço por GB menor que a saída pela internet, e o link dedicado oferece banda consistente; com 200 TB por mês, a economia por GB cobre os custos de porta. A continua usando a internet, com a mesma tarifa de saída e banda variável. C e D otimizam o caminho pela internet e acrescentam cobrança por GB.",
+      "fontes": [
+        "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html",
+        "https://aws.amazon.com/directconnect/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Duas VPCs da mesma conta e da mesma região trocam cerca de 100 TB por mês entre uma aplicação e um cluster de processamento. Só essas duas VPCs precisam se comunicar, os blocos CIDR não se sobrepõem e não há plano de conectar outras redes. A empresa quer o MENOR custo de rede. Qual opção atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um AWS Transit Gateway com as duas VPCs anexadas."
+        },
+        {
+          "key": "B",
+          "text": "Um endpoint service do AWS PrivateLink para cada direção do tráfego."
+        },
+        {
+          "key": "C",
+          "text": "Uma AWS Site-to-Site VPN entre as duas VPCs."
+        },
+        {
+          "key": "D",
+          "text": "Um VPC peering entre as duas VPCs."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o VPC peering não tem cobrança por hora nem por GB processado; paga-se só a transferência de dados normal (e o tráfego na mesma AZ não é cobrado), o que para 100 TB por mês é bem mais barato. A cobra por anexo e por GB processado, o que faz sentido para muitas VPCs com roteamento transitivo, não para duas. B cobra por endpoint e por GB e serve para expor serviços, não para tráfego bidirecional entre aplicações. C passa por gateways de VPN com cobrança por hora e limite de banda.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html",
+        "https://aws.amazon.com/transit-gateway/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma conta de desenvolvimento tem sub-redes privadas em três AZs, e as instâncias precisam de saída para a internet só para baixar pacotes. Hoje há um NAT gateway por AZ. O ambiente pode ficar sem saída para a internet por algumas horas se uma AZ falhar, e a equipe quer reduzir o custo fixo de rede sem criar servidores para administrar. Qual mudança atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter um NAT gateway por AZ e trocá-los por NAT instances em Spot."
+        },
+        {
+          "key": "B",
+          "text": "Usar um único NAT gateway em uma AZ e rotear para ele as sub-redes privadas das três AZs."
+        },
+        {
+          "key": "C",
+          "text": "Mover as instâncias para sub-redes públicas com endereços IPv4 públicos e remover os NAT gateways."
+        },
+        {
+          "key": "D",
+          "text": "Substituir os NAT gateways por um gateway VPC endpoint para o Amazon S3."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: cada NAT gateway tem cobrança por hora, então consolidar em um só corta dois terços desse custo fixo; a perda da saída se a AZ do NAT falhar, e a pequena cobrança de tráfego entre AZs, são aceitáveis para um ambiente de desenvolvimento. A cria instâncias para administrar, o que contraria o requisito, e o Spot ainda pode ser interrompido. C expõe as instâncias à internet e cada endereço IPv4 público também é cobrado por hora. D só alcança o S3, não os repositórios de pacotes na internet.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html",
+        "https://aws.amazon.com/vpc/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um cluster de processamento em lote com 40 instâncias Amazon EC2 troca centenas de terabytes por mês entre os próprios nós durante cada job. Hoje as instâncias estão espalhadas por três AZs e a transferência entre AZs aparece como um custo alto. Os jobs podem ser executados de novo do início se houver falha, e não há usuários esperando em tempo real. Qual mudança reduz o custo de rede com o MENOR impacto?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Executar o cluster em uma única AZ, em um placement group do tipo cluster."
+        },
+        {
+          "key": "B",
+          "text": "Manter as três AZs e colocar um Network Load Balancer entre os nós."
+        },
+        {
+          "key": "C",
+          "text": "Mover o tráfego entre os nós para um AWS Transit Gateway."
+        },
+        {
+          "key": "D",
+          "text": "Comprimir os dados e continuar distribuindo as instâncias entre as três AZs."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o tráfego entre instâncias na mesma AZ por IP privado não tem cobrança de transferência, e o placement group cluster ainda melhora a latência e a banda entre os nós; como os jobs podem ser repetidos, a dependência de uma AZ é aceitável. B e C acrescentam cobrança por GB processado e mantêm o tráfego entre AZs. D reduz o volume, mas mantém a cobrança entre AZs e gasta CPU com compressão.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html",
+        "https://aws.amazon.com/ec2/pricing/on-demand/"
+      ]
+    }
+  ]
+}
