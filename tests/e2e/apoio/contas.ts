@@ -17,6 +17,8 @@ export type OpcoesConta = {
   confirmado?: boolean;
   /** Grava uma sessão de login (padrão: sim). */
   comSessao?: boolean;
+  /** Já nasce com assinatura ativa (plano Pro). */
+  pro?: boolean;
 };
 
 /** Mesmos parâmetros de src/lib/auth/senha.ts (que importa server-only). */
@@ -41,7 +43,18 @@ export async function criarConta(prefixo: string, o: OpcoesConta = {}): Promise<
   );
   await db.query(`INSERT INTO "NotificationPreference" ("userId") VALUES ($1)`, [id]);
   for (const kind of ["TERMOS", "PRIVACIDADE"]) {
-    await db.query(`INSERT INTO "Consent" (id, "userId", kind, version) VALUES ($1,$2,$3,'2026-10')`, [novoId(), id, kind]);
+    await db.query(`INSERT INTO "Consent" (id, "userId", kind, version) VALUES ($1,$2,$3,'2026-10')`, [
+      novoId(),
+      id,
+      kind,
+    ]);
+  }
+  if (o.pro) {
+    await db.query(
+      `INSERT INTO "Subscription" (id, "userId", "stripeCustomerId", status, "effectivePlan", "updatedAt")
+       VALUES ($1,$2,$3,'active','PRO',now())`,
+      [novoId(), id, `cus_e2e_${novoId()}`],
+    );
   }
   let token: string | null = null;
   if (o.comSessao !== false) {

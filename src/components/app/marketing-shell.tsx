@@ -27,6 +27,9 @@ export async function MarketingShell({ children }: { children: React.ReactNode }
             >
               Certificações
             </Link>
+            <Link href="/precos" className="rounded-md px-3 py-2 text-muted-foreground hover:text-foreground">
+              Preços
+            </Link>
             {user ? (
               <Link href="/hoje" className={buttonVariants({ size: "sm" })}>
                 Ir para o painel

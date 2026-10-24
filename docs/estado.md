@@ -58,7 +58,8 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   `/prontidao` (estimativa com faixa, cobertura, amostra pequena, plano com atalhos para estudar e treinar o domínio,
   histórico) e `/metodologia` pública; `docs/metodologia-prontidao.md`. O acerto recente por domínio passa a alimentar o
   fator de desempenho do ciclo. LGPD exporta as fotos. Testes: unitários (monotonia em 300 casos, amostra pequena,
-  cobertura, decaimento), integração (foto, isolamento por usuário, ciclo) e e2e (prova → relatório → prontidão).- **Banco inicial de questões · CLF-C02 (2026-10-23):** 165 questões (133 SINGLE, 32 MULTIPLE) em
+  cobertura, decaimento), integração (foto, isolamento por usuário, ciclo) e e2e (prova → relatório → prontidão).
+- **Banco inicial de questões · CLF-C02 (2026-10-23):** 165 questões (133 SINGLE, 32 MULTIPLE) em
   `conteudo/questoes/CLF-C02/`, de 5 a 10 por tarefa, escritas pelo OpenCode (modelo grátis) com
   `scripts/questoes/opencode-lotes.py` e revisadas uma a uma contra a documentação (185 escritas, 20 descartadas por
   serviço fechado a novos clientes, repetição, tarefa errada ou gabarito errado; 5 corrigidas). Todas importam sem
@@ -75,39 +76,51 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   toda a suíte), integração (geração única com duas requisições simultâneas, teto antes da chamada, saída inválida não
   grava, IDOR, reports) e e2e (tela, selo, texto escapado, report, 404 para quem não segue).
 
+- **Etapa 7 · Planos e Stripe (2026-10-24):** assinaturas do Prumo adaptadas (`src/lib/assinaturas`): Grátis com 1
+  exame seguido, 5 treinos por semana e prontidão geral; Pro com modo prova, prontidão por domínio e plano de correção,
+  material com IA, ciclo e revisão espaçada (ADR 0007). Checagem no servidor em cada serviço (exames com advisory lock,
+  treinos contados na transação) e `UpgradeCta` nas telas; Hoje esconde ciclo e revisões no Grátis. Checkout hospedado
+  mensal/anual no cartão e anual Pix avulso, webhook assinado e idempotente (`StripeEvent`), carência de 3 dias,
+  lembrete do Pix e downgrade sem perda (exame extra `PAUSADO`, "Retomar" ao voltar) no cron diário de limpeza.
+  `/precos` em BRL com FAQ, `/conta/assinatura` com portal e faturas, links no menu e no topo do site. Excluir conta
+  cancela a assinatura no Stripe antes de apagar; LGPD exporta a assinatura (sem ids do Stripe). Testes: unitários
+  (plano efetivo por linha da tabela, webhook repetido sem efeito duplo, carência, e-mails, funil), integração (limites
+  do Grátis, dois "seguir" simultâneos, downgrade e retorno) e e2e com Stripe falso (limite → assina → Pro → cancela →
+  Grátis sem perder dados).
+
 ## Próximo
 
-- **Etapa 7 · Planos e Stripe:** `entitlements.ts`; material com IA, ciclo e revisões passam a exigir Pro.
+- **Etapa 8 · Carteira, admin e métricas.**
 - Flashcards no agendador de revisão (acertei/errei) e fila de reports e de questões geradas na tela de admin (etapa 8).
 - Para ligar a geração em produção: `GEMINI_API_KEY` e `ADMIN_ALERT_EMAIL` na Vercel (decisão do Chrytian).
+- Teste ponta a ponta em Stripe test mode real (com Stripe CLI) quando houver conta; o Pix anual não tem e2e.
 
 ## Decisões
 
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
-  · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA · `0006` markdown restrito no conteúdo de IA.
+  · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA · `0006` markdown restrito no conteúdo de IA
+  · `0007` Grátis × Pro do produto e Pix só no anual avulso.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
-- Etapa 4 em duas partes: 4a (sessões, metas, progresso) e 4b (ciclo e revisões). Ciclo e revisões são Pro pela skill,
-  mas o bloqueio por plano só entra com `entitlements.ts` na etapa 7; até lá ficam abertos.
+- Etapa 4 em duas partes: 4a (sessões, metas, progresso) e 4b (ciclo e revisões).
 - "Matéria" da skill = domínio do exam guide; "tópico" = task statement.
-- Material com IA é gerado por um botão na primeira visita, não ao abrir a página: prefetch e robôs não gastam IA. Até
-  a etapa 7 fica aberto a quem segue o exame, limitado por usuário, pelo teto mensal e pela geração única.
+- Material com IA é gerado por um botão na primeira visita, não ao abrir a página: prefetch e robôs não gastam IA.
 - Feito do ciclo é recalculado das sessões (não somado por delta), para não divergir ao excluir ou confirmar sessões.
-- Exclusão de conta ainda não cancela assinatura: a etapa 7 (Stripe) entra em `excluirConta` antes de apagar os dados.
 - Simulados: um em andamento por usuário (começar outro encerra o anterior com o que foi respondido); questão não
-  respondida conta como errada; prova com banco menor que o oficial usa o banco todo. Simulados são Pro pela skill,
-  mas o bloqueio só entra com `entitlements.ts` (etapa 7). Moderação de questões pela CLI até o admin (etapa 8).
+  respondida conta como errada; prova com banco menor que o oficial usa o banco todo. Treino fica no Grátis (com limite
+  semanal) para o produto ser útil sem assinar; modo prova é Pro. Moderação de questões pela CLI até o admin (etapa 8).
 - Prontidão: penalidade de amostra pequena por pseudo-amostra (3) em vez de esconder o número, para manter a
   monotonia; tela calcula na hora e a foto serve ao histórico (`docs/metodologia-prontidao.md`).
 - Ranking semanal fora do MVP; Lab só na Fase 3 (sem migration no MVP); prontidão 0–100 com faixa, sem "nota prevista".
 
 ## Blockers
 
-- Banco de questões: AIF-C01 e SAA-C03 sem questões e a tarefa 4.3 do CLF-C02 com uma rodada só: a cota grátis do
-  OpenCode acabou em 2026-10-23. Retomar com `python3 scripts/questoes/opencode-lotes.py <EXAME> 2` quando renovar
-  (ou com OpenCode Go). Questões de 4.3 citam os planos de suporte atuais (Business Support+, Enterprise, Unified
-  Operations): conferir na moderação se o CLF-C02 ainda cobra Developer/Business.
+- Banco de questões em `conteudo/questoes/` (CLF-C02, AIF-C01 e SAA-C03 já com rodadas revisadas); 30 questões do
+  SAA-C03 da rodada 3 estão no Mac sem commit (branch `questoes/saa-rodada-3` a abrir). Questões de 4.3 do CLF-C02
+  citam os planos de suporte atuais: conferir na moderação se o exame ainda cobra Developer/Business.
+- Preços do Pro (R$ 29,90 / R$ 239,00) aguardam a confirmação do Chrytian; mudar só em `src/lib/assinaturas/precos.ts`.
+- Stripe: criar o produto Pro e os três preços, ativar Pix e o portal, cadastrar o webhook e as variáveis `STRIPE_*`.
 - Sem banco de produção (Neon), a importação e a moderação só rodam no Postgres local.
 - Nome definitivo do produto e domínio (hoje "Trilha", provisório em `src/lib/brand.ts`).
 - Infra a criar: projeto Neon (secret `NEON_API_KEY`, variable `NEON_PROJECT_ID` para o banco de preview por PR),

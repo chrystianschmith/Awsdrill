@@ -8,6 +8,7 @@ import { definirStatusTopico, deixarDeSeguir, seguirExame } from "@/lib/estudo/s
 import { registrarRevisao, revisoesVencidas } from "@/lib/estudo/servico-revisoes";
 import { excluirSessao, iniciarSessao, lancarSessaoManual } from "@/lib/estudo/servico-sessoes";
 import { EXAMES_INICIAIS } from "../../prisma/catalogo/exames";
+import { assinaturaPro } from "./apoio/plano";
 
 const sufixo = randomUUID().replace(/-/g, "").slice(0, 4).toUpperCase();
 const usuarios: string[] = [];
@@ -37,7 +38,12 @@ async function criarExame(letra: string): Promise<Exame> {
 
 async function criarUsuario(): Promise<string> {
   const u = await db.user.create({
-    data: { name: "Ciclo Teste", email: `ciclo-${randomUUID()}@exemplo.test`, passwordHash: "x" },
+    data: {
+      name: "Ciclo Teste",
+      email: `ciclo-${randomUUID()}@exemplo.test`,
+      passwordHash: "x",
+      subscription: assinaturaPro(),
+    },
     select: { id: true },
   });
   usuarios.push(u.id);

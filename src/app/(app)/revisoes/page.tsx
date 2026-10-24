@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { proximasRevisoes, revisoesVencidas } from "@/lib/estudo/servico-revisoes";
+import { temRecurso } from "@/lib/assinaturas/plano";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
 import { buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CabecalhoPagina } from "@/components/estudo/basicos";
@@ -18,6 +20,19 @@ const fmtData = new Intl.DateTimeFormat("pt-BR", {
 
 export default async function RevisoesPage() {
   const user = await requireUser();
+  if (!(await temRecurso(user.id, "revisaoEspacada")))
+    return (
+      <div className="grid gap-6">
+        <CabecalhoPagina
+          titulo="Revisões"
+          descricao="Revise cada tarefa concluída em 1, 7 e 30 dias para fixar o conteúdo."
+        />
+        <UpgradeCta
+          feature="revisaoEspacada"
+          description="Ao concluir uma tarefa, a revisão é agendada sozinha e aparece no Hoje no dia certo."
+        />
+      </div>
+    );
   const agora = new Date();
   const [vencidas, proximas] = await Promise.all([revisoesVencidas(user.id, agora), proximasRevisoes(user.id, agora)]);
 

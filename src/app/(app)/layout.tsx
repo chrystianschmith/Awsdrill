@@ -31,7 +31,10 @@ const PRINCIPAIS = [
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
-  const linksMenu: LinkMenu[] = [{ href: "/conta", label: "Conta" }];
+  const linksMenu: LinkMenu[] = [
+    { href: "/conta", label: "Conta" },
+    { href: "/conta/assinatura", label: "Assinatura" },
+  ];
   const linksMobile: LinkMenu[] = [
     { href: "/hoje", label: "Hoje" },
     { href: "/estudar", label: "Estudar" },

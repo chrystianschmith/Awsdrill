@@ -8,6 +8,7 @@ import { importarQuestoes, moderarQuestoes } from "@/lib/simulados/importacao";
 import { enviarSimulado, iniciarSimulado, obterSimulado, relatorioSimulado, responder } from "@/lib/simulados/servico";
 import { EXAMES_INICIAIS } from "../../prisma/catalogo/exames";
 import { arquivoFicticio, questaoFicticia } from "../apoio/questoes";
+import { assinaturaPro } from "./apoio/plano";
 
 const sufixo = randomUUID().replace(/-/g, "").slice(0, 4).toUpperCase();
 const usuarios: string[] = [];
@@ -30,7 +31,12 @@ async function criarExame(letra: string): Promise<{ id: string; codigo: string; 
 
 async function criarUsuario(): Promise<string> {
   const u = await db.user.create({
-    data: { name: "Simulado Teste", email: `sim-${randomUUID()}@exemplo.test`, passwordHash: "x" },
+    data: {
+      name: "Simulado Teste",
+      email: `sim-${randomUUID()}@exemplo.test`,
+      passwordHash: "x",
+      subscription: assinaturaPro(),
+    },
     select: { id: true },
   });
   usuarios.push(u.id);

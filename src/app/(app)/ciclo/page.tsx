@@ -5,6 +5,8 @@ import { requireUser } from "@/lib/auth/session";
 import { examesSeguidos } from "@/lib/estudo/consultas";
 import { progressoCiclo, proximoDominio, saldoPendente } from "@/lib/estudo/ciclo";
 import { cicloAtual } from "@/lib/estudo/servico-ciclo";
+import { temRecurso } from "@/lib/assinaturas/plano";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
 import { formatMinutos } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -18,6 +20,19 @@ export const metadata: Metadata = { title: "Ciclo de estudos" };
 
 export default async function CicloPage() {
   const user = await requireUser();
+  if (!(await temRecurso(user.id, "cicloEstudos")))
+    return (
+      <div className="grid gap-6">
+        <CabecalhoPagina
+          titulo="Ciclo de estudos"
+          descricao="Estude sempre o domínio com mais tempo pendente. Quando todos cumprem a carga, um novo ciclo começa."
+        />
+        <UpgradeCta
+          feature="cicloEstudos"
+          description="O ciclo distribui suas horas pelos domínios do exam guide, de acordo com o peso de cada um e com o seu acerto nos simulados."
+        />
+      </div>
+    );
   const [ciclo, exames] = await Promise.all([cicloAtual(user.id), examesSeguidos(user.id)]);
   const proximo = ciclo ? proximoDominio(ciclo.items) : null;
   const doCiclo = exames.find((e) => e.examVersionId === ciclo?.examVersionId);
