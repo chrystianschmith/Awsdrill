@@ -17,6 +17,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    setupFiles: ["tests/setup/sem-rede.ts"],
     include: ["tests/integration/**/*.test.ts"],
     env: { TZ: "UTC", DATABASE_URL: url },
     fileParallelism: false,
