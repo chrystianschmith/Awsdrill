@@ -1,0 +1,141 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe deseja obter respostas mais consistentes de um modelo de base ao solicitar análises de risco, garantindo que ele sempre adote a perspectiva de um auditor de conformidade. Qual técnica de engenharia de prompts é mais adequada para esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar o valor de temperature para forçar maior variabilidade nas respostas."
+        },
+        {
+          "key": "B",
+          "text": "Usar role prompting para instruir o modelo a assumir o papel de um auditor de conformidade."
+        },
+        {
+          "key": "C",
+          "text": "Enviar o mesmo prompt várias vezes em paralelo e escolher a resposta aleatória."
+        },
+        {
+          "key": "D",
+          "text": "Remover todas as restrições do prompt para dar maior liberdade ao modelo."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O role prompting (instrução de papel) define um persona e um conjunto de responsabilidades para o modelo, o que ajuda a obter respostas mais consistentes com aquele ponto de vista. A alternativa A está errada porque valores mais altos de temperature aumentam a aleatoriedade, não a consistência. A alternativa C está errada, pois não é uma técnica sistemática de prompt e não garante consistência. A alternativa D está errada, pois a ausência de restrições tende a tornar as respostas menos previsíveis e menos alinhadas ao objetivo desejado.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um desenvolvedor precisa que um modelo de base classifique tickets de suporte em três categorias predefinidas, mas as respostas atuais vêm em formatos variados (nomes completos, abreviações ou descrições). Qual abordagem de prompt é mais eficaz para padronizar a saída?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Incluir exemplos de classificações corretas para cada categoria no próprio prompt."
+        },
+        {
+          "key": "B",
+          "text": "Pedir ao modelo para \"pensar com calma\" antes de responder, sem mais instruções."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o comprimento do enunciado com detalhes irrelevantes sobre a empresa."
+        },
+        {
+          "key": "D",
+          "text": "Solicitar que o modelo gere três possíveis respostas e justifique todas elas."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O few-shot prompting fornece ao modelo exemplos concretos de entrada e saída esperada, o que é muito eficaz para forçar um formato ou conjunto de valores padronizados. A alternativa B (chain-of-thought genérico) pode ajudar no raciocínio, mas não garante padronização da saída por si só. A alternativa C adiciona ruído e não influencia diretamente o formato. A alternativa D incentiva múltiplas saídas em vez de uma classificação única no formato desejado.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Ao analisar um contrato extenso para identificar cláusulas de rescisão, um time percebe que o modelo comete erros ao pular etapas intermediárias. Qual técnica de engenharia de prompts tem maior probabilidade de reduzir esses erros em tarefas com raciocínio passo a passo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar chain-of-thought, solicitando ao modelo que explique seu raciocínio passo a passo antes da resposta final."
+        },
+        {
+          "key": "B",
+          "text": "Forçar o modelo a responder em uma única palavra, sem contexto adicional."
+        },
+        {
+          "key": "C",
+          "text": "Repetir a pergunta exatamente dez vezes no mesmo prompt."
+        },
+        {
+          "key": "D",
+          "text": "Omitir o texto do contrato e pedir ao modelo que \"adivinhe\" as cláusulas com base no nome do documento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A técnica de chain-of-thought incentiva o modelo a decompor o problema em etapas intermediárias, o que melhora a precisão em tarefas analíticas complexas, como revisão de documentos longos. A alternativa B é muito restritiva e impede o raciocínio necessário. A alternativa C não melhora o raciocínio e apenas aumenta o tamanho do prompt. A alternativa D remove informações essenciais e torna a resposta especulativa e pouco confiável.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação precisa que um modelo de base responda apenas com informações presentes em um manual técnico interno, evitando invenção de procedimentos. Qual estratégia de prompt é mais adequada para esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Incluir o conteúdo relevante do manual diretamente no contexto do prompt e instruir o modelo a responder apenas com base nele."
+        },
+        {
+          "key": "B",
+          "text": "Pedir ao modelo para usar seu conhecimento geral e completar lacunas quando faltar informação."
+        },
+        {
+          "key": "C",
+          "text": "Instruir o modelo a ser criativo para sugerir procedimentos caso não encontre uma resposta exata."
+        },
+        {
+          "key": "D",
+          "text": "Solicitar ao modelo que gere hipóteses plausíveis sempre que houver ambiguidade."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Fornecer o conteúdo autorizado no contexto e dar uma instrução explícita para restringir a resposta a esse material é uma forma eficaz de reduzir alucinações em cenários baseados em documentos. As alternativas B, C e D incentivam o uso de conhecimento geral ou a geração de conteúdo inventado, o que vai contra o requisito de responder apenas com informações presentes no manual técnico.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma equipe deseja melhorar a confiabilidade de um modelo de base ao executar uma tarefa de extração de dados estruturados a partir de e-mails. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fornecer alguns exemplos de e-mails com a estrutura JSON esperada (few-shot prompting)."
+        },
+        {
+          "key": "B",
+          "text": "Instruir o modelo a inferir campos ausentes preenchendo com valores genéricos para sempre retornar todos os campos."
+        },
+        {
+          "key": "C",
+          "text": "Especificar explicitamente o esquema JSON desejado e os tipos de dados no prompt."
+        },
+        {
+          "key": "D",
+          "text": "Pedir ao modelo para adicionar comentários explicativos livremente dentro do objeto JSON."
+        },
+        {
+          "key": "E",
+          "text": "Solicitar ao modelo que varie o formato da resposta entre execuções para testar a robustez."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "Few-shot prompting com exemplos alinhados ao formato desejado (A) ajuda o modelo a replicar a estrutura. Especificar o esquema e os tipos de dados (C) reduz ambiguidade e aumenta a chance de obter JSON válido e consistente. A alternativa B incentiva a invenção de dados ausentes, o que reduz a confiabilidade. A alternativa D quebra a estrutura JSON esperada. A alternativa E introduz variabilidade indesejada em uma tarefa que exige formato estruturado e previsível.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    }
+  ]
+}

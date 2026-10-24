@@ -1,0 +1,36 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Solstice Arquitetura está avaliando o uso de GenAI para auxiliar na redação de propostas. Apesar de ser produtivo, em alguns testes o modelo forneceu afirmações factuais incorretas com aparência convincente. Considerando as capacidades e limitações do GenAI, como essa característica é comumente chamada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Overfitting"
+        },
+        {
+          "key": "B",
+          "text": "Alucinação"
+        },
+        {
+          "key": "C",
+          "text": "Regularização"
+        },
+        {
+          "key": "D",
+          "text": "Quantização"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Alucinação é a geração de informações plausíveis, mas incorretas ou não verificáveis pelo modelo. Overfitting, regularização e quantização são conceitos técnicos distintos relacionados a treinamento, otimização e compressão de modelos, não ao fenômeno de produzir afirmações factuais erradas com tom convincente.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/generative-ai/",
+        "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/generative-ai-lens.html"
+      ]
+    }
+  ]
+}

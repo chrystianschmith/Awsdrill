@@ -1,0 +1,156 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de ciência de dados da Loja Horizonte concluiu o ajuste dos pesos de um modelo de linguagem com dados próprios e agora publica uma API que recebe perguntas de clientes e devolve respostas. Qual etapa descreve o que acontece quando a API recebe uma pergunta e gera a resposta?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Treinamento, porque o modelo atualiza seus pesos a cada pergunta recebida."
+        },
+        {
+          "key": "B",
+          "text": "Inferência, porque o modelo usa os pesos já aprendidos para gerar uma saída sem alterá-los."
+        },
+        {
+          "key": "C",
+          "text": "Embedding, porque a pergunta é convertida em um vetor e armazenada permanentemente no modelo."
+        },
+        {
+          "key": "D",
+          "text": "Fine-tuning, porque cada resposta gerada serve automaticamente como novo exemplo de treinamento."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta é B. Inferência é a etapa em que o modelo já treinado processa uma entrada e gera uma saída usando os pesos aprendidos, sem atualizá-los. A alternativa A está errada porque treinamento altera os pesos e não ocorre a cada requisição. A C está errada porque embeddings são representações vetoriais usadas para comparação e busca; converter a pergunta em vetor não é o que gera a resposta, e o vetor não fica armazenado permanentemente no modelo. A D está errada porque fine-tuning é um job de treinamento separado, com dados e ajuste de pesos, e não acontece automaticamente a cada resposta produzida.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html",
+        "https://aws.amazon.com/what-is/generative-ai/"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de suporte da Clínica Bem Viver usa um foundation model no Amazon Bedrock para responder dúvidas sobre horários e convênios. As respostas variam demais entre execuções com o mesmo prompt, e a equipe quer reduzir a aleatoriedade para tornar o texto mais previsível. Qual ajuste atende diretamente a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar o valor de temperature."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o número máximo de tokens de saída."
+        },
+        {
+          "key": "C",
+          "text": "Ampliar a janela de contexto do modelo."
+        },
+        {
+          "key": "D",
+          "text": "Reduzir o valor de temperature."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A resposta é D. Temperature é um parâmetro de inferência que controla o grau de aleatoriedade na escolha dos próximos tokens; valores menores tornam a geração mais previsível e repetível. A alternativa A está errada porque aumentar a temperature amplia a variação, o oposto do desejado. A B está errada porque o limite de tokens de saída controla o tamanho da resposta, não sua aleatoriedade. A C está errada porque a janela de contexto define quanto texto o modelo pode considerar, não o nível de variação das respostas. Reduzir a temperature melhora a consistência, mas não garante correção factual.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html",
+        "https://aws.amazon.com/what-is/prompt-engineering/"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma livraria quer que a busca do site encontre produtos por significado, mesmo quando o cliente usa palavras diferentes das do catálogo, como “livro para aprender a cozinhar” ao procurar “culinária para iniciantes”. Qual recurso de IA generativa permite comparar textos por similaridade semântica?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Gerar embeddings para os textos e comparar a similaridade entre os vetores."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar a temperature do modelo de geração."
+        },
+        {
+          "key": "C",
+          "text": "Usar um modelo de difusão para transformar os textos em imagens."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar fine-tuning com pares de perguntas e respostas de atendimento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A resposta é A. Embeddings representam textos como vetores em um espaço em que conteúdos com significado semelhante ficam próximos, permitindo comparar similaridade mesmo com palavras diferentes. A alternativa B está errada porque temperature afeta a aleatoriedade da geração de texto, não cria uma representação semântica para busca. A C está errada porque modelos de difusão são usados para gerar ou transformar imagens, não para comparar o significado de textos. A D está errada porque fine-tuning ajusta o comportamento do modelo para uma tarefa, mas não fornece por si só um índice vetorial pesquisável do catálogo.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/embeddings-in-machine-learning/",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A área jurídica de uma empresa usa um foundation model para responder sobre políticas internas. Em testes, o modelo inventou números de cláusulas e prazos que não existem. A empresa quer que as respostas sejam baseadas nos documentos oficiais atualizados, sem treinar novamente o modelo a cada mudança. Qual abordagem é mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fazer fine-tuning do modelo sempre que um documento for alterado."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar a temperature para o modelo explorar mais possibilidades."
+        },
+        {
+          "key": "C",
+          "text": "Usar geração aumentada por recuperação (RAG), buscando trechos dos documentos e incluindo-os no prompt."
+        },
+        {
+          "key": "D",
+          "text": "Reduzir o número máximo de tokens de saída para limitar invenções."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta é C. RAG recupera trechos relevantes dos documentos oficiais e os fornece no contexto do prompt, de modo que a resposta seja fundamentada no conteúdo atual; quando um documento muda, basta atualizar a fonte consultada, sem retreinar o modelo. A alternativa A está errada porque exigiria um novo fine-tuning a cada alteração, com custo e demora desnecessários. A B está errada porque temperature mais alta aumenta a variação e pode agravar respostas inventadas. A D está errada porque limitar o tamanho da saída pode truncar a resposta, mas não impede que o modelo invente informações sem base documental.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/retrieval-augmented-generation/",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Sobre tokens e janela de contexto em modelos de linguagem, quais duas afirmações estão corretas? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Tokens são unidades de texto, geralmente menores que uma palavra, usadas pelo modelo para processar a entrada e gerar a saída."
+        },
+        {
+          "key": "B",
+          "text": "Cada token corresponde sempre a exatamente uma palavra completa do texto original."
+        },
+        {
+          "key": "C",
+          "text": "A janela de contexto define o limite de tokens que o modelo consegue considerar em uma interação, incluindo entrada e saída."
+        },
+        {
+          "key": "D",
+          "text": "A janela de contexto é o espaço em disco usado para armazenar permanentemente os dados de treinamento."
+        },
+        {
+          "key": "E",
+          "text": "Aumentar a janela de contexto elimina a necessidade de o modelo usar embeddings."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas são A e C. Tokens são as unidades de texto com que o modelo trabalha; eles podem representar palavras inteiras, partes de palavras, pontuação ou espaços, e são usados tanto na entrada quanto na geração. A janela de contexto limita quantos tokens o modelo pode considerar em uma interação, somando o que entra no prompt e o que é gerado na saída. A alternativa B está errada porque um token não equivale sempre a uma palavra completa. A D está errada porque a janela de contexto é um limite de processamento, não armazenamento em disco. A E está errada porque embeddings e janela de contexto têm papéis diferentes: aumentar o contexto não substitui a representação vetorial usada, por exemplo, em buscas semânticas.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/large-language-model/",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+      ]
+    }
+  ]
+}

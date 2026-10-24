@@ -1,0 +1,118 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa FintaPay está desenvolvendo um chatbot com IA generativa voltado ao atendimento de clientes. Para atender a requisitos regulatórios, ela precisa garantir que as respostas do modelo não contenham linguagem ofensiva, informações sensíveis de identificação pessoal (PII) nem conteúdo inadequado, sem precisar reescrever toda a lógica da aplicação. Qual recurso do Amazon Bedrock é mais adequado para esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Macie"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Bedrock Guardrails"
+        },
+        {
+          "key": "D",
+          "text": "AWS Shield Advanced"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta correta é C) Amazon Bedrock Guardrails. Esse recurso permite aplicar filtros de conteúdo, detecção e redaction de PII e políticas de segurança diretamente nas chamadas ao Amazon Bedrock, atuando como uma camada de proteção na infraestrutura de inferência sem alterar a lógica da aplicação. A) AWS WAF protege aplicações web contra explorações HTTP, mas não filtra o conteúdo gerado por foundation models. B) Amazon Macie é voltado à descoberta e proteção de dados sensíveis em armazenamento (como Amazon S3), não à filtragem de saídas de modelos generativos. D) AWS Shield Advanced foca na proteção contra ataques DDoS, não no controle de conteúdo gerado por IA.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe QuantaLab deseja treinar, ajustar (fine-tune) e implantar um modelo de código aberto em instâncias específicas, com controle total sobre o tipo de instância, a configuração de rede e as políticas de auto scaling. Qual serviço da AWS oferece esse nível de flexibilidade para workloads de machine learning e GenAI?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Bedrock"
+        },
+        {
+          "key": "B",
+          "text": "Amazon SageMaker"
+        },
+        {
+          "key": "C",
+          "text": "AWS App Runner"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Lightsail"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B) Amazon SageMaker. O SageMaker fornece infraestrutura gerenciável com controle granular sobre instâncias, redes (incluindo VPC), treinamento personalizado, fine-tuning, implantação em endpoints e políticas de scaling. A) Amazon Bedrock é um serviço totalmente gerenciado para acessar foundation models prontos via API, com menos controle sobre a infraestrutura subjacente. C) AWS App Runner é voltado à implantação de aplicações web e APIs em contêineres, não ao gerenciamento completo de workflows de treinamento e fine-tuning de modelos. D) Amazon Lightsail é destinado a workloads simples e previsíveis, sem os recursos avançados de ML do SageMaker.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/whatis.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa JustitiaDocs está construindo uma solução de Retrieval Augmented Generation (RAG) com o Amazon Bedrock Knowledge Bases. Eles possuem milhares de contratos em formato PDF que precisam ser armazenados e disponibilizados como fonte de dados para a ingestão pelo Knowledge Bases. Qual serviço da AWS deve ser utilizado como repositório durável e escalável para esses documentos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EBS"
+        },
+        {
+          "key": "B",
+          "text": "Amazon EFS"
+        },
+        {
+          "key": "C",
+          "text": "Amazon S3"
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta correta é C) Amazon S3. O Amazon Bedrock Knowledge Bases suporta buckets do Amazon S3 como fonte de dados para ingestão, oferecendo armazenamento durável, escalável e altamente disponível para documentos como PDFs, TXT, HTML e outros formatos. A) Amazon EBS é um volume em bloco para uso com instâncias EC2, não um repositório de objetos para ingestão direta pelo Knowledge Bases na maioria dos fluxos. B) Amazon EFS é um sistema de arquivos compartilhado, mas não é a fonte de dados nativa e mais comum recomendada para o Amazon Bedrock Knowledge Bases. D) Amazon FSx for Windows File Server é voltado a workloads Windows com protocolo SMB, não ao caso de uso padrão de ingestão de documentos para Knowledge Bases.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-ds.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa CineForge está projetando sua aplicação GenAI no Amazon Bedrock para lidar com diferentes padrões de tráfego: parte previsível e parte com picos ocasionais. Eles buscam otimizar simultaneamente custo e disponibilidade da capacidade de inferência. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Utilizar Amazon Bedrock Provisioned Throughput para workloads previsíveis e de alto volume, garantindo capacidade reservada."
+        },
+        {
+          "key": "B",
+          "text": "Armazenar todas as consultas dos usuários em um banco relacional e reutilizá-las para evitar qualquer chamada a foundation models."
+        },
+        {
+          "key": "C",
+          "text": "Aproveitar o cross-region inference do Amazon Bedrock para rotear requisições para regiões com maior disponibilidade de capacidade."
+        },
+        {
+          "key": "D",
+          "text": "Substituir todas as chamadas a foundation models por funções AWS Lambda com regras estáticas para reduzir custos."
+        },
+        {
+          "key": "E",
+          "text": "Usar Amazon S3 Transfer Acceleration para acelerar diretamente o tempo de resposta da inferência dos modelos."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas corretas são A e C. A) O Provisioned Throughput permite reservar capacidade para modelos no Amazon Bedrock, oferecendo desempenho mais previsível e, em muitos casos, melhor custo-efetividade para cargas consistentes e de alto volume. C) O cross-region inference ajuda a melhorar a disponibilidade ao distribuir as solicitações entre regiões suportadas, mitigando restrições de capacidade em uma região específica. B) É inviável evitar chamadas a foundation models para gerar respostas novas e contextuais; o cache pode ajudar em casos pontuais, mas não elimina a necessidade de inferência na maioria dos cenários. D) Funções AWS Lambda com regras estáticas não geram conteúdo generativo com a flexibilidade e qualidade de um foundation model. E) O S3 Transfer Acceleration otimiza a transferência de dados para e do Amazon S3, não o tempo de inferência dos modelos no Amazon Bedrock.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/provisioned-throughput.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html"
+      ]
+    }
+  ]
+}

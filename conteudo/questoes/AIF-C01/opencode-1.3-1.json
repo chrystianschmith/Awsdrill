@@ -1,0 +1,156 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma fintech definiu como objetivo de negócio prever tentativas de fraude em transações online. De acordo com o ciclo de vida de AI/ML, qual etapa deve ser realizada logo após essa definição do problema?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Realizar o monitoramento do modelo em ambiente de produção."
+        },
+        {
+          "key": "B",
+          "text": "Coletar e selecionar os dados históricos relevantes para resolver o problema."
+        },
+        {
+          "key": "C",
+          "text": "Expor o modelo por meio de um endpoint para consumo imediato."
+        },
+        {
+          "key": "D",
+          "text": "Executar testes de carga no modelo já treinado."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Após traduzir o problema de negócio para um problema de ML, a próxima etapa é coletar e avaliar quais dados históricos estão disponíveis e são relevantes para treiná-lo. A alternativa A refere-se à etapa de monitoramento, que acontece após a implantação. A alternativa C refere-se à implantação do modelo, e não à preparação dos dados. A alternativa D trata de testes operacionais, que ocorrem em um momento posterior ao treinamento e à validação.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-mlconcepts.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Durante o desenvolvimento de um modelo de ML para classificar imagens de produtos, a equipe separa parte dos dados para não utilizá-la no treinamento. Qual é o principal objetivo dessa separação?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Avaliar o desempenho do modelo em dados não vistos durante o treinamento."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar artificialmente o volume de dados para acelerar o treinamento."
+        },
+        {
+          "key": "C",
+          "text": "Garantir que todos os rótulos sejam aplicados manualmente pelo mesmo avaliador."
+        },
+        {
+          "key": "D",
+          "text": "Converter todos os arquivos para um formato binário exclusivo do treinamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Separar um conjunto de teste (ou validação) permite avaliar a capacidade de generalização do modelo em dados nunca vistos, ajudando a identificar problemas como overfitting. A alternativa B refere-se a técnicas como data augmentation, e não à simples separação dos dados. A alternativa C não é um objetivo da divisão entre conjuntos. A alternativa D trata de conversão de formato, que é uma ação pontual e não o motivo para criar um conjunto separado para avaliação.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-mlconcepts.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística finalizou o treinamento e a avaliação de um modelo de ML que prevê atrasos em entregas. Conforme o ciclo de vida de AI/ML, qual ação corresponde à etapa de implantação?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aplicar limpeza e padronização nos dados brutos coletados."
+        },
+        {
+          "key": "B",
+          "text": "Realizar feature engineering para criar novas variáveis."
+        },
+        {
+          "key": "C",
+          "text": "Ajustar hiperparâmetros com base nas métricas obtidas na avaliação."
+        },
+        {
+          "key": "D",
+          "text": "Disponibilizar o modelo treinado para gerar previsões em tempo real ou em lote."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A etapa de implantação consiste em disponibilizar o modelo aprovado para uso em produção, para que ele possa gerar inferências a partir de novos dados. As alternativas A e B referem-se à preparação e ao feature engineering, etapas anteriores ao treinamento. A alternativa C refere-se ao ajuste de hiperparâmetros, que normalmente ocorre durante o treinamento ou na fase de otimização, antes da decisão de implantar o modelo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-mlconcepts.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Após implantar um modelo de ML para recomendar produtos em um e-commerce, a equipe percebe que o comportamento de compra dos clientes mudou ao longo dos últimos meses. Nesse contexto, qual prática está mais alinhada à etapa de monitoramento do ciclo de vida de AI/ML?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Definir novamente o problema de negócio a partir do zero."
+        },
+        {
+          "key": "B",
+          "text": "Gerar um novo conjunto de rótulos apenas para o conjunto de treinamento original."
+        },
+        {
+          "key": "C",
+          "text": "Verificar a qualidade das previsões e possíveis desvios de dados em relação ao que foi visto no treinamento."
+        },
+        {
+          "key": "D",
+          "text": "Remover todas as variáveis categóricas antes de qualquer nova avaliação."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O monitoramento em produção visa acompanhar o desempenho do modelo e detectar mudanças, como data drift ou concept drift, que podem degradar as previsões. A alternativa A é excessiva e normalmente não é necessária apenas por variações de comportamento. A alternativa B não resolve o problema de desempenho em produção. A alternativa D é uma ação de preparação de dados, não uma prática típica de monitoramento contínuo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Em um projeto de ML, a equipe está na fase de preparação de dados, anterior ao treinamento do modelo. Quais das seguintes atividades fazem parte, comumente, dessa fase? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Realizar a limpeza de dados, tratando valores ausentes ou inconsistentes."
+        },
+        {
+          "key": "B",
+          "text": "Disponibilizar o modelo treinado em um endpoint para inferência."
+        },
+        {
+          "key": "C",
+          "text": "Criar ou transformar variáveis por meio de feature engineering."
+        },
+        {
+          "key": "D",
+          "text": "Acompanhar métricas de latência e erros após a implantação."
+        },
+        {
+          "key": "E",
+          "text": "Calcular a acurácia em um conjunto de teste nunca utilizado no treinamento."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A limpeza de dados (A) e o feature engineering (C) são atividades centrais da preparação dos dados antes do treinamento. A alternativa B refere-se à implantação. A alternativa D refere-se ao monitoramento em produção. A alternativa E refere-se à etapa de avaliação, que acontece após o treinamento.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/how-it-works-mlconcepts.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lifecycle.html"
+      ]
+    }
+  ]
+}

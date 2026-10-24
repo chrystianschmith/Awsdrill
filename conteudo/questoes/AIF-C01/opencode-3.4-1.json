@@ -1,0 +1,141 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe da LogiFicta está avaliando a qualidade das respostas geradas por um foundation model (FM) usado para resumir manuais técnicos. Eles querem medir, objetivamente, a sobreposição entre palavras e frases do resumo gerado e um resumo de referência criado por especialistas. Qual método de avaliação é o mais adequado para esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Avaliação de viés com testes de sensibilidade demográfica"
+        },
+        {
+          "key": "B",
+          "text": "Métricas baseadas em sobreposição de n-gramas, como ROUGE"
+        },
+        {
+          "key": "C",
+          "text": "Medição de latência por requisição com Amazon CloudWatch"
+        },
+        {
+          "key": "D",
+          "text": "Avaliação de custo por token com AWS Cost Explorer"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A alternativa B está correta: métricas como ROUGE avaliam a sobreposição lexical (n-gramas) entre uma resposta gerada e uma referência humana, sendo comumente usadas em tarefas de sumarização. A alternativa A refere-se a avaliação de viés, não a sobreposição textual. A alternativa C mede desempenho operacional (latência), não qualidade da resposta. A alternativa D mede custo, não a qualidade gerada pelo FM.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A NovaBrisa utiliza um foundation model hospedado no Amazon Bedrock para responder perguntas com base em documentos internos. Após identificar casos em que o modelo cita informações ausentes nos documentos fornecidos, qual aspecto da avaliação de FM deve ser priorizado para detectar esse comportamento?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fidelidade ao contexto (faithfulness)"
+        },
+        {
+          "key": "B",
+          "text": "Taxa de transferência de rede"
+        },
+        {
+          "key": "C",
+          "text": "Eficiência de cache de consultas"
+        },
+        {
+          "key": "D",
+          "text": "Utilização de IOPS do volume de armazenamento"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A alternativa A está correta: em cenários com recuperação de contexto (RAG), avaliar a fidelidade ao contexto (faithfulness) permite identificar alucinações em que o modelo gera afirmações não suportadas pelos documentos fornecidos. A alternativa B relaciona-se à rede, não à qualidade semântica. A alternativa C refere-se a desempenho de cache, não à veracidade/fidelidade. A alternativa D refere-se a armazenamento, não à avaliação da resposta do FM.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A Equinixia está testando dois prompts diferentes para o mesmo foundation model no Amazon Bedrock com o objetivo de comparar qual deles produz respostas mais úteis para os usuários. Eles planejam exibir aleatoriamente um dos prompts a grupos semelhantes de usuários e coletar feedback explícito. Qual método de avaliação esse cenário representa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Teste A/B (avaliação com usuários reais)"
+        },
+        {
+          "key": "B",
+          "text": "Avaliação por classificação binária em conjunto estático"
+        },
+        {
+          "key": "C",
+          "text": "Cálculo de perplexidade em corpus fechado"
+        },
+        {
+          "key": "D",
+          "text": "Medição de tempo ocioso da GPU"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A alternativa A está correta: testes A/B com usuários reais permitem comparar variações (como prompts) com base em métricas de uso e feedback, sendo uma forma prática de avaliação em produção. A alternativa B refere-se a avaliação automatizada em conjunto fixo, não a experimento com usuários. A alternativa C é uma métrica intrínseca em dados de treinamento/avaliação, não um experimento A/B. A alternativa D mede utilização de hardware, não a qualidade percebida.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A VentisTech precisa garantir que as respostas de um foundation model usado em um chatbot não contenham linguagem ofensiva ou conteúdo inadequado antes de liberar novas versões. Qual abordagem de avaliação é mais diretamente voltada a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Avaliação de toxicidade e segurança"
+        },
+        {
+          "key": "B",
+          "text": "Cálculo da taxa de compactação de tokens"
+        },
+        {
+          "key": "C",
+          "text": "Medição da fragmentação de solicitações HTTP"
+        },
+        {
+          "key": "D",
+          "text": "Avaliação da eficiência de roteamento de rede"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A alternativa A está correta: avaliações de toxicidade e segurança ajudam a identificar conteúdo ofensivo, inadequado ou não conforme com políticas, sendo essenciais em aplicações voltadas ao público. A alternativa B refere-se a eficiência de representação, não à segurança do conteúdo. A alternativa C mede aspectos de rede, não o conteúdo gerado. A alternativa D refere-se a roteamento, não à avaliação de segurança da resposta.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A SolumNova está usando Amazon Bedrock para avaliar diferentes versões de um foundation model antes de implantá-las em produção. Ao planejar a avaliação, eles desejam combinar métricas automatizadas e avaliação humana. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar métricas automatizadas, como precisão, ROUGE ou relevância ao contexto, em um conjunto de testes curado"
+        },
+        {
+          "key": "B",
+          "text": "Confiar exclusivamente na contagem de requisições bem-sucedidas para julgar a qualidade das respostas"
+        },
+        {
+          "key": "C",
+          "text": "Realizar avaliação humana com rubricas definidas para critérios como coerência, utilidade e correção"
+        },
+        {
+          "key": "D",
+          "text": "Medir apenas o tempo total de execução do pipeline de CI/CD"
+        },
+        {
+          "key": "E",
+          "text": "Avaliar unicamente com base no consumo de memória do contêiner"
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As alternativas A e C estão corretas: uma estratégia robusta combina métricas automatizadas em conjuntos de teste curados com avaliação humana guiada por rubricas para capturar qualidade percebida e nuances. A alternativa B ignora a qualidade semântica das respostas. A alternativa D refere-se a CI/CD, não à avaliação da qualidade do FM. A alternativa E mede recursos computacionais, não a qualidade gerada.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"]
+    }
+  ]
+}

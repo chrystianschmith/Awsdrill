@@ -1,0 +1,153 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa NovaQuanta deseja adaptar um Foundation Model pré-treinado ao jargão técnico de seu setor de energia renovável. Eles possuem um grande volume de manuais internos, relatórios técnicos e especificações em formato textual, mas nenhum rótulo de pergunta e resposta. Qual abordagem de treinamento é a mais indicada para incorporar esse conhecimento geral do domínio ao modelo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Instruction fine-tuning com um conjunto de perguntas e respostas rotuladas."
+        },
+        {
+          "key": "B",
+          "text": "Reinforcement Learning from Human Feedback (RLHF) com classificações de preferência."
+        },
+        {
+          "key": "C",
+          "text": "Continued pre-training com dados não rotulados do domínio."
+        },
+        {
+          "key": "D",
+          "text": "Few-shot prompting apenas no momento da inferência."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta correta é C. O continued pre-training permite que um Foundation Model aprenda padrões, vocabulário e conhecimento do domínio a partir de grandes volumes de dados não rotulados, sem precisar de pares pergunta-resposta. A alternativa A refere-se ao instruction fine-tuning, que exige dados rotulados no formato de instrução e resposta. A alternativa B é RLHF, voltada a alinhar preferências humanas, e não a incorporar conhecimento geral do domínio. A alternativa D é uma técnica de inferência (prompting), não um processo de treinamento ou fine-tuning do modelo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-continue-pretraining.html"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa MediLex precisa adaptar um Foundation Model para executar tarefas específicas de extração de informações em laudos médicos padronizados. Eles optaram por utilizar uma abordagem de fine-tuning com poucos parâmetros atualizados, para reduzir o uso de recursos computacionais. Qual técnica se enquadra melhor nesse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Full fine-tuning, atualizando todos os pesos do modelo."
+        },
+        {
+          "key": "B",
+          "text": "Pre-training do zero, usando apenas os dados da MediLex."
+        },
+        {
+          "key": "C",
+          "text": "Parameter-Efficient Fine-Tuning (PEFT), como Low-Rank Adaptation (LoRA)."
+        },
+        {
+          "key": "D",
+          "text": "Knowledge distillation para treinar um modelo completamente novo do zero."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta correta é C. Parameter-Efficient Fine-Tuning (PEFT), como Low-Rank Adaptation (LoRA), adiciona ou atualiza apenas um pequeno subconjunto de parâmetros, reduzindo custos computacionais e memória, ao mesmo tempo em que mantém a maioria dos pesos do modelo pré-treinado. A alternativa A atualiza todos os pesos (full fine-tuning), o que consome mais recursos. A alternativa B trata de treinar um modelo do zero, não de adaptar um modelo pré-treinado. A alternativa D refere-se à destilação de conhecimento para criar um modelo menor, mas não é a técnica descrita para fine-tuning com poucos parâmetros atualizados.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/PEFT.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Durante o processo de fine-tuning de um Foundation Model, a equipe da empresa AtlasForms percebe que, à medida que o modelo se ajusta aos dados de treinamento, sua acurácia em tarefas genéricas começa a piorar. Qual fenômeno está ocorrendo nesse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Overfitting controlado."
+        },
+        {
+          "key": "B",
+          "text": "Catastrophic forgetting."
+        },
+        {
+          "key": "C",
+          "text": "Gradient clipping estável."
+        },
+        {
+          "key": "D",
+          "text": "Data augmentation eficaz."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. O catastrophic forgetting ocorre quando, ao ajustar um modelo a novos dados de um domínio específico, ele perde parte do conhecimento geral adquirido durante o pré-treinamento. A alternativa A refere-se a overfitting, mas o efeito descrito é a perda de desempenho em tarefas genéricas, não apenas o ajuste excessivo aos dados de treinamento. A alternativa C é uma técnica de treinamento para estabilizar gradientes, e não um fenômeno. A alternativa D é uma técnica para aumentar dados de treinamento, sem relação com a perda de conhecimento geral.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da empresa FinAtlas está realizando o fine-tuning de um Foundation Model para seguir instruções financeiras com maior precisão. Para avaliar se o modelo está generalizando bem e evitar que seja excessivamente ajustado ao conjunto usado no treinamento, qual prática é mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar todo o conjunto de dados rotulados apenas para o treinamento, sem divisão."
+        },
+        {
+          "key": "B",
+          "text": "Dividir os dados rotulados em conjuntos de treinamento, validação e, quando necessário, teste."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o número de épocas até que a perda no treinamento seja zero."
+        },
+        {
+          "key": "D",
+          "text": "Treinar com o mesmo lote de dados repetidamente, sem embaralhamento."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. A divisão em conjuntos de treinamento, validação e teste permite monitorar o desempenho em dados não vistos, ajudando a detectar overfitting e a avaliar a generalização do modelo. A alternativa A impede a avaliação da generalização. A alternativa C tende a causar overfitting ao forçar a perda a zero. A alternativa D pode levar a um ajuste enviesado e dificultar a generalização, sendo uma prática inadequada.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-validation.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa NeoAtende está planejando personalizar um Foundation Model pré-treinado para sua central de atendimento, com o objetivo de melhorar a segurança e a qualidade das respostas. Considerando o processo de fine-tuning e alinhamento, quais das seguintes práticas são corretas? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O instruction fine-tuning pode usar dados no formato de instrução e resposta para ensinar o modelo a seguir solicitações."
+        },
+        {
+          "key": "B",
+          "text": "O pré-treinamento do zero com dados da empresa é sempre a opção mais eficiente e econômica para esse caso."
+        },
+        {
+          "key": "C",
+          "text": "O Reinforcement Learning from Human Feedback (RLHF) pode ser usado para ajustar o modelo com base em preferências humanas."
+        },
+        {
+          "key": "D",
+          "text": "Quanto maior o volume de fine-tuning, menor é sempre o risco de catastrophic forgetting, independentemente dos dados."
+        },
+        {
+          "key": "E",
+          "text": "O continued pre-training só é aplicável quando se tem pares pergunta-resposta totalmente rotulados."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas corretas são A e C. O instruction fine-tuning utiliza dados rotulados no formato de instrução e resposta para ensinar o modelo a seguir solicitações, e o RLHF permite alinhar o modelo com preferências humanas. A alternativa B está incorreta, pois treinar do zero é geralmente muito mais custoso e demorado do que adaptar um modelo pré-treinado. A alternativa D está incorreta, pois mais fine-tuning pode aumentar o risco de catastrophic forgetting. A alternativa E está incorreta, pois o continued pre-training utiliza principalmente dados não rotulados para incorporar conhecimento do domínio.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/PEFT.html"
+      ]
+    }
+  ]
+}
