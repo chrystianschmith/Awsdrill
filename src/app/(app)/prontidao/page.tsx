@@ -127,6 +127,15 @@ export default async function ProntidaoPage() {
                         <span className="text-xs text-muted-foreground">{MOTIVO[item.motivo]}</span>
                       </span>
                       <span className="flex items-center gap-3 text-xs">
+                        {item.topicId ? (
+                          <Link
+                            href={`/material/${item.topicId}`}
+                            className="text-primary underline underline-offset-4"
+                            aria-label={`Material de ${item.codigo}`}
+                          >
+                            Material
+                          </Link>
+                        ) : null}
                         <Link
                           href={`/estudar?exame=${examVersionId}&dominio=${item.domainId}${item.topicId ? `&tarefa=${item.topicId}` : ""}`}
                           className="text-primary underline underline-offset-4"

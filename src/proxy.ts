@@ -1,7 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/auth/cookie";
 
-export const PRIVADAS = ["/hoje", "/estudar", "/exames", "/simulados", "/prontidao", "/revisoes", "/ciclo", "/carteira", "/progresso", "/conta", "/admin"];
+export const PRIVADAS = [
+  "/hoje",
+  "/estudar",
+  "/exames",
+  "/simulados",
+  "/prontidao",
+  "/revisoes",
+  "/ciclo",
+  "/carteira",
+  "/progresso",
+  "/material",
+  "/conta",
+  "/admin",
+];
 
 /**
  * Checagem otimista de sessão (só presença do cookie) e headers de segurança.
@@ -52,7 +65,8 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     {
-      source: "/((?!api/stripe/webhook|api/cron|api/saude|_next/static|_next/image|icon.svg|icons/|fonts/|sw.js|manifest.webmanifest).*)",
+      source:
+        "/((?!api/stripe/webhook|api/cron|api/saude|_next/static|_next/image|icon.svg|icons/|fonts/|sw.js|manifest.webmanifest).*)",
       missing: [
         { type: "header", key: "next-router-prefetch" },
         { type: "header", key: "purpose", value: "prefetch" },
