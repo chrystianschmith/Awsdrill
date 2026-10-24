@@ -31,6 +31,9 @@ const PRINCIPAIS = [
   { href: "/conta", label: "Conta", Icone: CircleUser },
 ] as const;
 
+/** Barra inferior no mobile; o restante fica no menu da conta (linksMobile). */
+const BARRA_INFERIOR = ["/hoje", "/estudar", "/simulados", "/prontidao", "/progresso"] as const;
+
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
   const linksMenu: LinkMenu[] = [
@@ -85,10 +88,27 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       </header>
 
       <div className="md:pl-60">
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-5xl px-4 pb-10 pt-6 outline-none md:px-8">
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-5xl px-4 pb-24 pt-6 outline-none md:px-8 md:pb-10">
           {children}
         </main>
       </div>
+
+      <nav
+        aria-label="Atalhos"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      >
+        <ul className="grid grid-cols-5">
+          {PRINCIPAIS.filter((p) => (BARRA_INFERIOR as readonly string[]).includes(p.href)).map(
+            ({ href, label, Icone }) => (
+              <li key={href}>
+                <NavLink href={href} variant="bottom" icon={<Icone aria-hidden />}>
+                  {label}
+                </NavLink>
+              </li>
+            ),
+          )}
+        </ul>
+      </nav>
     </>
   );
 }
