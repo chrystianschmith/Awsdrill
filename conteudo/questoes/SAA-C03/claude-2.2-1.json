@@ -1,0 +1,152 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema de reservas precisa de um plano de recuperação de desastres em outra região com RTO de 15 minutos e RPO de 1 minuto. O orçamento não comporta duas regiões com capacidade total o tempo todo. O banco é Amazon Aurora MySQL. Qual estratégia atende com o MENOR custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Backup and restore: backups diários copiados para a outra região e restaurados no desastre."
+        },
+        {
+          "key": "B",
+          "text": "Pilot light com snapshots diários do banco copiados para a outra região e a infraestrutura criada só no desastre."
+        },
+        {
+          "key": "C",
+          "text": "Warm standby: Aurora Global Database com um cluster secundário e uma cópia reduzida da aplicação rodando na outra região, escalada no failover."
+        },
+        {
+          "key": "D",
+          "text": "Multi-site ativo/ativo com capacidade total nas duas regiões."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o warm standby mantém uma cópia funcional, porém reduzida, rodando na outra região, o que permite escalar e assumir em minutos (RTO de 15 min), e o Aurora Global Database replica os dados com atraso típico de cerca de um segundo (RPO de 1 min). A e B têm RPO de até um dia e RTO de horas. D atende aos números, mas custa o dobro, o que o orçamento não permite.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação web em instâncias EC2 de um Auto Scaling group guarda a sessão do usuário (carrinho de compras) na memória da instância. Quando o grupo encerra instâncias no scale-in ou substitui uma instância com problema, os usuários perdem o carrinho. Qual mudança resolve e mantém o grupo elástico?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar sticky sessions no Application Load Balancer."
+        },
+        {
+          "key": "B",
+          "text": "Usar instâncias maiores para reduzir o número de scale-ins."
+        },
+        {
+          "key": "C",
+          "text": "Desabilitar o scale-in do Auto Scaling group."
+        },
+        {
+          "key": "D",
+          "text": "Guardar as sessões fora das instâncias, em Amazon ElastiCache ou Amazon DynamoDB, tornando a camada web stateless."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: com a sessão em um armazenamento externo e compartilhado, qualquer instância atende qualquer usuário, e encerrar ou substituir instâncias não perde dados. A mantém o usuário na mesma instância, mas a sessão some quando essa instância é encerrada. B e C só reduzem a frequência do problema e sacrificam a elasticidade ou o custo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Consumidores processam mensagens de uma fila Amazon SQS. Algumas mensagens malformadas sempre causam erro, voltam para a fila depois do visibility timeout e são reprocessadas indefinidamente, consumindo capacidade e atrasando as mensagens boas. A equipe quer isolar essas mensagens para análise sem perder nenhuma. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar uma dead-letter queue com redrive policy e um maxReceiveCount adequado."
+        },
+        {
+          "key": "B",
+          "text": "Reduzir o período de retenção da fila para que as mensagens ruins expirem mais rápido."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o visibility timeout para 12 horas."
+        },
+        {
+          "key": "D",
+          "text": "Apagar a mensagem da fila assim que ela for recebida, antes do processamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: depois de maxReceiveCount tentativas sem sucesso, o SQS move a mensagem para a dead-letter queue, isolando-a para análise sem bloquear as demais. B descarta mensagens, inclusive boas que estejam atrasadas. C só espaça as tentativas e atrasa a recuperação de falhas passageiras. D perde a mensagem se o processamento falhar.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação usa Amazon RDS for MySQL e não pode migrar para o Aurora por restrição de licenciamento de uma ferramenta. O requisito novo é failover automático entre AZs em tipicamente menos de 35 segundos, com instâncias standby que também atendam leituras. Qual implantação atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "RDS for MySQL Multi-AZ com uma instância standby."
+        },
+        {
+          "key": "B",
+          "text": "RDS for MySQL Multi-AZ DB cluster, com uma instância writer e duas instâncias reader em AZs diferentes."
+        },
+        {
+          "key": "C",
+          "text": "RDS for MySQL Single-AZ com réplicas de leitura em outras regiões."
+        },
+        {
+          "key": "D",
+          "text": "RDS for MySQL Single-AZ com backups automáticos e restauração point-in-time."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o Multi-AZ DB cluster tem duas standbys legíveis em AZs diferentes, que atendem leituras, e failover tipicamente abaixo de 35 segundos. A faz failover automático, mas a standby não atende leituras e o failover costuma levar de um a dois minutos. C não tem failover automático e acrescenta latência entre regiões. D leva muitos minutos para restaurar.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/multi-az-db-clusters-concepts.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "O site de uma empresa roda em us-east-1. Se a região ficar indisponível, os usuários devem ser levados automaticamente a uma página estática de manutenção, servida de um bucket do Amazon S3 em us-west-2, e voltar ao site principal quando ele se recuperar. Quais DUAS configurações do Amazon Route 53 atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um registro primário com política de roteamento failover associado a um health check do endpoint principal."
+        },
+        {
+          "key": "B",
+          "text": "Um registro simples apontando para o endpoint principal com TTL de 5 segundos."
+        },
+        {
+          "key": "C",
+          "text": "Um registro secundário com política failover apontando para o endpoint de site estático do bucket em us-west-2."
+        },
+        {
+          "key": "D",
+          "text": "Roteamento por geolocalização sem health checks, com o Brasil e os EUA apontando para regiões diferentes."
+        },
+        {
+          "key": "E",
+          "text": "Roteamento weighted com 50% do tráfego para cada região o tempo todo."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: no roteamento failover, o Route 53 responde com o registro primário enquanto o health check estiver saudável e passa ao secundário (a página no S3) quando ele falha, voltando automaticamente quando o primário se recupera. B não detecta falha. D não considera a saúde do endpoint. E manda metade dos usuários para a página de manutenção mesmo com o site saudável.",
+      "fontes": [
+        "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover-configuring.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html"
+      ]
+    }
+  ]
+}

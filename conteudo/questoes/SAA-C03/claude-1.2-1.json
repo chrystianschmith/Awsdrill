@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de ingressos já sofreu ataques DDoS na camada de aplicação durante grandes vendas. Ela usa Amazon CloudFront na frente de um Application Load Balancer e quer, além da proteção básica, acesso 24/7 a uma equipe de resposta da AWS durante ataques e proteção contra o aumento da conta causado pelo tráfego do ataque. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Confiar no AWS Shield Standard, que já vem habilitado no CloudFront sem custo."
+        },
+        {
+          "key": "B",
+          "text": "Assinar o AWS Shield Advanced e proteger a distribuição do CloudFront e o ALB, usando o AWS WAF para as regras de camada 7."
+        },
+        {
+          "key": "C",
+          "text": "Implantar o AWS Network Firewall na VPC do ALB."
+        },
+        {
+          "key": "D",
+          "text": "Bloquear os endereços IP atacantes nos security groups do ALB conforme os ataques acontecem."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o Shield Advanced acrescenta detecção e mitigação avançadas, acesso 24/7 ao Shield Response Team e proteção de custo contra picos de cobrança causados por DDoS, e trabalha com o WAF para mitigar ataques de camada 7 no CloudFront e no ALB. A cobre ataques comuns de camadas 3 e 4, mas não inclui a equipe de resposta nem a proteção de custo. C inspeciona tráfego na VPC, não protege a borda contra DDoS. D é manual, lento e ineficaz contra ataques distribuídos.",
+      "fontes": ["https://docs.aws.amazon.com/waf/latest/developerguide/shield-chapter.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa com 30 VPCs ligadas por um Transit Gateway precisa centralizar a saída para a internet e permitir apenas conexões para uma lista de domínios aprovados, bloqueando inclusive tentativas de conexão direta por IP. Também quer detecção de intrusão (IPS) no tráfego de saída, sem administrar appliances. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Security groups com regras de saída por nome de domínio em todas as instâncias."
+        },
+        {
+          "key": "B",
+          "text": "Network ACLs nas sub-redes com a lista de IPs dos domínios aprovados."
+        },
+        {
+          "key": "C",
+          "text": "Route 53 Resolver DNS Firewall bloqueando a resolução dos domínios não aprovados."
+        },
+        {
+          "key": "D",
+          "text": "AWS Network Firewall em uma VPC de inspeção centralizada, com regras stateful de lista de domínios e regras de IPS, roteando a saída das VPCs pelo Transit Gateway."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o Network Firewall é gerenciado, inspeciona o tráfego com regras stateful, inclusive por domínio (SNI/Host), bloqueia o que não está na lista mesmo quando a conexão é feita direto por IP e oferece regras de IPS; a VPC de inspeção com o Transit Gateway centraliza a saída das 30 VPCs. A não aceita regras por nome de domínio. B exige manter IPs que mudam e não faz IPS. C bloqueia só a resolução DNS; uma conexão direta por IP passa.",
+      "fontes": [
+        "https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html",
+        "https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API do Amazon API Gateway só pode ser chamada por aplicações que rodam dentro de uma VPC da empresa; nenhuma requisição vinda da internet pode chegar a ela, nem com credenciais válidas. Qual configuração atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma API REST regional com o AWS WAF permitindo só os IPs públicos dos NAT gateways da VPC."
+        },
+        {
+          "key": "B",
+          "text": "Uma API REST privada, acessada por um interface VPC endpoint do execute-api, com uma resource policy que permita só esse endpoint."
+        },
+        {
+          "key": "C",
+          "text": "Uma API edge-optimized com autenticação por chave de API."
+        },
+        {
+          "key": "D",
+          "text": "Uma API HTTP pública com um authorizer do Amazon Cognito."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: uma API REST privada só é alcançável por interface VPC endpoints do execute-api, e a resource policy restrita ao endpoint garante que nenhuma requisição da internet chegue a ela. A continua exposta na internet e depende de IPs de saída que podem mudar. C e D são públicas; autenticação não impede que a API seja alcançada pela internet.",
+      "fontes": ["https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-private-apis.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma organização com 50 contas quer detectar automaticamente sinais de comprometimento, como instâncias EC2 se comunicando com servidores de mineração de criptomoeda, uso de credenciais a partir de IPs maliciosos e chamadas de API anômalas, com os achados consolidados em uma conta de segurança e sem instalar agentes para isso. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Inspector em todas as contas, com os achados enviados à conta de segurança."
+        },
+        {
+          "key": "B",
+          "text": "Regras do AWS Config em todas as contas, agregadas na conta de segurança."
+        },
+        {
+          "key": "C",
+          "text": "Amazon GuardDuty habilitado na organização, com a conta de segurança como administrador delegado."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Macie habilitado em todas as contas."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o GuardDuty analisa continuamente fontes como CloudTrail, VPC Flow Logs e logs de DNS para detectar ameaças como mineração de criptomoeda, credenciais usadas a partir de IPs maliciosos e comportamento anômalo, sem agentes para essas fontes, e o administrador delegado consolida os achados das contas da organização. A procura vulnerabilidades de software, não atividade maliciosa em andamento. B avalia a conformidade das configurações. D descobre dados sensíveis no S3.",
+      "fontes": ["https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa quer eliminar os bastion hosts e a porta 22 aberta. Os administradores precisam de shell em instâncias Amazon EC2 em sub-redes privadas sem acesso à internet, com acesso controlado pelo IAM e cada sessão registrada para auditoria. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar o AWS Systems Manager Session Manager, com permissões do IAM para iniciar sessões e o log das sessões enviado ao Amazon S3 ou ao CloudWatch Logs."
+        },
+        {
+          "key": "B",
+          "text": "Liberar a porta 22 a partir de 0.0.0.0/0 nos security groups e exigir chaves SSH longas."
+        },
+        {
+          "key": "C",
+          "text": "Criar interface VPC endpoints para ssm, ssmmessages e ec2messages nas sub-redes privadas e anexar às instâncias um instance profile com a política do Systems Manager."
+        },
+        {
+          "key": "D",
+          "text": "Manter um bastion em sub-rede pública e compartilhar uma única chave SSH com todos os administradores."
+        },
+        {
+          "key": "E",
+          "text": "Atribuir IPs públicos às instâncias e usar o EC2 Instance Connect pela internet."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o Session Manager abre sessões de shell sem porta de entrada aberta nem bastion, com controle de acesso pelo IAM e registro das sessões; em sub-redes sem internet, os interface endpoints do Systems Manager e o instance profile com a política adequada permitem que o agente se comunique com o serviço. B, D e E mantêm portas expostas, chaves compartilhadas ou IPs públicos, o que contraria o objetivo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html",
+        "https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-create-vpc.html"
+      ]
+    }
+  ]
+}
