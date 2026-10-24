@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um jogo mobile precisa de um ranking global em tempo real: cada partida atualiza a pontuação de um jogador, e o app consulta o top 100 e a posição do jogador milhares de vezes por segundo, com latência abaixo de 1 ms. Qual solução atende com o MELHOR desempenho e o MENOR esforço de desenvolvimento?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma tabela do Amazon DynamoDB com scan e ordenação na aplicação a cada consulta."
+        },
+        {
+          "key": "B",
+          "text": "Amazon RDS for MySQL com índice na coluna de pontuação e ORDER BY ... LIMIT 100."
+        },
+        {
+          "key": "C",
+          "text": "Amazon ElastiCache (Redis OSS ou Valkey) usando sorted sets para pontuação e posição."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Neptune modelando jogadores e pontuações como um grafo."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: os sorted sets do ElastiCache mantêm os itens ordenados em memória, com comandos nativos para atualizar pontuações, buscar o top N e descobrir a posição de um jogador em submilissegundos. A faz varreduras caras e lentas a cada consulta. B ordena no disco e sofre com milhares de consultas e atualizações concorrentes por segundo. D é para relacionamentos entre entidades, não para ordenação de pontuações.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/elasticache-use-cases.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma tabela do Amazon DynamoDB recebe eventos de sensores com a data do dia (AAAA-MM-DD) como partition key. Mesmo com capacidade on-demand e gravações bem abaixo do total da tabela, os eventos do dia corrente sofrem throttling. O que o arquiteto deve fazer?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar para capacidade provisionada com o dobro das WCUs."
+        },
+        {
+          "key": "B",
+          "text": "Redesenhar a chave para ter alta cardinalidade, por exemplo, ID do sensor como partition key e o timestamp como sort key, ou acrescentar um sufixo aleatório à data (write sharding)."
+        },
+        {
+          "key": "C",
+          "text": "Criar um índice secundário global com a mesma partition key."
+        },
+        {
+          "key": "D",
+          "text": "Colocar um cluster DAX na frente da tabela para absorver as gravações."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: com a data como chave, todas as gravações do dia caem em uma única partição, que tem limite de throughput próprio (hot partition), qualquer que seja a capacidade da tabela; uma chave de alta cardinalidade, ou o sharding da chave, distribui as gravações entre muitas partições. A aumenta a capacidade total, mas não o limite da partição quente. C reproduz a mesma chave quente no índice. D acelera leituras; as gravações continuam indo para a tabela.",
+      "fontes": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um cluster Amazon Aurora PostgreSQL atende relatórios cuja carga de leitura varia muito ao longo do mês: no fechamento, triplica por alguns dias. A equipe quer que a capacidade de leitura acompanhe a demanda automaticamente, sem mudar a aplicação a cada ajuste e sem pagar réplicas ociosas no resto do mês. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar a instância writer para a maior classe disponível."
+        },
+        {
+          "key": "B",
+          "text": "Criar manualmente réplicas no fechamento e apagá-las depois, atualizando os endpoints na aplicação."
+        },
+        {
+          "key": "C",
+          "text": "Ler a partir da instância standby do Multi-AZ."
+        },
+        {
+          "key": "D",
+          "text": "Configurar o Aurora Auto Scaling para réplicas com base em CPU ou conexões, com a aplicação usando o reader endpoint do cluster."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o Aurora Auto Scaling adiciona e remove réplicas conforme a métrica escolhida, e o reader endpoint distribui as conexões entre as réplicas existentes, sem mudança na aplicação. A paga a capacidade máxima o mês inteiro e não escala leituras horizontalmente. B é manual e exige trocar endpoints. C parte de uma premissa errada: no Aurora não existe uma standby ociosa separada, as réplicas é que servem de alvo de failover, e ler de uma instância fixa não faz a capacidade acompanhar a demanda.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Integrating.AutoScaling.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um site de receitas consulta no Amazon RDS for MySQL os detalhes de cada receita, que mudam pouco. As mesmas mil receitas mais populares respondem por 80% das leituras, e o banco está no limite de CPU. A equipe quer reduzir a latência das leituras e a carga do banco com a MENOR mudança de custo e de modelo de dados. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon ElastiCache na frente do RDS, com estratégia lazy loading e TTL para os detalhes das receitas."
+        },
+        {
+          "key": "B",
+          "text": "Criar cinco réplicas de leitura e distribuir todas as leituras entre elas."
+        },
+        {
+          "key": "C",
+          "text": "Migrar as receitas para Amazon DynamoDB com DAX."
+        },
+        {
+          "key": "D",
+          "text": "Trocar a instância por uma classe com o dobro de vCPUs."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: com lazy loading, a primeira leitura busca no banco e guarda no cache, e as seguintes saem da memória; como poucas receitas concentram a maior parte das leituras, a taxa de acerto é alta, a latência cai para submilissegundos e a carga do banco despenca, com TTL para refletir as mudanças raras. B resolve parte da carga, mas cada leitura continua consultando um banco, e paga cinco instâncias. C exige migrar o modelo de dados. D só adia o problema, com custo maior.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/Strategies.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa vai migrar um banco Oracle de 5 TB do data center para o Amazon Aurora PostgreSQL. O sistema precisa continuar operando durante a migração, com corte de no máximo alguns minutos, e o schema tem procedures e tipos específicos do Oracle. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Converter o schema e o código do banco com o AWS DMS Schema Conversion (ou o AWS Schema Conversion Tool)."
+        },
+        {
+          "key": "B",
+          "text": "Exportar um dump completo do Oracle, parar o sistema e importá-lo no Aurora."
+        },
+        {
+          "key": "C",
+          "text": "Usar uma tarefa do AWS DMS com carga completa seguida de replicação contínua (CDC) até o corte."
+        },
+        {
+          "key": "D",
+          "text": "Copiar os arquivos de dados do Oracle para o Amazon S3 com o AWS DataSync e anexá-los ao Aurora."
+        },
+        {
+          "key": "E",
+          "text": "Criar uma réplica de leitura do Aurora apontando para o Oracle de origem."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a conversão de schema traduz tabelas, procedures e tipos do Oracle para PostgreSQL, sinalizando o que precisa de ajuste manual, e a tarefa do DMS com carga completa e CDC mantém o destino sincronizado com a origem em operação até o corte, que fica em minutos. B exige parar o sistema por horas. D não funciona, porque arquivos de dados do Oracle não são lidos pelo Aurora. E não existe: réplicas do Aurora replicam a partir do próprio cluster, não de um Oracle.",
+      "fontes": [
+        "https://docs.aws.amazon.com/dms/latest/userguide/CHAP_SchemaConversion.html",
+        "https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Task.CDC.html"
+      ]
+    }
+  ]
+}
