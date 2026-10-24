@@ -1,0 +1,5 @@
+# 0007 · Grátis × Pro do produto e Pix só no anual avulso
+
+- **Decisão (2026-10-24):** chaves de `entitlements.ts` próprias do produto (1 exame seguido, 5 treinos por semana, modo prova, prontidão por domínio, conteúdo com IA, ciclo e revisão espaçada); Pix só como pagamento único do anual (`mode: payment`, 12 meses em `accessUntil`, lembrete 7 dias antes), cartão para mensal e anual recorrentes. Preços R$ 29,90 / R$ 239,00 provisórios até o Chrytian confirmar.
+- **Motivo:** a doc oficial do Stripe (https://docs.stripe.com/payments/pix, consultada em 2026-10-24) diz "Stripe accounts in Brazil can accept Pix one-time payments with BRL settlement. Pix Automático isn't available in Brazil", então assinatura recorrente com Pix não existe para conta BR; segue o caminho alternativo de `assinaturas-planos`. As chaves da skill (editais, matérias próprias, ranking) não existem neste produto.
+- **Downgrade:** nada é apagado; exames além do mais antigo ficam `PAUSADO`, ciclo e revisões só deixam de aparecer e voltam com o Pro. O limite de treinos conta na transação; o de exames usa advisory lock por usuário.
