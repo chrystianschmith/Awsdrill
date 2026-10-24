@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa roda 24 horas por dia uma frota estável de instâncias Amazon EC2 de várias famílias (m6i, c6i e r6i) em duas regiões. No próximo ano ela vai trocar parte dessas instâncias por Graviton e mover alguns serviços para o AWS Fargate e o AWS Lambda. Ela quer o maior desconto possível sem perder essa flexibilidade. Qual opção de compra atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Standard Reserved Instances de 3 anos para cada tipo de instância atual em cada região."
+        },
+        {
+          "key": "B",
+          "text": "EC2 Instance Savings Plans de 3 anos para a família m6i em us-east-1."
+        },
+        {
+          "key": "C",
+          "text": "Compute Savings Plans com compromisso de gasto por hora igual à linha de base estável."
+        },
+        {
+          "key": "D",
+          "text": "Spot Instances para toda a frota, com reposição automática quando houver interrupção."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Compute Savings Plan aplica o desconto automaticamente a qualquer família, tamanho, região e sistema operacional do EC2 e também ao Fargate e ao Lambda, então acompanha a troca para Graviton e para serverless. A e B prendem o desconto ao tipo ou à família e à região, perdendo o benefício nas mudanças planejadas. D não serve para uma carga estável que precisa ficar no ar, porque Spot pode ser interrompido.",
+      "fontes": ["https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um laboratório processa todas as noites milhares de jobs de simulação de 20 a 40 minutos. Os jobs gravam checkpoints no Amazon S3 e podem recomeçar do último checkpoint; o resultado só precisa estar pronto às 7h. O laboratório quer o MENOR custo de computação e poucas interrupções. Qual estratégia atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Spot Instances de um único tipo de instância, o mais barato da região, em uma só AZ."
+        },
+        {
+          "key": "B",
+          "text": "Spot Instances com vários tipos de instância e AZs, usando a estratégia de alocação price-capacity-optimized."
+        },
+        {
+          "key": "C",
+          "text": "On-Demand Instances cobertas por um Compute Savings Plan de 3 anos."
+        },
+        {
+          "key": "D",
+          "text": "Dedicated Hosts reservados para as noites de processamento."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: jobs com checkpoint e prazo folgado são o caso ideal para Spot, e diversificar tipos e AZs com price-capacity-optimized escolhe pools com mais capacidade disponível, o que reduz interrupções e mantém o preço baixo. A concentra tudo em um pool, aumentando a chance de interrupções em massa. C dá desconto menor que Spot e paga o compromisso também durante o dia, quando nada roda. D é a opção mais cara e serve a licenciamento e isolamento, não a custo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação web stateless precisa de no mínimo 10 instâncias o tempo todo e chega a 60 nos picos diários. A camada já está atrás de um Application Load Balancer e tolera perder instâncias individuais. A empresa quer reduzir o custo sem arriscar a capacidade mínima. Qual configuração do Auto Scaling group atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mixed instances policy com base de 10 instâncias On-Demand (cobertas por Savings Plans) e capacidade acima da base em Spot, com vários tipos de instância."
+        },
+        {
+          "key": "B",
+          "text": "Todas as 60 instâncias em Spot de um único tipo, para maximizar o desconto."
+        },
+        {
+          "key": "C",
+          "text": "Todas as instâncias On-Demand, com o grupo fixo em 60 para não depender de escalonamento."
+        },
+        {
+          "key": "D",
+          "text": "Reserved Instances para 60 instâncias, cobrindo o pico o dia inteiro."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: a base On-Demand garante a capacidade mínima e pode ser coberta por Savings Plans, enquanto a capacidade elástica dos picos usa Spot diversificado, mais barato e aceitável para uma camada stateless atrás do ALB. B arrisca perder até a capacidade mínima em uma interrupção. C paga o pico 24 horas por dia. D compra compromisso para capacidade que fica ociosa a maior parte do dia.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-mixed-instances-groups.html"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 300 instâncias Amazon EC2 de vários tamanhos e suspeita de superdimensionamento. Ela quer recomendações de tipo e tamanho de instância baseadas no histórico de utilização (incluindo memória, coletada pelo CloudWatch agent), com estimativa do risco de desempenho de cada mudança, antes de comprar Savings Plans. Qual serviço atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Cost Explorer, com a previsão de gastos do próximo mês."
+        },
+        {
+          "key": "B",
+          "text": "AWS Budgets, com alertas de custo por instância."
+        },
+        {
+          "key": "C",
+          "text": "AWS Compute Optimizer, com as recomendações de rightsizing para EC2."
+        },
+        {
+          "key": "D",
+          "text": "AWS CloudTrail, com a análise das chamadas RunInstances."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Compute Optimizer analisa as métricas de utilização (inclusive memória, quando o CloudWatch agent está instalado) e recomenda tipos e tamanhos, indicando o risco de desempenho de cada opção; fazer o rightsizing antes de comprar Savings Plans evita assumir compromisso sobre capacidade desperdiçada. A projeta gastos, mas não recomenda tipos de instância. B alerta sobre valores, sem analisar utilização. D registra chamadas de API, não utilização.",
+      "fontes": ["https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma plataforma roda no Amazon ECS com AWS Fargate. A API atende usuários 24 horas por dia com carga estável, e um conjunto de workers processa uma fila do Amazon SQS e tolera ser interrompido, porque as mensagens voltam para a fila. A empresa quer reduzir o custo de computação sem afetar a API. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Rodar os workers com o capacity provider FARGATE_SPOT."
+        },
+        {
+          "key": "B",
+          "text": "Rodar a API e os workers com FARGATE_SPOT para ter o maior desconto em tudo."
+        },
+        {
+          "key": "C",
+          "text": "Cobrir o uso estável da API com um Compute Savings Plan."
+        },
+        {
+          "key": "D",
+          "text": "Migrar a API para Dedicated Hosts para reduzir o preço por vCPU."
+        },
+        {
+          "key": "E",
+          "text": "Aumentar o tamanho das tarefas da API para reduzir o número de tarefas."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o Fargate Spot tem desconto grande e serve aos workers, que toleram interrupção porque a mensagem volta para a fila; o uso estável da API ganha desconto com um Compute Savings Plan, que também cobre o Fargate, sem risco de interrupção. B arrisca derrubar a API em interrupções do Spot. D não se aplica ao Fargate e encarece. E não reduz custo por si só, porque o Fargate cobra por vCPU e memória provisionadas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-capacity-providers.html",
+        "https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html"
+      ]
+    }
+  ]
+}
