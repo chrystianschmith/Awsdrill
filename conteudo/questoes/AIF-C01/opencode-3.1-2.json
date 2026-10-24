@@ -1,0 +1,144 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está projetando um aplicativo com Amazon Bedrock que gera itinerários de viagem em formato JSON estrito para consumo por uma API. Durante os testes, o modelo ocasionalmente retorna texto explicativo junto ao JSON, o que causa falhas na integração. Ao considerar o design dessa aplicação, qual das seguintes abordagens é MAIS adequada para aumentar a chance de o modelo seguir o formato de saída esperado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar o valor de temperature para incentivar respostas mais criativas."
+        },
+        {
+          "key": "B",
+          "text": "Incluir instruções explícitas sobre o formato de saída desejado no prompt do sistema."
+        },
+        {
+          "key": "C",
+          "text": "Reduzir o número máximo de tokens de saída para forçar respostas mais curtas."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar o valor de top_p para ampliar o conjunto de tokens considerados."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Incluir instruções claras e específicas no prompt do sistema (ou nas instruções do aplicativo) é uma consideração fundamental de design para guiar o foundation model a seguir um formato de saída estruturado. A) Aumentar temperature torna as respostas menos determinísticas e mais criativas, o que tende a piorar a adesão a um formato estrito. C) Limitar max tokens pode cortar a resposta, mas não garante que o formato JSON será seguido. D) Alterar top_p afeta a diversidade da amostragem, não a obediência a instruções de formatação.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está desenvolvendo um aplicativo móvel com Amazon Bedrock para geração de textos longos. Os usuários reclamam que a tela fica em branco por vários segundos antes de qualquer conteúdo aparecer, mesmo quando o modelo acaba gerando uma boa resposta. Ao projetar essa experiência, qual consideração de design é MAIS eficaz para melhorar a percepção de velocidade pelos usuários?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Selecionar sempre o maior foundation model disponível para obter respostas mais rápidas."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o valor de temperature para acelerar a geração de tokens."
+        },
+        {
+          "key": "C",
+          "text": "Desativar o histórico de conversas para reduzir o processamento."
+        },
+        {
+          "key": "D",
+          "text": "Usar respostas em streaming para exibir tokens à medida que são gerados."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O streaming permite que o aplicativo exiba tokens conforme são gerados pelo foundation model, melhorando significativamente a latência percebida pelo usuário em respostas longas. A) Modelos maiores geralmente têm maior latência, não menor. B) O parâmetro temperature não acelera a geração; ele afeta a aleatoriedade das escolhas de tokens. C) Remover o histórico pode ajudar em alguns casos, mas não resolve o problema de \"tela em branco\" antes da primeira exibição do conteúdo.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/inference-streaming.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está projetando um aplicativo com Amazon Bedrock para duas funcionalidades distintas: (1) classificar chamados de suporte em uma de cinco categorias predefinidas, e (2) redigir propostas comerciais detalhadas com argumentos personalizados para cada cliente. Ao considerar custo e desempenho no design da aplicação, qual das seguintes estratégias é MAIS adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar um foundation model menor e mais econômico para a classificação e um foundation model maior para a redação de propostas comerciais."
+        },
+        {
+          "key": "B",
+          "text": "Usar o mesmo foundation model de maior capacidade para ambas as funcionalidades, pois isso simplifica a arquitetura."
+        },
+        {
+          "key": "C",
+          "text": "Usar um foundation model maior para a classificação, pois tarefas de categorização exigem raciocínio complexo."
+        },
+        {
+          "key": "D",
+          "text": "Usar apenas modelos com o maior contexto disponível para ambas as funcionalidades, independentemente da complexidade da tarefa."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Selecionar o foundation model com base na complexidade da tarefa é uma consideração importante de design: tarefas simples e bem definidas (como classificação) podem ser atendidas por modelos menores e mais econômicos, enquanto tarefas abertas e criativas (como redação personalizada) podem se beneficiar de modelos maiores. B) Usar sempre o modelo maior aumenta custos desnecessariamente. C) Classificação em categorias predefinidas normalmente não exige o maior modelo disponível. D) Janela de contexto maior não é, por si só, necessária para classificação e pode aumentar custos.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está projetando um assistente conversacional com Amazon Bedrock que mantém um diálogo longo com o usuário ao longo de várias trocas. Com o passar da conversa, o histórico acumula cada vez mais mensagens e a equipe começa a observar falhas nas invocações quando o volume de texto se aproxima do limite da janela de contexto do foundation model. Ao considerar o design dessa aplicação, qual das seguintes ações é MAIS adequada para mitigar esse problema?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Sempre enviar todo o histórico da conversa, sem alterações, em cada nova invocação."
+        },
+        {
+          "key": "B",
+          "text": "Duplicar o histórico em cada mensagem para garantir que nenhuma informação seja perdida."
+        },
+        {
+          "key": "C",
+          "text": "Resumir ou truncar estrategicamente o histórico da conversa, mantendo apenas as informações mais relevantes para a próxima resposta."
+        },
+        {
+          "key": "D",
+          "text": "Desabilitar o multi-turno e tratar cada mensagem do usuário como uma conversa completamente isolada."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Gerenciar o histórico em conversas multi-turno é uma consideração crítica de design. Resumir ou truncar de forma estratégica permite manter o contexto relevante dentro da janela de contexto do foundation model, evitando falhas por excesso de tokens. A) Enviar todo o histórico indefinidamente levará ao estouro da janela de contexto. B) Duplicar o histórico aumenta o consumo de tokens e acelera o problema. D) Tratar cada mensagem como isolada quebra a coerência da conversa e não atende ao requisito de um assistente conversacional.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/conversation.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma equipe está projetando um aplicativo com Amazon Bedrock para uso em produção, com foco em segurança e controle de custos. Ao avaliar considerações de design para essa aplicação, quais das seguintes ações são CORRETAS? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aplicar Guardrails for Amazon Bedrock para filtrar conteúdos indesejados ou sensíveis com base nas políticas da organização."
+        },
+        {
+          "key": "B",
+          "text": "Incluir dados pessoais sensíveis em todos os prompts para ajudar o modelo a personalizar melhor as respostas."
+        },
+        {
+          "key": "C",
+          "text": "Otimizar o tamanho dos prompts, removendo instruções redundantes e informações desnecessárias."
+        },
+        {
+          "key": "D",
+          "text": "Enviar o mesmo prompt completo para todas as invocações, mesmo quando apenas um pequeno valor muda a cada requisição."
+        },
+        {
+          "key": "E",
+          "text": "Desativar todos os logs de invocação para evitar qualquer custo relacionado ao armazenamento."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "Guardrails for Amazon Bedrock ajudam a aplicar políticas de segurança e conteúdo, enquanto prompts mais concisos reduzem o número de tokens de entrada e, consequentemente, os custos. B) Incluir dados pessoais sensíveis nos prompts aumenta riscos de segurança e pode violar requisitos de conformidade. D) Reenviar prompts completos e redundantes aumenta desnecessariamente o consumo de tokens e os custos. E) Logs podem ter implicações de custo, mas desativá-los completamente não é uma prática recomendada de design para aplicações em produção e não é uma forma correta de \"otimizar custos\" no contexto apresentado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-engineering-guidelines.html"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da empresa ClínicaVerde está avaliando um modelo de apoio à triagem para priorização de atendimentos. Para garantir que profissionais de saúde consigam confiar nas sugestões sem aceitar cegamente a saída do modelo, a equipe precisa apresentar justificativas compreensíveis para cada sugestão de priorização. Qual abordagem é mais adequada para esse objetivo voltado à explicabilidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fornecer os pesos brutos de todas as camadas da rede neural em formato binário para consulta."
+        },
+        {
+          "key": "B",
+          "text": "Exibir, em linguagem acessível, os principais fatores clínicos que contribuíram para a sugestão de priorização em cada caso."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o número de camadas do modelo para tornar as predições mais complexas e precisas."
+        },
+        {
+          "key": "D",
+          "text": "Armazenar apenas um identificador único para cada predição, sem nenhum dado descritivo."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Explicações voltadas ao usuário devem ser compreensíveis no domínio, apresentando fatores relevantes em linguagem acessível, e não detalhes técnicos internos do modelo. A alternativa A expõe artefatos internos não interpretáveis para profissionais clínicos. A alternativa C foca em complexidade e precisão, não em explicabilidade. A alternativa D não fornece qualquer justificativa para a sugestão.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Durante uma revisão interna na empresa Imobiliária Atlas, foi constatado que um modelo de precificação automática de imóveis está gerando avaliações muito distintas para imóveis com características muito semelhantes, sem que a equipe consiga entender o motivo. Para investigar essa inconsistência com foco em transparência, qual ação é a mais direta e eficaz?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comparar a contribuição relativa de cada atributo entre imóveis semelhantes usando um método de atribuição de atributos."
+        },
+        {
+          "key": "B",
+          "text": "Duplicar o número de instâncias de inferência para testar se o resultado muda aleatoriamente."
+        },
+        {
+          "key": "C",
+          "text": "Alterar o fuso horário do servidor para padronizar os carimbos de tempo das predições."
+        },
+        {
+          "key": "D",
+          "text": "Remover todos os atributos geográficos do modelo, independentemente do impacto no negócio."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Para investigar discrepâncias entre casos semelhantes, o caminho mais direto é analisar a atribuição de atributos (feature attribution) entre essas instâncias, identificando quais variáveis explicam as diferenças nas predições. A alternativa B não busca explicação, apenas teste aleatório. A alternativa C é irrelevante para a lógica do modelo. A alternativa D é uma decisão drástica sem diagnóstico fundamentado em explicabilidade.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-explainability.html"]
+    }
+  ]
+}

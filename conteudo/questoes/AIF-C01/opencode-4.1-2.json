@@ -1,0 +1,69 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa chamada AgroIntel está desenvolvendo um sistema de IA para classificar imagens de folhas e recomendar tratamentos fitossanitários. Antes de disponibilizar a ferramenta a diferentes regiões agrícolas, a equipe deseja garantir que o modelo não apresente desempenho desigual entre variedades de cultivo menos representadas nos dados de treino. Qual prática é a mais adequada para essa preocupação de IA responsável?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar aleatoriamente o tamanho do lote de treinamento para todas as imagens."
+        },
+        {
+          "key": "B",
+          "text": "Avaliar métricas de desempenho por subgrupo e aplicar técnicas de balanceamento ou reamostragem quando houver disparidades significativas."
+        },
+        {
+          "key": "C",
+          "text": "Reduzir o número de classes de doenças para simplificar o modelo."
+        },
+        {
+          "key": "D",
+          "text": "Priorizar apenas as variedades com maior área plantada para obter maior acurácia global."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Avaliar o desempenho por subgrupo (fairness/disparidade entre grupos) e corrigir desequilíbrios por meio de balanceamento, reamostragem ou outras técnicas de mitigação ajuda a reduzir o viés e garantir tratamento equitativo entre diferentes variedades de cultivo. A: Aumentar o lote aleatoriamente não corrige o desequilíbrio entre subgrupos. C: Reduzir classes não aborda disparidades de desempenho entre variedades. D: Otimizar apenas para variedades majoritárias aumenta o risco de desempenho desigual e é contrário aos princípios de equidade em IA responsável.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html",
+        "https://aws.amazon.com/machine-learning/responsible-ai/"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa chamada ConteudoSeguro está desenvolvendo uma aplicação com um modelo de IA generativa para interações com clientes. A equipe deseja aplicar salvaguardas proativas para reduzir riscos de conteúdo impróprio e proteger informações sensíveis. Quais DUAS ações são mais adequadas para esse objetivo? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar filtros de conteúdo e tópicos negados para bloquear saídas ou entradas indesejadas."
+        },
+        {
+          "key": "B",
+          "text": "Confiar exclusivamente nas restrições de sistema do modelo sem camadas adicionais."
+        },
+        {
+          "key": "C",
+          "text": "Remover toda a moderação para melhorar o tempo de resposta do sistema."
+        },
+        {
+          "key": "D",
+          "text": "Configurar filtros de informações sensíveis para detectar e mascarar ou bloquear dados como PII nas interações."
+        },
+        {
+          "key": "E",
+          "text": "Desativar logs para evitar armazenamento de qualquer dado de interação."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "As respostas corretas são A e D. Filtros de conteúdo e tópicos negados ajudam a detectar e bloquear conteúdo nocivo ou fora do escopo, enquanto filtros de informações sensíveis ajudam a proteger dados pessoais nas entradas e saídas. B: Confiar apenas nas restrições do modelo é insuficiente para políticas organizacionais consistentes. C: Remover a moderação aumenta significativamente os riscos. E: Desativar logs prejudica a observabilidade, auditoria e detecção de abusos, sendo incompatível com governança responsável.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+        "https://aws.amazon.com/machine-learning/responsible-ai/"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de desenvolvimento precisa de um sistema de arquivos compartilhado e escalável que possa ser montado simultaneamente por centenas de instâncias Amazon EC2 em diferentes Availability Zones. A solução precisa crescer automaticamente conforme os arquivos são adicionados, sem provisionamento manual de capacidade. Qual serviço atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EBS Multi-Attach"
+        },
+        {
+          "key": "B",
+          "text": "Amazon FSx for Windows File Server"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Elastic File System (Amazon EFS)"
+        },
+        {
+          "key": "D",
+          "text": "Amazon S3 File Gateway"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Elastic File System (Amazon EFS) é um sistema de arquivos elástico, totalmente gerenciado e compatível com NFS que pode ser montado simultaneamente por milhares de instâncias EC2 em múltiplas Availability Zones. Ele escala automaticamente conforme os dados são adicionados ou removidos, sem necessidade de provisionamento de capacidade. A alternativa A está incorreta, pois o EBS Multi-Attach permite anexar um único volume a várias instâncias, mas apenas dentro da mesma Availability Zone e com limitações de uso. A alternativa B está incorreta, pois o Amazon FSx for Windows File Server oferece sistema de arquivos compartilhado, mas requer provisionamento de capacidade e não escala automaticamente da mesma forma que o EFS para cargas com crescimento imprevisível. A alternativa D está incorreta, pois o S3 File Gateway é uma porta para acessar objetos do S3 como arquivos, mas não é um sistema de arquivos nativo com escalabilidade automática idêntica ao EFS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html",
+        "https://docs.aws.amazon.com/efs/latest/ug/limits.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação global precisa servir objetos estáticos armazenados no Amazon S3 para usuários em diferentes regiões com a menor latência possível. A empresa também quer reduzir a carga no bucket de origem sempre que os mesmos objetos forem solicitados várias vezes. Qual solução oferece o melhor desempenho para esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar S3 Transfer Acceleration no bucket de origem"
+        },
+        {
+          "key": "B",
+          "text": "Usar um Application Load Balancer na frente do bucket do Amazon S3"
+        },
+        {
+          "key": "C",
+          "text": "Replicar o bucket do Amazon S3 para uma região próxima a cada grupo de usuários com S3 Cross-Region Replication"
+        },
+        {
+          "key": "D",
+          "text": "Usar o Amazon CloudFront com o bucket do Amazon S3 como origem"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O Amazon CloudFront é uma rede de entrega de conteúdo que armazena em cache objetos em edge locations ao redor do mundo, reduzindo a latência para usuários globais e aliviando a carga no bucket de origem. A alternativa A está incorreta, pois o S3 Transfer Acceleration acelera uploads para o bucket, não o download global para usuários finais com cache. A alternativa B está incorreta, pois não é possível colocar um Application Load Balancer diretamente na frente de um bucket do S3 como origem HTTP para distribuição global com cache da forma proposta. A alternativa C está incorreta, pois replicar buckets para várias regiões aumenta custos e complexidade, e ainda exige que os usuários acessem a região correta ou usem roteamento adicional; o CloudFront com cache é mais eficiente para entrega de conteúdo estático global.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/website-hosting-cloudfront-walkthrough.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa precisa migrar grandes volumes de dados para o Amazon S3 e tem uma conexão de internet limitada. Além disso, após a migração, alguns objetos precisarão ser recuperados com frequência nos primeiros 30 dias e, depois, com menor frequência. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar o AWS DataSync para transferir os dados pela conexão de internet com aceleração e validação automática."
+        },
+        {
+          "key": "B",
+          "text": "Configurar uma regra de ciclo de vida do Amazon S3 para transicionar objetos do S3 Standard para o S3 Standard-IA após 30 dias."
+        },
+        {
+          "key": "C",
+          "text": "Usar o AWS Snowball Edge para transferir fisicamente os dados para a AWS antes de carregá-los no S3."
+        },
+        {
+          "key": "D",
+          "text": "Armazenar todos os objetos no S3 Glacier Instant Retrieval desde o início para maximizar a economia."
+        },
+        {
+          "key": "E",
+          "text": "Usar o AWS Storage Gateway em modo Volume Gateway para transferir os dados linha a linha via chamadas HTTP síncronas sem aceleração."
+        }
+      ],
+      "corretas": ["A", "B"],
+      "explicacao": "A alternativa A está correta, pois o AWS DataSync foi projetado para transferir grandes volumes pela internet com aceleração, automação e verificação de integridade, sendo adequado quando há limitação de banda. A alternativa B está correta, pois uma regra de ciclo de vida do Amazon S3 pode transicionar objetos do S3 Standard (ideal para acesso frequente nos primeiros 30 dias) para o S3 Standard-IA (ideal para acesso infrequente após esse período), otimizando custos sem impactar a capacidade de recuperação em milissegundos. A alternativa C está incorreta, pois o AWS Snowball Edge não é mais um serviço disponível para novos clientes, conforme as regras do enunciado. A alternativa D está incorreta, pois o S3 Glacier Instant Retrieval tem custo por recuperação e não é o mais adequado para acesso frequente nos primeiros 30 dias. A alternativa E está incorreta, pois o Volume Gateway não oferece aceleração otimizada para grandes migrações em lote da forma proposta e não é a solução mais eficiente para esse cenário.",
+      "fontes": [
+        "https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-transition-general-considerations.html"
+      ]
+    }
+  ]
+}

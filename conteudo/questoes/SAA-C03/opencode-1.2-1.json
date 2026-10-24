@@ -1,0 +1,156 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Nordeste Pagamentos opera uma aplicação em instâncias Amazon EC2 na conta 111111111111 e precisa gravar arquivos em um bucket do Amazon S3 pertencente à conta 222222222222. A empresa quer eliminar credenciais de longa duração e garantir que apenas as instâncias da aplicação obtenham acesso temporário ao bucket. Qual solução atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um IAM user na conta 222222222222 e distribuir as access keys desse usuário nas instâncias por meio do user data."
+        },
+        {
+          "key": "B",
+          "text": "Configurar uma ACL no bucket permitindo leitura e escrita para o grupo AllUsers."
+        },
+        {
+          "key": "C",
+          "text": "Criar um IAM role na conta 222222222222 com trust policy para a conta 111111111111 e permitir que as instâncias assumam esse role usando as credenciais temporárias do instance profile."
+        },
+        {
+          "key": "D",
+          "text": "Armazenar as credenciais do usuário root da conta 222222222222 no AWS Systems Manager Parameter Store e lê-las em runtime."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A opção C usa AWS STS para emitir credenciais temporárias: o role fica na conta proprietária do bucket e confia na conta da aplicação, que assume o role a partir do instance profile da instância. Isso elimina chaves de longa duração e mantém o menor privilégio. A está errada porque access keys de IAM user são credenciais de longa duração e ficam expostas no user data. B expõe o bucket publicamente. D usa credenciais root, prática que viola o princípio do menor privilégio e não é rotacionável com segurança.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-best-practices.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Trilha Logística mantém um banco Amazon RDS para MySQL com usuários de aplicação autenticados por senha. A política de segurança exige que essas credenciais sejam rotacionadas automaticamente a cada 30 dias e que a aplicação as obtenha em runtime, sem intervenção manual. Qual solução atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar a autenticação do IAM no banco e usar tokens gerados pelo serviço para todos os usuários da aplicação."
+        },
+        {
+          "key": "B",
+          "text": "Armazenar as credenciais no AWS Secrets Manager e configurar a rotação automática com uma função AWS Lambda."
+        },
+        {
+          "key": "C",
+          "text": "Guardar as senhas no Parameter Store como SecureString e trocá-las manualmente no console a cada 30 dias."
+        },
+        {
+          "key": "D",
+          "text": "Criptografar a senha com uma chave do AWS KMS em um arquivo de configuração da aplicação e reiniciar o serviço no fim do mês."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Secrets Manager foi projetado para armazenar e rotacionar segredos: ele agenda a rotação e usa uma função Lambda para alterar a senha no banco e no segredo, e a aplicação recupera o valor atual pela API. A está errada porque a autenticação do IAM no RDS gera tokens de curta duração, mas não automatiza a rotação de senhas dos usuários de banco. C não oferece rotação automática nem integração com o banco. D expõe a senha em arquivo e depende de processo manual, sem rotação real.",
+      "fontes": [
+        "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Health Data Brasil processa dados sensíveis em instâncias Amazon EC2 posicionadas em sub-redes privadas de uma VPC. Essas instâncias precisam acessar o Amazon S3 e o Amazon DynamoDB sem que o tráfego passe pela internet pública, e a empresa quer evitar o custo de processamento por GB cobrado pelo NAT gateway. Qual recurso deve ser utilizado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um NAT gateway em cada Availability Zone, com rotas nas tabelas de roteamento das sub-redes privadas."
+        },
+        {
+          "key": "B",
+          "text": "Um internet gateway anexado à VPC e rotas padrão nas sub-redes privadas."
+        },
+        {
+          "key": "C",
+          "text": "Um VPC peering entre a VPC da aplicação e a VPC do serviço do Amazon S3."
+        },
+        {
+          "key": "D",
+          "text": "Um gateway VPC endpoint para Amazon S3 e outro para Amazon DynamoDB, associados às tabelas de roteamento das sub-redes privadas."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Gateway VPC endpoints permitem que o tráfego para Amazon S3 e Amazon DynamoDB use a rede privada da AWS por meio de entradas nas tabelas de roteamento, sem internet e sem o custo por GB de processamento do NAT gateway. A está errada porque o NAT gateway encaminha o tráfego para a internet e cobra por GB processado. B expõe as sub-redes privadas à internet. C não é aplicável: não se estabelece VPC peering com o serviço do S3, cujo acesso privado é feito por endpoint.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/privatelink-interface-endpoints.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um portal de notícias publica conteúdo por meio do Amazon CloudFront com um Application Load Balancer como origem. Nos últimos dias, a equipe detectou tentativas de SQL injection e um scraper que envia milhares de requisições por minuto a partir de poucos endereços IP. A empresa quer bloquear esses padrões maliciosos e limitar a taxa de requisições por IP sem alterar o código da aplicação. Qual serviço deve ser configurado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS WAF com managed rule groups e uma rate-based rule associada à distribuição do CloudFront."
+        },
+        {
+          "key": "B",
+          "text": "AWS Shield Advanced com proteção contra DDoS na distribuição do CloudFront."
+        },
+        {
+          "key": "C",
+          "text": "Regras de inbound em security group do load balancer bloqueando os endereços IP de origem."
+        },
+        {
+          "key": "D",
+          "text": "AWS Network Firewall implantado nas sub-redes da VPC de origem do CloudFront."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS WAF inspeciona requisições HTTP e HTTPS e pode aplicar managed rule groups para padrões como SQL injection, além de rate-based rules que bloqueiam origens que excedem um limite de requisições por período. A está correta. B protege contra ataques DDoS volumétricos, mas não bloqueia payloads de SQL injection nem aplica limite de taxa por IP. C não escala para IPs variáveis e não inspeciona o conteúdo das requisições. D atua em camadas de rede e transporte dentro da VPC, não no tráfego HTTP distribuído pelo CloudFront.",
+      "fontes": [
+        "https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html",
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-awswaf.html"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Atlas Mídia executa contêineres no Amazon ECS com AWS Fargate. Cada tarefa precisa ler um token de API armazenado no AWS Secrets Manager e gravar objetos em um bucket específico do Amazon S3. A equipe quer seguir o princípio do menor privilégio e evitar credenciais de longa duração. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Inserir o token como variável de ambiente em texto claro na definição da tarefa versionada no repositório de código."
+        },
+        {
+          "key": "B",
+          "text": "Conceder ao task role do ECS permissões somente para as ações necessárias de gravação no bucket e no prefixo usados pela aplicação."
+        },
+        {
+          "key": "C",
+          "text": "Criar um IAM user com a política AmazonS3FullAccess e embutir as access keys na imagem do contêiner."
+        },
+        {
+          "key": "D",
+          "text": "Referenciar o segredo do Secrets Manager na definição da tarefa e conceder a ação secretsmanager:GetSecretValue ao execution role."
+        },
+        {
+          "key": "E",
+          "text": "Usar as credenciais do usuário root da conta como variáveis de ambiente para simplificar a configuração."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "B aplica menor privilégio ao task role, que fornece credenciais temporárias às tarefas em execução e deve ser limitado ao bucket e prefixo necessários. D é o padrão suportado pelo ECS para injetar segredos do Secrets Manager, com o execution role autorizado a recuperá-los. A expõe o token no código e no histórico de versões. C usa credenciais de longa duração embutidas na imagem, além de permissões excessivas. E utiliza credenciais root, que nunca devem ser distribuídas para workloads.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html",
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/secrets-envvar-secrets-manager.html"
+      ]
+    }
+  ]
+}

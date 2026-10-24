@@ -1,0 +1,94 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação web precisa aceitar conexões HTTPS de clientes pela internet e garantir que o certificado usado seja gerenciado centralmente pela AWS, sem a necessidade de instalar e renovar certificados manualmente nos servidores. Qual solução atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar um certificado autoassinado gerado diretamente na instância Amazon EC2."
+        },
+        {
+          "key": "B",
+          "text": "Carregar um certificado privado em cada instância Amazon EC2 por meio de scripts de inicialização."
+        },
+        {
+          "key": "C",
+          "text": "Armazenar o certificado em um arquivo no Amazon EBS e replicá-lo manualmente entre as instâncias."
+        },
+        {
+          "key": "D",
+          "text": "Usar AWS Certificate Manager (ACM) para provisionar e gerenciar o certificado em um Application Load Balancer com listener HTTPS."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O AWS Certificate Manager (ACM) permite provisionar, gerenciar e renovar certificados TLS publicamente confiáveis e integrá-los a serviços como Application Load Balancer, habilitando o tráfego criptografado em trânsito sem gerenciamento manual do certificado nas instâncias. A alternativa A está incorreta, pois certificados autoassinados não são ideais para clientes na internet e não atendem ao requisito de gerenciamento centralizado pela AWS. As alternativas B e C estão incorretas, pois transferem o gerenciamento, a rotação e a distribuição do certificado para a operação manual, o que não atende ao requisito.",
+      "fontes": [
+        "https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html",
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe precisa compartilhar um snapshot criptografado do Amazon RDS com outra conta da AWS. O snapshot foi criptografado com uma chave gerenciada pelo cliente no AWS KMS. Qual ação é NECESSÁRIA para que a conta de destino consiga restaurar esse snapshot?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Compartilhar a chave gerenciada pelo cliente no AWS KMS com a conta de destino por meio da política da chave."
+        },
+        {
+          "key": "B",
+          "text": "Copiar o snapshot para um volume não criptografado antes de compartilhá-lo."
+        },
+        {
+          "key": "C",
+          "text": "Desativar a criptografia no snapshot original antes de exportá-lo para a outra conta."
+        },
+        {
+          "key": "D",
+          "text": "Converter o snapshot para um formato público no Amazon RDS antes do compartilhamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Ao compartilhar um snapshot do Amazon RDS criptografado com uma chave gerenciada pelo cliente (CMK) do AWS KMS, é necessário conceder à conta de destino permissão para usar essa CMK por meio da política da chave no AWS KMS. Sem essa permissão, a conta de destino não consegue descriptografar o snapshot para restaurá-lo. A alternativa B está incorreta, pois não é possível simplesmente remover a criptografia ao copiar para um volume não criptografado nesse fluxo. A alternativa C está incorreta, pois não há um mecanismo para desativar a criptografia de um snapshot já criptografado com CMK. A alternativa D está incorreta, pois snapshots criptografados não podem ser tornados públicos e essa ação não resolve o requisito de acesso à chave.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ShareSnapshot.html",
+        "https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html"
+      ]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um volume do Amazon EBS contendo dados sensíveis precisa ser criptografado em repouso, e a empresa precisa ter a capacidade de auditar todo o uso dessa chave de criptografia. Qual combinação atende a esses requisitos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar criptografia do Amazon EBS com uma chave gerenciada pela AWS e logs apenas no histórico de alterações do volume."
+        },
+        {
+          "key": "B",
+          "text": "Usar criptografia do Amazon EBS com chaves geradas pelo sistema operacional, sem integração com serviços da AWS."
+        },
+        {
+          "key": "C",
+          "text": "Usar criptografia do Amazon EBS habilitada com uma chave gerenciada pelo cliente no AWS KMS, com o uso da chave registrado no AWS CloudTrail."
+        },
+        {
+          "key": "D",
+          "text": "Ativar a criptografia por meio de um agente no volume e armazenar os logs de uso da chave em um arquivo local na instância."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A criptografia de volumes do Amazon EBS com uma chave gerenciada pelo cliente (CMK) no AWS KMS garante a criptografia em repouso, e todas as operações criptográficas com essa CMK são registradas no AWS CloudTrail, permitindo a auditoria do uso da chave. A alternativa A está incorreta, pois chaves gerenciadas pela AWS também são usadas, mas o requisito enfatiza a capacidade de auditar o uso da chave e, com CMK gerenciada pelo cliente, existe maior controle e o registro detalhado das solicitações à chave fica sob o escopo auditável conforme o uso. A alternativa B está incorreta, pois não há integração com o AWS KMS e não há um ponto centralizado de auditoria pela AWS. A alternativa D está incorreta, pois logs locais na instância não são o mecanismo centralizado e confiável para auditoria no escopo da AWS.",
+      "fontes": [
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption.html",
+        "https://docs.aws.amazon.com/kms/latest/developerguide/logging-using-cloudtrail.html"
+      ]
+    }
+  ]
+}

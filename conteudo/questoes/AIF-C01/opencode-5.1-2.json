@@ -1,0 +1,111 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação executada em instâncias Amazon EC2 precisa invocar apenas modelos específicos no Amazon Bedrock, seguindo o princípio do menor privilégio. Qual abordagem do AWS Identity and Access Management (IAM) é a mais adequada para esse controle?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Anexar à função IAM da instância uma política com ações e recursos restritos aos modelos do Amazon Bedrock que devem ser utilizados"
+        },
+        {
+          "key": "B",
+          "text": "Conceder permissões AdministratorAccess à função IAM da instância para simplificar a configuração"
+        },
+        {
+          "key": "C",
+          "text": "Utilizar chaves de acesso root da conta para que a aplicação possa invocar os modelos"
+        },
+        {
+          "key": "D",
+          "text": "Compartilhar credenciais de um usuário IAM entre todas as instâncias da aplicação"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O princípio do menor privilégio é aplicado ao anexar uma política IAM com ações e recursos explicitamente restritos aos modelos do Amazon Bedrock necessários. A alternativa B concede permissões excessivas ao utilizar AdministratorAccess. A alternativa C é insegura, pois as chaves root nunca devem ser utilizadas por aplicações. A alternativa D compartilha credenciais, o que dificulta a rotação, a auditoria e o controle de acesso individual.",
+      "fontes": ["https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa precisa atender a requisitos de auditoria e registrar, para análise forense, informações sobre invocações de modelos no Amazon Bedrock, como metadados de chamadas, data e hora e a identidade que realizou a solicitação. Qual funcionalidade nativa do Amazon Bedrock deve ser habilitada para essa finalidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Bedrock model invocation logging"
+        },
+        {
+          "key": "B",
+          "text": "AWS X-Ray"
+        },
+        {
+          "key": "C",
+          "text": "Amazon CloudWatch Evidently"
+        },
+        {
+          "key": "D",
+          "text": "AWS Application Composer"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Bedrock model invocation logging permite registrar metadados e, opcionalmente, entradas e saídas de invocações de modelos em destinos como Amazon S3 ou Amazon CloudWatch Logs, sendo fundamental para auditoria e investigação forense. A alternativa B (AWS X-Ray) foca em rastreamento de requisições em aplicações distribuídas, não no registro de invocações de modelos do Amazon Bedrock. A alternativa C (Amazon CloudWatch Evidently) é voltada a experimentação e feature flags. A alternativa D (AWS Application Composer) é uma ferramenta de modelagem de aplicações, não um mecanismo de logging de invocações.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe deseja restringir o acesso ao Amazon Bedrock por meio de um VPC endpoint do AWS PrivateLink, permitindo que apenas chamadas originadas em uma VPC específica sejam autorizadas. Qual recurso deve ser utilizado para aplicar essa restrição no próprio endpoint?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um Network ACL (NACL)"
+        },
+        {
+          "key": "B",
+          "text": "Um security group"
+        },
+        {
+          "key": "C",
+          "text": "Uma route table"
+        },
+        {
+          "key": "D",
+          "text": "Uma VPC endpoint policy"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A VPC endpoint policy permite controlar quais principais IAM, ações e, em muitos cenários, quais condições podem utilizar o VPC endpoint para acessar o serviço. Combinada a condições como aws:SourceVpc, é possível restringir o acesso ao endpoint ao tráfego originado de uma VPC específica. A alternativa A (Network ACL) controla o tráfego em nível de sub-rede, mas não avalia permissões baseadas em identidade de forma granular para o acesso ao serviço via endpoint policy. A alternativa B (security group) atua como firewall em nível de instância/ENI. A alternativa C (route table) define o roteamento do tráfego, não a autorização de chamadas ao serviço.",
+      "fontes": ["https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-access.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma organização utiliza chaves gerenciadas pelo cliente no AWS Key Management Service (AWS KMS) para criptografar dados sensíveis utilizados em sua solução de IA generativa. Para reduzir o risco associado ao uso prolongado de uma chave, qual prática deve ser adotada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar a rotação automática de chaves no AWS KMS para chaves gerenciadas pelo cliente"
+        },
+        {
+          "key": "B",
+          "text": "Exportar a chave do AWS KMS para um arquivo local e reutilizá-la indefinidamente"
+        },
+        {
+          "key": "C",
+          "text": "Compartilhar o ARN da chave com contas terceiras para garantir a disponibilidade"
+        },
+        {
+          "key": "D",
+          "text": "Desativar o log de uso da chave para evitar exposição de metadados"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O AWS KMS permite habilitar a rotação automática para chaves gerenciadas pelo cliente, gerando novas versões da chave periodicamente e limitando o impacto caso uma versão seja comprometida. A alternativa B é insegura, pois as chaves gerenciadas pelo cliente no AWS KMS não são exportáveis para uso fora do serviço. A alternativa C expande desnecessariamente o acesso à chave. A alternativa D remove a visibilidade de auditoria, o que é contrário a boas práticas de segurança e governança.",
+      "fontes": ["https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html"]
+    }
+  ]
+}

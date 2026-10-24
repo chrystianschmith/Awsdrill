@@ -1,0 +1,144 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa precisa distribuir o tráfego de uma aplicação web entre várias instâncias EC2 em diferentes Availability Zone, garantindo que apenas instâncias saudáveis recebam requisições. Qual recurso da AWS melhor atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Elastic Load Balancing"
+        },
+        {
+          "key": "B",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "C",
+          "text": "AWS Global Accelerator"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Route 53"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Elastic Load Balancing distribui o tráfego de entrada entre vários alvos, como instâncias EC2, em uma ou mais Availability Zone e realiza verificações de integridade para rotear apenas para alvos saudáveis. O Amazon CloudFront (B) é um CDN para cache de conteúdo na borda. O AWS Global Accelerator (C) otimiza o roteamento para aplicações globais, mas não é o mecanismo primário para balancear tráfego entre instâncias em Availability Zone com health checks no mesmo escopo descrito. O Amazon Route 53 (D) é um serviço de DNS e roteamento de tráfego, mas não distribui diretamente requisições HTTP entre instâncias com verificação de integridade da mesma forma que um load balancer.",
+      "fontes": ["https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação tem picos previsíveis de tráfego durante o horário comercial e fica ociosa fora desse período. A equipe deseja ajustar automaticamente o número de instâncias EC2 para manter o desempenho e reduzir custos quando a demanda cair. Qual solução é mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar instâncias EC2 do tipo Dedicated Host"
+        },
+        {
+          "key": "B",
+          "text": "Usar Amazon EC2 Auto Scaling com uma política de escalonamento agendada"
+        },
+        {
+          "key": "C",
+          "text": "Usar um Placement Group do tipo Spread"
+        },
+        {
+          "key": "D",
+          "text": "Usar Amazon EBS Provisioned IOPS volumes"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon EC2 Auto Scaling pode usar políticas agendadas para aumentar ou diminuir o número de instâncias em horários previsíveis, atendendo à demanda e reduzindo custos fora do pico. Instâncias Dedicated Host (A) são focadas em licenciamento e isolamento, não em escalonamento automático por horário. Um Placement Group do tipo Spread (C) afeta o posicionamento físico das instâncias para reduzir risco de falhas, mas não escala a quantidade de instâncias. Os volumes Amazon EBS Provisioned IOPS (D) melhoram o desempenho de armazenamento, não o escalonamento de capacidade computacional.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação de processamento em lote precisa executar tarefas com alta interconexão de rede entre instâncias EC2 para obter o menor tempo de execução possível. Qual tipo de Placement Group deve ser usado para maximizar o desempenho de rede?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Placement Group do tipo Spread"
+        },
+        {
+          "key": "B",
+          "text": "Placement Group do tipo Partition"
+        },
+        {
+          "key": "C",
+          "text": "Placement Group do tipo Cluster"
+        },
+        {
+          "key": "D",
+          "text": "Placement Group do tipo Affinity"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Um Placement Group do tipo Cluster agrupa instâncias em um único rack dentro de uma Availability Zone, proporcionando latência de rede baixa e alto throughput, ideal para aplicações fortemente acopladas. O tipo Spread (A) coloca instâncias em hardware distinto para reduzir o risco de falhas simultâneas. O tipo Partition (B) divide instâncias em partições isoladas em racks diferentes, útil para cargas distribuídas como Hadoop. Não existe um tipo padrão chamado Affinity (D) nos Placement Groups do EC2.",
+      "fontes": ["https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe deseja que um grupo do Amazon EC2 Auto Scaling mantenha a utilização média de CPU em cerca de 50% nas instâncias. À medida que o tráfego aumenta ou diminui, o grupo deve adicionar ou remover instâncias automaticamente sem intervenção manual. Qual tipo de política de escalonamento atende melhor a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Política de escalonamento simples"
+        },
+        {
+          "key": "B",
+          "text": "Política de escalonamento por rastreamento de alvo (target tracking)"
+        },
+        {
+          "key": "C",
+          "text": "Política de escalonamento em etapas"
+        },
+        {
+          "key": "D",
+          "text": "Política de escalonamento manual"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A política de escalonamento por rastreamento de alvo ajusta automaticamente o número de instâncias para manter uma métrica em um valor alvo especificado, como 50% de utilização média de CPU. Políticas simples (A) e em etapas (C) exigem alarmes e regras mais detalhadas com menos automação para manter um alvo constante. A escalonamento manual (D) não é automático.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma arquitetura precisa ser resiliente e elástica para uma aplicação web. Ao combinar Amazon EC2 Auto Scaling com um Application Load Balancer, quais benefícios são obtidos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Distribuição automática do tráfego apenas para instâncias saudáveis"
+        },
+        {
+          "key": "B",
+          "text": "Criptografia obrigatória de todos os volumes EBS sem configuração"
+        },
+        {
+          "key": "C",
+          "text": "Ajuste automático da capacidade com base na demanda"
+        },
+        {
+          "key": "D",
+          "text": "Conversão automática de instâncias On-Demand para Spot sem interrupção"
+        },
+        {
+          "key": "E",
+          "text": "Sincronização automática entre regiões sem configuração adicional"
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "O Application Load Balancer realiza verificações de integridade e distribui o tráfego apenas para instâncias saudáveis (A). O Amazon EC2 Auto Scaling ajusta automaticamente o número de instâncias com base na demanda ou em políticas configuradas (C). A criptografia de volumes EBS (B) não é automática sem configuração. A conversão entre tipos de compra (D) não é um comportamento automático dessa combinação. A replicação entre regiões (E) não é fornecida por essa combinação de serviços.",
+      "fontes": [
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html",
+        "https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html"
+      ]
+    }
+  ]
+}
