@@ -25,7 +25,7 @@ async function seguir(userId: string, codigo: string) {
 }
 
 test("montar ciclo → Hoje sugere o domínio → estudar no modo ciclo", async ({ context, page }) => {
-  const conta = await criarConta("ciclo");
+  const conta = await criarConta("ciclo", { pro: true });
   await seguir(conta.id, "CLF-C02");
   await entrarComo(context, conta);
 
@@ -50,14 +50,16 @@ test("montar ciclo → Hoje sugere o domínio → estudar no modo ciclo", async 
     () => expect(page.getByRole("timer", { name: "Tempo estudado" })).toBeVisible({ timeout: 2_000 }),
   );
   await expect(page.getByText("CLF-C02 · 3. Tecnologia e serviços de nuvem")).toBeVisible();
-  const r = await banco().query(`SELECT mode FROM "StudySession" WHERE "userId" = $1 AND "endedAt" IS NULL`, [conta.id]);
+  const r = await banco().query(`SELECT mode FROM "StudySession" WHERE "userId" = $1 AND "endedAt" IS NULL`, [
+    conta.id,
+  ]);
   expect(r.rows[0].mode).toBe("CICLO");
   await page.getByRole("button", { name: "Encerrar" }).click();
   await expect(page.getByText(/Sessão salva/)).toBeVisible();
 });
 
 test("revisão vencida aparece no Hoje e avança ao revisar bem", async ({ context, page }) => {
-  const conta = await criarConta("revisao");
+  const conta = await criarConta("revisao", { pro: true });
   await seguir(conta.id, "CLF-C02");
   const tarefa = await banco().query(
     `SELECT d.id FROM "Domain" d JOIN "ExamVersion" v ON v.id = d."examVersionId"
@@ -89,7 +91,7 @@ test("revisão vencida aparece no Hoje e avança ao revisar bem", async ({ conte
 });
 
 test("ciclo e revisões sem violações de acessibilidade", async ({ context, page }) => {
-  const conta = await criarConta("a11y-ciclo");
+  const conta = await criarConta("a11y-ciclo", { pro: true });
   await seguir(conta.id, "SAA-C03");
   await entrarComo(context, conta);
   for (const rota of ["/ciclo", "/revisoes"]) {

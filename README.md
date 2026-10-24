@@ -57,6 +57,21 @@ restrito, sem HTML nem links (`docs/adr/0006-markdown-restrito.md`). "Reportar e
 de 3 reports abertos, o material sai do ar e é refeito no próximo pedido. Sem `GEMINI_API_KEY` (nem `ANTHROPIC_API_KEY`)
 a geração fica desligada. Os testes nunca chamam a IA: `tests/setup/sem-rede.ts` bloqueia qualquer fetch para fora.
 
+## Planos e pagamentos
+
+Grátis × Pro em `src/lib/assinaturas/entitlements.ts`; toda checagem passa por `plano.ts` (`assertEntitlement`,
+`limiteDoPlano`) no servidor, e a UI só mostra o convite (`UpgradeCta`). Stripe Checkout hospedado: mensal e anual no
+cartão (7 dias grátis na primeira assinatura) e anual via Pix como pagamento único, porque conta Stripe BR não tem Pix
+recorrente (`docs/adr/0007-planos-e-pix-anual-avulso.md`). O Pro só é liberado pelo webhook `/api/stripe/webhook`
+(assinatura verificada, idempotente por `event.id`), nunca pelo redirect. O cron diário `/api/cron/limpeza` aplica a
+carência de 3 dias, o fim do acesso Pix e o lembrete de renovação. Downgrade não apaga nada.
+
+Para configurar: criar no Stripe o produto Pro com os três preços em BRL, preencher `STRIPE_SECRET_KEY`,
+`STRIPE_PRICE_MENSAL`, `STRIPE_PRICE_ANUAL`, `STRIPE_PRICE_ANUAL_PIX`, ativar Pix e o portal do cliente, e cadastrar o
+endpoint do webhook (eventos `checkout.session.completed`, `customer.subscription.*`, `invoice.paid`,
+`invoice.payment_failed`) com o segredo em `STRIPE_WEBHOOK_SECRET`. Nos testes e2e o app fala com um Stripe falso
+(`tests/e2e/apoio/stripe-mock.ts`, via `STRIPE_API_BASE`), sem rede.
+
 ## Custos e serviços
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,

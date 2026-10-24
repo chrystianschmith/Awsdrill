@@ -2,9 +2,9 @@ import "dotenv/config";
 import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { chromium, defineConfig, devices } from "@playwright/test";
-import { PASTA_EMAILS } from "./tests/e2e/apoio/constantes";
+import { PASTA_EMAILS, PORTA_APP, PRECOS_E2E, URL_STRIPE_MOCK, WEBHOOK_SECRET_E2E } from "./tests/e2e/apoio/constantes";
 
-const PORTA = 3100;
+const PORTA = PORTA_APP;
 const BASE_URL = `http://localhost:${PORTA}`;
 const DATABASE_URL = process.env.E2E_DATABASE_URL ?? process.env.DATABASE_URL ?? "";
 
@@ -68,24 +68,41 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: `npm run build && npm run start -- -p ${PORTA}`,
-    url: BASE_URL,
-    timeout: 300_000,
-    reuseExistingServer: false,
-    stdout: "ignore",
-    stderr: "pipe",
-    env: {
-      DATABASE_URL,
-      APP_URL: BASE_URL,
-      // Testes nunca falam com serviços reais.
-      RESEND_API_KEY: "",
-      ANTHROPIC_API_KEY: "",
-      GEMINI_API_KEY: "",
-      STRIPE_SECRET_KEY: "",
-      // E-mails vão para arquivos que os testes leem (src/lib/email/send.ts).
-      E2E: "1",
-      EMAIL_SINK_DIR: PASTA_EMAILS,
+  webServer: [
+    {
+      // Stripe falso (sem rede): checkout, portal, assinaturas, faturas e webhooks assinados.
+      command: "npx tsx tests/e2e/apoio/stripe-mock.ts",
+      url: `${URL_STRIPE_MOCK}/health`,
+      timeout: 30_000,
+      reuseExistingServer: false,
+      stdout: "ignore",
+      stderr: "pipe",
+      env: { APP_URL: BASE_URL, STRIPE_WEBHOOK_SECRET: WEBHOOK_SECRET_E2E },
     },
-  },
+    {
+      command: `npm run build && npm run start -- -p ${PORTA}`,
+      url: BASE_URL,
+      timeout: 300_000,
+      reuseExistingServer: false,
+      stdout: "ignore",
+      stderr: "pipe",
+      env: {
+        DATABASE_URL,
+        APP_URL: BASE_URL,
+        // Testes nunca falam com serviços reais; o Stripe é o mock acima.
+        RESEND_API_KEY: "",
+        ANTHROPIC_API_KEY: "",
+        GEMINI_API_KEY: "",
+        STRIPE_SECRET_KEY: "sk_test_e2e",
+        STRIPE_API_BASE: URL_STRIPE_MOCK,
+        STRIPE_WEBHOOK_SECRET: WEBHOOK_SECRET_E2E,
+        STRIPE_PRICE_MENSAL: PRECOS_E2E.MENSAL,
+        STRIPE_PRICE_ANUAL: PRECOS_E2E.ANUAL,
+        STRIPE_PRICE_ANUAL_PIX: PRECOS_E2E.ANUAL_PIX,
+        // E-mails vão para arquivos que os testes leem (src/lib/email/send.ts).
+        E2E: "1",
+        EMAIL_SINK_DIR: PASTA_EMAILS,
+      },
+    },
+  ],
 });

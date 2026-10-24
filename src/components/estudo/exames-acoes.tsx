@@ -14,13 +14,21 @@ import {
 } from "@/lib/estudo/actions";
 import { ROTULO_STATUS, STATUS_TOPICO, type StatusTopico } from "@/lib/estudo/progresso";
 
-export function SeguirExame({ examVersionId, codigo }: { examVersionId: string; codigo: string }) {
+export function SeguirExame({
+  examVersionId,
+  codigo,
+  retomar = false,
+}: {
+  examVersionId: string;
+  codigo: string;
+  retomar?: boolean;
+}) {
   const [enviando, setEnviando] = useState(false);
   return (
     <Button
       size="sm"
       disabled={enviando}
-      aria-label={`Seguir ${codigo}`}
+      aria-label={`${retomar ? "Retomar" : "Seguir"} ${codigo}`}
       onClick={async () => {
         setEnviando(true);
         const r = await seguirExameAction(examVersionId);
@@ -29,7 +37,7 @@ export function SeguirExame({ examVersionId, codigo }: { examVersionId: string; 
         else toast.success(`Agora você estuda o ${codigo}.`);
       }}
     >
-      {enviando ? "Seguindo..." : "Seguir"}
+      {enviando ? "Seguindo..." : retomar ? "Retomar" : "Seguir"}
     </Button>
   );
 }

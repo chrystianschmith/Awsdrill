@@ -19,6 +19,7 @@ export const RELACOES_DO_USUARIO = {
   mockAttempts: "exportado",
   readinessScores: "exportado",
   contentReports: "exportado",
+  subscription: "exportado",
   answers: "fora: exportadas dentro de mockAttempts, junto do simulado de cada uma",
   emailVerificationTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
   passwordResetTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
@@ -47,7 +48,7 @@ export const SELECT_EXPORTACAO = {
     select: { revisoes: true, mudancaExame: true, recertificacao: true, avisosPagamento: true },
   },
   auditLogs: { select: { action: true, ip: true, createdAt: true }, orderBy: { createdAt: "desc" } },
-  userExams: { select: { examDate: true, createdAt: true, examVersion: { select: { code: true } } } },
+  userExams: { select: { status: true, examDate: true, createdAt: true, examVersion: { select: { code: true } } } },
   studySessions: {
     select: {
       mode: true,
@@ -131,6 +132,19 @@ export const SELECT_EXPORTACAO = {
   contentReports: {
     select: { contentType: true, message: true, resolvedAt: true, createdAt: true, topic: { select: { code: true } } },
     orderBy: { createdAt: "asc" },
+  },
+  // Sem os ids do Stripe: identificam a conta lá, não dizem nada ao titular.
+  subscription: {
+    select: {
+      status: true,
+      currentPeriodEnd: true,
+      cancelAtPeriodEnd: true,
+      graceUntil: true,
+      accessUntil: true,
+      effectivePlan: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   },
 } as const satisfies Prisma.UserSelect;
 

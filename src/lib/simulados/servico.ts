@@ -1,4 +1,7 @@
 import "server-only";
+import { UpgradeRequiredError } from "@/lib/assinaturas/entitlements";
+import { assertEntitlement, limiteDoPlano } from "@/lib/assinaturas/plano";
+import { intervaloDaSemana } from "@/lib/estudo/tempo";
 import { db } from "@/lib/db";
 import { AppError } from "@/lib/errors";
 import type { AttemptMode, AttemptStatus } from "@/generated/prisma/client";
@@ -63,9 +66,18 @@ export type InicioSimulado = {
   domainIds?: string[];
 };
 
+/** Treinos começados nesta semana (segunda 00:00 BRT), para o limite do plano Grátis. */
+export async function treinosNaSemana(userId: string, agora = new Date()): Promise<number> {
+  return db.mockAttempt.count({
+    where: { userId, mode: "TREINO", startedAt: { gte: intervaloDaSemana(agora).inicio } },
+  });
+}
+
 /** Começa um simulado; um em andamento por usuário (o anterior é encerrado com o que foi respondido). */
 export async function iniciarSimulado(userId: string, input: InicioSimulado): Promise<{ id: string }> {
   await assertExameSeguido(userId, input.examVersionId);
+  if (input.mode === "PROVA") await assertEntitlement(userId, "modoProva");
+  const treinosPorSemana = await limiteDoPlano(userId, "treinosPorSemana");
   const exame = await db.examVersion.findUniqueOrThrow({
     where: { id: input.examVersionId },
     select: { questionCount: true, durationMinutes: true },
@@ -111,6 +123,17 @@ export async function iniciarSimulado(userId: string, input: InicioSimulado): Pr
         select: { id: true },
       });
       if (aberto) await finalizarTx(tx, aberto.id, "SUBMITTED", agora);
+      if (input.mode === "TREINO" && Number.isFinite(treinosPorSemana)) {
+        // Dois inícios simultâneos esbarram no índice de um simulado em andamento por usuário.
+        const feitos = await tx.mockAttempt.count({
+          where: { userId, mode: "TREINO", startedAt: { gte: intervaloDaSemana(agora).inicio } },
+        });
+        if (feitos >= treinosPorSemana)
+          throw new UpgradeRequiredError(
+            "treinosPorSemana",
+            `No plano Grátis são ${treinosPorSemana} simulados de treino por semana. Assine o Pro para treinar sem limite.`,
+          );
+      }
       return tx.mockAttempt.create({
         data: {
           userId,

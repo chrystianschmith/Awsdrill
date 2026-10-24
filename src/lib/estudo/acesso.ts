@@ -17,7 +17,7 @@ export async function assertExameDisponivel(examVersionId: string) {
 
 export async function assertExameSeguido(userId: string, examVersionId: string) {
   const s = await db.userExam.findFirst({
-    where: { userId, examVersionId, examVersion: VERSAO_VISIVEL },
+    where: { userId, examVersionId, status: "ATIVO", examVersion: VERSAO_VISIVEL },
     select: { id: true },
   });
   if (!s) throw new AppError("Siga o exame antes de estudar.", "nao_encontrado");
@@ -52,7 +52,7 @@ export async function assertTopicoSeguido(userId: string, topicId: string) {
       id: topicId,
       parentId: { not: null },
       retiredAt: null,
-      examVersion: { ...VERSAO_VISIVEL, followers: { some: { userId } } },
+      examVersion: { ...VERSAO_VISIVEL, followers: { some: { userId, status: "ATIVO" } } },
     },
     select: { id: true },
   });

@@ -7,6 +7,8 @@ import { examesSeguidos, preferenciasDeEstudo, proximaProva, segundosPorDiaRecen
 import { calcularStreak, progressoMeta } from "@/lib/estudo/metas";
 import { cicloAtual, proximoDoCiclo } from "@/lib/estudo/servico-ciclo";
 import { revisoesVencidas } from "@/lib/estudo/servico-revisoes";
+import { getPlan } from "@/lib/assinaturas/plano";
+import { entitlementsFor } from "@/lib/assinaturas/entitlements";
 import { obterSessaoAtiva } from "@/lib/estudo/servico-sessoes";
 import { diasEntre, getDayKey } from "@/lib/estudo/tempo";
 import { formatMinutos } from "@/lib/utils";
@@ -32,13 +34,15 @@ const fmtHoje = new Intl.DateTimeFormat("pt-BR", {
 export default async function HojePage() {
   const user = await requireUser();
   const agora = new Date();
+  // Downgrade não apaga ciclo nem revisões: só deixam de aparecer até voltar ao Pro.
+  const recursos = entitlementsFor(await getPlan(user.id));
   const [prefs, porDia, ativa, exames, ciclo, vencidas] = await Promise.all([
     preferenciasDeEstudo(user.id),
     segundosPorDiaRecentes(user.id, 400, agora),
     obterSessaoAtiva(user.id),
     examesSeguidos(user.id),
-    cicloAtual(user.id),
-    revisoesVencidas(user.id, agora, 10),
+    recursos.cicloEstudos ? cicloAtual(user.id) : null,
+    recursos.revisaoEspacada ? revisoesVencidas(user.id, agora, 10) : [],
   ]);
   const proximo = proximoDoCiclo(ciclo);
   const hoje = porDia.get(getDayKey(agora)) ?? 0;

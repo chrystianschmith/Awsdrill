@@ -74,7 +74,7 @@ export type ExameSeguido = {
 /** Exames seguidos, com domínios vigentes, peso da última revisão e status de cada tarefa. */
 export async function examesSeguidos(userId: string): Promise<ExameSeguido[]> {
   const seguidos = await db.userExam.findMany({
-    where: { userId, examVersion: VERSAO_VISIVEL },
+    where: { userId, status: "ATIVO", examVersion: VERSAO_VISIVEL },
     orderBy: { createdAt: "asc" },
     select: {
       examDate: true,
@@ -142,11 +142,22 @@ export async function examesSeguidos(userId: string): Promise<ExameSeguido[]> {
 /** Exames publicados que o usuário ainda não segue. */
 export async function examesParaSeguir(userId: string) {
   const versoes = await db.examVersion.findMany({
-    where: { ...VERSAO_VISIVEL, followers: { none: { userId } } },
+    where: { ...VERSAO_VISIVEL, followers: { none: { userId, status: "ATIVO" } } },
     orderBy: { code: "asc" },
-    select: { id: true, code: true, certification: { select: { name: true, level: true, trackOrder: true } } },
+    select: {
+      id: true,
+      code: true,
+      certification: { select: { name: true, level: true, trackOrder: true } },
+      followers: { where: { userId }, select: { id: true }, take: 1 },
+    },
   });
-  return versoes.map((v) => ({ id: v.id, codigo: v.code, nome: v.certification.name }));
+  // Pausado = seguido antes de voltar ao Grátis; o progresso está guardado.
+  return versoes.map((v) => ({
+    id: v.id,
+    codigo: v.code,
+    nome: v.certification.name,
+    pausado: v.followers.length > 0,
+  }));
 }
 
 export type OpcaoExame = {

@@ -1,4 +1,5 @@
 import "server-only";
+import { assertEntitlement } from "@/lib/assinaturas/plano";
 import { db } from "@/lib/db";
 import { AppError } from "@/lib/errors";
 import { ehViolacaoUnica, type Executor } from "./acao";
@@ -67,6 +68,7 @@ export async function previaCiclo(userId: string, examVersionId: string, domainI
 
 /** Cria um ciclo (fecha o aberto, se houver). */
 export async function criarCiclo(userId: string, examVersionId: string, domainIds: string[], totalMin: number) {
+  await assertEntitlement(userId, "cicloEstudos");
   await assertExameSeguido(userId, examVersionId);
   const dist = await distribuicaoSugerida(db, userId, examVersionId, domainIds, totalMin);
   try {
