@@ -42,7 +42,7 @@ async function semearMaterial(topicId: string) {
 test("material da tarefa: selo de IA, texto sanitizado, flashcard e reportar erro", async ({ context, page }) => {
   const t = await tarefa("CLF-C02", "1.1");
   await semearMaterial(t.id);
-  const conta = await criarConta("material");
+  const conta = await criarConta("material", { pro: true });
   await banco().query(`INSERT INTO "UserExam" (id, "userId", "examVersionId") VALUES ($1, $2, $3)`, [
     novoId(),
     conta.id,
@@ -81,7 +81,7 @@ test("material da tarefa: selo de IA, texto sanitizado, flashcard e reportar err
 
 test("material de exame que o usuário não segue não abre", async ({ context, page }) => {
   const t = await tarefa("CLF-C02", "1.1");
-  const conta = await criarConta("material-estranho");
+  const conta = await criarConta("material-estranho", { pro: true });
   await entrarComo(context, conta);
   await page.goto(`/material/${t.id}`);
   await expect(page.getByRole("heading", { name: /não encontrada|não existe/i })).toBeVisible();

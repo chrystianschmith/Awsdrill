@@ -13,7 +13,9 @@ test.describe("páginas públicas", () => {
 
   test("sem rolagem horizontal", async ({ page }) => {
     await page.goto("/");
-    const largura = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const largura = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
     expect(largura).toBeLessThanOrEqual(0);
   });
 
