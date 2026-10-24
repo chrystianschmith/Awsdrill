@@ -52,6 +52,7 @@ model User {
   readinessScores         ReadinessScore[]
   contentReports          ContentReport[]
   subscription            Subscription?
+  certifications          UserCertification[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -182,14 +183,15 @@ enum DataStatus {
 
 /// Identidade estável que atravessa versões ("Solutions Architect – Associate").
 model Certification {
-  id         String        @id @default(cuid())
-  slug       String        @unique
+  id         String              @id @default(cuid())
+  slug       String              @unique
   name       String // nome oficial, em inglês
   level      CertLevel
   trackOrder Int // ordem sugerida dentro do nível
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
   versions   ExamVersion[]
+  holders    UserCertification[]
 }
 
 /// O que a AWS publica de fato: código, status, formato, corte, preço e datas.
@@ -353,9 +355,9 @@ model UserExam {
   examVersionId String
   status        FollowStatus @default(ATIVO)
   examDate      DateTime? // dia da prova, 00:00 UTC
-  createdAt     DateTime    @default(now())
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  examVersion   ExamVersion @relation(fields: [examVersionId], references: [id])
+  createdAt     DateTime     @default(now())
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examVersion   ExamVersion  @relation(fields: [examVersionId], references: [id])
 
   @@unique([userId, examVersionId])
   @@index([examVersionId])
@@ -659,4 +661,32 @@ model StripeEvent {
   id          String   @id
   type        String
   processedAt DateTime @default(now())
+}
+
+// ───────────────────────────── Carteira (etapa 8) ─────────────────────────────
+
+enum ExamResult {
+  PASSED
+  FAILED
+}
+
+/// Certificação que o usuário declara ter feito. Autodeclarada: sem credencial nem conta AWS.
+model UserCertification {
+  id              String        @id @default(cuid())
+  userId          String
+  certificationId String
+  examCode        String? // versão feita, se souber
+  result          ExamResult
+  examDate        DateTime // dia, 00:00 UTC
+  scaledScore     Int? // 100–1000
+  expiresAt       DateTime? // só PASSED: examDate + validade da certificação
+  badgeUrl        String? // https, opcional
+  reminderStage   Int? // último lembrete enviado, em dias antes do vencimento (180, 90, 30, 7)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certification   Certification @relation(fields: [certificationId], references: [id])
+
+  @@index([userId])
+  @@index([expiresAt])
 }
