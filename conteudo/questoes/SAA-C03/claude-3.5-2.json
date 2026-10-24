@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Um site de comércio eletrônico envia o clickstream para o Amazon Kinesis Data Streams e precisa calcular, em tempo real, métricas por janelas de 1 minuto (sessões ativas, produtos mais vistos) com SQL ou Java, sem administrar clusters. Os resultados devem estar disponíveis em segundos. Qual serviço deve processar o fluxo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Athena consultando os dados entregues no S3 a cada hora."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Data Firehose entregando para o Amazon Redshift."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Managed Service for Apache Flink consumindo o stream com agregações por janela."
+        },
+        {
+          "key": "D",
+          "text": "Um job do AWS Glue agendado de hora em hora."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Managed Service for Apache Flink processa streams continuamente com estado e janelas de tempo, em SQL ou Java, sem gerenciar servidores, entregando resultados em segundos. A e D trabalham em lotes, com atraso de uma hora. B entrega dados em buffer, com atraso, e não faz agregações por janela no fluxo.",
+      "fontes": ["https://docs.aws.amazon.com/managed-flink/latest/java/what-is.html"]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem dezenas de aplicações que produzem e consomem mensagens em um cluster Apache Kafka no data center, usando as APIs nativas do Kafka. Ela quer migrar para a AWS sem alterar o código das aplicações e sem operar ZooKeeper, brokers nem patches. Qual serviço atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Kinesis Data Streams."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Managed Streaming for Apache Kafka (Amazon MSK)."
+        },
+        {
+          "key": "C",
+          "text": "Amazon SQS FIFO."
+        },
+        {
+          "key": "D",
+          "text": "Amazon EventBridge."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o Amazon MSK é Kafka gerenciado e compatível com as APIs nativas, então os produtores e consumidores só trocam o endereço do cluster, e a AWS cuida da infraestrutura e das atualizações. A, C e D exigiriam reescrever as aplicações para outras APIs e outros modelos de mensagem.",
+      "fontes": ["https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk.html"]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Um stream do Amazon Kinesis Data Streams em modo provisionado recebe eventos de uma campanha de marketing com picos imprevisíveis de até 10 vezes a média. Nos picos, os produtores recebem ProvisionedThroughputExceededException e eventos se perdem, mas a equipe não quer acompanhar a quantidade de shards manualmente. Qual mudança atende com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar o stream para o modo de capacidade on-demand."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o período de retenção do stream para 7 dias."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar enhanced fan-out para os consumidores."
+        },
+        {
+          "key": "D",
+          "text": "Substituir o stream por uma fila Amazon SQS standard sem mudar os consumidores."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: no modo on-demand, o Kinesis ajusta a capacidade automaticamente conforme o tráfego de gravação, sem gerenciar shards, absorvendo picos imprevisíveis. B só guarda os dados por mais tempo e não aumenta a capacidade de gravação. C dá throughput dedicado aos consumidores, não aos produtores. D exige mudar os consumidores e perde a releitura e a ordem por chave.",
+      "fontes": ["https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html"]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Toda noite, uma empresa precisa transformar 2 TB de arquivos CSV no Amazon S3 em tabelas Parquet, com joins entre cinco fontes e regras de limpeza já escritas em PySpark, e registrar o resultado no Data Catalog. A equipe não quer administrar clusters e quer pagar só pelo tempo de execução. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um cluster Amazon EMR permanente executando os scripts PySpark com cron."
+        },
+        {
+          "key": "B",
+          "text": "Funções AWS Lambda processando cada arquivo de forma independente."
+        },
+        {
+          "key": "C",
+          "text": "Uma instância Amazon EC2 grande rodando Spark em modo local."
+        },
+        {
+          "key": "D",
+          "text": "Um job ETL do AWS Glue (Spark) agendado, executando os scripts PySpark e atualizando o Data Catalog."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o Glue executa jobs Spark serverless, aceita os scripts PySpark existentes, cobra pelo tempo de execução e se integra ao Data Catalog. A paga o cluster 24 horas por dia e exige operá-lo. B não serve, porque o Lambda tem limite de 15 minutos e de memória e não faz joins distribuídos sobre 2 TB. C é um ponto único de falha, não escala e paga a instância parada.",
+      "fontes": [
+        "https://docs.aws.amazon.com/glue/latest/dg/author-job-glue.html",
+        "https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma fabricante vai conectar 200 mil sensores que publicam leituras por MQTT a cada 10 segundos. As leituras devem chegar ao Amazon S3, agrupadas em arquivos, para análise posterior, sem que a empresa administre brokers ou servidores. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Conectar os sensores ao AWS IoT Core usando MQTT com certificados X.509."
+        },
+        {
+          "key": "B",
+          "text": "Instalar um broker MQTT em instâncias Amazon EC2 com Auto Scaling."
+        },
+        {
+          "key": "C",
+          "text": "Criar uma regra do AWS IoT que envie as mensagens para um stream do Amazon Data Firehose com destino no S3."
+        },
+        {
+          "key": "D",
+          "text": "Fazer cada sensor gravar direto em uma tabela do Amazon RDS."
+        },
+        {
+          "key": "E",
+          "text": "Criar uma fila Amazon SQS por sensor e um consumidor por fila."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o IoT Core é o broker MQTT gerenciado, com autenticação por certificado e escala para milhões de dispositivos, e a regra do IoT encaminha as mensagens ao Firehose, que agrupa em arquivos e grava no S3 sem servidores. B exige administrar o broker. D não escala para essa taxa de conexões e gravações e não entrega no S3. E é inviável de gerenciar com 200 mil filas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/iot/latest/developerguide/what-is-aws-iot.html",
+        "https://docs.aws.amazon.com/iot/latest/developerguide/kinesis-firehose-rule-action.html"
+      ]
+    }
+  ]
+}

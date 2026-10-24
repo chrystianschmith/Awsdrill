@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de simulação genômica roda jobs de HPC em centenas de instâncias Amazon EC2 que precisam ler e gravar em paralelo um conjunto de dados de 500 TB guardado no Amazon S3, com latência abaixo de milissegundo e centenas de GB/s de throughput agregado. Os resultados precisam voltar para o S3 ao fim de cada job. Qual armazenamento atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EFS com throughput Elastic, copiando os dados do S3 antes de cada job."
+        },
+        {
+          "key": "B",
+          "text": "Volumes Amazon EBS io2 com Multi-Attach em todas as instâncias."
+        },
+        {
+          "key": "C",
+          "text": "Amazon FSx for Lustre com uma data repository association ligada ao bucket do S3."
+        },
+        {
+          "key": "D",
+          "text": "Leitura direta do S3 pela API, com prefixos aleatórios."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o FSx for Lustre é um sistema de arquivos paralelo com latência abaixo de milissegundo e throughput de centenas de GB/s, e a data repository association importa os objetos do S3 sob demanda e exporta os resultados de volta. A não entrega esse desempenho paralelo e exige cópia prévia. B só anexa um volume a até 16 instâncias na mesma AZ e não é um sistema de arquivos compartilhado. D tem latência de dezenas de milissegundos por requisição e não oferece semântica de sistema de arquivos para o código de HPC.",
+      "fontes": [
+        "https://docs.aws.amazon.com/fsx/latest/LustreGuide/what-is.html",
+        "https://docs.aws.amazon.com/fsx/latest/LustreGuide/create-dra-linked-data-repo.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma produtora recebe de parceiros em vários continentes arquivos de vídeo de 20 a 80 GB que vão direto para um bucket do Amazon S3 em us-east-1. Os uploads são lentos e, quando a conexão oscila, recomeçam do zero. A empresa quer acelerar os uploads e evitar o reenvio completo. O que o arquiteto deve recomendar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar upload multipart com partes em paralelo e habilitar o S3 Transfer Acceleration no bucket."
+        },
+        {
+          "key": "B",
+          "text": "Enviar cada arquivo com uma única operação PUT por uma distribuição do CloudFront com cache."
+        },
+        {
+          "key": "C",
+          "text": "Pedir aos parceiros que comprimam os arquivos e enviem por e-mail para a equipe subir ao S3."
+        },
+        {
+          "key": "D",
+          "text": "Criar um bucket em cada continente e replicar todos para us-east-1 com S3 Cross-Region Replication."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o upload multipart envia partes em paralelo e permite reenviar só a parte que falhou (e é necessário para objetos acima de 5 GB), e o Transfer Acceleration leva o tráfego pela rede da AWS a partir da edge location mais próxima, acelerando longas distâncias. B está errada porque um único PUT aceita no máximo 5 GB e o cache do CloudFront não ajuda em uploads. C é inviável. D funciona em parte, mas acrescenta buckets, replicação e custo, e não resolve o reenvio completo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação de ingestão grava 15 mil objetos por segundo no Amazon S3, todos sob o mesmo prefixo (ingest/), e passou a receber respostas HTTP 503 Slow Down nos picos. As leituras posteriores são feitas por data e por dispositivo. Qual mudança resolve com o MENOR impacto?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o versionamento do bucket."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar o S3 Transfer Acceleration."
+        },
+        {
+          "key": "C",
+          "text": "Mover os objetos para a classe S3 Intelligent-Tiering."
+        },
+        {
+          "key": "D",
+          "text": "Distribuir as gravações entre vários prefixos (por exemplo, ingest/<dispositivo>/<data>/) para escalar a taxa de requisições."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o S3 suporta pelo menos 3.500 requisições PUT por segundo por prefixo e escala horizontalmente com mais prefixos; dividir por dispositivo e data distribui a carga e ainda casa com o padrão de leitura. A acrescenta versões e não aumenta a taxa por prefixo. B acelera transferências longas, não o limite de requisições. C muda a cobrança de armazenamento, não o desempenho de gravação.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco de dados distribuído roda em 12 instâncias Amazon EC2 e já replica cada dado em três nós de AZs diferentes na própria camada da aplicação. O workload precisa do maior IOPS possível com a menor latência para os arquivos de dados, e a empresa quer a opção MAIS econômica. Qual armazenamento atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Volumes Amazon EBS io2 Block Express com IOPS provisionados no máximo."
+        },
+        {
+          "key": "B",
+          "text": "Instance store NVMe em tipos de instância otimizados para armazenamento."
+        },
+        {
+          "key": "C",
+          "text": "Amazon EFS montado em todas as instâncias."
+        },
+        {
+          "key": "D",
+          "text": "Amazon S3 montado como sistema de arquivos em cada instância."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o instance store NVMe fica fisicamente no host, entrega IOPS altíssimo com latência muito baixa e já está incluído no preço da instância; a perda de dados ao parar ou perder a instância é aceitável porque a aplicação replica em três AZs. A entrega desempenho alto, mas cobra por IOPS provisionado e tem latência de rede maior que o NVMe local. C e D têm latência alta demais para arquivos de dados de banco.",
+      "fontes": ["https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa vai migrar duas aplicações. A primeira roda em contêineres Linux em três AZs e precisa de um sistema de arquivos POSIX compartilhado que cresça sozinho. A segunda é uma aplicação Windows que usa compartilhamentos SMB com permissões do Active Directory e precisa de failover entre AZs. Quais DUAS opções atendem, respectivamente, essas necessidades? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EFS com mount targets nas três AZs."
+        },
+        {
+          "key": "B",
+          "text": "Amazon FSx for Lustre em implantação scratch."
+        },
+        {
+          "key": "C",
+          "text": "Volumes Amazon EBS gp3 anexados a cada contêiner."
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server em implantação Multi-AZ integrada ao Active Directory."
+        },
+        {
+          "key": "E",
+          "text": "Amazon S3 com uma bucket policy para cada aplicação."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "A e D atendem: o EFS é um sistema de arquivos NFS/POSIX elástico e regional, montável em várias AZs, e o FSx for Windows File Server oferece SMB nativo, integração com o Active Directory e implantação Multi-AZ com failover. B é para HPC e o modo scratch não tem replicação. C não é compartilhado entre contêineres em AZs diferentes. E não oferece semântica de sistema de arquivos POSIX nem SMB.",
+      "fontes": [
+        "https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html",
+        "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um e-commerce usa Amazon RDS for MySQL (Multi-AZ) como banco principal. Nas campanhas, 85% das requisições são leituras de catálogo e relatórios que toleram dados com alguns segundos de atraso, e a CPU da instância primária passa de 90%, deixando o checkout lento. A equipe quer aliviar a primária sem alterar o motor do banco e com o MENOR esforço de mudança na aplicação. O que o arquiteto deve fazer?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar a instância primária para a maior classe disponível e manter todo o tráfego nela."
+        },
+        {
+          "key": "B",
+          "text": "Criar réplicas de leitura do RDS e apontar as consultas de catálogo e relatórios para o endpoint delas, mantendo as gravações na primária."
+        },
+        {
+          "key": "C",
+          "text": "Migrar o banco para Amazon DynamoDB com tabelas on-demand para absorver os picos de leitura."
+        },
+        {
+          "key": "D",
+          "text": "Direcionar as leituras para a instância standby do Multi-AZ, que já está provisionada e ociosa."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: réplicas de leitura recebem replicação assíncrona da primária e absorvem leituras que toleram pequeno atraso, liberando a CPU da primária para o checkout, só com a troca do endpoint das consultas de leitura. A só adia o problema, custa mais e mantém um único ponto de leitura e gravação. C exige reescrever o modelo de dados e a aplicação, o que viola o menor esforço de mudança. D está errada porque, na implantação Multi-AZ com uma standby, a standby não atende tráfego de leitura; ela existe só para failover.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html"
+      ]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de jogos guarda o estado das partidas em uma tabela do Amazon DynamoDB. A leitura do perfil do jogador acontece milhares de vezes por segundo e hoje leva de 5 a 10 ms; a nova versão exige leituras em microssegundos para as mesmas chaves, sem mudar o modelo de dados e com o MENOR esforço operacional. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o DynamoDB Accelerator (DAX) na frente da tabela e trocar o cliente do SDK pelo cliente do DAX."
+        },
+        {
+          "key": "B",
+          "text": "Criar um cluster do Amazon ElastiCache for Redis OSS e implementar na aplicação a lógica de cache-aside com invalidação manual."
+        },
+        {
+          "key": "C",
+          "text": "Mudar a tabela para o modo de capacidade provisionada com o dobro de RCUs."
+        },
+        {
+          "key": "D",
+          "text": "Criar um índice secundário global com os mesmos atributos e ler a partir dele."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o DAX é um cache em memória gerenciado e compatível com a API do DynamoDB, que entrega leituras em microssegundos para chaves acessadas com frequência, exigindo só a troca do cliente. B também reduz latência, mas obriga a escrever e manter a lógica de cache e de invalidação, o que viola o menor esforço operacional. C aumenta a capacidade de leitura, mas não muda a latência típica de milissegundos de um dígito. D apenas cria outra forma de consulta com a mesma latência e custo de gravação adicional.",
+      "fontes": ["https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API serverless em AWS Lambda consulta um banco Amazon Aurora PostgreSQL. Em picos, milhares de invocações concorrentes abrem conexões novas, o banco atinge o limite de conexões e as requisições falham; nos failovers do Aurora, as funções levam vários segundos para reconectar. A equipe quer resolver os dois problemas sem reescrever as consultas e sem administrar servidores. Qual é a solução MAIS adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar o parâmetro max_connections do Aurora e a memória das funções Lambda."
+        },
+        {
+          "key": "B",
+          "text": "Colocar um pooler de conexões PgBouncer em instâncias Amazon EC2 em um Auto Scaling group."
+        },
+        {
+          "key": "C",
+          "text": "Usar o Amazon RDS Proxy entre as funções e o cluster, apontando a aplicação para o endpoint do proxy."
+        },
+        {
+          "key": "D",
+          "text": "Configurar reserved concurrency baixa nas funções para limitar o número de conexões."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o RDS Proxy mantém um pool de conexões compartilhado e reaproveitado entre as invocações, protege o banco do excesso de conexões e preserva as conexões dos clientes durante o failover, reduzindo o tempo de recuperação, sem servidores para gerenciar. A esbarra no limite de memória do banco e não acelera o failover. B resolve o pool, mas exige operar instâncias EC2, o que contraria o requisito de não administrar servidores. D evita o excesso de conexões à custa de recusar requisições nos picos e não ajuda no failover.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de SaaS tem um banco relacional com carga imprevisível: quase ociosa de madrugada e com picos de 20 vezes a média em poucos minutos durante o dia. Ela quer compatibilidade com PostgreSQL, alta disponibilidade entre AZs e que a capacidade acompanhe a carga em segundos, sem trocar manualmente o tamanho da instância. Qual opção atende MELHOR?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon RDS for PostgreSQL Multi-AZ com uma instância grande dimensionada para o pico."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Aurora PostgreSQL com instâncias Aurora Serverless v2 como writer e reader em AZs diferentes."
+        },
+        {
+          "key": "C",
+          "text": "Amazon RDS for PostgreSQL com escalonamento automático do armazenamento habilitado."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Redshift Serverless, que escala a capacidade de computação conforme a demanda."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o Aurora Serverless v2 ajusta a capacidade em ACUs em segundos conforme a carga, e um reader em outra AZ dá failover para alta disponibilidade, mantendo a compatibilidade com PostgreSQL. A atende ao pico, mas paga a capacidade máxima o tempo todo e não acompanha a carga. C escala só o armazenamento, não a CPU e a memória que os picos exigem. D é um data warehouse analítico, não um banco transacional para a aplicação.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless-v2.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um marketplace com usuários na América do Sul, na Europa e na Ásia precisa que cada região leia o catálogo com baixa latência local e que, se uma região inteira falhar, outra assuma com perda de dados de no máximo alguns segundos. O banco atual é Amazon Aurora MySQL em sa-east-1 e as gravações continuam concentradas em uma região. Quais DUAS ações atendem a esses requisitos? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Converter o cluster em um Aurora Global Database, com clusters secundários somente leitura na Europa e na Ásia."
+        },
+        {
+          "key": "B",
+          "text": "Criar réplicas de leitura do Aurora na mesma região, em AZs diferentes, para atender os usuários dos outros continentes."
+        },
+        {
+          "key": "C",
+          "text": "Apontar as leituras de cada continente para o cluster secundário da região mais próxima, usando o endpoint de leitura dele."
+        },
+        {
+          "key": "D",
+          "text": "Exportar snapshots diários do cluster para as outras regiões e restaurá-los em caso de desastre."
+        },
+        {
+          "key": "E",
+          "text": "Habilitar o backtrack do Aurora para voltar o banco ao estado anterior à falha regional."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o Aurora Global Database replica o armazenamento para clusters secundários em outras regiões com atraso típico de cerca de um segundo, permite promover um secundário em caso de falha regional e, com as leituras direcionadas ao secundário mais próximo, cada continente lê com baixa latência. B mantém tudo em sa-east-1, então a latência para a Europa e a Ásia continua alta e não há proteção regional. D tem RPO de até um dia. E desfaz alterações no mesmo cluster e não protege contra perda da região.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html"]
+    }
+  ]
+}

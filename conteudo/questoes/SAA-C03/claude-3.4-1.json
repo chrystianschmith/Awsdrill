@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um jogo multiplayer usa UDP e tem servidores em us-east-1 e eu-west-1. Jogadores do mundo inteiro reclamam de jitter na internet pública, e o cliente do jogo aceita só endereços IP fixos na configuração. Em caso de falha de uma região, o tráfego precisa ir para a outra em segundos, sem depender de cache de DNS. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon CloudFront com as duas regiões como origens em um origin group."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Route 53 com roteamento por latência e health checks entre as duas regiões."
+        },
+        {
+          "key": "C",
+          "text": "AWS Global Accelerator com dois endpoint groups (um por região) apontando para Network Load Balancers."
+        },
+        {
+          "key": "D",
+          "text": "Application Load Balancer em cada região com Elastic IPs associados."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Global Accelerator oferece dois IPs anycast estáticos, leva o tráfego TCP/UDP para a rede global da AWS no ponto de presença mais próximo, reduzindo jitter, e faz failover entre endpoint groups em segundos com base em health checks, sem depender de TTL de DNS. A é para HTTP/HTTPS e não atende UDP de jogo. B depende do cache de DNS dos clientes e não dá IP fixo. D está errada porque o ALB não aceita Elastic IP, não trabalha com UDP e não faz failover entre regiões.",
+      "fontes": ["https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 40 VPCs em várias contas de uma organização e dois data centers ligados por AWS Direct Connect. Hoje há dezenas de VPC peerings e VPNs ponto a ponto, difíceis de manter, e uma VPC de serviços compartilhados precisa ser alcançável por todas as outras e pelos data centers. A empresa quer reduzir o esforço operacional e manter roteamento transitivo. Qual arquitetura atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um AWS Transit Gateway compartilhado pelo AWS Resource Access Manager, com anexos de todas as VPCs e um Direct Connect gateway associado."
+        },
+        {
+          "key": "B",
+          "text": "Manter os VPC peerings e acrescentar peerings entre as VPCs de spoke para permitir o roteamento transitivo."
+        },
+        {
+          "key": "C",
+          "text": "Criar um endpoint de interface (AWS PrivateLink) para cada VPC em cada uma das outras VPCs."
+        },
+        {
+          "key": "D",
+          "text": "Instalar appliances de roteamento em instâncias Amazon EC2 em uma VPC central, com VPNs para todas as VPCs."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o Transit Gateway funciona como hub regional com roteamento transitivo entre VPCs e conexões on-premises, pode ser compartilhado entre contas com o AWS RAM e se associa ao Direct Connect gateway, substituindo a malha de peerings. B não resolve, porque VPC peering não é transitivo e a malha cresce de forma quadrática. C expõe serviços específicos, não roteia redes inteiras, e multiplicaria endpoints. D funciona, mas cria pontos de falha e servidores para operar, o que contraria o menor esforço operacional.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html",
+        "https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma fintech oferece uma API interna, em uma VPC própria, que precisa ser consumida por 200 clientes corporativos, cada um com a sua conta e VPC na AWS. Vários clientes usam os mesmos blocos CIDR que a fintech, e o tráfego não pode passar pela internet. A fintech quer expor só essa API, não a rede inteira. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar VPC peering com cada cliente e restringir o acesso com security groups."
+        },
+        {
+          "key": "B",
+          "text": "Publicar a API como endpoint service do AWS PrivateLink atrás de um Network Load Balancer e permitir que os clientes criem interface endpoints."
+        },
+        {
+          "key": "C",
+          "text": "Anexar todas as VPCs dos clientes a um AWS Transit Gateway da fintech."
+        },
+        {
+          "key": "D",
+          "text": "Expor a API em um Application Load Balancer público e liberar os IPs de saída dos clientes."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o PrivateLink expõe apenas o serviço por trás do NLB; cada cliente cria um interface endpoint na própria VPC, o tráfego fica na rede da AWS e não há conflito de CIDR, porque não há roteamento entre as redes. A e C exigem CIDRs que não se sobreponham e conectam redes inteiras, não só a API. D usa a internet, o que viola o requisito.",
+      "fontes": ["https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um serviço de análise processa arquivos no Amazon S3 a partir de instâncias Amazon EC2 em sub-redes privadas. O tráfego para o S3 passa hoje por NAT gateways e virou o maior item da conta, além de disputar banda com outros fluxos. Os buckets estão na mesma região. Qual mudança melhora o desempenho e reduz o custo com o MENOR esforço?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um gateway VPC endpoint para o Amazon S3 e associá-lo às tabelas de rotas das sub-redes privadas."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar o S3 Transfer Acceleration nos buckets."
+        },
+        {
+          "key": "C",
+          "text": "Trocar os NAT gateways por instâncias NAT maiores."
+        },
+        {
+          "key": "D",
+          "text": "Mover as instâncias para sub-redes públicas com IPs públicos."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o gateway endpoint para o S3 leva o tráfego direto ao serviço pela rede da AWS, sem passar pelo NAT gateway, e não tem cobrança por hora nem por GB processado; basta associá-lo às tabelas de rotas. B acelera transferências de longa distância pela internet e acrescenta custo, sem tirar o NAT do caminho. C mantém a cobrança e cria servidores para administrar. D expõe as instâncias e ainda paga transferência pela internet, piorando a segurança.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html",
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um portal de mídia serve vídeos sob demanda e uma API dinâmica para usuários em vários continentes, com origem em us-east-1. A origem fica sobrecarregada, e usuários distantes têm alto tempo até o primeiro byte. A empresa quer reduzir a carga na origem e a latência sem duplicar a aplicação em outras regiões. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Distribuir os vídeos e a API pelo Amazon CloudFront, com cache para o conteúdo estático e políticas de cache adequadas para a API."
+        },
+        {
+          "key": "B",
+          "text": "Ativar o origin shield do CloudFront na região mais próxima da origem para concentrar os misses de cache."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o número de instâncias da origem e usar instâncias maiores em us-east-1."
+        },
+        {
+          "key": "D",
+          "text": "Criar VPC peering entre a VPC da origem e VPCs vazias em outras regiões."
+        },
+        {
+          "key": "E",
+          "text": "Usar Route 53 com roteamento por geolocalização apontando todos os países para us-east-1."
+        }
+      ],
+      "corretas": ["A", "B"],
+      "explicacao": "A e B atendem: o CloudFront entrega o conteúdo das edge locations próximas aos usuários e mantém conexões otimizadas com a origem até para a API, e o origin shield acrescenta uma camada de cache regional que reduz ainda mais as requisições à origem. C alivia a origem, mas não reduz a latência de quem está longe. D não aproxima nada dos usuários. E aponta todos para a mesma origem, sem ganho de latência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html",
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html"
+      ]
+    }
+  ]
+}

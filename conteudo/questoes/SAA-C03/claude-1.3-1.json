@@ -1,0 +1,144 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma auditoria descobriu que uma instância Amazon RDS for PostgreSQL de produção foi criada sem criptografia em repouso. A empresa precisa criptografá-la com uma chave do AWS KMS gerenciada pelo cliente, aceitando uma janela curta de manutenção. Qual procedimento atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Modificar a instância e marcar a opção de criptografia, aplicando a mudança imediatamente."
+        },
+        {
+          "key": "B",
+          "text": "Criar um snapshot, copiar o snapshot habilitando a criptografia com a chave KMS gerenciada pelo cliente e restaurar uma nova instância a partir da cópia."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar a criptografia padrão do Amazon EBS na região para que o volume do RDS passe a ser criptografado."
+        },
+        {
+          "key": "D",
+          "text": "Criar uma réplica de leitura criptografada a partir da instância não criptografada e promovê-la."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: não dá para ligar a criptografia em uma instância RDS existente; o caminho é copiar um snapshot com criptografia e restaurar a partir dele, depois apontar a aplicação para a nova instância. A não é possível, porque a criptografia só é definida na criação. C vale para volumes EBS novos da conta, não para o armazenamento do RDS. D não funciona, porque uma réplica de uma instância não criptografada também não pode ser criptografada.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma corretora precisa guardar registros de negociação por 7 anos em formato WORM. O regulador exige que nenhum usuário, nem o usuário root da conta, consiga apagar ou sobrescrever os registros antes do prazo. Qual configuração do Amazon S3 atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Versionamento com MFA Delete habilitado."
+        },
+        {
+          "key": "B",
+          "text": "S3 Object Lock no modo governance com retenção de 7 anos."
+        },
+        {
+          "key": "C",
+          "text": "Uma bucket policy que negue s3:DeleteObject a todos os principais."
+        },
+        {
+          "key": "D",
+          "text": "S3 Object Lock no modo compliance com retenção de 7 anos."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: no modo compliance, nenhum usuário, nem o root, consegue apagar ou sobrescrever uma versão protegida nem encurtar a retenção antes do prazo. A dificulta exclusões, mas o root com MFA ainda consegue apagar. B permite que usuários com a permissão s3:BypassGovernanceRetention removam a proteção. C pode ser alterada ou removida por quem administra o bucket.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação criptografa dados no lado do cliente com uma chave do AWS KMS em us-east-1 e replica os dados cifrados para us-west-2 para recuperação de desastres. Em um failover, a aplicação em us-west-2 precisa descriptografar esses dados sem chamar us-east-1 e sem recriptografar tudo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar uma chave multi-Region do AWS KMS, com a chave primária em us-east-1 e uma réplica em us-west-2."
+        },
+        {
+          "key": "B",
+          "text": "Usar o mesmo ARN da chave de us-east-1 a partir de us-west-2."
+        },
+        {
+          "key": "C",
+          "text": "Exportar o material da chave de us-east-1 e importá-lo em uma chave nova em us-west-2."
+        },
+        {
+          "key": "D",
+          "text": "Trocar a criptografia do lado do cliente por SSE-S3 nos dois buckets."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: as chaves multi-Region compartilham o mesmo ID e o mesmo material entre a primária e as réplicas, então o dado cifrado em uma região pode ser decifrado na outra localmente, sem chamada entre regiões. B não funciona, porque chaves do KMS são regionais. C não é possível com chaves geradas pelo KMS, cujo material não pode ser exportado. D muda o modelo de segurança exigido (criptografia no cliente com chave controlada).",
+      "fontes": ["https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação de saúde fica atrás de um Application Load Balancer que roteia por caminho (/api, /portal). A política de segurança exige criptografia em trânsito de ponta a ponta, inclusive entre o load balancer e as instâncias dentro da VPC. Qual configuração atende sem perder o roteamento por caminho?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Listener HTTPS no ALB com certificado do ACM e target groups usando HTTP na porta 80."
+        },
+        {
+          "key": "B",
+          "text": "Network Load Balancer com listener TCP na porta 443 repassando o TLS direto para as instâncias."
+        },
+        {
+          "key": "C",
+          "text": "Listener HTTPS no ALB com certificado do ACM e target groups com protocolo HTTPS, com certificado instalado nas instâncias."
+        },
+        {
+          "key": "D",
+          "text": "Listener HTTP no ALB e criptografia do volume EBS das instâncias."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o ALB encerra o TLS do cliente, aplica as regras de roteamento por caminho e abre uma nova conexão TLS com as instâncias pelo target group HTTPS, mantendo a criptografia em todo o trajeto. A deixa o trecho entre o ALB e as instâncias sem criptografia. B mantém o TLS de ponta a ponta, mas o NLB em TCP não enxerga o caminho HTTP para rotear. D não criptografa o tráfego.",
+      "fontes": ["https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma aplicação tem 200 parâmetros de configuração não sensíveis (URLs, flags de funcionalidade) e 6 senhas de bancos de dados que precisam de rotação automática a cada 30 dias. A empresa quer o MENOR custo e o MENOR esforço operacional. Quais DUAS escolhas atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Guardar os parâmetros de configuração no AWS Systems Manager Parameter Store (camada standard)."
+        },
+        {
+          "key": "B",
+          "text": "Guardar todos os 206 valores no AWS Secrets Manager."
+        },
+        {
+          "key": "C",
+          "text": "Guardar as senhas no AWS Secrets Manager com rotação automática configurada."
+        },
+        {
+          "key": "D",
+          "text": "Guardar as senhas como texto em variáveis de ambiente das funções e trocá-las manualmente."
+        },
+        {
+          "key": "E",
+          "text": "Guardar os parâmetros em um arquivo dentro da AMI das instâncias."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a camada standard do Parameter Store guarda parâmetros de configuração sem custo adicional, e o Secrets Manager oferece rotação automática nativa para as senhas de banco, pagando só pelos poucos segredos que precisam dela. B paga por segredo para 200 valores que não precisam de rotação. D não tem rotação automática e expõe as senhas. E obriga a gerar uma nova AMI a cada mudança de configuração.",
+      "fontes": [
+        "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html",
+        "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html"
+      ]
+    }
+  ]
+}
