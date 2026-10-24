@@ -12,6 +12,7 @@ import type { ExameColetado } from "@/lib/catalogo/schemas";
 import { seguirExame } from "@/lib/estudo/servico-exames";
 import { EXAMES_INICIAIS } from "../../prisma/catalogo/exames";
 import { materialFicticio } from "../apoio/questoes";
+import { assinaturaPro } from "./apoio/plano";
 
 const sufixo = randomUUID().replace(/-/g, "").slice(0, 4).toUpperCase();
 const usuarios: string[] = [];
@@ -53,7 +54,12 @@ function deps(
 
 async function criarUsuario(seguir = true): Promise<string> {
   const u = await db.user.create({
-    data: { name: "Material Teste", email: `mat-${randomUUID()}@exemplo.test`, passwordHash: "x" },
+    data: {
+      name: "Material Teste",
+      email: `mat-${randomUUID()}@exemplo.test`,
+      passwordHash: "x",
+      subscription: assinaturaPro(),
+    },
     select: { id: true },
   });
   usuarios.push(u.id);

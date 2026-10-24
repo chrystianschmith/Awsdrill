@@ -25,10 +25,19 @@ function coletor(rotas: Record<string, Response | (() => Response)>, dns: Record
 const redirect = (para: string) => () => new Response(null, { status: 302, headers: { location: para } });
 
 describe("ipBloqueado", () => {
-  it.each(["127.0.0.1", "10.1.2.3", "172.16.0.1", "192.168.0.10", "169.254.169.254", "100.64.0.1", "0.0.0.0", "::1", "fd00::1", "fe80::1", "::ffff:127.0.0.1"])(
-    "recusa %s",
-    (ip) => expect(ipBloqueado(ip)).toBe(true),
-  );
+  it.each([
+    "127.0.0.1",
+    "10.1.2.3",
+    "172.16.0.1",
+    "192.168.0.10",
+    "169.254.169.254",
+    "100.64.0.1",
+    "0.0.0.0",
+    "::1",
+    "fd00::1",
+    "fe80::1",
+    "::ffff:127.0.0.1",
+  ])("recusa %s", (ip) => expect(ipBloqueado(ip)).toBe(true));
   it.each([PUBLICO, "8.8.8.8", "2001:4860:4860::8888"])("aceita %s", (ip) => expect(ipBloqueado(ip)).toBe(false));
   it("recusa hostnames locais", () => {
     expect(hostLocal("localhost")).toBe(true);
@@ -39,7 +48,9 @@ describe("ipBloqueado", () => {
 
 describe("Coletor: proteção contra SSRF", () => {
   it("baixa de host oficial", async () => {
-    const { c } = coletor({ [`${DOCS}/guia.md`]: new Response("# Guia", { headers: { "content-type": "text/markdown; charset=utf-8" } }) });
+    const { c } = coletor({
+      [`${DOCS}/guia.md`]: new Response("# Guia", { headers: { "content-type": "text/markdown; charset=utf-8" } }),
+    });
     expect(await c.obterTexto(`${DOCS}/guia.md`)).toBe("# Guia");
   });
 
@@ -100,7 +111,9 @@ describe("Coletor: proteção contra SSRF", () => {
   });
 
   it("respeita o robots.txt", async () => {
-    const { c } = coletor({ "https://docs.aws.amazon.com/robots.txt": new Response("User-agent: *\nDisallow: /aws-certification/") });
+    const { c } = coletor({
+      "https://docs.aws.amazon.com/robots.txt": new Response("User-agent: *\nDisallow: /aws-certification/"),
+    });
     await expect(c.obter(`${DOCS}/guia.md`)).rejects.toThrow(/robots/);
   });
 });
@@ -117,18 +130,20 @@ describe("Coletor: contato no User-Agent", () => {
 });
 
 describe("Coletor: erro de rede", () => {
-  it("mostra a causa por trás de \"fetch failed\"", async () => {
+  it('mostra a causa por trás de "fetch failed"', async () => {
     // Função simples em vez de vi.fn: no Vitest 5 um vi.fn que lança marca o teste como falho.
     const fetchImpl = async () => {
       throw new TypeError("fetch failed", { cause: { code: "ECONNRESET", message: "read ECONNRESET" } });
     };
     const c = new Coletor({
       contato: "contato@example.com",
-        resolver: async () => [PUBLICO],
+      resolver: async () => [PUBLICO],
       fetchImpl: fetchImpl as unknown as typeof fetch,
       dormir: async () => {},
       tentativas: 1,
     });
-    await expect(c.obter(`${DOCS}/guia.md`)).rejects.toThrow(/robots\.txt inacessível.*fetch failed \(ECONNRESET read ECONNRESET\)/);
+    await expect(c.obter(`${DOCS}/guia.md`)).rejects.toThrow(
+      /robots\.txt inacessível.*fetch failed \(ECONNRESET read ECONNRESET\)/,
+    );
   });
 });
