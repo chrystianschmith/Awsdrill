@@ -2,6 +2,7 @@ import "server-only";
 import { db } from "@/lib/db";
 import { VERSAO_VISIVEL } from "@/lib/catalogo/consultas";
 import { AppError } from "@/lib/errors";
+import { assertEntitlement } from "@/lib/assinaturas/plano";
 import type { Executor } from "./acao";
 import { primeiraRevisao, proximaRevisao } from "./revisoes";
 import { inicioDoDiaMais } from "./tempo";
@@ -9,12 +10,13 @@ import { inicioDoDiaMais } from "./tempo";
 /*
  * Revisão espaçada (motor-de-estudo): concluir uma task statement agenda +1 dia; boa avança
  * para +7 e +30, difícil volta para +1 e marca "Revisar". Só entram tarefas vigentes de
- * exames que o usuário segue. O bloqueio Pro entra com entitlements.ts na etapa 7.
+ * exames que o usuário segue. Recurso Pro (revisaoEspacada): sem ele, concluir não agenda e
+ * registrar é recusado; as revisões guardadas voltam quando o plano volta.
  */
 
 const tarefaVisivel = (userId: string) => ({
   retiredAt: null,
-  examVersion: { ...VERSAO_VISIVEL, followers: { some: { userId } } },
+  examVersion: { ...VERSAO_VISIVEL, followers: { some: { userId, status: "ATIVO" as const } } },
 });
 
 const selecionarRevisao = {
@@ -71,6 +73,7 @@ export async function proximasRevisoes(userId: string, agora = new Date(), dias 
 
 /** Registra uma revisão: boa avança, difícil volta para +1 dia e marca a tarefa como "Revisar". */
 export async function registrarRevisao(userId: string, reviewId: string, boa: boolean) {
+  await assertEntitlement(userId, "revisaoEspacada");
   const agora = new Date();
   await db.$transaction(async (tx) => {
     const r = await tx.review.findFirst({

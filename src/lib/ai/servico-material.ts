@@ -9,6 +9,7 @@ import { audit } from "@/lib/auth/audit";
 import { consumir, LIMITES } from "@/lib/auth/rate-limit";
 import { sendEmail } from "@/lib/email/send";
 import { assertTopicoSeguido } from "@/lib/estudo/acesso";
+import { assertEntitlement } from "@/lib/assinaturas/plano";
 import { EmailAlertaOrcamento } from "@/emails/ia/alerta-orcamento";
 import { chamadaPadrao, iaDisponivel, IaIndisponivelError } from "./cliente";
 import { gerarEGravarMaterial } from "./material";
@@ -23,8 +24,8 @@ import { registrarUsoIA } from "./registro";
 
 /*
  * Material com IA por tarefa no app. Toda entrada revalida que o usuário segue o exame da tarefa
- * (assertTopicoSeguido). O bloqueio por plano (Pro) entra com entitlements.ts na etapa 7; até lá
- * a geração é limitada por usuário (LIMITES.iaUsuario), pelo teto mensal e por ser feita uma vez só.
+ * (assertTopicoSeguido) e o plano (conteudoIA, Pro). A geração ainda é limitada por usuário
+ * (LIMITES.iaUsuario), pelo teto mensal e por ser feita uma vez só.
  */
 
 export type MaterialDTO = {
@@ -95,6 +96,7 @@ const enviarAlertaApp: EnviarAlertaOrcamento = async ({ para, mes, gastoUsd, lim
 
 /** Gera o material da tarefa se ainda não existe (uma vez, para todos). */
 export async function gerarMaterial(userId: string, topicId: string): Promise<EstadoGeracao> {
+  await assertEntitlement(userId, "conteudoIA");
   await assertTopicoSeguido(userId, topicId);
   if (await lerMaterial(topicId)) return { status: "pronto" };
   if (!iaDisponivel()) {
@@ -155,6 +157,7 @@ export const EntradaReport = z.object({
  */
 export async function reportarErro(userId: string, input: z.input<typeof EntradaReport>) {
   const { topicId, contentType, contentId, message } = EntradaReport.parse(input);
+  await assertEntitlement(userId, "conteudoIA");
   await assertTopicoSeguido(userId, topicId);
   if (!(await consumir(`report:${userId}`, LIMITES.reportUsuario))) {
     throw new AppError("Você enviou muitos reports em pouco tempo. Tente novamente mais tarde.", "limite");
