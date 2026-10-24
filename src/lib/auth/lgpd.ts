@@ -20,6 +20,7 @@ export const RELACOES_DO_USUARIO = {
   readinessScores: "exportado",
   contentReports: "exportado",
   subscription: "exportado",
+  certifications: "exportado",
   answers: "fora: exportadas dentro de mockAttempts, junto do simulado de cada uma",
   emailVerificationTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
   passwordResetTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
@@ -132,6 +133,19 @@ export const SELECT_EXPORTACAO = {
   contentReports: {
     select: { contentType: true, message: true, resolvedAt: true, createdAt: true, topic: { select: { code: true } } },
     orderBy: { createdAt: "asc" },
+  },
+  certifications: {
+    select: {
+      examCode: true,
+      result: true,
+      examDate: true,
+      scaledScore: true,
+      expiresAt: true,
+      badgeUrl: true,
+      createdAt: true,
+      certification: { select: { name: true } },
+    },
+    orderBy: { examDate: "asc" },
   },
   // Sem os ids do Stripe: identificam a conta lá, não dizem nada ao titular.
   subscription: {
