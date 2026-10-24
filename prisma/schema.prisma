@@ -50,6 +50,7 @@ model User {
   mockAttempts            MockAttempt[]
   answers                 Answer[]
   readinessScores         ReadinessScore[]
+  contentReports          ContentReport[]
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -245,6 +246,9 @@ model Domain {
   questions       Question[]         @relation("QuestionDomain")
   topicQuestions  Question[]         @relation("QuestionTopic")
   readinessScores ReadinessScore[]
+  summary         Summary?
+  flashcards      Flashcard[]
+  contentReports  ContentReport[]
 
   @@unique([examVersionId, code])
   @@index([parentId])
@@ -559,4 +563,65 @@ model ReadinessScore {
   domain             Domain?     @relation(fields: [domainId], references: [id], onDelete: Cascade)
 
   @@index([userId, examVersionId, computedAt])
+}
+
+// ───────────────────────── Conteúdo com IA ─────────────────────────
+
+/// Custo de cada chamada à IA (teto mensal em AI_MONTHLY_BUDGET_USD). Sem dado de usuário.
+model AiUsageLog {
+  id            String   @id @default(cuid())
+  purpose       String // "material"
+  model         String
+  inputTokens   Int
+  outputTokens  Int
+  cachedTokens  Int      @default(0)
+  costUsd       Decimal  @db.Decimal(10, 6)
+  promptVersion String
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// Resumo de uma tarefa (task statement), gerado uma vez e compartilhado entre todos.
+model Summary {
+  id            String   @id @default(cuid())
+  topicId       String   @unique
+  body          String // markdown restrito (parágrafos, listas, negrito, código)
+  sources       String[] // só https de host oficial
+  model         String
+  promptVersion String
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now()) // regravado a cada geração (conta reports só da versão atual)
+  topic         Domain   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+}
+
+model Flashcard {
+  id            String   @id @default(cuid())
+  topicId       String
+  front         String
+  back          String
+  promptVersion String
+  published     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  topic         Domain   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([topicId, published])
+}
+
+/// "Reportar erro" no conteúdo gerado por IA; fila do admin.
+model ContentReport {
+  id          String    @id @default(cuid())
+  userId      String?
+  topicId     String
+  contentType String // "summary" | "flashcard"
+  contentId   String
+  message     String
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  topic       Domain    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@index([resolvedAt, createdAt])
+  @@index([topicId, createdAt])
+  @@index([userId])
 }

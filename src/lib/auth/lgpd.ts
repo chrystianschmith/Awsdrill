@@ -18,6 +18,7 @@ export const RELACOES_DO_USUARIO = {
   reviews: "exportado",
   mockAttempts: "exportado",
   readinessScores: "exportado",
+  contentReports: "exportado",
   answers: "fora: exportadas dentro de mockAttempts, junto do simulado de cada uma",
   emailVerificationTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
   passwordResetTokens: "fora: só guarda o hash de um link de uso único, sem valor para o titular",
@@ -126,6 +127,10 @@ export const SELECT_EXPORTACAO = {
       domain: { select: { code: true } },
     },
     orderBy: { computedAt: "asc" },
+  },
+  contentReports: {
+    select: { contentType: true, message: true, resolvedAt: true, createdAt: true, topic: { select: { code: true } } },
+    orderBy: { createdAt: "asc" },
   },
 } as const satisfies Prisma.UserSelect;
 
