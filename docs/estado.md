@@ -99,10 +99,24 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   estágios de lembrete, MRR e churn), integração (IDOR e validação da carteira, lembretes agrupados e sem repetir,
   recusa de não-admin em toda action) e e2e (não-admin recebe 404, admin aprova questão, carteira com axe).
 
+- **Etapa 9 · Entrega, parte de código (2026-10-24):** e2e do fluxo crítico só pela interface (início → cadastro →
+  confirmar e-mail → seguir exame → timer → treino → prontidão → assinar pelo bloqueio da prova → prova → carteira), em
+  desktop e mobile. Revisão de UI: chamada "Começar grátis" no início, barra inferior no mobile (Hoje, Estudar,
+  Simulados, Prontidão, Progresso), lista do plano Grátis em Preços (vinda de `ENTITLEMENTS`), nome da tarefa não fica
+  espremido em Progresso, logo com nome acessível. Corrigido: lançamento manual digitado antes da hidratação era enviado
+  com o dia de hoje (lia o estado do React, não o campo). Fontes: só Plex 400/500/600 (negrito em 600), 47 KB a menos
+  antes do primeiro texto. Lighthouse mobile (build de produção local, mediana de 5 nas telas que variam): desempenho
+  92–99 em todas as telas, acessibilidade 100, boas práticas 96–100, SEO 100 (admin 60 por ser `noindex`). A variação
+  (às vezes ~80 numa execução) vem do esqueleto de `loading.tsx`: quando ele chega a pintar, o React segura a troca
+  pelo conteúdo por ~300 ms. Auditoria `seguranca-vibecoding`: `npm audit --omit=dev` limpo, Next 16.4.2 e React 19.3.0,
+  gitleaks e bundle sem segredo, nenhum padrão proibido novo, toda action com sessão (exceto as públicas de auth, com
+  rate limit) e Zod, rotas com sessão, segredo de cron ou assinatura do Stripe; taint fica de fora (ADR 0008). README
+  com o passo a passo de deploy.
+
 ## Próximo
 
-- **Etapa 9 · Entrega:** E2E do fluxo crítico ponta a ponta, Lighthouse mobile ≥ 90, revisão de UI, auditoria
-  `seguranca-vibecoding` completa, README e deploy (deploy só com o OK do Chrytian e a infra criada).
+- **Deploy** (etapa 9, parte final): só com o OK do Chrytian e a infra criada, seguindo "Deploy" no README; depois,
+  auditoria de headers e e2e contra a URL de produção.
 - Flashcards no agendador de revisão (acertei/errei).
 - Para ligar a geração em produção: `GEMINI_API_KEY` e `ADMIN_ALERT_EMAIL` na Vercel (decisão do Chrytian).
 - Teste ponta a ponta em Stripe test mode real (com Stripe CLI) quando houver conta; o Pix anual não tem e2e.
@@ -111,7 +125,7 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
   · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA · `0006` markdown restrito no conteúdo de IA
-  · `0007` Grátis × Pro do produto e Pix só no anual avulso.
+  · `0007` Grátis × Pro do produto e Pix só no anual avulso · `0008` sem taint experimental do React.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
@@ -121,7 +135,7 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Feito do ciclo é recalculado das sessões (não somado por delta), para não divergir ao excluir ou confirmar sessões.
 - Simulados: um em andamento por usuário (começar outro encerra o anterior com o que foi respondido); questão não
   respondida conta como errada; prova com banco menor que o oficial usa o banco todo. Treino fica no Grátis (com limite
-  semanal) para o produto ser útil sem assinar; modo prova é Pro. Moderação de questões pela CLI até o admin (etapa 8).
+  semanal) para o produto ser útil sem assinar; modo prova é Pro. Moderação de questões pela tela do admin ou pela CLI.
 - Prontidão: penalidade de amostra pequena por pseudo-amostra (3) em vez de esconder o número, para manter a
   monotonia; tela calcula na hora e a foto serve ao histórico (`docs/metodologia-prontidao.md`).
 - Admin só lê usuários e assinaturas: mudança de plano vem sempre do Stripe. MRR e churn são estimados do estado atual

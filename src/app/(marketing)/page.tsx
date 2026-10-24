@@ -4,22 +4,29 @@ import { Alert } from "@/components/ui/alert";
 import { listarCertificacoes } from "@/lib/catalogo/consultas";
 import { ROTULO_NIVEL } from "@/lib/catalogo/rotulos";
 import { BRAND } from "@/lib/brand";
+import { buttonVariants } from "@/components/ui/button";
+import { getCurrentUser } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
   title: { absolute: `${BRAND.name} · certificações de nuvem` },
   description: BRAND.tagline,
 };
 
-
 const COMO_FUNCIONA = [
   { titulo: "Plano pelo blueprint", texto: "Estudo distribuído pelos domínios e pesos do guia oficial de cada exame." },
-  { titulo: "Simulados por domínio", texto: "Modo treino com explicação e link para a documentação; modo prova com tempo real." },
-  { titulo: "Prontidão medida", texto: "Uma estimativa por domínio, com metodologia publicada, antes de você marcar a prova." },
+  {
+    titulo: "Simulados por domínio",
+    texto: "Modo treino com explicação e link para a documentação; modo prova com tempo real.",
+  },
+  {
+    titulo: "Prontidão medida",
+    texto: "Uma estimativa por domínio, com metodologia publicada, antes de você marcar a prova.",
+  },
 ];
 
 export default async function Inicio({ searchParams }: PageProps<"/">) {
   const contaExcluida = (await searchParams).conta === "excluida";
-  const exames = await listarCertificacoes();
+  const [exames, user] = await Promise.all([listarCertificacoes(), getCurrentUser()]);
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16">
       {contaExcluida ? (
@@ -27,11 +34,24 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
           Sua conta foi excluída e seus dados pessoais foram apagados.
         </Alert>
       ) : null}
-      <p className="text-sm font-medium text-muted-foreground">Em construção</p>
-      <h1 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+      <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
         Do primeiro exame de nuvem até a recertificação, com plano e prontidão medida
       </h1>
       <p className="mt-4 max-w-xl text-muted-foreground">{BRAND.tagline}</p>
+      <div className="mt-6 flex flex-wrap gap-3">
+        {user ? (
+          <Link href="/hoje" className={buttonVariants({ size: "lg" })}>
+            Ir para o painel
+          </Link>
+        ) : (
+          <Link href="/cadastro" className={buttonVariants({ size: "lg" })}>
+            Começar grátis
+          </Link>
+        )}
+        <Link href="/precos" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+          Comparar planos
+        </Link>
+      </div>
 
       <section aria-labelledby="exames" className="mt-12">
         <h2 id="exames" className="text-lg font-semibold">
@@ -56,7 +76,7 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
 
       <section aria-labelledby="como" className="mt-12">
         <h2 id="como" className="text-lg font-semibold">
-          Como vai funcionar
+          Como funciona
         </h2>
         <dl className="mt-4 grid gap-6 sm:grid-cols-3">
           {COMO_FUNCIONA.map((c) => (
