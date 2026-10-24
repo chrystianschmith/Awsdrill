@@ -10,6 +10,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    setupFiles: ["tests/setup/sem-rede.ts"],
     include: ["tests/unit/**/*.test.ts", "src/**/*.test.ts"],
     env: { TZ: "UTC" },
   },
