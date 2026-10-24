@@ -1,0 +1,85 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa TecViva está utilizando um Foundation Model já pré-treinado. Para que ele passe a utilizar a terminologia exclusiva da empresa em suas respostas, utilizando um conjunto pequeno de perguntas e respostas rotuladas, qual processo é o mais indicado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Realizar o pré-treinamento do modelo do zero."
+        },
+        {
+          "key": "B",
+          "text": "Aplicar fine-tuning supervisionado com os exemplos rotulados."
+        },
+        {
+          "key": "C",
+          "text": "Realizar apenas a normalização dos tokens de entrada."
+        },
+        {
+          "key": "D",
+          "text": "Alterar apenas o tokenizer, sem modificar os pesos do modelo."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O fine-tuning supervisionado consiste em ajustar os pesos de um Foundation Model já pré-treinado utilizando um conjunto rotulado de dados, permitindo que ele aprenda padrões, terminologia e estilo desejados para um domínio específico. A alternativa A está incorreta, pois o pré-treinamento do zero demanda uma quantidade massiva de dados não rotulados e um custo computacional muito maior. A alternativa C está incorreta, pois a normalização de tokens não altera o conhecimento ou o comportamento do modelo. A alternativa D está incorreta, pois a troca ou ajuste isolado do tokenizer não ensina o modelo a utilizar novos termos no contexto das respostas.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa LogixAtende deseja que seu Foundation Model deixe de apenas completar texto e passe a responder diretamente às solicitações dos usuários, seguindo o formato de instrução e resposta. Qual técnica é mais diretamente voltada a esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Instruction fine-tuning."
+        },
+        {
+          "key": "B",
+          "text": "Redução de dimensionalidade."
+        },
+        {
+          "key": "C",
+          "text": "Agrupamento por similaridade."
+        },
+        {
+          "key": "D",
+          "text": "Amostragem estratificada."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O instruction fine-tuning utiliza um conjunto de dados rotulado no formato instrução-resposta para treinar o modelo a compreender e seguir solicitações, tornando-o mais útil em cenários de conversa e tarefas orientadas a comandos. A alternativa B está incorreta, pois a redução de dimensionalidade não ensina o modelo a seguir instruções. A alternativa C está incorreta, pois o agrupamento por similaridade não é uma técnica de treinamento de Foundation Models para esse propósito. A alternativa D está incorreta, pois a amostragem estratificada é uma técnica estatística para seleção de dados, não um processo para ensinar o modelo a seguir instruções.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"]
+    },
+    {
+      "dominio": "3.3",
+      "tipo": "SINGLE",
+      "enunciado": "Após realizar o fine-tuning de um Foundation Model para seguir instruções, a empresa AurumCare percebe que, em algumas respostas, o modelo fornece informações corretas, mas em um tom que não está alinhado às diretrizes de atendimento da empresa. Qual técnica é mais adequada para ajustar esse comportamento com base em preferências humanas?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Pré-treinamento com dados não rotulados."
+        },
+        {
+          "key": "B",
+          "text": "Tokenização reversa."
+        },
+        {
+          "key": "C",
+          "text": "Conversão para embeddings estáticos."
+        },
+        {
+          "key": "D",
+          "text": "RLHF (Reinforcement Learning from Human Feedback)."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O RLHF utiliza feedback humano para treinar um modelo de recompensa e, em seguida, otimizar o Foundation Model com base nas preferências coletadas, sendo muito utilizado para alinhar tom, segurança e comportamento após o fine-tuning. A alternativa A está incorreta, pois o pré-treinamento já foi realizado e não tem como objetivo alinhar-se a preferências humanas específicas. A alternativa B está incorreta, pois a tokenização reversa é um processo técnico relacionado à representação de texto, não uma técnica de alinhamento. A alternativa C está incorreta, pois a conversão para embeddings estáticos não ajusta o comportamento gerativo do modelo às preferências humanas.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/rlhf.html"]
+    }
+  ]
+}

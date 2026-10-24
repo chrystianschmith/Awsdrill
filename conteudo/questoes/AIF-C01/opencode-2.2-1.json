@@ -1,0 +1,144 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Orvix Varejo deseja utilizar um modelo de GenAI para responder perguntas sobre o status de pedidos em tempo real, consultando diretamente seu banco de dados transacional. Qual das alternativas representa uma limitação típica do GenAI para esse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Capacidade de gerar respostas em linguagem natural."
+        },
+        {
+          "key": "B",
+          "text": "Habilidade para resumir grandes volumes de texto."
+        },
+        {
+          "key": "C",
+          "text": "Falta de acesso inerente a dados transacionais em tempo real não fornecidos ao modelo."
+        },
+        {
+          "key": "D",
+          "text": "Capacidade de reformular textos para diferentes públicos."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A alternativa C está correta, pois a maioria dos modelos de GenAI não tem acesso direto e automático a sistemas transacionais. Para obter dados em tempo real, é necessário fornecê-los ao modelo por meio de contexto ou de mecanismos de integração, como grounding com uma fonte de conhecimento. A alternativa A está errada, pois a geração em linguagem natural é uma capacidade do GenAI. A alternativa B está errada, pois o resumo é um caso de uso suportado por essa tecnologia. A alternativa D está errada, pois a reformulação de texto também é uma capacidade comum dos modelos de GenAI.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Terravim Engenharia está analisando a adoção de GenAI para auxiliar na criação de pareceres técnicos com base em uma vasta biblioteca interna de normas. Para reduzir o risco de respostas incorretas, qual abordagem melhor aproveita as capacidades do GenAI sem depender unicamente do conhecimento treinado do modelo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Utilizar grounding com uma base de conhecimento controlada e exclusiva da empresa."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o tamanho da resposta solicitando ao modelo que 'seja mais criativo'."
+        },
+        {
+          "key": "C",
+          "text": "Pedir ao modelo que sempre gere múltiplas versões aleatórias para escolher a melhor depois."
+        },
+        {
+          "key": "D",
+          "text": "Solicitar ao modelo que infira as normas faltantes com base em tendências do mercado."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A alternativa A está correta, pois o grounding com uma base de conhecimento controlada permite que o modelo responda com base em documentos confiáveis da empresa, reduzindo o risco de alucinações. A alternativa B está errada, pois o aumento de criatividade não torna as informações mais factuais. A alternativa C está errada, pois gerar versões aleatórias não garante maior precisão em relação a normas internas. A alternativa D está errada, pois inferir normas faltantes com base em tendências pode introduzir informações incorretas ou não vigentes.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Nelora Saúde deseja automatizar o rascunho de respostas genéricas para dúvidas frequentes utilizando GenAI. Entretanto, algumas dessas respostas podem conter orientações sensíveis. Qual limitação ou preocupação deve ser considerada com maior prioridade nesse tipo de caso de uso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O modelo sempre formata tabelas perfeitamente, o que torna difícil a leitura."
+        },
+        {
+          "key": "B",
+          "text": "O modelo pode gerar saídas que não estão alinhadas às diretrizes ou políticas definidas pela empresa."
+        },
+        {
+          "key": "C",
+          "text": "O modelo não consegue alterar o tom da resposta para ser mais cordial."
+        },
+        {
+          "key": "D",
+          "text": "O modelo só consegue responder em uma única língua."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A alternativa B está correta, pois, sem mecanismos de controle, um modelo de GenAI pode gerar conteúdo fora das políticas, diretrizes ou restrições da empresa. Para mitigar esse risco, podem ser aplicados filtros e regras. A alternativa A está errada, pois a formatação não é, em geral, uma limitação crítica para esse caso de uso. A alternativa C está errada, pois o ajuste de tom é, na maioria dos casos, uma capacidade do GenAI. A alternativa D está errada, pois a maioria dos modelos suporta múltiplos idiomas.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Caldrim Manufatura está avaliando o uso de GenAI para criar descrições de produtos com base em especificações técnicas já validadas. Considerando as capacidades e limitações do GenAI, por que esse cenário é considerado adequado para essa tecnologia?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O GenAI consegue garantir, por si só, a atualização em tempo real do estoque da fábrica."
+        },
+        {
+          "key": "B",
+          "text": "O GenAI é adequado para transformar informações estruturadas já existentes em texto claro e padronizado."
+        },
+        {
+          "key": "C",
+          "text": "O GenAI substitui a necessidade de validação de qualquer cálculo matemático complexo."
+        },
+        {
+          "key": "D",
+          "text": "O GenAI elimina a possibilidade de qualquer erro, independentemente da fonte de dados."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A alternativa B está correta, pois uma das principais capacidades do GenAI é sintetizar e reformatar informações já fornecidas em texto natural, padronizado e pronto para uso. A alternativa A está errada, pois o acesso ao estoque não é uma capacidade inerente ao modelo. A alternativa C está errada, pois cálculos complexos podem conter erros e devem ser validados com ferramentas apropriadas. A alternativa D está errada, pois o GenAI pode apresentar alucinações, mesmo quando há informações de origem fornecidas.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa Fenbril Financeiro avalia a adoção de GenAI para auxiliar na análise de documentos internos. Ao considerar os riscos, quais das seguintes alternativas representam limitações reais a serem tratadas antes da implantação em larga escala? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Capacidade nativa de traduzir documentos para diversos idiomas."
+        },
+        {
+          "key": "B",
+          "text": "Possibilidade de geração de informações incorretas ou não verificadas, conhecidas como alucinações."
+        },
+        {
+          "key": "C",
+          "text": "Facilidade para gerar resumos de documentos longos."
+        },
+        {
+          "key": "D",
+          "text": "Risco de exposição ou uso indevido de dados sensíveis caso não haja controles adequados."
+        },
+        {
+          "key": "E",
+          "text": "Habilidade para adaptar o tom de texto conforme instruções."
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "As alternativas B e D estão corretas. Alucinações representam o risco de o modelo gerar informações incorretas, enquanto a falta de controles pode levar à exposição de dados sensíveis. As alternativas A, C e E estão erradas, pois correspondem a capacidades típicas do GenAI, e não a limitações ou riscos a serem mitigados nesse contexto.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+      ]
+    }
+  ]
+}

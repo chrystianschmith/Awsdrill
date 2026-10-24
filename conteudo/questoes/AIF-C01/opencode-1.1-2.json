@@ -1,0 +1,118 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Arctis Logística deseja treinar um sistema para controlar um veículo autônomo dentro de seu pátio. O sistema irá aprender a manobrar por meio de tentativas, recebendo uma recompensa ao concluir o estacionamento com sucesso e uma penalidade ao colidir com obstáculos. Nesse cenário, qual abordagem de aprendizado de máquina é a mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aprendizado supervisionado, pois o veículo precisa seguir um conjunto exato de rotas previamente rotuladas."
+        },
+        {
+          "key": "B",
+          "text": "Aprendizado por reforço, pois o agente aprende por interação com o ambiente com base em recompensas e penalidades."
+        },
+        {
+          "key": "C",
+          "text": "Aprendizado não supervisionado, pois não existe qualquer tipo de feedback para orientar o aprendizado."
+        },
+        {
+          "key": "D",
+          "text": "Aprendizado por transferência, pois o sistema não pode aprender nada por conta própria e depende totalmente de um modelo pronto."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Aprendizado por reforço (Reinforcement Learning) é caracterizado por um agente que interage com um ambiente e aprende uma política para maximizar recompensas ao longo do tempo. A alternativa A está incorreta, pois o aprendizado supervisionado utiliza dados rotulados estáticos, e não um processo de tentativa e erro com feedback. A alternativa C está incorreta, pois há feedback claro na forma de recompensas e penalidades. A alternativa D está incorreta, pois aprendizado por transferência consiste em reutilizar um modelo pré-treinado, não em aprender por interação com recompensas e penalidades.",
+      "fontes": ["https://aws.amazon.com/what-is/reinforcement-learning/"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Solum Analytics precisa construir um sistema capaz de classificar o sentimento de mensagens de chat enviadas por clientes. Essas mensagens são escritas em linguagem natural, com diferentes formatos, pontuações e expressões. Nesse contexto, qual campo da Inteligência Artificial é o mais diretamente voltado para essa tarefa?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Visão computacional, pois analisa exclusivamente imagens estáticas."
+        },
+        {
+          "key": "B",
+          "text": "Robótica, pois requer movimento físico para interpretar o texto."
+        },
+        {
+          "key": "C",
+          "text": "Processamento de Linguagem Natural (Natural Language Processing - NLP), pois se concentra em compreender e interpretar a linguagem humana."
+        },
+        {
+          "key": "D",
+          "text": "Computação gráfica, pois transforma texto em representações visuais tridimensionais."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Processamento de Linguagem Natural (NLP) visa permitir que sistemas compreendam, interpretem e analisem a linguagem humana escrita ou falada. A alternativa A está incorreta, pois visão computacional é voltada a imagens e vídeos. A alternativa B está incorreta, pois robótica envolve controle físico, não sendo o campo que, por si só, define a tarefa de análise de sentimento textual. A alternativa D está incorreta, pois computação gráfica trata de renderização e imagens, não da interpretação semântica de mensagens.",
+      "fontes": ["https://aws.amazon.com/what-is/nlp/"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa FormaNova Marketing deseja criar uma campanha publicitária e precisa gerar, a partir de um simples comando em texto, diversas versões de legendas, slogans e descrições de produtos inéditas. Nesse cenário, qual tipo de Inteligência Artificial é o mais adequado para esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "IA generativa, pois é capaz de criar conteúdo novo com base em um prompt fornecido."
+        },
+        {
+          "key": "B",
+          "text": "IA discriminativa, pois seu único objetivo é rotular dados já existentes em categorias fixas."
+        },
+        {
+          "key": "C",
+          "text": "Sistemas especialistas baseados em regras rígidas, pois só podem combinar textos pré-cadastrados sem criar nada novo."
+        },
+        {
+          "key": "D",
+          "text": "Algoritmos de detecção de anomalias, pois buscam encontrar valores fora do padrão em um conjunto de dados."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A IA generativa é projetada para criar conteúdo novo (texto, imagens, código, entre outros) com base em padrões aprendidos durante o treinamento, geralmente a partir de um prompt. A alternativa B está incorreta, pois modelos discriminativos se concentram em distinguir entre classes, e não em gerar conteúdo inédito. A alternativa C está incorreta, pois sistemas puramente baseados em regras não aprendem padrões para gerar variações criativas. A alternativa D está incorreta, pois detecção de anomalias tem como objetivo identificar pontos fora do padrão, não gerar novos conteúdos.",
+      "fontes": ["https://aws.amazon.com/what-is/generative-ai/"]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa Vertex Labs está analisando as diferenças entre treinamento e inferência ao utilizar um modelo de Inteligência Artificial. Com base nesse processo, quais das alternativas a seguir são afirmações corretas? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O treinamento é a fase em que o modelo aprende padrões a partir de dados, ajustando seus parâmetros."
+        },
+        {
+          "key": "B",
+          "text": "A inferência sempre exige que novos rótulos sejam fornecidos para que o modelo possa produzir uma resposta."
+        },
+        {
+          "key": "C",
+          "text": "A inferência é a fase em que um modelo já treinado é utilizado para fazer previsões ou gerar respostas com novos dados."
+        },
+        {
+          "key": "D",
+          "text": "Treinamento e inferência são a mesma fase, apenas com nomes diferentes, sem distinção prática."
+        },
+        {
+          "key": "E",
+          "text": "Na inferência, o modelo volta a ajustar todos os seus parâmetros com base em cada nova entrada, como ocorre no treinamento."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "Durante o treinamento, o modelo aprende padrões a partir de dados e ajusta seus parâmetros para minimizar erros. Durante a inferência, o modelo já treinado é utilizado para gerar previsões ou respostas com dados novos, sem re-treinamento completo. A alternativa B está incorreta, pois na inferência os dados podem ser não rotulados (como em classificação de novos e-mails). A alternativa D está incorreta, pois são fases distintas com objetivos diferentes. A alternativa E está incorreta, pois, na inferência, os parâmetros geralmente permanecem fixos; ajustes ocorrem na fase de treinamento.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/generative-ai/",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+      ]
+    }
+  ]
+}

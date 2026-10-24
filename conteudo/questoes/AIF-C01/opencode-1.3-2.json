@@ -1,0 +1,59 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Durante o desenvolvimento de um modelo de ML para prever a demanda de produtos em uma cadeia de supermercados, a equipe coleta dados históricos de vendas, clima e feriados dos últimos 5 anos. Na primeira iteração, esses dados contêm valores ausentes e registros duplicados. De acordo com o ciclo de vida de AI/ML, em qual etapa essas correções devem ser priorizadas?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Na etapa de implantação, antes de disponibilizar o modelo aos usuários."
+        },
+        {
+          "key": "B",
+          "text": "Na etapa de preparação de dados, antes do treinamento do modelo."
+        },
+        {
+          "key": "C",
+          "text": "Na etapa de monitoramento, após identificar degradação de performance."
+        },
+        {
+          "key": "D",
+          "text": "Na etapa de definição do problema, ao alinhar requisitos com o negócio."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A preparação de dados engloba limpeza, tratamento de valores ausentes, remoção de duplicados e transformação dos dados. Essas atividades são realizadas antes do treinamento para garantir que o modelo aprenda a partir de dados consistentes. A alternativa A está incorreta, pois a implantação ocorre após o treinamento e avaliação. A alternativa C refere-se ao monitoramento em produção, não à correção inicial. A alternativa D corresponde à etapa de definição do problema, quando se identifica o objetivo de negócio.",
+      "fontes": ["https://docs.aws.amazon.com/machine-learning/latest/dg/cross-validation.html"]
+    },
+    {
+      "dominio": "1.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de seguros deseja criar um modelo de ML para estimar o risco de sinistros com base em características dos clientes. Antes de iniciar o treinamento, a equipe precisa definir quais métricas usarão para julgar se o modelo atende aos critérios de sucesso definidos com a área de negócio. Qual etapa do ciclo de vida de AI/ML corresponde a essa ação?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Avaliação"
+        },
+        {
+          "key": "B",
+          "text": "Coleta de dados"
+        },
+        {
+          "key": "C",
+          "text": "Preparação de dados"
+        },
+        {
+          "key": "D",
+          "text": "Definição do problema"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Na etapa de definição do problema, além de entender o objetivo de negócio, é importante estabelecer critérios de sucesso e métricas de avaliação que serão usados para determinar se o modelo resolve o problema proposto. A alternativa A é a avaliação após o treinamento. A alternativa B é a coleta dos dados necessários. A alternativa C é a limpeza e transformação dos dados.",
+      "fontes": ["https://docs.aws.amazon.com/machine-learning/latest/dg/machine-learning-process.html"]
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Orion Data deseja agrupar seus clientes com base apenas no histórico de compras, sem possuir nenhuma categoria ou rótulo pré-definido para esses grupos. Com esse objetivo, qual abordagem de aprendizado de máquina é a mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aprendizado não supervisionado."
+        },
+        {
+          "key": "B",
+          "text": "Aprendizado supervisionado."
+        },
+        {
+          "key": "C",
+          "text": "Aprendizado por reforço."
+        },
+        {
+          "key": "D",
+          "text": "Aprendizado por transferência."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O aprendizado não supervisionado busca identificar padrões ou agrupamentos em dados não rotulados, como agrupar clientes com comportamentos de compra semelhantes. B) Incorreta. O aprendizado supervisionado utiliza dados rotulados (com a resposta correta conhecida) para treinar o modelo. C) Incorreta. O aprendizado por reforço aprende por meio de recompensas e punições com base em ações tomadas em um ambiente. D) Incorreta. O aprendizado por transferência reutiliza um modelo já treinado para uma tarefa diferente, e não tem como objetivo primário agrupar dados não rotulados.",
+      "fontes": [
+        "https://docs.aws.amazon.com/machine-learning/latest/dg/what-is-amazon-machine-learning.html",
+        "https://aws.amazon.com/what-is/machine-learning/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Veridia Soluções precisa automatizar a aprovação de solicitações de crédito. Para isso, ela irá treinar um modelo utilizando um histórico com solicitações já analisadas e com a decisão final (aprovado ou reprovado) registrada para cada uma delas. Nesse contexto, qual tipo de aprendizado melhor descreve essa situação?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aprendizado por reforço."
+        },
+        {
+          "key": "B",
+          "text": "Aprendizado supervisionado."
+        },
+        {
+          "key": "C",
+          "text": "Aprendizado não supervisionado."
+        },
+        {
+          "key": "D",
+          "text": "Aprendizado por geração."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O aprendizado supervisionado utiliza um conjunto de dados rotulados, no qual cada exemplo possui a entrada e a saída esperada. Com isso, o modelo aprende a mapear novos casos para a decisão correta. A) Incorreta. O aprendizado por reforço se baseia em um agente que toma ações e recebe recompensas, não em um histórico estático com decisões já rotuladas. C) Incorreta. O aprendizado não supervisionado trabalha com dados não rotulados, sem uma resposta esperada para cada exemplo. D) Incorreta. Não é um termo padrão para essa tarefa de classificação com dados rotulados.",
+      "fontes": [
+        "https://docs.aws.amazon.com/machine-learning/latest/dg/what-is-amazon-machine-learning.html",
+        "https://aws.amazon.com/what-is/machine-learning/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa NeoAtlas está desenvolvendo um modelo de classificação de imagens. A equipe já concluiu a fase de treinamento e agora deseja utilizar esse modelo em seu aplicativo para classificar novas imagens enviadas pelos usuários em tempo real. Qual termo descreve corretamente essa fase de utilização do modelo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Normalização."
+        },
+        {
+          "key": "B",
+          "text": "Rotulação."
+        },
+        {
+          "key": "C",
+          "text": "Inferência."
+        },
+        {
+          "key": "D",
+          "text": "Engenharia de atributos."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Inferência é o processo de utilizar um modelo já treinado para fazer previsões ou classificações com novos dados. A) Incorreta. Normalização é uma técnica de pré-processamento para padronizar valores dos dados. B) Incorreta. Rotulação é a atribuição de categorias aos dados durante a preparação para o treinamento supervisionado. D) Incorreta. Engenharia de atributos consiste em transformar ou criar variáveis a partir dos dados, geralmente durante a preparação antes do treinamento.",
+      "fontes": [
+        "https://docs.aws.amazon.com/machine-learning/latest/dg/what-is-amazon-machine-learning.html",
+        "https://aws.amazon.com/what-is/machine-learning/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da empresa HorizonteX está avaliando diferentes abordagens para criar um sistema capaz de reconhecer fala em um ambiente com grande variedade de sotaques. Eles observam que essa tarefa envolve múltiplas camadas de processamento para extrair características complexas dos dados de áudio. Nesse cenário, qual das alternativas melhor diferencia Aprendizado Profundo (Deep Learning) do Aprendizado de Máquina tradicional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O Aprendizado Profundo sempre exige dados rotulados, enquanto o Aprendizado de Máquina nunca exige."
+        },
+        {
+          "key": "B",
+          "text": "O Aprendizado de Máquina só pode ser utilizado com dados numéricos, e o Aprendizado Profundo não tem essa limitação."
+        },
+        {
+          "key": "C",
+          "text": "O Aprendizado Profundo utiliza redes neurais artificiais com múltiplas camadas para aprender representações complexas diretamente dos dados."
+        },
+        {
+          "key": "D",
+          "text": "A única diferença é o nome, pois ambos utilizam exatamente os mesmos algoritmos e estrutura."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: o Aprendizado Profundo (deep learning) é um subconjunto do Aprendizado de Máquina que usa redes neurais artificiais com várias camadas para aprender representações complexas diretamente dos dados brutos, como o áudio com diferentes sotaques do cenário. A está errada porque as duas abordagens podem usar dados rotulados ou não rotulados, conforme a técnica. B está errada porque o Aprendizado de Máquina tradicional também trabalha com texto, imagens e outros tipos de dados, normalmente depois de extrair atributos. D está errada porque as abordagens diferem de fato: o Aprendizado Profundo usa redes neurais profundas, enquanto o Aprendizado de Máquina tradicional inclui algoritmos como árvores de decisão e regressão.",
+      "fontes": [
+        "https://docs.aws.amazon.com/machine-learning/latest/dg/what-is-amazon-machine-learning.html",
+        "https://aws.amazon.com/what-is/deep-learning/"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa LuminaTech está planejando criar um modelo para prever o valor de venda de imóveis. Para isso, ela possui um banco de dados com diversas características dos imóveis, como área construída, número de quartos e localização, além do preço de venda já registrado para cada um deles. Com base nesse cenário, quais das alternativas a seguir são características corretas do aprendizado supervisionado? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Utiliza um conjunto de dados com entradas e saídas conhecidas para o treinamento."
+        },
+        {
+          "key": "B",
+          "text": "O objetivo é sempre agrupar os dados em clusters sem nenhuma informação prévia."
+        },
+        {
+          "key": "C",
+          "text": "É comumente utilizado em tarefas de regressão ou classificação."
+        },
+        {
+          "key": "D",
+          "text": "Aprende exclusivamente por meio de tentativas e erros com recompensas e punições."
+        },
+        {
+          "key": "E",
+          "text": "Não permite realizar previsões para novos dados após o treinamento."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "No aprendizado supervisionado, cada exemplo do conjunto de treinamento possui tanto os atributos (entradas) quanto o valor ou categoria alvo (saída esperada). Esse tipo de abordagem é amplamente utilizado em tarefas de classificação (rótulos discretos) e regressão (valores numéricos contínuos), como prever o preço de um imóvel. B) Incorreta. Agrupar dados sem rótulos é característica do aprendizado não supervisionado. D) Incorreta. Aprendizado por tentativas e erros com recompensas é próprio do aprendizado por reforço. E) Incorreta. Um dos principais objetivos do aprendizado supervisionado é generalizar o conhecimento aprendido para fazer previsões com dados novos e nunca vistos antes.",
+      "fontes": [
+        "https://docs.aws.amazon.com/machine-learning/latest/dg/what-is-amazon-machine-learning.html",
+        "https://aws.amazon.com/what-is/machine-learning/"
+      ]
+    }
+  ]
+}

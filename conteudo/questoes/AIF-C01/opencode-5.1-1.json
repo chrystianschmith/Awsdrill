@@ -1,0 +1,118 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa deseja garantir que apenas usuários autenticados e autorizados consigam invocar modelos no Amazon Bedrock. Qual serviço da AWS deve ser utilizado para gerenciar esse controle de acesso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon CloudFront"
+        },
+        {
+          "key": "B",
+          "text": "AWS Identity and Access Management (IAM)"
+        },
+        {
+          "key": "C",
+          "text": "AWS WAF"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Route 53"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O AWS Identity and Access Management (IAM) permite criar políticas e atribuir permissões granulares para controlar quais identidades podem invocar modelos no Amazon Bedrock. A alternativa A (Amazon CloudFront) é um serviço de CDN e não gerencia autorização de chamadas de API. A alternativa C (AWS WAF) protege aplicações contra explorações web, mas não é o mecanismo primário de autorização de usuários para o Amazon Bedrock. A alternativa D (Amazon Route 53) é um serviço de DNS e não controla permissões de acesso a modelos de IA.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa com requisitos rigorosos de segurança deseja que o tráfego entre sua VPC e o Amazon Bedrock não transite pela Internet pública. Qual solução deve ser implementada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um Internet Gateway"
+        },
+        {
+          "key": "B",
+          "text": "Um NAT Gateway"
+        },
+        {
+          "key": "C",
+          "text": "Um VPC peering"
+        },
+        {
+          "key": "D",
+          "text": "Um VPC endpoint do AWS PrivateLink para o Amazon Bedrock"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Um VPC endpoint do AWS PrivateLink para o Amazon Bedrock permite que o tráfego entre a VPC e o serviço permaneça na rede da AWS, sem passar pela Internet pública. A alternativa A (Internet Gateway) permite acesso à Internet, o oposto do requisito. A alternativa B (NAT Gateway) permite que instâncias em sub-redes privadas acessem a Internet, mas não cria um caminho privado direto e isolado para o Amazon Bedrock. A alternativa C (VPC peering) conecta duas VPCs, mas não é o mecanismo utilizado para acesso privado a um serviço gerenciado da AWS.",
+      "fontes": ["https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "SINGLE",
+      "enunciado": "Durante a implantação de uma solução de IA generativa, a equipe precisa garantir que todos os artefatos sensíveis armazenados no Amazon S3 sejam protegidos com criptografia gerenciada pela empresa. Qual serviço da AWS deve ser utilizado para esse controle de chaves?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS CloudTrail"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Inspector"
+        },
+        {
+          "key": "C",
+          "text": "AWS Key Management Service (AWS KMS)"
+        },
+        {
+          "key": "D",
+          "text": "AWS Shield"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS Key Management Service (AWS KMS) permite criar, gerenciar e controlar chaves de criptografia para proteger dados em repouso, incluindo artefatos armazenados no Amazon S3. A alternativa A (AWS CloudTrail) registra chamadas de API para fins de auditoria, mas não gerencia chaves de criptografia. A alternativa B (Amazon Inspector) avalia vulnerabilidades, não realiza o gerenciamento de chaves. A alternativa D (AWS Shield) oferece proteção contra ataques DDoS, não criptografa dados em repouso.",
+      "fontes": ["https://docs.aws.amazon.com/kms/latest/developerguide/overview.html"]
+    },
+    {
+      "dominio": "5.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma organização está implantando uma solução de IA generativa e precisa atender a requisitos de governança, auditoria e detecção de ameaças. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Route 53"
+        },
+        {
+          "key": "B",
+          "text": "AWS CloudTrail"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Lightsail"
+        },
+        {
+          "key": "D",
+          "text": "Amazon GuardDuty"
+        },
+        {
+          "key": "E",
+          "text": "AWS DataSync"
+        }
+      ],
+      "corretas": ["B", "D"],
+      "explicacao": "O AWS CloudTrail registra e armazena logs de chamadas de API em toda a conta da AWS, sendo fundamental para auditoria e rastreabilidade de ações relacionadas à solução de IA. O Amazon GuardDuty realiza detecção contínua de ameaças analisando logs, como os do AWS CloudTrail, para identificar atividades maliciosas. A alternativa A (Amazon Route 53) é um serviço de DNS. A alternativa C (Amazon Lightsail) é uma solução simplificada de computação. A alternativa E (AWS DataSync) é utilizada para transferência de dados entre armazenamentos e não tem como finalidade primária auditoria ou detecção de ameaças.",
+      "fontes": [
+        "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html",
+        "https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html"
+      ]
+    }
+  ]
+}

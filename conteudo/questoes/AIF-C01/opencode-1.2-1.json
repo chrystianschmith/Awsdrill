@@ -1,0 +1,147 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A varejista Moda Viva quer exibir produtos recomendados em seu site com base no histórico de navegação e de compras de cada cliente, sem precisar construir e treinar um modelo de recomendação do zero. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Personalize"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Forecast"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Polly"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Translate"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: o Amazon Personalize utiliza histórico de interações e metadados de itens e usuários para gerar recomendações personalizadas em tempo real, sendo indicado para casos como \"produtos recomendados\" em sites e aplicativos. B não atende, pois o Amazon Forecast é voltado à previsão de séries temporais (como demanda e vendas futuras), não à recomendação personalizada por usuário. C não atende, pois o Amazon Polly converte texto em fala, e não gera recomendações de produtos. D não atende, pois o Amazon Translate realiza tradução automática de texto entre idiomas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/personalize/latest/dg/what-is-personalize.html",
+        "https://aws.amazon.com/personalize/"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa de logística Carga Norte precisa analisar, em tempo real, imagens de pacotes enviadas por motoristas pelo aplicativo móvel para identificar e classificar o tipo de avaria visual, como amassado ou rasgado. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Comprehend"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Lex"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Rekognition"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kendra"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: o Amazon Rekognition oferece análise de imagens e vídeos, permitindo detectar objetos, cenas e rótulos, sendo adequado para classificar avarias visuais em pacotes. A não atende, pois o Amazon Comprehend é voltado à análise de texto (entidades, sentimento, categorias), não à análise de imagens. B não atende, pois o Amazon Lex é utilizado para criar chatbots e interfaces conversacionais com voz ou texto. D não atende, pois o Amazon Kendra é um serviço de busca inteligente baseado em documentos e conhecimento corporativo, não em análise de imagens.",
+      "fontes": [
+        "https://docs.aws.amazon.com/rekognition/latest/dg/what-is.html",
+        "https://aws.amazon.com/rekognition/"
+      ]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A clínica VitaForm recebe um grande volume de formulários médicos digitalizados e precisa extrair campos estruturados, como nome do paciente, data, número do protocolo e valores preenchidos, para automatizar o cadastro no sistema. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Polly"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Translate"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Personalize"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Textract"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: o Amazon Textract extrai texto, campos de formulário e tabelas de documentos digitalizados (como PDFs e imagens), tornando possível automatizar o preenchimento de sistemas a partir de formulários. A não atende, pois o Amazon Polly converte texto em fala. B não atende, pois o Amazon Translate realiza tradução entre idiomas. C não atende, pois o Amazon Personalize é voltado a recomendações personalizadas, não à extração de campos de formulários.",
+      "fontes": ["https://docs.aws.amazon.com/textract/latest/dg/what-is.html", "https://aws.amazon.com/textract/"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "O provedor de serviços SuporteRápido quer disponibilizar, em seu site, um chatbot de autoatendimento capaz de entender perguntas em linguagem natural e guiar o cliente na resolução de dúvidas frequentes, 24 horas por dia. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Forecast"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Lex"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Rekognition"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Personalize"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: o Amazon Lex permite criar chatbots conversacionais com compreensão de linguagem natural (NLU), integráveis a sites e aplicativos para atendimento automatizado. A não atende, pois o Amazon Forecast é voltado a previsões baseadas em séries temporais. C não atende, pois o Amazon Rekognition analisa imagens e vídeos. D não atende, pois o Amazon Personalize gera recomendações personalizadas, não diálogos conversacionais para autoatendimento.",
+      "fontes": ["https://docs.aws.amazon.com/lexv2/latest/dg/what-is.html", "https://aws.amazon.com/lex/"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A agência OpinaMais precisa analisar um grande volume de avaliações de clientes em texto para entender a opinião geral e identificar quais produtos são mencionados. Quais dois recursos do Amazon Comprehend são mais indicados para esse caso de uso prático de IA? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Análise de sentimento (Sentiment Analysis)"
+        },
+        {
+          "key": "B",
+          "text": "Reconhecimento facial (Face Detection)"
+        },
+        {
+          "key": "C",
+          "text": "Reconhecimento de entidades (Named Entity Recognition)"
+        },
+        {
+          "key": "D",
+          "text": "Síntese de voz (Text-to-Speech)"
+        },
+        {
+          "key": "E",
+          "text": "Detecção de objetos em imagens (Object Detection)"
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C são as corretas: o Amazon Comprehend pode identificar o sentimento (positivo, negativo, neutro ou misto) das avaliações e extrair entidades nomeadas, como nomes de produtos, organizações e locais. B não atende, pois reconhecimento facial pertence ao Amazon Rekognition. D não atende, pois síntese de voz é função do Amazon Polly. E não atende, pois detecção de objetos em imagens também pertence ao Amazon Rekognition.",
+      "fontes": ["https://docs.aws.amazon.com/comprehend/latest/dg/what-is.html", "https://aws.amazon.com/comprehend/"]
+    }
+  ]
+}

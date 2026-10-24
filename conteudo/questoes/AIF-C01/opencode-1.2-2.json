@@ -1,0 +1,111 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa AudioBrasil precisa converter as gravações telefônicas de seu call center em texto pesquisável para fins de compliance e auditoria. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Transcribe"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Polly"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Translate"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Lex"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Transcribe converte automaticamente arquivos de áudio e fala em texto, sendo ideal para transcrever gravações de call center em conteúdo pesquisável. Amazon Polly (B) faz o contrário, convertendo texto em voz. Amazon Translate (C) realiza tradução entre idiomas. Amazon Lex (D) é utilizado para criar chatbots com conversação baseada em voz ou texto, não para transcrever gravações em lote.",
+      "fontes": ["https://docs.aws.amazon.com/transcribe/latest/dg/what-is-transcribe.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A editora VozAtiva deseja disponibilizar seus artigos jornalísticos em formato de áudio para tornar o conteúdo mais acessível a leitores com deficiência visual. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Transcribe"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Polly"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Comprehend"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Textract"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Polly utiliza tecnologia de síntese de voz para converter texto em áudio natural, sendo ideal para gerar versões sonoras de artigos. Amazon Transcribe (A) converte fala em texto. Amazon Comprehend (C) analisa e extrai insights de texto. Amazon Textract (D) extrai texto e dados de documentos digitalizados ou imagens.",
+      "fontes": ["https://docs.aws.amazon.com/polly/latest/dg/what-is.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A plataforma GaleriaLivre permite que usuários enviem imagens para publicação e precisa filtrar automaticamente conteúdos impróprios antes que sejam exibidos publicamente. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Translate"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Textract"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Rekognition"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Comprehend"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O Amazon Rekognition oferece recursos de moderação de conteúdo que analisam imagens e vídeos para detectar conteúdo impróprio ou indesejado. Amazon Translate (A) traduz texto entre idiomas. Amazon Textract (B) extrai texto de documentos e imagens. Amazon Comprehend (D) analisa e processa texto não estruturado.",
+      "fontes": ["https://docs.aws.amazon.com/rekognition/latest/dg/moderation.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa GlobalTrade possui uma plataforma de e-commerce com avaliações de clientes em diversos idiomas e precisa traduzir todas elas para o português do Brasil a fim de padronizar a análise interna. Qual serviço da AWS é o mais indicado para esse caso de uso prático de IA?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Polly"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Transcribe"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Lex"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Translate"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "O Amazon Translate é um serviço de tradução automática neural que converte texto entre diferentes idiomas de forma rápida e escalável. Amazon Polly (A) converte texto em voz. Amazon Transcribe (B) converte fala em texto. Amazon Lex (C) constrói interfaces conversacionais com IA.",
+      "fontes": ["https://docs.aws.amazon.com/translate/latest/dg/what-is.html"]
+    }
+  ]
+}
