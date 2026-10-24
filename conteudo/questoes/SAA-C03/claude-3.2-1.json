@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API em AWS Lambda atende um aplicativo bancário. Todo dia, das 8h às 10h, o tráfego sobe de 50 para 3.000 requisições por segundo, e os cold starts deixam parte das respostas acima do SLA de 300 ms. Fora desse horário o SLA é atendido. A empresa quer cumprir o SLA no pico sem pagar ambientes pré-aquecidos o dia todo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar reserved concurrency igual ao pico."
+        },
+        {
+          "key": "B",
+          "text": "Configurar provisioned concurrency com scheduled scaling do Application Auto Scaling para aumentá-la antes das 8h e reduzi-la depois das 10h."
+        },
+        {
+          "key": "C",
+          "text": "Dobrar a memória das funções e aumentar o timeout."
+        },
+        {
+          "key": "D",
+          "text": "Migrar a API para instâncias EC2 grandes ligadas o dia inteiro."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: a provisioned concurrency mantém ambientes já inicializados, eliminando o cold start, e o agendamento pelo Application Auto Scaling liga essa capacidade só na janela previsível do pico. A só reserva e limita a concorrência; não pré-aquece ambientes. C pode encurtar a inicialização, mas não elimina o cold start nem garante o SLA. D troca o modelo de operação e paga capacidade de pico o dia todo.",
+      "fontes": ["https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação em um Auto Scaling group leva 12 minutos para iniciar uma instância nova, porque carrega um modelo grande em memória. Picos imprevisíveis de tráfego começam em menos de 2 minutos, e as instâncias novas chegam tarde demais. A empresa quer reduzir o tempo de scale-out sem manter instâncias extras rodando o tempo todo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reduzir o cooldown do grupo para 0 segundos."
+        },
+        {
+          "key": "B",
+          "text": "Usar scheduled scaling no horário em que os picos costumam acontecer."
+        },
+        {
+          "key": "C",
+          "text": "Configurar um warm pool no Auto Scaling group com instâncias já inicializadas no estado Stopped."
+        },
+        {
+          "key": "D",
+          "text": "Trocar todas as instâncias pelo dobro do tamanho."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o warm pool mantém instâncias que já passaram pela inicialização demorada, paradas (pagando só o armazenamento), e o grupo as coloca em serviço em segundos quando precisa escalar. A só permite escalar com mais frequência; cada instância nova continua levando 12 minutos. B não serve a picos imprevisíveis. D paga capacidade extra o tempo todo e não resolve a demora de inicialização.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um portal de notícias tem um padrão diário muito regular: o tráfego triplica todo dia útil a partir das 7h e cai à noite. As instâncias levam 8 minutos para ficar prontas, e a política de target tracking só reage depois que a CPU sobe, então os primeiros minutos do pico ficam lentos. A equipe não quer manter agendamentos manuais. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Adicionar uma política de predictive scaling ao Auto Scaling group, mantendo o target tracking para desvios."
+        },
+        {
+          "key": "B",
+          "text": "Substituir o target tracking por step scaling com degraus maiores."
+        },
+        {
+          "key": "C",
+          "text": "Fixar o tamanho mínimo do grupo no valor do pico."
+        },
+        {
+          "key": "D",
+          "text": "Criar ações agendadas diferentes para cada dia da semana e revisá-las todo mês."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o predictive scaling aprende o padrão recorrente com o histórico e lança a capacidade antes do aumento previsto, considerando o tempo de aquecimento das instâncias, enquanto o target tracking continua cobrindo variações fora do padrão. B continua reagindo depois que a métrica sobe. C paga o pico 24 horas por dia. D exige exatamente a manutenção manual que a equipe quer evitar.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-predictive-scaling.html"]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um centro de pesquisa executa milhares de jobs em contêiner por noite, com dependências entre jobs, filas com prioridades diferentes e jobs de até 6 horas. Ele quer que a capacidade de computação suba e desça sozinha, usar Spot sempre que possível e não administrar um agendador de jobs. Qual serviço atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Lambda, com uma função por job acionada por uma fila SQS."
+        },
+        {
+          "key": "B",
+          "text": "Uma única instância EC2 grande executando os contêineres em sequência com cron."
+        },
+        {
+          "key": "C",
+          "text": "Amazon EventBridge Scheduler disparando cada job em um horário fixo."
+        },
+        {
+          "key": "D",
+          "text": "AWS Batch com filas de jobs priorizadas e um compute environment gerenciado com Spot."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o AWS Batch gerencia filas com prioridade, dependências entre jobs e um compute environment que escala automaticamente, inclusive com Spot, executando os contêineres sem um agendador próprio. A não serve, porque uma invocação do Lambda dura no máximo 15 minutos. B não escala e é ponto único de falha. C só agenda horários e não trata dependências, filas nem capacidade.",
+      "fontes": [
+        "https://docs.aws.amazon.com/batch/latest/userguide/what-is-batch.html",
+        "https://docs.aws.amazon.com/batch/latest/userguide/compute_environments.html"
+      ]
+    },
+    {
+      "dominio": "3.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma aplicação de dinâmica de fluidos usa MPI com comunicação intensa entre 64 instâncias Amazon EC2 e o tempo de execução é dominado pela latência de rede entre os nós. A empresa quer o maior desempenho possível. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Lançar as instâncias em um placement group do tipo cluster em uma única AZ."
+        },
+        {
+          "key": "B",
+          "text": "Distribuir as instâncias em três AZs para aumentar a disponibilidade."
+        },
+        {
+          "key": "C",
+          "text": "Usar instâncias com Elastic Fabric Adapter (EFA) e uma biblioteca MPI compatível."
+        },
+        {
+          "key": "D",
+          "text": "Usar um placement group do tipo spread para separar cada instância em um rack diferente."
+        },
+        {
+          "key": "E",
+          "text": "Colocar um Network Load Balancer entre as instâncias para distribuir o tráfego MPI."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o placement group cluster agrupa as instâncias perto umas das outras dentro de uma AZ, com a menor latência e a maior banda entre elas, e o EFA permite comunicação entre nós que contorna o kernel, com latência baixa e consistente para MPI. B aumenta a latência entre os nós. D maximiza a separação física, o oposto do necessário. E acrescenta um salto e não se aplica a tráfego MPI entre pares.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html"
+      ]
+    }
+  ]
+}
