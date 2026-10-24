@@ -1,0 +1,95 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A startup NovaForma tem dois modelos em avaliação. Um deles classifica e-mails como \"spam\" ou \"não spam\". Outro precisa gerar respostas personalizadas para cada cliente. Qual característica distingue, de forma mais direta, um modelo de IA generativa do modelo puramente discriminativo utilizado hoje?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Ele cria conteúdo novo a partir de um prompt, em vez de apenas atribuir uma categoria predefinida."
+        },
+        {
+          "key": "B",
+          "text": "Ele só consegue processar dados numéricos, nunca texto ou linguagem natural."
+        },
+        {
+          "key": "C",
+          "text": "Ele exige que todas as classes sejam informadas em tempo de execução para funcionar."
+        },
+        {
+          "key": "D",
+          "text": "Ele sempre devolve exatamente o mesmo registro que foi visto durante o treinamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A correta é A. Modelos de IA generativa aprendem padrões em grandes volumes de dados e geram saídas novas (texto, código, imagens, entre outros) com base em um prompt. B: Modelos generativos trabalham com linguagem natural e diversos tipos de dados, não apenas numéricos. C: Não há essa exigência; a geração é guiada pelo prompt e pelo conhecimento aprendido. D: Modelos generativos não devolvem cópias literais por obrigação, e a memorização não é sua função principal.",
+      "fontes": ["https://aws.amazon.com/what-is/generative-ai/"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da Atlas Contábil está entendendo o ciclo de vida de um large language model. Na fase de pré-treinamento (pretraining), qual é o objetivo principal desse processo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar regras manuais palavra por palavra para cada resposta possível."
+        },
+        {
+          "key": "B",
+          "text": "Converter todos os documentos da empresa em planilhas antes de qualquer uso."
+        },
+        {
+          "key": "C",
+          "text": "Aprender padrões gerais de linguagem e relações entre tokens a partir de grandes volumes de dados não rotulados."
+        },
+        {
+          "key": "D",
+          "text": "Validar manualmente cada pergunta e resposta antes de disponibilizar o modelo."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A correta é C. No pré-treinamento, o modelo aprende a prever o próximo token em grandes corpora, capturando estrutura, gramática, conhecimento geral e padrões semânticos. A: Não é baseado em regras manuais extensivas. B: Não é uma etapa de conversão para planilhas. D: A validação manual de todas as interações não faz parte do pré-treinamento.",
+      "fontes": [
+        "https://aws.amazon.com/what-is/generative-ai/",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/foundation-models.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "A diretoria da Lumina Group quer entender melhor os foundation models antes de adotá-los. Quais duas afirmações estão corretas sobre foundation models? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Podem ser adaptados para diferentes tarefas sem a necessidade de treinar um modelo do zero em cada uma delas."
+        },
+        {
+          "key": "B",
+          "text": "São modelos de propósito único, projetados para executar exatamente um processo fixo e imutável."
+        },
+        {
+          "key": "C",
+          "text": "São geralmente pré-treinados em grandes volumes de dados diversos."
+        },
+        {
+          "key": "D",
+          "text": "Só funcionam quando treinados exclusivamente com dados internos da própria empresa."
+        },
+        {
+          "key": "E",
+          "text": "Nunca podem ser combinados com técnicas como prompting para direcionar seu comportamento."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As corretas são A e C. Foundation models são pré-treinados em dados diversos (C) e servem como base reutilizável, podendo ser adaptados a múltiplas tarefas (A) por meio de técnicas como prompting ou fine-tuning. B: São generalistas, não de propósito único. D: Podem ser pré-treinados com dados diversos (públicos e outros), não obrigatoriamente apenas dados internos. E: Prompting é uma das formas mais comuns de direcionar o comportamento desses modelos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/foundation-models.html",
+        "https://aws.amazon.com/what-is/generative-ai/"
+      ]
+    }
+  ]
+}

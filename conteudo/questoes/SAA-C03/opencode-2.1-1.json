@@ -1,0 +1,121 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma loja virtual precisa processar pedidos recebidos pelo site. Após a confirmação do pedido, o sistema deve notificar o serviço de faturamento, mas caso o serviço de faturamento esteja temporariamente indisponível, os pedidos não podem ser perdidos. Qual abordagem permite melhor o desacoplamento e a resiliência entre esses componentes?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Chamar o serviço de faturamento diretamente por meio de uma requisição HTTP síncrona a partir da aplicação web."
+        },
+        {
+          "key": "B",
+          "text": "Enviar os pedidos para uma fila do Amazon SQS e fazer com que o serviço de faturamento consuma as mensagens dessa fila."
+        },
+        {
+          "key": "C",
+          "text": "Gravar os pedidos em um arquivo no Amazon EBS anexado à instância da aplicação web para processamento posterior."
+        },
+        {
+          "key": "D",
+          "text": "Usar um cron job na mesma instância para ler pedidos de um banco relacional e chamar o serviço de faturamento a cada minuto."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. O Amazon SQS permite desacoplar o produtor (aplicação de pedidos) do consumidor (serviço de faturamento). Se o consumidor estiver indisponível, as mensagens permanecem na fila até que ele esteja pronto para processá-las, garantindo durabilidade e resiliência. A alternativa A cria acoplamento síncrono: se o serviço de faturamento falhar, a requisição falhará e o pedido pode não ser processado adequadamente. A alternativa C armazena em Amazon EBS local à instância, o que não é distribuído e dificulta o escalonamento e a recuperação. A alternativa D ainda mantém forte acoplamento temporal entre os componentes e não oferece uma fila durável para lidar com falhas do serviço consumidor.",
+      "fontes": ["https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema de monitoramento precisa enviar o mesmo evento de alerta para três destinos distintos: um sistema de registro, uma ferramenta de notificação por mensagem e um serviço de análise. Os destinos devem receber os eventos independentemente, sem que o publicador precise conhecer ou gerenciar cada um deles. Qual serviço da AWS melhor atende a esse requisito de arquitetura fracamente acoplada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SQS com uma única fila e três consumidores lendo da mesma fila."
+        },
+        {
+          "key": "B",
+          "text": "AWS Direct Connect para replicar os eventos para cada destino em conexões separadas."
+        },
+        {
+          "key": "C",
+          "text": "Amazon SNS com três assinaturas diferentes configuradas para o mesmo tópico."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kinesis Data Streams com uma única shard e três aplicações consumindo o mesmo registro sequencialmente."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A resposta correta é C. O Amazon SNS permite o modelo pub/sub: o publicador envia a mensagem para um tópico, e todas as assinaturas configuradas recebem uma cópia do evento de forma independente. Isso garante o desacoplamento, pois o publicador não precisa conhecer os destinos. Na alternativa A, com uma única fila SQS, as mensagens são consumidas por um único consumidor por vez (modelo point-to-point), não entregues a três destinos simultaneamente. A alternativa B não é um serviço de fan-out de eventos. A alternativa D com múltiplas aplicações lendo da mesma shard não garante o mesmo padrão de entrega independente para destinos distintos da maneira solicitada.",
+      "fontes": ["https://docs.aws.amazon.com/sns/latest/dg/welcome.html"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação móvel precisa permitir que usuários enviem imagens para processamento. O processamento de cada imagem pode levar vários minutos e não precisa retornar resultado imediatamente para o usuário. Para manter a interface responsiva e a arquitetura fracamente acoplada, qual abordagem é mais adequada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Fazer o upload direto para uma instância do Amazon EC2 e processar a imagem na mesma requisição HTTP antes de responder ao usuário."
+        },
+        {
+          "key": "B",
+          "text": "Armazenar a imagem no Amazon S3 e colocar uma mensagem em uma fila do Amazon SQS contendo a chave do objeto, para que um processo consumidor a processe de forma assíncrona."
+        },
+        {
+          "key": "C",
+          "text": "Enviar a imagem embutida em uma requisição HTTP para um servidor web que a armazena em memória e a processa em um loop síncrono."
+        },
+        {
+          "key": "D",
+          "text": "Gravar a imagem em um volume Amazon EFS montado diretamente pelo aplicativo móvel por meio de um protocolo síncrono."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Ao armazenar a imagem no Amazon S3 e enviar uma mensagem para o Amazon SQS com a referência ao objeto, o upload é desacoplado do processamento. O usuário recebe uma resposta imediata após o upload, e o trabalho demorado é executado de forma assíncrona por consumidores independentes. Isso torna a arquitetura escalável e fracamente acoplada. A alternativa A bloqueia a requisição por vários minutos, tornando a interface pouco responsiva. A alternativa C não é escalável e armazena em memória de forma inadequada. A alternativa D não representa um padrão típico de arquitetura desacoplada entre aplicativo móvel e processamento em segundo plano.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma equipe está redesenhando uma aplicação monolítica para uma arquitetura fracamente acoplada e escalável. (Escolha duas.) Quais das seguintes abordagens ajudam a alcançar esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Substituir chamadas diretas entre módulos por mensagens assíncronas usando o Amazon SQS."
+        },
+        {
+          "key": "B",
+          "text": "Consolidar todos os serviços em uma única instância do Amazon EC2 para reduzir a latência entre componentes."
+        },
+        {
+          "key": "C",
+          "text": "Usar o Amazon SNS para publicar eventos que podem ser consumidos por múltiplos serviços independentes."
+        },
+        {
+          "key": "D",
+          "text": "Incorporar todo o código dos serviços secundários diretamente na aplicação principal para evitar chamadas de rede."
+        },
+        {
+          "key": "E",
+          "text": "Fixar todas as instâncias em um único servidor físico para garantir comunicação sem latência entre elas."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas corretas são A e C. O Amazon SQS permite desacoplamento ponto-a-ponto por meio de filas, enquanto o Amazon SNS permite o modelo pub/sub com fan-out para múltiplos consumidores. Ambas as abordagens removem a dependência direta entre componentes, permitindo escalonamento e falhas independentes. As alternativas B, D e E reforçam o acoplamento ao consolidar componentes, aumentando o risco de um único ponto de falha e reduzindo a capacidade de escalar serviços individualmente.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html",
+        "https://docs.aws.amazon.com/sns/latest/dg/welcome.html"
+      ]
+    }
+  ]
+}

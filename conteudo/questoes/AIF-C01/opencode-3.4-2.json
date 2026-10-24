@@ -1,0 +1,156 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A Heliodata gerou respostas automáticas para 2.000 perguntas de suporte e agora quer compará-las com respostas de referência escritas por especialistas. Muitas respostas corretas usam palavras completamente diferentes das de referência (paráfrases), e a equipe não quer penalizar essas variações de redação. Qual método de avaliação automatizada é mais adequado para esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Exact match, contando como acerto apenas respostas idênticas caractere a caractere às de referência."
+        },
+        {
+          "key": "B",
+          "text": "Similaridade semântica calculada a partir de embeddings da resposta gerada e da resposta de referência."
+        },
+        {
+          "key": "C",
+          "text": "Latência média e custo por resposta gerada."
+        },
+        {
+          "key": "D",
+          "text": "Contagem de tokens gerados em cada resposta, comparada à média das referências."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A similaridade semântica por embeddings compara o significado das frases e não a forma exata das palavras, então duas respostas equivalentes escritas com vocabulário diferente recebem pontuação alta — exatamente o que o cenário exige. A alternativa A não atende porque exact match reprova qualquer paráfrase, mesmo que a resposta esteja correta. A alternativa C mede desempenho operacional (latência e custo), não a qualidade ou a aderência ao conteúdo de referência. A alternativa D mede apenas o tamanho da resposta, o que não indica se ela está correta ou próxima da referência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html",
+        "https://aws.amazon.com/bedrock/"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A Nordflor precisa avaliar 5.000 respostas de um foundation model em cinco critérios subjetivos: clareza, tom, utilidade, concisão e aderência ao público. Revisar todo esse volume manualmente é inviável no prazo, mas a equipe quer uma pontuação por critério que se aproxime do julgamento de especialistas. Qual abordagem de avaliação atende melhor a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aplicar BLEU e ROUGE, pois essas métricas cobrem todos os critérios subjetivos citados."
+        },
+        {
+          "key": "B",
+          "text": "Medir a perplexidade do modelo sobre os prompts de entrada."
+        },
+        {
+          "key": "C",
+          "text": "Calcular a taxa de recusas do modelo ao longo das 5.000 respostas."
+        },
+        {
+          "key": "D",
+          "text": "Usar um foundation model mais capaz como juiz, com rubrica explícita por critério, e calibrar os resultados comparando-os com uma amostra pontuada por especialistas."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A avaliação por modelo juiz (LLM-as-a-judge) permite pontuar grandes volumes em critérios qualitativos, desde que exista uma rubrica clara, e a calibração contra uma amostra de especialistas valida se as notas automáticas refletem o julgamento humano. A alternativa A não serve porque BLEU e ROUGE medem sobreposição de n-gramas com um texto de referência e não avaliam tom, clareza ou utilidade. A alternativa B mede a probabilidade que o modelo atribui ao texto de entrada, não a qualidade percebida das respostas. A alternativa C mede apenas a frequência de recusas, um recorte estreito que não cobre os cinco critérios.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/generative-ai-lens.html"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "A Pradaria Analytics vai escolher entre três foundation models para classificar chamados em categorias predefinidas. A liderança exige uma comparação reproduzível, em que todos os modelos sejam submetidos exatamente aos mesmos casos, com respostas corretas conhecidas, para que as métricas possam ser comparadas de forma justa. Qual método de avaliação descreve essa abordagem?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Executar os três modelos sobre um conjunto de avaliação curado, com gabarito, e comparar as métricas de acurácia obtidas no mesmo conjunto."
+        },
+        {
+          "key": "B",
+          "text": "Liberar cada modelo para um grupo distinto de usuários e comparar o volume de chamados recebidos por cada grupo."
+        },
+        {
+          "key": "C",
+          "text": "Escolher o modelo com a maior janela de contexto, pois ela determina a acurácia da classificação."
+        },
+        {
+          "key": "D",
+          "text": "Avaliar cada modelo apenas com os prompts criados pela equipe que o ajustou, aproveitando o conhecimento dessa equipe."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Um conjunto de avaliação curado e com gabarito (holdout/golden dataset) garante que todos os modelos enfrentem os mesmos casos e sejam medidos pela mesma métrica objetiva, o que torna a comparação reproduzível. A alternativa B descreve um teste em produção com grupos diferentes, no qual os casos variam entre modelos e não há gabarito, impedindo comparação justa. A alternativa C usa uma característica técnica (janela de contexto) que não mede qualidade nem acurácia na tarefa de classificação. A alternativa D gera viés, pois cada modelo é testado com prompts diferentes e possivelmente ajustados a ele, eliminando a comparabilidade.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "O Banco Cedro usa um foundation model para pré-selecionar currículos. Antes de liberar o modelo em produção, o comitê de risco quer verificar se as respostas apresentam resultados sistematicamente diferentes entre grupos demográficos presentes na base de candidatos, mantendo o mesmo perfil profissional. Qual avaliação deve ser conduzida?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comparar o custo por mil tokens entre as versões candidatas do modelo."
+        },
+        {
+          "key": "B",
+          "text": "Medir a perplexidade do modelo nos currículos de todas as regiões atendidas."
+        },
+        {
+          "key": "C",
+          "text": "Avaliar justiça (fairness), comparando as decisões do modelo entre os subgrupos usando um conjunto de dados rotulado."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar filtros de conteúdo do Amazon Bedrock Guardrails antes de cada inferência."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "A avaliação de fairness compara, em um conjunto rotulado, as taxas de decisão do modelo entre subgrupos com características equivalentes, revelando disparidades sistemáticas que precisam ser corrigidas antes da produção. A alternativa A trata de custo, não de equidade de resultados. A alternativa B mede o ajuste do modelo à linguagem dos textos, sem indicar diferenças de tratamento entre grupos. A alternativa D reduz conteúdo nocivo nas respostas, mas não mede se as decisões são equitativas entre grupos demográficos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/generative-ai-lens.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+      ]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "A Corticita vai conduzir uma avaliação humana para comparar duas versões de um foundation model usadas no mesmo assistente virtual. A equipe de qualidade quer reduzir vieses dos avaliadores e garantir que as notas atribuídas às duas versões sejam comparáveis entre si. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Atribuir cada resposta a um único avaliador, sem segunda opinião, para reduzir o custo do processo."
+        },
+        {
+          "key": "B",
+          "text": "Definir a rubrica com critérios objetivos e exemplos de respostas para cada nível de nota."
+        },
+        {
+          "key": "C",
+          "text": "Ocultar dos avaliadores qual versão gerou cada resposta e apresentar os itens em ordem aleatória."
+        },
+        {
+          "key": "D",
+          "text": "Informar aos avaliadores qual é a versão nova, para que possam calibrar melhor o julgamento."
+        },
+        {
+          "key": "E",
+          "text": "Registrar apenas a média final das notas, descartando as notas individuais por critério."
+        }
+      ],
+      "corretas": ["B", "C"],
+      "explicacao": "Uma rubrica com critérios objetivos e exemplos por nível de nota padroniza o julgamento e reduz a subjetividade, enquanto a ocultação da versão do modelo e a ordem aleatória dos itens (avaliação cega) evitam o viés de expectativa em favor de uma das versões — juntas, essas práticas tornam as notas comparáveis. A alternativa A não atende porque um único avaliador por item, sem verificação de concordância, amplia o efeito de vieses individuais e erros de julgamento. A alternativa D introduz exatamente o viés que se quer evitar, pois revelar a origem da resposta influencia a nota. A alternativa E descarta a granularidade por critério, impedindo analisar onde as versões diferem e dificultando a detecção de inconsistências.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html",
+        "https://docs.aws.amazon.com/wellarchitected/latest/generative-ai-lens/generative-ai-lens.html"
+      ]
+    }
+  ]
+}

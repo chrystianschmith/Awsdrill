@@ -1,0 +1,127 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "A startup chamada VerdeMercado está desenvolvendo um sistema de IA para recomendar aprovações de empréstimo. Durante os testes, a equipe percebe que o modelo aprova empréstimos em taxas muito mais altas para solicitantes de determinados códigos postais, mesmo com perfis financeiros semelhantes. Qual prática é a mais adequada para lidar com essa preocupação de IA responsável?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar a complexidade do modelo para compensar as diferenças observadas."
+        },
+        {
+          "key": "B",
+          "text": "Avaliar a representatividade dos dados de treinamento em relação a diferentes grupos e aplicar técnicas de mitigação de viés."
+        },
+        {
+          "key": "C",
+          "text": "Remover todos os dados geográficos sem análise prévia, independentemente do impacto na precisão."
+        },
+        {
+          "key": "D",
+          "text": "Treinar o modelo apenas com solicitações aprovadas anteriormente para maximizar a acurácia."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Avaliar a representatividade dos dados e aplicar técnicas de mitigação de viés ajuda a identificar e reduzir o viés relacionado a dados (data bias), garantindo que o sistema não discrimine grupos com base em atributos correlacionados, como localização. A alternativa A está errada, pois aumentar a complexidade não corrige, por si só, o viés presente nos dados. A alternativa C está errada, pois remover atributos sem análise pode não ser necessário e pode esconder o problema ou afetar o desempenho de forma inadequada. A alternativa D está errada, pois treinar apenas com exemplos aprovados reforça o viés histórico existente no modelo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-fairness-and-explainability.html",
+        "https://aws.amazon.com/machine-learning/responsible-machine-learning/"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de tecnologia em saúde chamada SaudeFutura deseja utilizar um sistema de IA para sugerir planos de tratamento. As sugestões podem ter impacto significativo na saúde dos pacientes. Qual é a abordagem mais responsável para esse caso de uso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter um profissional de saúde qualificado no ciclo de decisão (human-in-the-loop) para revisar e validar as recomendações antes da ação."
+        },
+        {
+          "key": "B",
+          "text": "Automatizar completamente todas as sugestões de tratamento para reduzir o tempo de espera."
+        },
+        {
+          "key": "C",
+          "text": "Exibir as recomendações diretamente aos pacientes, sem revisão por profissionais clínicos."
+        },
+        {
+          "key": "D",
+          "text": "Tratar a saída do modelo como decisão final, sem registro de revisões ou justificativas."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A resposta correta é A. Em decisões de alto impacto, como sugestões de tratamento, a supervisão humana qualificada é fundamental para garantir responsabilidade, segurança e accountability. A alternativa B está errada, pois a automação completa não é apropriada quando há risco significativo à saúde. A alternativa C está errada, pois pacientes não devem receber decisões clínicas críticas sem revisão por profissionais qualificados. A alternativa D está errada, pois não registrar revisões elimina a rastreabilidade e a capacidade de auditoria, o que vai contra os princípios de IA responsável.",
+      "fontes": [
+        "https://aws.amazon.com/machine-learning/responsible-machine-learning/",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de varejo chamada CompraCerta planeja treinar um modelo de recomendação utilizando o histórico de compras dos clientes. Esse histórico inclui endereços de e-mail e números de telefone, que não são necessários para o objetivo de recomendação de produtos. Qual prática de governança de dados é a mais responsável nesse caso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Utilizar todos os dados pessoais disponíveis, pois isso garante a maior acurácia possível."
+        },
+        {
+          "key": "B",
+          "text": "Compartilhar os dados brutos dos clientes com anotadores terceirizados sem restrições."
+        },
+        {
+          "key": "C",
+          "text": "Armazenar dados pessoais em logs de depuração sem controle de acesso ou mascaramento."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar o princípio de minimização de dados, removendo ou pseudonimizando informações pessoais desnecessárias antes do treinamento."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A resposta correta é D. O princípio de minimização de dados determina coletar e utilizar apenas os dados estritamente necessários para a finalidade proposta, reduzindo riscos à privacidade. A alternativa A está errada, pois maximizar a acurácia não justifica o uso excessivo de dados pessoais. A alternativa B está errada, pois compartilhar dados brutos sem salvaguardas viola boas práticas de privacidade. A alternativa C está errada, pois armazenar dados pessoais sem proteção aumenta o risco de exposição e não é uma prática responsável.",
+      "fontes": [
+        "https://aws.amazon.com/machine-learning/responsible-machine-learning/",
+        "https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/welcome.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma fintech chamada PagamentoSeguro está estabelecendo um processo de governança para o desenvolvimento responsável de IA. Quais DUAS práticas são mais adequadas para garantir a responsabilidade contínua do sistema? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Realizar avaliações regulares de equidade (fairness) em diferentes grupos relevantes ao caso de uso."
+        },
+        {
+          "key": "B",
+          "text": "Testar o modelo apenas com o segmento de clientes mais lucrativo para otimizar os resultados."
+        },
+        {
+          "key": "C",
+          "text": "Documentar as limitações do modelo, o uso pretendido e possíveis casos de uso inadequados em sua documentação."
+        },
+        {
+          "key": "D",
+          "text": "Desativar todos os logs para maximizar o desempenho da inferência."
+        },
+        {
+          "key": "E",
+          "text": "Otimizar exclusivamente para acurácia, ignorando casos extremos e comportamentos inesperados."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas corretas são A e C. Avaliações regulares de equidade ajudam a detectar e monitorar o viés ao longo do tempo, enquanto documentar limitações e uso pretendido promove transparência e uso responsável do modelo. A alternativa B está errada, pois testar apenas com um segmento limita a detecção de viés e não representa a população real. A alternativa D está errada, pois logs são importantes para monitoramento, auditoria e detecção de problemas em produção. A alternativa E está errada, pois focar apenas em acurácia ignora riscos importantes e não está alinhado com os princípios de IA responsável.",
+      "fontes": [
+        "https://aws.amazon.com/machine-learning/responsible-machine-learning/",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"
+      ]
+    }
+  ]
+}

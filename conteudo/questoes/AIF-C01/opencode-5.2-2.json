@@ -1,0 +1,153 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "A Vitalis, uma healthtech que desenvolve um modelo de previsão de risco clínico, precisa comprovar a um auditor qual versão do modelo foi aprovada para uso em produção, quem concedeu essa aprovação e quais métricas e limitações estavam documentadas naquele momento. Qual recurso do Amazon SageMaker fornece esse registro de governança?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SageMaker Model Monitor, para acompanhar desvios nos dados de entrada do modelo em produção."
+        },
+        {
+          "key": "B",
+          "text": "Amazon SageMaker Feature Store, para centralizar as features usadas no treinamento e no inference."
+        },
+        {
+          "key": "C",
+          "text": "Amazon SageMaker Model Registry, com versões de modelo, status de aprovação e model cards associados."
+        },
+        {
+          "key": "D",
+          "text": "Amazon SageMaker Pipelines, para orquestrar automaticamente as etapas de treinamento e implantação."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O SageMaker Model Registry mantém o catálogo de versões de modelo e permite registrar o status de aprovação (por exemplo, Pending, Approved ou Rejected), além de metadados e model cards que documentam uso pretendido, métricas e limitações. Isso produz a evidência de governança exigida pelo auditor. O Model Monitor detecta desvios de dados e qualidade em produção, mas não registra aprovação de versão. O Feature Store organiza features para treinamento e inference, sem controlar aprovação de modelos. O Pipelines automatiza a execução do fluxo de ML, porém não substitui o registro formal de aprovação e documentação do modelo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"
+      ]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de educação armazena terabytes de materiais de alunos em buckets do Amazon S3 e pretende usar parte desses dados para ajustar um modelo de linguagem. Antes do treinamento, a equipe de privacidade precisa saber quais buckets contêm dados pessoais e quais tipos de informações sensíveis estão presentes, para atender às obrigações de mapeamento de dados da LGPD. Qual serviço da AWS atende diretamente a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Macie, para descobrir e classificar dados sensíveis, como informações pessoais, armazenados no Amazon S3."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Comprehend, para identificar entidades e dados pessoais no texto durante as requisições de inference."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Bedrock Guardrails, para filtrar conteúdo sensível nas respostas geradas pelo modelo."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Inspector, para identificar vulnerabilidades de software nas instâncias que processam os dados."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon Macie usa aprendizado de máquina e correspondência de padrões para descobrir e classificar dados sensíveis, incluindo informações pessoais, em buckets do Amazon S3, gerando inventário e findings que apoiam o mapeamento exigido pela LGPD. O Comprehend consegue detectar PII em textos enviados à API, mas não faz varredura contínua e inventário dos dados já armazenados nos buckets. O Bedrock Guardrails atua sobre interações com modelos generativos, filtrando conteúdo, e não sobre o inventário de dados no S3. O Inspector avalia vulnerabilidades em cargas de trabalho, não o conteúdo dos dados armazenados.",
+      "fontes": ["https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html"]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco europeu usa o Amazon Bedrock para resumir documentos internos e precisa cumprir uma exigência regulatória de que os dados dos clientes não sejam armazenados nem processados fora da União Europeia. A empresa já organiza suas contas com o AWS Organizations e quer impedir que qualquer equipe crie recursos de IA ou de armazenamento em outras regiões. Qual medida atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar replicação entre regiões no Amazon S3 para aumentar a durabilidade dos documentos."
+        },
+        {
+          "key": "B",
+          "text": "Usar restrições geográficas no Amazon CloudFront para bloquear o acesso de usuários fora da União Europeia."
+        },
+        {
+          "key": "C",
+          "text": "Criptografar os dados com chaves KMS multi-Region para que o material da chave esteja disponível em vários locais."
+        },
+        {
+          "key": "D",
+          "text": "Aplicar uma política de controle de serviços (SCP) que negue o uso de serviços e regiões fora da lista aprovada e implantar as cargas de trabalho em uma região da União Europeia."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Uma SCP no AWS Organizations pode negar a criação e o uso de recursos em regiões não aprovadas, inclusive para administradores das contas-membro, e a implantação em uma região da União Europeia mantém o processamento e o armazenamento dentro do território exigido. A replicação para outra região amplia a exposição dos dados e contraria o requisito. As restrições geográficas do CloudFront controlam de onde os usuários acessam o conteúdo, mas não onde os dados são processados ou armazenados. Chaves KMS multi-Region permitem descriptografar dados em outra região, o que aumenta o alcance do material criptográfico em vez de restringir a residência dos dados.",
+      "fontes": [
+        "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html",
+        "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      ]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma seguradora utiliza um modelo para analisar pedidos de indenização e, por exigência regulatória, decisões com baixa confiança ou potencial de impacto negativo ao cliente devem ser revisadas por uma pessoa antes de serem concluídas. A empresa também precisa guardar evidências dessa revisão para auditoria. Qual recurso da AWS permite implementar esse fluxo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SageMaker Model Monitor, configurado para emitir alertas quando a confiança das previsões cair."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Augmented AI (A2I), com fluxos de revisão humana que registram entradas, saídas e decisões dos revisores."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Bedrock Guardrails, configurado para bloquear respostas com conteúdo considerado sensível."
+        },
+        {
+          "key": "D",
+          "text": "Amazon SageMaker Clarify, para detectar viés nos dados e explicar as previsões do modelo."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O Amazon Augmented AI (A2I) permite criar fluxos de revisão humana para previsões de baixa confiança ou que atendam a critérios definidos, encaminhando os casos a revisores e armazenando entradas, saídas e ações dos revisores no Amazon S3, o que gera a evidência de supervisão exigida. O Model Monitor observa desvios e qualidade, mas apenas alerta; não encaminha casos para pessoas nem registra decisões humanas. O Bedrock Guardrails filtra conteúdo em aplicações generativas, sem criar um processo de revisão humana. O Clarify apoia análise de viés e explicabilidade, não a operação de revisão e seu registro para auditoria.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/a2i-use-augmented-ai-a2i-human-review-loops.html",
+        "https://aws.amazon.com/augmented-ai/"
+      ]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma gestora de investimentos precisa manter, por sete anos, registros de decisões geradas por IA e evidências de treinamento de modelos. O regulador exige que esses registros não possam ser alterados nem excluídos durante o período de retenção, inclusive por administradores da conta. (Escolha duas.) Quais configurações atendem a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o Amazon S3 Object Lock no modo de conformidade nos buckets que guardam os registros, com o período de retenção definido."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar apenas o versionamento do Amazon S3 nos buckets, mantendo versões anteriores dos objetos."
+        },
+        {
+          "key": "C",
+          "text": "Criar uma regra de ciclo de vida no Amazon S3 para mover os objetos para o Amazon Glacier Deep Archive após 90 dias."
+        },
+        {
+          "key": "D",
+          "text": "Ativar o AWS Backup Vault Lock no modo de conformidade para proteger as cópias de backup dos registros."
+        },
+        {
+          "key": "E",
+          "text": "Ativar a validação de integridade de arquivos de log do AWS CloudTrail para detectar alterações nos logs."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "O S3 Object Lock no modo de conformidade impede a exclusão e a sobrescrita de objetos durante o período de retenção, inclusive por usuários com privilégios administrativos, e é indicado para registros com retenção regulatória. O AWS Backup Vault Lock no modo de conformidade aplica proteção equivalente às cópias de backup, impedindo sua remoção antes do prazo. O versionamento do S3 permite recuperar versões, mas não impede que administradores excluam objetos ou o próprio bucket. Uma regra de ciclo de vida apenas muda a classe de armazenamento, sem tornar os dados imutáveis. A validação de integridade do CloudTrail ajuda a detectar adulteração de logs, porém não impede a exclusão dos registros.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html",
+        "https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html"
+      ]
+    }
+  ]
+}

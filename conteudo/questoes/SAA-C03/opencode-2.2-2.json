@@ -1,0 +1,65 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa armazena arquivos enviados por usuários no Amazon S3. Caso uma Availability Zone inteira fique indisponível na região, a empresa precisa garantir que esses objetos continuem acessíveis. Qual característica do Amazon S3 atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O Amazon S3 armazena e replica automaticamente os objetos entre múltiplas Availability Zones na mesma região."
+        },
+        {
+          "key": "B",
+          "text": "O Amazon S3 armazena todos os objetos em uma única Availability Zone, definida no momento da criação do bucket."
+        },
+        {
+          "key": "C",
+          "text": "O Amazon S3 exige replicação manual configurada pelo cliente para cada Availability Zone."
+        },
+        {
+          "key": "D",
+          "text": "O Amazon S3 replica objetos apenas para outra região, nunca entre Availability Zones da mesma região."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "O Amazon S3 foi projetado para alta durabilidade e disponibilidade, armazenando automaticamente os objetos em múltiplas Availability Zones dentro da mesma região. Isso permite que os dados permaneçam acessíveis mesmo em caso de falha de uma Availability Zone. A alternativa B está incorreta porque o Amazon S3 não fica restrito a uma única Availability Zone por padrão. A alternativa C está incorreta, pois a replicação entre Availability Zones é nativa ao serviço, não exigindo ação manual do cliente. A alternativa D está incorreta, pois a proteção entre Availability Zones é o comportamento padrão na mesma região; replicação entre regiões é opcional (por exemplo, com o Amazon S3 Cross-Region Replication).",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/DataDurability.html"
+      ]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma VPC possui subnets privadas em duas Availability Zones e instâncias Amazon EC2 nessas subnets precisam acessar a internet para atualizações de software. Para maximizar a resiliência caso um NAT Gateway fique indisponível, qual abordagem é recomendada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um único NAT Gateway em uma das Availability Zones e rotear todo o tráfego das subnets privadas para ele."
+        },
+        {
+          "key": "B",
+          "text": "Criar um NAT Gateway em cada Availability Zone e rotear o tráfego de cada subnet privada para o NAT Gateway localizado na mesma Availability Zone."
+        },
+        {
+          "key": "C",
+          "text": "Usar um Internet Gateway diretamente nas tabelas de rotas das subnets privadas."
+        },
+        {
+          "key": "D",
+          "text": "Criar um único NAT Gateway em uma subnet pública de uma Availability Zone e compartilhar esse mesmo recurso entre regiões."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Para alta disponibilidade, o recomendado é implantar um NAT Gateway por Availability Zone. Dessa forma, se um NAT Gateway ou uma Availability Zone ficar indisponível, o tráfego das instâncias nas outras Availability Zones seguirá pelo NAT Gateway correspondente à sua própria zona, evitando um ponto único de falha. A alternativa A está incorreta, pois um único NAT Gateway cria um ponto único de falha caso essa zona fique indisponível. A alternativa C está incorreta, pois subnets privadas não devem ter rotas diretas para um Internet Gateway. A alternativa D está incorreta, pois NAT Gateways são recursos regionais por zona, não compartilhados entre regiões para esse propósito e não resolvem a resiliência intra-região da forma proposta.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html",
+        "https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-scenarios.html"
+      ]
+    }
+  ]
+}

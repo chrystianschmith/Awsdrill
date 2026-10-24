@@ -1,0 +1,98 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está projetando um aplicativo de chatbot em tempo real com Amazon Bedrock. Os usuários esperam respostas rápidas para perguntas curtas, e qualquer atraso perceptível pode impactar a adoção do aplicativo. Ao considerar o design dessa aplicação, qual dos seguintes fatores tem maior impacto direto na latência ao invocar um foundation model (FM)?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "A quantidade de versões de objetos armazenadas em um bucket do Amazon S3"
+        },
+        {
+          "key": "B",
+          "text": "O modelo escolhido e o tamanho da resposta gerada na inferência"
+        },
+        {
+          "key": "C",
+          "text": "A política de ciclo de vida configurada em um bucket do Amazon S3"
+        },
+        {
+          "key": "D",
+          "text": "O número de regras em um grupo de segurança da Amazon VPC"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Ao invocar um foundation model, a latência é fortemente influenciada pelo modelo selecionado (arquitetura, tamanho e tempo de inferência) e pela quantidade de tokens gerados na resposta. Modelos maiores ou respostas mais longas tendem a aumentar o tempo de inferência. A) Não afeta a latência da inferência do modelo. C) As políticas de ciclo de vida do Amazon S3 atuam sobre o armazenamento, não sobre a chamada de inferência. D) Regras de grupo de segurança afetam o roteamento de rede, mas não são o principal fator de latência de inferência de um FM.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/models.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/inference.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe está construindo um aplicativo com Amazon Bedrock que precisa resumir documentos extensos enviados pelos usuários. Durante os testes, alguns documentos são truncados pelo modelo e partes importantes do conteúdo são perdidas nas respostas. Ao projetar essa aplicação, qual consideração de design é MAIS importante para evitar esse tipo de perda?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Utilizar somente formatos de arquivo compactados, como ZIP"
+        },
+        {
+          "key": "B",
+          "text": "Criptografar todos os documentos com AWS Key Management Service (AWS KMS)"
+        },
+        {
+          "key": "C",
+          "text": "Aplicar replicação cruzada de região aos documentos"
+        },
+        {
+          "key": "D",
+          "text": "Gerenciar o contexto considerando o limite da janela de contexto do modelo escolhido"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Cada foundation model possui um limite máximo de tokens na janela de contexto (context window). Ao enviar documentos extensos, é necessário considerar esse limite e adotar estratégias como dividir o conteúdo, resumir por partes ou priorizar as informações mais relevantes, para evitar o truncamento. A) O formato compactado não aumenta a janela de contexto do modelo. B) A criptografia protege os dados, mas não resolve o limite de tokens. C) A replicação entre regiões diz respeito à disponibilidade dos arquivos, não à capacidade de processamento do modelo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/models.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma equipe está projetando um aplicativo com Amazon Bedrock voltado a um caso de uso com alto volume de invocações e orçamento limitado. Ao avaliar considerações de design para otimizar custos e desempenho, quais das seguintes ações são CORRETAS? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Selecionar um modelo menor e mais eficiente quando o caso de uso não exige o maior nível de raciocínio"
+        },
+        {
+          "key": "B",
+          "text": "Enviar sempre o histórico completo da conversa em todas as requisições, independentemente da relevância"
+        },
+        {
+          "key": "C",
+          "text": "Habilitar logs detalhados de todas as respostas sem filtrar, para todos os usuários em produção"
+        },
+        {
+          "key": "D",
+          "text": "Otimizar o tamanho dos prompts, removendo informações irrelevantes antes de invocar o modelo"
+        },
+        {
+          "key": "E",
+          "text": "Gerar a resposta com o máximo de tokens permitido para garantir que nenhuma informação seja omitida"
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "Ao projetar aplicações com foundation models, o custo está diretamente relacionado ao número de tokens processados (entrada e saída). Selecionar um modelo adequado ao nível de complexidade da tarefa e otimizar o tamanho dos prompts são considerações importantes para equilibrar custo e desempenho. B) Enviar o histórico completo a cada requisição aumenta desnecessariamente o número de tokens de entrada. C) Registrar logs detalhados sem necessidade pode gerar custos adicionais e não é uma otimização de inferência. E) Gerar o máximo de tokens possível aumenta o custo e nem sempre é necessário para o caso de uso.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/models.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/inference.html"
+      ]
+    }
+  ]
+}

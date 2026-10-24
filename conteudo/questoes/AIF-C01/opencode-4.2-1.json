@@ -1,0 +1,156 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de ciência de dados da empresa VerdeNova está prestes a colocar um modelo de crédito em produção. Para atender a requisitos regulatórios, a equipe precisa documentar de forma clara quais fatores influenciam as decisões do modelo e permitir que usuários afetados entendam o motivo de uma negação. Qual das opções a seguir melhor apoia a transparência e a explicabilidade nesse cenário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar um modelo de caixa-preta sem nenhum tipo de registro, confiando apenas na acurácia do conjunto de testes."
+        },
+        {
+          "key": "B",
+          "text": "Utilizar Amazon SageMaker Clarify para gerar explicações locais e globais e incluir essas informações em um relatório de modelo."
+        },
+        {
+          "key": "C",
+          "text": "Omitir os atributos de entrada do log de inferência para reduzir o tamanho dos arquivos armazenados."
+        },
+        {
+          "key": "D",
+          "text": "Executar o modelo com dados sintéticos aleatórios após a implantação, sem registrar as justificativas das decisões."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. O Amazon SageMaker Clarify fornece recursos de explicabilidade (como SHAP) para entender a contribuição de cada feature nas previsões, o que apoia a transparência e a capacidade de explicar decisões a usuários e auditores. A alternativa A incentiva um modelo caixa-preta sem transparência, o que dificulta a explicação de decisões. A alternativa C reduz a rastreabilidade ao omitir atributos de entrada. A alternativa D não gera explicações e não atende aos requisitos de transparência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-explainability.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da FinoraTech precisa publicar um modelo de triagem de solicitações para uso interno e externo. Antes da implantação, ela deseja garantir que partes interessadas consigam compreender as limitações do modelo, os dados usados no treinamento e os cenários em que não deve ser utilizado. Qual prática melhor promove a transparência nesse contexto?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter todas as informações do modelo em um arquivo de configuração binário acessível apenas ao time de infraestrutura."
+        },
+        {
+          "key": "B",
+          "text": "Criar e compartilhar um model card documentando propósito, dados, métricas, limitações e uso pretendido."
+        },
+        {
+          "key": "C",
+          "text": "Restringir o acesso à documentação apenas após a ocorrência de um incidente de produção."
+        },
+        {
+          "key": "D",
+          "text": "Publicar apenas a taxa de acurácia agregada, sem detalhes sobre o conjunto de dados ou restrições de uso."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Um model card é uma prática recomendada para promover transparência ao documentar propósito, dados de treinamento, desempenho, limitações e usos não recomendados. A alternativa A oculta informações em vez de torná-las acessíveis. A alternativa C adia a transparência até depois de incidentes. A alternativa D oferece apenas uma métrica agregada, sem contexto necessário para avaliar o uso responsável.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html",
+        "https://aws.amazon.com/ai/responsible-ai/"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Durante uma auditoria, a empresa AgroNova precisa demonstrar por que um modelo preditivo negou uma solicitação específica. A equipe tem acesso apenas à pontuação final e não consegue identificar quais atributos contribuíram mais para essa decisão. Qual abordagem é mais adequada para tornar essa decisão explicável?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar aleatoriamente a pontuação do modelo para todas as solicitações negadas."
+        },
+        {
+          "key": "B",
+          "text": "Gerar uma explicação local por instância, mostrando a contribuição de cada feature para a predição individual."
+        },
+        {
+          "key": "C",
+          "text": "Substituir o modelo por uma regra fixa global, independentemente dos dados históricos."
+        },
+        {
+          "key": "D",
+          "text": "Excluir o registro da solicitação dos logs para evitar a exposição dos detalhes da decisão."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Explicações locais por instância permitem entender por que uma predição específica foi feita, identificando quais atributos tiveram maior contribuição. A alternativa A é antiética e não explica nada. A alternativa C não aproveita o modelo atual nem necessariamente torna a decisão rastreável. A alternativa D impede a auditoria ao remover o registro.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-explainability.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-processing-job-configure-explainability.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe da LogiPaz está desenvolvendo um sistema de recomendação e deseja garantir a transparência para seus usuários. Em vez de mostrar apenas 'Recomendado para você', a equipe quer que os usuários entendam, em alto nível, por que determinado item foi sugerido. Qual estratégia melhor apoia esse objetivo de explicabilidade voltada ao usuário?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Exibir uma lista aleatória de motivos sem relação com os dados reais do usuário."
+        },
+        {
+          "key": "B",
+          "text": "Fornecer justificativas baseadas em fatores relevantes para a recomendação, como histórico de visualizações ou preferências semelhantes."
+        },
+        {
+          "key": "C",
+          "text": "Ocultar completamente o motivo da recomendação para evitar confusão dos usuários."
+        },
+        {
+          "key": "D",
+          "text": "Mostrar apenas o ID interno do modelo usado na inferência, sem qualquer contexto."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A resposta correta é B. Explicações voltadas ao usuário devem ser baseadas em fatores reais que influenciaram a recomendação, tornando o sistema mais transparente e compreensível. A alternativa A fornece justificativas falsas. A alternativa C elimina a transparência. A alternativa D expõe informações técnicas irrelevantes para o usuário.",
+      "fontes": [
+        "https://aws.amazon.com/ai/responsible-ai/",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-explainability.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "A equipe da MedApoio planeja implantar um modelo de apoio à triagem em um ambiente regulado. Para garantir transparência e explicabilidade, quais das seguintes ações devem ser adotadas? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Documentar limitações conhecidas do modelo e cenários em que ele não deve ser usado em um registro acessível."
+        },
+        {
+          "key": "B",
+          "text": "Impedir que profissionais de saúde vejam qualquer justificativa das sugestões para evitar vieses inconscientes."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar a geração de explicações por predição para apoiar a revisão humana das decisões sugeridas."
+        },
+        {
+          "key": "D",
+          "text": "Remover todos os logs de inferência após 24 horas para garantir que não haja rastreabilidade."
+        },
+        {
+          "key": "E",
+          "text": "Ocultar a versão do modelo implantada, dificultando a identificação em caso de auditoria."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "As respostas corretas são A e C. Documentar limitações e usos não recomendados (A) promove transparência, e gerar explicações por predição (C) permite que revisores humanos entendam e avaliem as sugestões, essencial em contextos regulados. A alternativa B impede a revisão explicável. A alternativa D remove a rastreabilidade necessária para auditorias. A alternativa E dificulta a governança e a transparência.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html",
+        "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-explainability.html"
+      ]
+    }
+  ]
+}

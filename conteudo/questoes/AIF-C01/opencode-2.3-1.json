@@ -1,0 +1,144 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma startup chamada NovaOrbis precisa integrar modelos de foundation model (FM) à sua aplicação web sem gerenciar servidores, contêineres ou infraestrutura de GPU. Qual serviço da AWS permite acessar e invocar modelos prontos por meio de uma API totalmente gerenciada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon EC2 com instâncias G4dn"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Bedrock"
+        },
+        {
+          "key": "C",
+          "text": "Amazon EMR"
+        },
+        {
+          "key": "D",
+          "text": "AWS Batch"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Amazon Bedrock é um serviço totalmente gerenciado que permite acessar e invocar foundation models (FMs) de diversos provedores por meio de uma API, sem a necessidade de gerenciar infraestrutura. A alternativa A (Amazon EC2 com instâncias G4dn) exige que a equipe provisione, configure e gerencie servidores e modelos. A alternativa C (Amazon EMR) é voltada para processamento de big data e não para invocação gerenciada de FMs. A alternativa D (AWS Batch) é destinada à execução de jobs em lote em computação gerenciada, mas não oferece um catálogo de foundation models prontos para invocação via API da forma proposta.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa Veridia deseja criar um assistente que responda com base em sua própria documentação técnica interna, sem treinar um modelo do zero. Para isso, precisa recuperar trechos relevantes dos documentos e enviá-los junto à consulta do usuário. Qual abordagem da AWS é mais adequada para esse cenário de Retrieval Augmented Generation (RAG)?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar Amazon SQS para enfileirar perguntas e processá-las manualmente"
+        },
+        {
+          "key": "B",
+          "text": "Usar Amazon Bedrock Knowledge Bases para conectar documentos a uma fonte de dados e realizar recuperação semântica"
+        },
+        {
+          "key": "C",
+          "text": "Usar AWS Glue para transformar perguntas em SQL e consultá-las em tabelas"
+        },
+        {
+          "key": "D",
+          "text": "Usar Amazon CloudWatch Logs Insights para buscar respostas em logs de aplicação"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Amazon Bedrock Knowledge Bases permite ingerir documentos de fontes de dados, vetorizá-los e realizar recuperação semântica para fornecer contexto relevante a um foundation model em um fluxo de RAG, sem necessidade de construir toda a pipeline de vetorização e busca manualmente. A alternativa A (Amazon SQS) é um serviço de filas e não oferece recuperação semântica de documentos. A alternativa C (AWS Glue) é voltado a ETL e não a recuperação de contexto para geração. A alternativa D (Amazon CloudWatch Logs Insights) permite consultar logs, mas não foi projetado para recuperação semântica de documentação interna para uso em RAG.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A empresa LuminaOps tem uma carga de inferência de GenAI com tráfego previsível e consistente ao longo do dia. Eles desejam garantir capacidade reservada para chamadas a um foundation model no Amazon Bedrock, com o objetivo de obter desempenho mais previsível. Qual opção é a mais adequada para esse caso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar chamadas on-demand sem qualquer tipo de reserva"
+        },
+        {
+          "key": "B",
+          "text": "Usar Amazon S3 Transfer Acceleration"
+        },
+        {
+          "key": "C",
+          "text": "Usar AWS Lambda com memória máxima para aumentar a capacidade"
+        },
+        {
+          "key": "D",
+          "text": "Usar Provisioned Throughput no Amazon Bedrock"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Provisioned Throughput no Amazon Bedrock permite reservar capacidade de inferência para modelos selecionados, oferecendo desempenho mais previsível para cargas consistentes. A alternativa A ignora a necessidade de capacidade reservada. A alternativa B (Amazon S3 Transfer Acceleration) acelera transferências para o Amazon S3 e não afeta a capacidade de inferência de foundation models. A alternativa C (AWS Lambda com memória máxima) altera recursos de computação do Lambda, mas não reserva capacidade de inferência de um modelo no Amazon Bedrock.",
+      "fontes": ["https://docs.aws.amazon.com/bedrock/latest/userguide/provisioned-throughput.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe Solstice Labs deseja experimentar rapidamente um modelo de código aberto para um protótipo de aplicação GenAI, mas não tem experiência em preparar ambientes de treinamento ou de hospedagem complexos. Qual serviço da AWS permite implantar modelos de código aberto prontos para uso com poucos cliques ou comandos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Redshift"
+        },
+        {
+          "key": "B",
+          "text": "AWS Data Pipeline"
+        },
+        {
+          "key": "C",
+          "text": "Amazon SageMaker JumpStart"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Route 53"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Amazon SageMaker JumpStart fornece modelos pré-treinados, incluindo modelos de código aberto, com soluções prontas para implantação e fine-tuning em ambientes gerenciados do Amazon SageMaker, facilitando a experimentação rápida. A alternativa A (Amazon Redshift) é um data warehouse. A alternativa B (AWS Data Pipeline) orquestra movimentação e transformação de dados. A alternativa D (Amazon Route 53) é um serviço DNS.",
+      "fontes": ["https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart.html"]
+    },
+    {
+      "dominio": "2.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A empresa AtlasForge está construindo um assistente automatizado com o Amazon Bedrock Agents. Esse assistente precisa interagir com sistemas corporativos para executar ações, como consultar o status de pedidos e criar tickets de suporte. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "O Amazon Bedrock Agents pode invocar funções ou APIs definidas por meio de action groups para executar ações em sistemas externos."
+        },
+        {
+          "key": "B",
+          "text": "O Amazon Bedrock Agents armazena permanentemente todos os dados transacionais da empresa em seu próprio banco relacional público."
+        },
+        {
+          "key": "C",
+          "text": "O Amazon Bedrock Agents pode usar um knowledge base para fundamentar respostas com informações internas antes de executar ações."
+        },
+        {
+          "key": "D",
+          "text": "O Amazon Bedrock Agents exige que todas as ações sejam executadas manualmente por um administrador, sem automação."
+        },
+        {
+          "key": "E",
+          "text": "O Amazon Bedrock Agents só funciona com arquivos em formato .txt locais e não consegue integrar com APIs corporativas."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "O Amazon Bedrock Agents pode usar action groups para invocar funções ou APIs e executar ações em sistemas externos (A), além de poder consultar knowledge bases para fundamentar suas respostas com informações internas (C). A alternativa B está incorreta, pois o serviço não armazena dados transacionais da empresa em um banco relacional público próprio. A alternativa D está incorreta, pois o objetivo é automatizar ações. A alternativa E está incorreta, pois o agente pode integrar com APIs corporativas por meio de action groups, não se limitando a arquivos .txt locais.",
+      "fontes": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how-it-works.html"
+      ]
+    }
+  ]
+}

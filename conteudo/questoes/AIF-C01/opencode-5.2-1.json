@@ -1,0 +1,141 @@
+{
+  "exame": "AIF-C01",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de IA de uma fintech precisa obter, sob demanda, cópias dos relatórios de conformidade e dos acordos de confidencialidade da AWS para apresentar ao auditor externo. Qual serviço da AWS permite acessar esses documentos diretamente?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Config"
+        },
+        {
+          "key": "B",
+          "text": "AWS Artifact"
+        },
+        {
+          "key": "C",
+          "text": "Amazon Macie"
+        },
+        {
+          "key": "D",
+          "text": "AWS Security Hub"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Correta (B): AWS Artifact é o portal central para acessar, sob demanda, relatórios de conformidade da AWS e acordos contratuais (incluindo NDAs) para fins de auditoria. Errada (A): AWS Config avalia configurações de recursos e conformidade com regras, não fornece relatórios/a acordos da AWS. Errada (C): Amazon Macie descobre e protege dados sensíveis em Amazon S3, não é um repositório de relatórios de conformidade da AWS. Errada (D): AWS Security Hub agrega achados de segurança e conformidade, mas não disponibiliza os relatórios/a acordos oficiais da AWS para download pelo cliente.",
+      "fontes": ["https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html"]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa que desenvolve soluções de IA precisa demonstrar, para uma auditoria, que ações realizadas na conta foram registradas de forma auditável e imutável em termos de trilha de eventos. Qual serviço da AWS é o mais adequado para manter esse registro de eventos da conta?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS CloudTrail"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Macie"
+        },
+        {
+          "key": "C",
+          "text": "AWS Audit Manager"
+        },
+        {
+          "key": "D",
+          "text": "AWS Config"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Correta (A): AWS CloudTrail registra chamadas de API e eventos de conta, fornecendo trilhas auditáveis de atividades. Errada (B): Amazon Macie identifica dados sensíveis em Amazon S3, não registra todas as chamadas de API da conta. Errada (C): AWS Audit Manager automatiza coleta de evidências para auditorias, mas não é o serviço que gera a trilha bruta de eventos da conta por padrão. Errada (D): AWS Config registra alterações de configuração de recursos ao longo do tempo, não substitui o registro de ações/API da conta.",
+      "fontes": ["https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html"]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Em um projeto de IA que processa dados pessoais, a equipe precisa avaliar se a configuração atual dos recursos da AWS está em conformidade com políticas internas e com requisitos regulatórios. Qual serviço da AWS permite avaliar continuamente configurações de recursos em relação a regras predefinidas ou personalizadas?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Security Hub"
+        },
+        {
+          "key": "B",
+          "text": "AWS Artifact"
+        },
+        {
+          "key": "C",
+          "text": "AWS Config"
+        },
+        {
+          "key": "D",
+          "text": "Amazon Macie"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "Correta (C): AWS Config permite avaliar continuamente configurações de recursos em relação a regras e fornece histórico de alterações. Errada (A): AWS Security Hub agrega e prioriza achados de segurança, mas não é o serviço principal para avaliação contínua de configuração de recursos com histórico detalhado. Errada (B): AWS Artifact fornece documentos de conformidade da AWS, não avalia configurações. Errada (D): Amazon Macie foca em descoberta e proteção de dados sensíveis, não em avaliação de configuração de recursos.",
+      "fontes": ["https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html"]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma organização que utiliza modelos de IA precisa automatizar a coleta de evidências para uma auditoria regulatória, mapeando-as para frameworks de conformidade. Qual serviço da AWS foi projetado especificamente para esse propósito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Audit Manager"
+        },
+        {
+          "key": "B",
+          "text": "Amazon Macie"
+        },
+        {
+          "key": "C",
+          "text": "AWS CloudTrail"
+        },
+        {
+          "key": "D",
+          "text": "AWS Security Hub"
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Correta (A): AWS Audit Manager automatiza a coleta de evidências e mapeamento para frameworks de conformidade, facilitando auditorias. Errada (B): Amazon Macie descobre dados sensíveis, mas não automatiza coleta de evidências para auditorias regulatórias. Errada (C): AWS CloudTrail fornece trilhas de eventos, mas não um framework de mapeamento/gerenciamento de evidências de auditoria por si só. Errada (D): AWS Security Hub agrega achados, mas não é o serviço projetado para automatizar coleta e organização de evidências para frameworks de auditoria.",
+      "fontes": ["https://docs.aws.amazon.com/audit-manager/latest/userguide/what-is.html"]
+    },
+    {
+      "dominio": "5.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Ao avaliar o programa de conformidade da AWS para soluções de IA, a equipe jurídica precisa entender quais informações estão disponíveis publicamente. (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "A página AWS Compliance Programs, que lista programas de conformidade relevantes para serviços da AWS."
+        },
+        {
+          "key": "B",
+          "text": "A lista de serviços em escopo por programa de conformidade publicada pela AWS."
+        },
+        {
+          "key": "C",
+          "text": "Credenciais privadas de contas de auditoria da AWS, disponíveis mediante solicitação não autenticada."
+        },
+        {
+          "key": "D",
+          "text": "Configurações detalhadas de chaves internas de criptografia usadas por todos os clientes."
+        },
+        {
+          "key": "E",
+          "text": "Regras de firewall proprietárias aplicadas ao backbone da AWS sem documentação."
+        }
+      ],
+      "corretas": ["A", "B"],
+      "explicacao": "Corretas (A) e (B): A AWS publica informações públicas sobre programas de conformidade e sobre quais serviços estão em escopo para cada programa. Erradas (C),(D),(E): Não são informações públicas; detalhes sensíveis de infraestrutura/credenciais não são divulgados.",
+      "fontes": ["https://aws.amazon.com/compliance/programs/", "https://aws.amazon.com/compliance/services-in-scope/"]
+    }
+  ]
+}
