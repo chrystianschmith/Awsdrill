@@ -13,6 +13,7 @@ export const LIMITES = {
   exportarUsuario: { max: 5, janelaMs: 60 * 60_000 },
   iaUsuario: { max: 10, janelaMs: 60 * 60_000 },
   reportUsuario: { max: 20, janelaMs: 60 * 60_000 },
+  checkoutUsuario: { max: 10, janelaMs: 60 * 60_000 },
 } satisfies Record<string, Limite>;
 
 export class RateLimitError extends Error {
