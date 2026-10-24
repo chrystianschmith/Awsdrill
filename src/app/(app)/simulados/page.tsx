@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth/session";
 import { examesSeguidos } from "@/lib/estudo/consultas";
-import { bancoDoExame, historicoSimulados, simuladoEmAndamento } from "@/lib/simulados/servico";
+import { bancoDoExame, historicoSimulados, simuladoEmAndamento, treinosNaSemana } from "@/lib/simulados/servico";
+import { getPlan } from "@/lib/assinaturas/plano";
+import { entitlementsFor } from "@/lib/assinaturas/entitlements";
+import { UpgradeCta } from "@/components/app/upgrade-cta";
 import { db } from "@/lib/db";
 import { Alert } from "@/components/ui/alert";
 import { buttonVariants } from "@/components/ui/button";
@@ -24,11 +27,16 @@ const fmt = new Intl.DateTimeFormat("pt-BR", {
 export default async function SimuladosPage({ searchParams }: PageProps<"/simulados">) {
   const user = await requireUser();
   const { exame, dominio } = await searchParams;
-  const [seguidos, andamento, historico] = await Promise.all([
+  const [seguidos, andamento, historico, plano, feitos] = await Promise.all([
     examesSeguidos(user.id),
     simuladoEmAndamento(user.id),
     historicoSimulados(user.id),
+    getPlan(user.id).then(entitlementsFor),
+    treinosNaSemana(user.id),
   ]);
+  const treinosRestantes = Number.isFinite(plano.treinosPorSemana)
+    ? Math.max(0, plano.treinosPorSemana - feitos)
+    : null;
   const formatos = await db.examVersion.findMany({
     where: { id: { in: seguidos.map((e) => e.examVersionId) } },
     select: { id: true, questionCount: true, durationMinutes: true },
@@ -86,15 +94,31 @@ export default async function SimuladosPage({ searchParams }: PageProps<"/simula
                 : "No treino você vê a correção a cada questão; na prova, só no relatório final."}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="grid gap-4">
+            {treinosRestantes !== null ? (
+              <p className="tabular text-sm text-muted-foreground">
+                {treinosRestantes === 0
+                  ? "Você usou os treinos desta semana. Eles voltam na segunda-feira."
+                  : `${treinosRestantes} de ${plano.treinosPorSemana} treinos restantes nesta semana.`}
+              </p>
+            ) : null}
             <IniciarSimulado
               exames={exames}
+              plano={{ modoProva: plano.modoProva, treinoEsgotado: treinosRestantes === 0 }}
               inicial={
                 typeof exame === "string" && exames.some((e) => e.id === exame)
                   ? { examVersionId: exame, domainId: typeof dominio === "string" ? dominio : null }
                   : undefined
               }
             />
+            {treinosRestantes === 0 ? (
+              <UpgradeCta feature="treinosPorSemana" description="No Pro os treinos não têm limite." />
+            ) : !plano.modoProva ? (
+              <UpgradeCta
+                feature="modoProva"
+                description="Simulado com o número de questões e o tempo oficiais, corrigido só no final."
+              />
+            ) : null}
           </CardContent>
         </Card>
       )}
