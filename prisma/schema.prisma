@@ -51,6 +51,7 @@ model User {
   answers                 Answer[]
   readinessScores         ReadinessScore[]
   contentReports          ContentReport[]
+  subscription            Subscription?
 }
 
 /// Sessão de login. O cookie guarda o token; o banco guarda só o hash SHA-256.
@@ -341,10 +342,16 @@ enum TopicStatus {
 }
 
 /// Exame que o usuário estuda, com a data de prova se ele marcou.
+enum FollowStatus {
+  ATIVO
+  PAUSADO // downgrade: fica pausado, nunca apagado
+}
+
 model UserExam {
-  id            String      @id @default(cuid())
+  id            String       @id @default(cuid())
   userId        String
   examVersionId String
+  status        FollowStatus @default(ATIVO)
   examDate      DateTime? // dia da prova, 00:00 UTC
   createdAt     DateTime    @default(now())
   user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -624,4 +631,32 @@ model ContentReport {
   @@index([resolvedAt, createdAt])
   @@index([topicId, createdAt])
   @@index([userId])
+}
+
+// ───────────────────────────── Assinaturas ─────────────────────────────
+
+/// Estado da assinatura, sempre gravado a partir do objeto atual do Stripe.
+model Subscription {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  stripeCustomerId      String    @unique
+  stripeSubscriptionId  String?   @unique
+  status                String? // status do Stripe: trialing, active, past_due...
+  priceId               String?
+  currentPeriodEnd      DateTime?
+  cancelAtPeriodEnd     Boolean   @default(false)
+  graceUntil            DateTime?
+  accessUntil           DateTime? // Pix anual avulso
+  renewalReminderSentAt DateTime? // lembrete de renovação do Pix já enviado para o accessUntil atual
+  effectivePlan         String    @default("FREE") // último plano efetivo aplicado (FREE|PRO), para detectar transições
+  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime  @default(now())
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// Idempotência do webhook: um registro por event.id processado.
+model StripeEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now())
 }
