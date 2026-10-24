@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa mantém 25 instâncias Amazon RDS para desenvolvimento e testes, usadas só em dias úteis, das 8h às 18h. Fora desse horário ninguém acessa os bancos, mas os dados precisam continuar lá no dia seguinte. Qual ação reduz o custo com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comprar Reserved DB Instances de 1 ano para os 25 bancos."
+        },
+        {
+          "key": "B",
+          "text": "Agendar a parada e o início das instâncias fora do horário de uso (por exemplo, com o Instance Scheduler on AWS ou regras do Amazon EventBridge)."
+        },
+        {
+          "key": "C",
+          "text": "Criar um snapshot e excluir as instâncias toda noite, restaurando-as pela manhã."
+        },
+        {
+          "key": "D",
+          "text": "Converter as instâncias para Multi-AZ para reduzir o tempo de indisponibilidade."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: instâncias RDS paradas não pagam horas de instância (só armazenamento e backups), e o agendamento automatiza a parada noturna e nos fins de semana, preservando os dados; como o RDS volta a ligar sozinho depois de 7 dias parado, a parada diária agendada é o padrão adequado. A paga 24 horas por dia, 7 dias por semana, para uso de 50 horas semanais. C economiza, mas acrescenta restaurações lentas e um processo frágil. D aumenta o custo.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem bancos Amazon RDS for PostgreSQL de produção com uso estável 24/7 e um gasto previsível para os próximos 3 anos. Nesse período, ela pretende migrar parte desses bancos para Amazon Aurora e mover outra parte para Amazon DynamoDB. Ela quer desconto em troca de compromisso sem ficar presa ao motor nem à classe de instância de hoje. Qual opção atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reserved DB Instances de 3 anos para a classe de instância atual."
+        },
+        {
+          "key": "B",
+          "text": "Manter tudo On-Demand até a migração terminar."
+        },
+        {
+          "key": "C",
+          "text": "Migrar já tudo para Aurora Serverless v2 para pagar só pelo uso."
+        },
+        {
+          "key": "D",
+          "text": "Database Savings Plans com compromisso de gasto por hora igual à linha de base estável."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: os Database Savings Plans aplicam o desconto ao uso de vários serviços de banco de dados, incluindo RDS, Aurora e DynamoDB, então o compromisso acompanha a migração entre motores. A prende o desconto à família, ao motor e à região atuais, que vão mudar. B abre mão do desconto em uma carga estável. C não garante economia para carga estável 24/7 e não atende a parte que vai para o DynamoDB.",
+      "fontes": [
+        "https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html",
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithReservedDBInstances.html"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma tabela do Amazon DynamoDB guarda 40 TB de histórico de pedidos. A maior parte dos itens é lida raramente, mas precisa responder com a mesma latência quando consultada, e o custo de armazenamento já é mais de 60% da conta da tabela. Qual mudança reduz o custo com o MENOR impacto na aplicação?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar a classe da tabela para DynamoDB Standard-Infrequent Access (Standard-IA)."
+        },
+        {
+          "key": "B",
+          "text": "Mudar a tabela para o modo de capacidade on-demand."
+        },
+        {
+          "key": "C",
+          "text": "Colocar um cluster do DynamoDB Accelerator (DAX) na frente da tabela."
+        },
+        {
+          "key": "D",
+          "text": "Transformar a tabela em global table com réplica em outra região."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: a classe Standard-IA tem armazenamento bem mais barato, com o mesmo desempenho e a mesma API, em troca de um custo maior por leitura e gravação, o que compensa quando o armazenamento domina a conta e o acesso é raro; a troca de classe não exige mudança na aplicação. B muda a cobrança de throughput, não a de armazenamento. C acrescenta custo e não reduz o armazenamento. D duplica o armazenamento e o custo.",
+      "fontes": ["https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.TableClasses.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Um cluster Amazon Aurora PostgreSQL de uma plataforma de pagamentos faz muito I/O. Na fatura, as cobranças de I/O passam de 25% do gasto total do cluster e variam muito de mês a mês, o que atrapalha o orçamento. A empresa quer reduzir o custo e torná-lo previsível sem trocar de banco nem alterar a aplicação. O que o arquiteto deve fazer?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Adicionar mais réplicas do Aurora para dividir o I/O entre elas."
+        },
+        {
+          "key": "B",
+          "text": "Migrar para Amazon RDS for PostgreSQL com volumes io2."
+        },
+        {
+          "key": "C",
+          "text": "Mudar a configuração de armazenamento do cluster para Aurora I/O-Optimized."
+        },
+        {
+          "key": "D",
+          "text": "Converter as instâncias para Aurora Serverless v2."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: no Aurora I/O-Optimized não há cobrança por operação de I/O, e a AWS indica economia de até 40% quando o I/O passa de 25% do gasto do Aurora, com custo previsível; a troca é uma configuração do cluster, sem mudança na aplicação. A acrescenta instâncias, e o I/O continua sendo cobrado. B troca de serviço e de modelo de operação e cobra IOPS provisionado. D muda a cobrança de computação, não a de I/O.",
+      "fontes": ["https://aws.amazon.com/rds/aurora/pricing/"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma aplicação de sessões de usuários grava no Amazon DynamoDB itens que só valem por 24 horas. O tráfego é imprevisível: quase zero na maior parte do dia e picos curtos e intensos sem horário certo. Hoje a tabela usa capacidade provisionada dimensionada para o pico, e um job noturno apaga os itens vencidos consumindo capacidade de gravação. Quais DUAS mudanças reduzem o custo? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar a tabela para o modo de capacidade on-demand."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar a capacidade provisionada para evitar throttling nos picos."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar o Time to Live (TTL) em um atributo de expiração e remover o job noturno."
+        },
+        {
+          "key": "D",
+          "text": "Criar uma global table para distribuir o tráfego entre regiões."
+        },
+        {
+          "key": "E",
+          "text": "Colocar um cluster DAX para absorver as gravações."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o modo on-demand cobra por requisição e acompanha picos imprevisíveis sem pagar capacidade ociosa, e o TTL apaga os itens vencidos automaticamente sem consumir capacidade de gravação, eliminando o job. B paga ainda mais capacidade ociosa. D duplica dados e custo. E acelera leituras; o DAX não reduz o custo de gravação.",
+      "fontes": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html"
+      ]
+    }
+  ]
+}

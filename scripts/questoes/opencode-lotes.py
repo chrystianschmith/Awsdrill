@@ -1,15 +1,18 @@
 """Escreve questões por tarefa do exam guide com um modelo grátis do OpenCode. Tudo sai pendente de moderação.
 
 Uso: python3 scripts/questoes/opencode-lotes.py <EXAME> [rodadas=2] [filtro-de-tarefa=*] [modelo=opencode/big-pickle]
-Saída: conteudo/questoes/<EXAME>/opencode-<tarefa>-<rodada>.json (ArquivoQuestoes, origem "ia", versaoPrompt "opencode-v2").
+Saída: conteudo/questoes/<EXAME>/opencode-<tarefa>-<rodada>.json (ArquivoQuestoes, origem "ia"; versaoPrompt "opencode-v2",
+ou "opencode-v3" nos exames Associate, que somam conteudo/questoes/instrucoes-associate.md ao prompt).
 
 Cada chamada pede 5 questões de uma tarefa (4 SINGLE de 4 alternativas e 1 MULTIPLE de 5 com 2 corretas) e recebe os
 enunciados já escritos da tarefa para não repetir. A resposta passa por scripts/questoes/validar.ts (schema, código da
 tarefa, duplicata contra todo o exame) e cada fonte é conferida por GET (200 depois dos redirects, ainda em host
 oficial, 1 req/s por host). Falhou: nova tentativa com o motivo; o modelo de reserva entra depois de 3 falhas.
 
-O modelo não recebe ferramentas nem contexto do repo: roda em OPENCODE_PASTA (padrão ../aws-saas-escritor), com
-opencode.json mínimo e sem AGENTS.md. OPENCODE_BIN força o binário; OPENCODE_PARALELO tarefas ao mesmo tempo (padrão 3).
+O modelo não recebe ferramentas nem contexto do repo: roda em OPENCODE_PASTA (padrão ../aws-saas-escritor), sem AGENTS.md
+e com opencode.json que nega edição, bash e web. Mesmo assim, depois de cada chamada a execução aborta se o clone ganhar
+arquivo novo ou alterado fora de conteudo/questoes/ (o serviço do OpenCode Desktop já gravou um arquivo na raiz). Rode com
+o OpenCode Desktop fechado. OPENCODE_BIN força o binário; OPENCODE_PARALELO tarefas ao mesmo tempo (padrão 3).
 """
 import fnmatch, glob, json, os, re, shutil, subprocess, sys, tempfile, threading, time, urllib.error, urllib.parse, urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -20,7 +23,9 @@ FILTRO = sys.argv[3] if len(sys.argv) > 3 else "*"
 MODELO = sys.argv[4] if len(sys.argv) > 4 else "opencode/big-pickle"
 RESERVA = os.environ.get("OPENCODE_RESERVA", "opencode/big-pickle")
 TENTATIVAS = [MODELO] * 3 + [RESERVA] * 2
-VERSAO_PROMPT = "opencode-v2"  # v2: regra de serviços fechados a novos clientes
+# v2: regra de serviços fechados a novos clientes; v3: cenários de nível Associate com restrições concorrentes.
+ASSOCIATE = EXAME.startswith(("SAA-", "DVA-", "SOA-", "CLO-", "DEA-", "MLA-"))
+VERSAO_PROMPT = "opencode-v3" if ASSOCIATE else "opencode-v2"
 SAIDA = f"conteudo/questoes/{EXAME}"
 HOSTS = {"docs.aws.amazon.com", "aws.amazon.com"}
 # Fechados a novos clientes (conferido na documentação em 2026-10-23): não podem ser a resposta correta.
@@ -29,7 +34,11 @@ FECHADOS = ("Snowball", "Migration Hub", "Cloud9")
 PASTA = os.environ.get("OPENCODE_PASTA", os.path.join(os.path.dirname(os.path.abspath(".")), "aws-saas-escritor"))
 os.makedirs(PASTA, exist_ok=True)
 with open(os.path.join(PASTA, "opencode.json"), "w", encoding="utf-8") as f:
-    json.dump({"$schema": "https://opencode.ai/config.json", "autoupdate": False, "share": "disabled"}, f)
+    json.dump({
+        "$schema": "https://opencode.ai/config.json", "autoupdate": False, "share": "disabled",
+        "permission": {"edit": "deny", "bash": "deny", "webfetch": "deny"},
+        "tools": {"write": False, "edit": False, "patch": False, "bash": False, "webfetch": False},
+    }, f)
 if os.path.exists(os.path.join(PASTA, "AGENTS.md")):
     sys.exit(f"{PASTA}/AGENTS.md daria contexto ao escritor; remova.")
 
@@ -40,6 +49,17 @@ if OPENCODE[0] is None:
     OPENCODE = ["npx", "-y", "opencode-ai@1.18.35"]
 
 INSTRUCOES = open("conteudo/questoes/instrucoes.md", encoding="utf-8").read()
+if ASSOCIATE:
+    INSTRUCOES += "\n" + open("conteudo/questoes/instrucoes-associate.md", encoding="utf-8").read()
+
+
+def alterados_fora():
+    """Arquivos novos ou alterados no clone fora de conteudo/questoes/ (o escritor não pode tocar no repo)."""
+    linhas = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, check=True).stdout.splitlines()
+    return {l[3:] for l in linhas if not l[3:].startswith("conteudo/questoes/")}
+
+
+ANTES = alterados_fora()
 catalogo = json.loads(subprocess.run(["npx", "tsx", "scripts/questoes/validar.ts", "tarefas"],
                                      capture_output=True, text=True, check=True).stdout)
 exame = next((e for e in catalogo if e["exame"] == EXAME), None)
@@ -145,6 +165,10 @@ def escreve(dominio, tarefa, rodada):
                 r = subprocess.run([*OPENCODE, "run", "-m", m, pedido], capture_output=True, text=True, timeout=900,
                                    stdin=subprocess.DEVNULL, cwd=PASTA)
                 saida = (r.stdout or "") + (r.stderr or "")
+                intrusos = alterados_fora() - ANTES
+                if intrusos:
+                    print(f"{codigo}-{rodada} ABORTADO: o escritor alterou o repo: {sorted(intrusos)}", flush=True)
+                    os._exit(2)
                 if "Free usage limit reached" in saida:
                     print(f"{codigo}-{rodada} parado: cota grátis do OpenCode esgotada", flush=True)
                     return False

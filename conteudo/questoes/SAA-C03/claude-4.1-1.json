@@ -1,0 +1,153 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma operadora guarda gravações de atendimento no Amazon S3. Nos primeiros 30 dias elas são ouvidas com frequência; depois, poucas vezes por trimestre, mas quando são pedidas precisam abrir em milissegundos por até um ano. Depois disso, ficam guardadas até completar 7 anos só por exigência legal, e uma recuperação em até 48 horas é aceitável. Qual configuração atende com o MENOR custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter tudo no S3 Standard e expirar os objetos ao completar 7 anos."
+        },
+        {
+          "key": "B",
+          "text": "Regra de lifecycle: S3 Standard → S3 Glacier Deep Archive aos 30 dias e expiração aos 7 anos."
+        },
+        {
+          "key": "C",
+          "text": "Regra de lifecycle: S3 Standard → S3 Glacier Instant Retrieval aos 30 dias → S3 Glacier Deep Archive aos 365 dias, com expiração aos 7 anos."
+        },
+        {
+          "key": "D",
+          "text": "Regra de lifecycle: S3 Standard → S3 Standard-IA aos 30 dias, mantendo os objetos nessa classe até a expiração aos 7 anos."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Glacier Instant Retrieval tem armazenamento mais barato que o Standard-IA para dados acessados poucas vezes por trimestre e ainda entrega em milissegundos; depois de um ano o Deep Archive é a classe mais barata e recupera em até 48 horas, e a expiração remove os dados no prazo. A paga a classe mais cara por 7 anos. B viola a leitura em milissegundos no primeiro ano, porque o Deep Archive leva horas. D cumpre os prazos, mas paga uma classe de acesso imediato por 6 anos em que esse acesso não é necessário.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um data lake no Amazon S3 tem 800 TB de objetos de 5 MB a 2 GB. O padrão de acesso muda com os projetos: alguns conjuntos ficam meses sem uso e de repente voltam a ser lidos todos os dias, e ninguém consegue prever quais. A empresa quer reduzir o custo de armazenamento sem pagar taxa de recuperação quando um dado volta a ser lido e sem manter regras manuais. Qual classe de armazenamento atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "S3 Intelligent-Tiering."
+        },
+        {
+          "key": "B",
+          "text": "S3 Standard-IA, com lifecycle de volta para o S3 Standard quando o acesso aumentar."
+        },
+        {
+          "key": "C",
+          "text": "S3 One Zone-IA para todos os objetos."
+        },
+        {
+          "key": "D",
+          "text": "S3 Glacier Flexible Retrieval com restaurações sob demanda."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o Intelligent-Tiering move cada objeto automaticamente entre camadas de acesso frequente e infrequente conforme o uso, sem taxa de recuperação e sem regras manuais, por uma pequena taxa de monitoramento por objeto, que é irrelevante para objetos grandes. B cobra recuperação por GB lido e exige prever o padrão de acesso, que é justamente o que não se sabe; o lifecycle também não move objetos de volta para o Standard. C reduz a durabilidade a uma AZ e também cobra recuperação. D exige restaurar antes de ler, com horas de espera e custo de recuperação.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/intelligent-tiering-overview.html"]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 400 volumes Amazon EBS gp2 de 1 TB nas suas instâncias de aplicação. O monitoramento mostra que nenhum volume passa de 3.000 IOPS e 125 MiB/s. O financeiro pede redução do custo de armazenamento em bloco sem perda de desempenho e sem parar as aplicações. O que o arquiteto deve recomendar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Converter os volumes para io2, que oferecem IOPS provisionados com maior durabilidade."
+        },
+        {
+          "key": "B",
+          "text": "Converter os volumes para st1, que têm o menor preço por GB entre os volumes SSD e HDD."
+        },
+        {
+          "key": "C",
+          "text": "Criar snapshots, apagar os volumes e restaurá-los como volumes menores em uma janela de manutenção."
+        },
+        {
+          "key": "D",
+          "text": "Modificar os volumes para gp3 com Elastic Volumes, mantendo 3.000 IOPS e 125 MiB/s de baseline."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o gp3 custa menos por GB que o gp2 e já inclui 3.000 IOPS e 125 MiB/s de baseline, o que cobre a carga medida; o Elastic Volumes troca o tipo com o volume em uso, sem parar a aplicação. A aumenta o custo, porque o io2 cobra por IOPS provisionado. B é HDD otimizado para leitura sequencial e degrada cargas com I/O aleatório de aplicação. C exige parada e ainda arrisca subdimensionar o espaço.",
+      "fontes": [
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html",
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modify-volume.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de engenharia usa um sistema de arquivos Amazon EFS de 60 TB montado por centenas de instâncias. A análise mostra que 80% dos arquivos não são abertos depois de 30 dias, mas, quando um arquivo antigo é aberto, a aplicação precisa dele imediatamente pelo mesmo caminho. Qual ação reduz o custo com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar o lifecycle management do EFS para mover arquivos sem acesso há 30 dias para a classe Infrequent Access e de volta à Standard no primeiro acesso."
+        },
+        {
+          "key": "B",
+          "text": "Escrever um script que copie os arquivos antigos para o Amazon S3 Glacier Flexible Retrieval e apague-os do EFS."
+        },
+        {
+          "key": "C",
+          "text": "Migrar o sistema de arquivos para volumes Amazon EBS gp3 anexados a cada instância."
+        },
+        {
+          "key": "D",
+          "text": "Mudar o modo de throughput para Provisioned com um valor menor."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o lifecycle management do EFS move automaticamente para a classe Infrequent Access (bem mais barata) os arquivos sem acesso pelo período definido e pode trazê-los de volta no primeiro acesso, mantendo o mesmo caminho e o acesso imediato. B quebra o caminho e o acesso imediato e cria código para manter. C não oferece sistema de arquivos compartilhado entre centenas de instâncias. D mexe na cobrança de throughput, não no armazenamento, que é o custo dominante.",
+      "fontes": [
+        "https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html",
+        "https://docs.aws.amazon.com/efs/latest/ug/storage-classes.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um bucket do Amazon S3 com versionamento habilitado recebe uploads grandes de um sistema que às vezes cai no meio do envio. A conta de armazenamento triplicou, e a análise mostra milhões de versões antigas (noncurrent) que ninguém usa depois de 30 dias e partes de uploads multipart nunca concluídos. A empresa precisa manter o versionamento para se proteger de exclusões acidentais. Quais DUAS ações reduzem o custo? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar uma regra de lifecycle que expire as versões noncurrent 30 dias depois de deixarem de ser atuais."
+        },
+        {
+          "key": "B",
+          "text": "Desabilitar o versionamento do bucket para apagar as versões antigas automaticamente."
+        },
+        {
+          "key": "C",
+          "text": "Criar uma regra de lifecycle que aborte uploads multipart incompletos depois de 7 dias."
+        },
+        {
+          "key": "D",
+          "text": "Habilitar Requester Pays para que o sistema de origem pague pelo armazenamento."
+        },
+        {
+          "key": "E",
+          "text": "Habilitar o S3 Transfer Acceleration para os uploads terminarem antes de o sistema cair."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a expiração de versões noncurrent remove as versões antigas sem desligar o versionamento das versões atuais, e a regra de abort de uploads multipart incompletos apaga as partes órfãs, que são cobradas como armazenamento. B não é possível do jeito proposto: o versionamento só pode ser suspenso, as versões existentes continuam lá, e a proteção contra exclusão acidental se perde. D transfere ao solicitante o custo de requisições e transferência, não o de armazenamento. E acrescenta custo e não remove o que já está acumulado.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpu-abort-incomplete-mpu-lifecycle-config.html"
+      ]
+    }
+  ]
+}

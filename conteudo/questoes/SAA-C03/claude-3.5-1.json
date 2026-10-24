@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma frota de 50 mil veículos envia telemetria a cada segundo. Três aplicações precisam ler o mesmo fluxo de forma independente e em tempo quase real (alertas, painel ao vivo e gravação no data lake), mantendo a ordem dos eventos por veículo e podendo reprocessar as últimas 24 horas em caso de erro. Qual serviço deve receber os eventos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon SQS standard com três filas assinando um tópico do Amazon SNS."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Kinesis Data Streams, usando o ID do veículo como partition key e um consumidor por aplicação."
+        },
+        {
+          "key": "C",
+          "text": "Amazon Data Firehose entregando diretamente ao Amazon S3."
+        },
+        {
+          "key": "D",
+          "text": "Amazon SQS FIFO com um grupo de mensagens por veículo e as três aplicações lendo a mesma fila."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o Kinesis Data Streams mantém a ordem dentro de cada shard (o ID do veículo como partition key garante a ordem por veículo), permite vários consumidores independentes lendo o mesmo fluxo e retém os dados para reprocessamento (24 horas por padrão, mais se configurado). A não garante ordem e mensagens consumidas não podem ser relidas. C entrega em lote a um destino e não atende alertas em tempo quase real nem múltiplos consumidores. D garante ordem, mas cada mensagem é consumida e apagada por um consumidor, então as três aplicações disputariam a mesma fila e não haveria releitura.",
+      "fontes": ["https://docs.aws.amazon.com/streams/latest/dev/introduction.html"]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa recebe logs de aplicação em JSON e precisa gravá-los no Amazon S3 em Parquet, particionados por data, para consulta no Amazon Athena. Um atraso de alguns minutos é aceitável e a equipe não quer escrever nem operar código de consumo ou servidores. Qual solução atende com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon Data Firehose com conversão de formato para Parquet usando o schema do AWS Glue Data Catalog e prefixos dinâmicos por data no S3."
+        },
+        {
+          "key": "B",
+          "text": "Uma aplicação em Amazon EC2 que lê de uma fila Amazon SQS, converte para Parquet e grava no S3."
+        },
+        {
+          "key": "C",
+          "text": "Um cluster Amazon EMR permanente rodando Spark Streaming 24 horas por dia."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Kinesis Data Streams com funções AWS Lambda que convertem e gravam cada registro no S3."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o Firehose é totalmente gerenciado, agrupa os registros em buffer, converte JSON para Parquet com base no schema do Glue Data Catalog e grava no S3 com particionamento por data, com atraso de minutos. B e C funcionam, mas exigem código e servidores ou clusters para operar. D exige escrever e manter o código de conversão e tende a gerar muitos arquivos pequenos, ruins para o Athena.",
+      "fontes": [
+        "https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html",
+        "https://docs.aws.amazon.com/athena/latest/ug/columnar-storage.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe de analytics consulta no Amazon Athena três anos de eventos de cliques guardados no S3 como CSV sem partição. Quase todas as consultas filtram por um intervalo de dias e leem poucas colunas, mas cada consulta varre terabytes, demora minutos e custa caro. Qual mudança reduz MAIS o tempo e o custo das consultas?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket de dados."
+        },
+        {
+          "key": "B",
+          "text": "Mover os arquivos para a classe S3 Standard-IA."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar o número de workgroups do Athena e executar as consultas em paralelo."
+        },
+        {
+          "key": "D",
+          "text": "Converter os dados para Parquet com compressão e particioná-los por data, registrando as partições no AWS Glue Data Catalog."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: com formato colunar comprimido o Athena lê só as colunas usadas, e com partições por data ele descarta os dias fora do filtro; como o Athena cobra por dado verificado, tempo e custo caem juntos. A acelera uploads pela internet, não consultas. B reduz o custo de armazenamento, mas acrescenta cobrança por recuperação e não reduz o volume verificado. C não muda a quantidade de dados lida por consulta.",
+      "fontes": [
+        "https://docs.aws.amazon.com/athena/latest/ug/partitions.html",
+        "https://docs.aws.amazon.com/athena/latest/ug/columnar-storage.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "SINGLE",
+      "enunciado": "Um varejista recebe todo dia, por SFTP, arquivos CSV de 300 fornecedores. Hoje há um servidor SFTP próprio em EC2 que cai com frequência e um script que move os arquivos para o S3. A empresa quer manter o SFTP para os fornecedores, com os arquivos caindo direto no Amazon S3, e catalogar os dados novos automaticamente para consulta, sem administrar servidores. Qual combinação atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS DataSync agendado lendo de um compartilhamento NFS e um cluster Amazon EMR para catalogar os dados."
+        },
+        {
+          "key": "B",
+          "text": "Um Network Load Balancer na frente do servidor SFTP atual e um cron que executa o AWS CLI."
+        },
+        {
+          "key": "C",
+          "text": "AWS Transfer Family com endpoint SFTP gravando no S3 e um crawler do AWS Glue agendado para atualizar o Data Catalog."
+        },
+        {
+          "key": "D",
+          "text": "Amazon S3 Transfer Acceleration para os fornecedores enviarem via SFTP e Amazon Athena para descobrir o schema."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Transfer Family oferece um endpoint SFTP gerenciado que grava direto no S3, e o crawler do Glue detecta os novos arquivos e atualiza o schema no Data Catalog, sem servidores. A não atende fornecedores via SFTP e mantém um cluster para operar. B mantém o servidor próprio que já falha. D está errada porque o S3 Transfer Acceleration não oferece SFTP e o Athena consulta, mas não descobre schema sozinho.",
+      "fontes": [
+        "https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html",
+        "https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html"
+      ]
+    },
+    {
+      "dominio": "3.5",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa centraliza dados de várias áreas em um data lake no Amazon S3. Analistas de cada área devem ver só algumas tabelas e, em uma delas, só algumas colunas (sem CPF e salário), e as permissões devem valer igualmente no Amazon Athena e no Amazon Redshift Spectrum, sem criar uma cópia dos dados por área. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Registrar os locais do S3 no AWS Lake Formation e catalogar as tabelas no AWS Glue Data Catalog."
+        },
+        {
+          "key": "B",
+          "text": "Copiar os dados de cada área para buckets separados e gerenciar o acesso com bucket policies."
+        },
+        {
+          "key": "C",
+          "text": "Conceder permissões do Lake Formation por tabela e por coluna aos perfis de cada área."
+        },
+        {
+          "key": "D",
+          "text": "Criptografar cada coluna sensível com uma chave KMS diferente e distribuir as chaves aos analistas."
+        },
+        {
+          "key": "E",
+          "text": "Criar uma view no Athena para cada área e conceder s3:GetObject no bucket inteiro a todos os analistas."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: com os locais do S3 registrados no Lake Formation e as tabelas no Glue Data Catalog, o Lake Formation aplica permissões finas por banco, tabela e coluna que valem para os serviços integrados, como Athena e Redshift Spectrum, sem duplicar dados. B duplica os dados e não controla colunas. D complica a gestão de chaves e não restringe a visão por tabela nos mecanismos de consulta. E dá acesso de leitura ao bucket inteiro, e a view pode ser contornada lendo os objetos diretamente.",
+      "fontes": ["https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html"]
+    }
+  ]
+}
