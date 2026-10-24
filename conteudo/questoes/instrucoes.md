@@ -6,7 +6,7 @@ simulados que passa por moderação humana. Nada aqui é questão real de prova.
 ## Regras
 
 - **Proibido** reproduzir, parafrasear ou "lembrar" questões reais de prova, dumps ou simulados de terceiros. Crie
-  cenários novos, com empresas e dados fictícios.
+  cenários novos, com empresas e dados fictícios (sem escrever "fictícia" no enunciado).
 - Português do Brasil; nomes de serviços, recursos e termos técnicos da AWS **em inglês** (Amazon S3, AWS Lambda,
   Reserved Instances, Availability Zone).
 - Cada questão cobre a tarefa (task statement) indicada e só ela; nível compatível com o exame.
