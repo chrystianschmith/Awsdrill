@@ -20,8 +20,8 @@ export async function AvisoEmailNaoConfirmado({ className }: { className?: strin
       className={cn("flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between", className)}
     >
       <p>
-        Confirme seu e-mail <span className="font-medium">{user.email}</span> para receber lembretes e avisos
-        por e-mail.
+        Confirme seu e-mail <span className="font-medium">{user.email}</span> para receber lembretes e avisos por
+        e-mail.
       </p>
       <BotaoReenviarConfirmacao className="shrink-0" />
     </Alert>

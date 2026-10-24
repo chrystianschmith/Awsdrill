@@ -44,6 +44,7 @@ import {
 } from "./schemas";
 import { hashSenha, validarSenha, verificarSenha, verificarSenhaFicticia } from "./senha";
 import { criarSessao, encerrarSessao, getCurrentUser, requireUser, revogarSessoes } from "./session";
+import { cancelarAssinaturaDoUsuario } from "./stripe-cancel";
 import { destinoSeguro } from "./voltar";
 
 const MSG_LOGIN = "E-mail ou senha incorretos.";
@@ -318,7 +319,13 @@ export async function excluirConta(input: ExcluirContaInput): Promise<ActionResu
     return fail(MSG_CAMPOS, "senha_incorreta", { senha: ["Senha incorreta."] });
   }
 
-  // A etapa 7 (assinaturas) cancela a assinatura no Stripe aqui, antes de apagar os dados.
+  // Cancela no Stripe antes de apagar: sem isso a cobrança continuaria sem conta.
+  try {
+    await cancelarAssinaturaDoUsuario(user.id);
+  } catch (e) {
+    return fail(e instanceof Error ? e.message : "Não foi possível excluir a conta agora.", "stripe");
+  }
+
   // O registro fica sem userId após a exclusão (onDelete: SetNull) e sem dados pessoais.
   await audit("conta.excluida", user.id);
   await excluirDadosDoUsuario(user.id);
