@@ -1,3 +1,4 @@
+import { BRAND } from "@/lib/brand";
 import Link from "next/link";
 import {
   BookOpenCheck,
@@ -60,7 +61,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
 
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-surface md:flex">
         <div className="flex h-14 items-center px-5">
-          <Link href="/hoje" aria-label="Início">
+          <Link href="/hoje" aria-label={`${BRAND.name}, início`}>
             <Logo />
           </Link>
         </div>
@@ -81,7 +82,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       </aside>
 
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-surface px-4 md:hidden">
-        <Link href="/hoje" aria-label="Início">
+        <Link href="/hoje" aria-label={`${BRAND.name}, início`}>
           <Logo />
         </Link>
         <UserMenu compact nome={user.name} email={user.email} links={linksMenu} linksMobile={linksMobile} />

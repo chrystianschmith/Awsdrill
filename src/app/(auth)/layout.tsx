@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
+import { BRAND } from "@/lib/brand";
 
 /** Layout dividido: formulário à esquerda, painel neutro à direita (desktop). */
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
       <div className="flex flex-col px-4 py-6 sm:px-8">
-        <Link href="/" className="w-fit rounded-md" aria-label="Página inicial">
+        <Link href="/" className="w-fit rounded-md" aria-label={`${BRAND.name}, página inicial`}>
           <Logo />
         </Link>
         <main id="conteudo" tabIndex={-1} className="flex flex-1 items-center justify-center py-10 outline-none">
