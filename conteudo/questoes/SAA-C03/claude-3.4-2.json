@@ -1,0 +1,144 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma plataforma de telemetria recebe milhões de conexões TCP de longa duração de dispositivos, com pico de centenas de milhares de novas conexões por segundo. O backend precisa enxergar o IP de origem de cada dispositivo, e os firewalls dos clientes só liberam um IP fixo por AZ. Qual load balancer atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Application Load Balancer com cabeçalho X-Forwarded-For."
+        },
+        {
+          "key": "B",
+          "text": "Classic Load Balancer com proxy protocol."
+        },
+        {
+          "key": "C",
+          "text": "Gateway Load Balancer na frente das instâncias."
+        },
+        {
+          "key": "D",
+          "text": "Network Load Balancer com um Elastic IP por AZ e preservação do IP do cliente."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o NLB opera na camada 4, escala para milhões de conexões com latência muito baixa, aceita um Elastic IP por AZ e preserva o IP de origem do cliente. A é para HTTP/HTTPS, não oferece IP fixo e trabalha com o IP de origem só por cabeçalho. B é de geração anterior, sem IP fixo e sem a mesma escala. C serve para inserir appliances de segurança no caminho do tráfego, não como balanceador da aplicação.",
+      "fontes": ["https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API TCP proprietária roda em us-east-1, eu-central-1 e ap-southeast-1, e os clientes já se conectam por nome DNS. A empresa quer que cada cliente vá para a região com menor latência e que uma região sem saúde saia da rotação. O tempo de failover limitado pelo TTL do DNS é aceitável, e o requisito principal é o MENOR custo. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Global Accelerator com um endpoint group por região."
+        },
+        {
+          "key": "B",
+          "text": "Amazon Route 53 com roteamento por latência e health checks em cada registro regional."
+        },
+        {
+          "key": "C",
+          "text": "Amazon CloudFront com origens nas três regiões."
+        },
+        {
+          "key": "D",
+          "text": "Amazon Route 53 com roteamento por geolocalização e sem health checks."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o roteamento por latência responde com a região de menor latência medida para o usuário, e os health checks retiram a região com problema; como o failover pelo TTL é aceitável, não é preciso pagar um acelerador. A também atende tecnicamente, mas acrescenta cobrança fixa e por GB que o requisito de menor custo não justifica. C é para HTTP/HTTPS e não serve a uma API TCP proprietária. D usa a localização, não a latência, e não remove regiões doentes.",
+      "fontes": ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-latency.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco liga seu data center à AWS por uma única conexão AWS Direct Connect de 10 Gbps em uma localização. As cargas são críticas, e a empresa precisa continuar conectada mesmo com a perda de um dispositivo ou da localização inteira do Direct Connect, mantendo banda e latência previsíveis. Qual arquitetura atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma segunda conexão Direct Connect em uma localização diferente, terminando em outro roteador do cliente."
+        },
+        {
+          "key": "B",
+          "text": "Um link aggregation group (LAG) com duas conexões na mesma localização."
+        },
+        {
+          "key": "C",
+          "text": "Aumentar a conexão existente para 100 Gbps."
+        },
+        {
+          "key": "D",
+          "text": "Substituir o Direct Connect por uma Site-to-Site VPN pela internet."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: conexões em localizações distintas, terminando em equipamentos diferentes, sobrevivem tanto à falha de um dispositivo quanto à perda de uma localização, como recomenda o modelo de resiliência do Direct Connect. B protege contra a falha de uma conexão, mas não contra a perda da localização. C aumenta a banda, mas mantém um ponto único de falha. D perde a banda e a latência previsíveis.",
+      "fontes": ["https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "SINGLE",
+      "enunciado": "Em um ambiente híbrido, servidores do data center precisam resolver nomes de uma private hosted zone do Route 53 (app.interno.aws) e instâncias nas VPCs precisam resolver nomes do domínio corporativo (corp.local), atendido pelos DNS on-premises. A conectividade já existe por Direct Connect. Qual solução atende com o MENOR esforço operacional?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Instalar servidores BIND em instâncias EC2 em cada VPC e configurar encaminhamento nos dois sentidos."
+        },
+        {
+          "key": "B",
+          "text": "Tornar a hosted zone pública e criar registros para os servidores on-premises."
+        },
+        {
+          "key": "C",
+          "text": "Copiar manualmente os registros de cada lado para o outro toda semana."
+        },
+        {
+          "key": "D",
+          "text": "Criar endpoints de entrada (inbound) e de saída (outbound) do Route 53 Resolver, com uma regra de encaminhamento de corp.local para os DNS on-premises."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o endpoint inbound recebe consultas do data center para os nomes da private hosted zone, e o endpoint outbound, com a regra de encaminhamento, envia as consultas de corp.local aos DNS on-premises, tudo gerenciado. A funciona, mas exige operar servidores DNS. B expõe nomes internos na internet. C é manual e fica desatualizado.",
+      "fontes": ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html"]
+    },
+    {
+      "dominio": "3.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma API HTTP dinâmica, sem conteúdo cacheável, roda atrás de um Application Load Balancer em sa-east-1 e atende usuários na Europa e na Ásia, que sofrem com a latência da internet pública. A empresa não quer replicar o backend em outras regiões. Quais DUAS opções podem reduzir a latência desses usuários? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Colocar o Amazon CloudFront na frente do ALB, com cache desabilitado para a API, aproveitando as conexões otimizadas entre as edge locations e a origem."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o tamanho das instâncias atrás do ALB."
+        },
+        {
+          "key": "C",
+          "text": "Colocar o AWS Global Accelerator na frente do ALB, levando o tráfego para a rede da AWS no ponto de presença mais próximo do usuário."
+        },
+        {
+          "key": "D",
+          "text": "Distribuir as instâncias em mais AZs de sa-east-1."
+        },
+        {
+          "key": "E",
+          "text": "Usar roteamento weighted do Route 53 entre dois ALBs na mesma região."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o CloudFront encerra a conexão do usuário na edge location próxima e usa a rede da AWS com conexões persistentes até a origem, mesmo sem cache, e o Global Accelerator coloca o tráfego na rede global da AWS no ponto de presença mais próximo, evitando a internet pública no trajeto longo. B, D e E mexem só na capacidade ou na distribuição dentro da região e não encurtam o caminho de rede até usuários distantes.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html",
+        "https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html"
+      ]
+    }
+  ]
+}
