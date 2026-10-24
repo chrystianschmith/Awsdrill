@@ -47,9 +47,20 @@ modelo grátis do OpenCode, sem ferramentas; instruções em `conteudo/questoes/
 em `scripts/questoes/validar.ts` (formato, códigos do exam guide, duplicatas) e cujas fontes respondem 200. Todo lote é
 revisado contra a documentação antes do commit e ainda passa pela moderação ao importar.
 
+## Material com IA
+
+Em `/material/<tarefa>` o usuário pede o resumo, os flashcards e 5 questões da tarefa. A geração (`src/lib/ai/material.ts`)
+acontece uma vez por tarefa e fica para todos; um advisory lock do Postgres impede duas gerações simultâneas. A saída
+passa pelo schema `MaterialIA` (fontes só https de host oficial) com até 2 rodadas de correção; as questões entram
+pendentes pelo mesmo import do banco de questões e só vão aos simulados depois da moderação. O resumo é markdown
+restrito, sem HTML nem links (`docs/adr/0006-markdown-restrito.md`). "Reportar erro" cria um `ContentReport`; com mais
+de 3 reports abertos, o material sai do ar e é refeito no próximo pedido. Sem `GEMINI_API_KEY` (nem `ANTHROPIC_API_KEY`)
+a geração fica desligada. Os testes nunca chamam a IA: `tests/setup/sem-rede.ts` bloqueia qualquer fetch para fora.
+
 ## Custos e serviços
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,
 Sentry (sem DSN fica desligado) e Stripe (só taxa por transação). IA: Gemini na camada grátis por padrão, com teto
-mensal em `AI_MONTHLY_BUDGET_USD` (`docs/adr/0001-ia-gemini-padrao.md`). A pipeline mensal do catálogo roda no
+mensal em `AI_MONTHLY_BUDGET_USD` (`docs/adr/0001-ia-gemini-padrao.md`): cada chamada grava tokens e custo estimado em
+`AiUsageLog`; no teto a geração pausa e `ADMIN_ALERT_EMAIL` recebe um aviso por mês. Por usuário, 10 gerações por hora. A pipeline mensal do catálogo roda no
 GitHub Actions e não usa IA (`docs/adr/0005-pipeline-do-catalogo-sem-ia.md`). Nada de Redis, filas, busca ou storage pagos.
