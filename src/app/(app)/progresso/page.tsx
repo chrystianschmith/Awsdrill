@@ -63,20 +63,20 @@ export default async function ProgressoPage() {
                 <ul className="divide-y divide-border rounded-lg border border-border">
                   {d.tarefas.map((t) => (
                     <li key={t.id} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 text-sm">
-                      <span className="min-w-0 flex-1">
+                      <span className="min-w-48 flex-1">
                         <span className="tabular text-muted-foreground">{t.codigo}</span> {t.nome}
                       </span>
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/material/${t.id}`}
-                          className="text-xs text-primary underline underline-offset-4"
+                          className="inline-flex min-h-11 items-center px-1 text-xs text-primary underline underline-offset-4 sm:min-h-0"
                           aria-label={`Material de ${t.codigo}`}
                         >
                           Material
                         </Link>
                         <Link
                           href={`/estudar?exame=${e.examVersionId}&dominio=${d.id}&tarefa=${t.id}`}
-                          className="text-xs text-primary underline underline-offset-4"
+                          className="inline-flex min-h-11 items-center px-1 text-xs text-primary underline underline-offset-4 sm:min-h-0"
                           aria-label={`Estudar ${t.codigo}`}
                         >
                           Estudar

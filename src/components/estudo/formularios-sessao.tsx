@@ -31,8 +31,18 @@ export function LancamentoManual({ exames, hoje }: { exames: OpcaoExame[]; hoje:
       className="grid gap-4"
       onSubmit={async (e) => {
         e.preventDefault();
+        // Lê o que está na tela: o que foi digitado antes da hidratação não passa pelo onChange.
+        const fd = new FormData(e.currentTarget);
+        const campo = (nome: string) => String(fd.get(nome) ?? "");
         setEnviando(true);
-        const r = await lancarManualAction({ examVersionId, domainId, topicId: topicId || null, dia, inicio, fim });
+        const r = await lancarManualAction({
+          examVersionId,
+          domainId,
+          topicId: topicId || null,
+          dia: campo("dia"),
+          inicio: campo("inicio"),
+          fim: campo("fim"),
+        });
         setEnviando(false);
         if (!r.ok) {
           setErros(r.fieldErrors ?? {});
@@ -93,13 +103,28 @@ export function LancamentoManual({ exames, hoje }: { exames: OpcaoExame[]; hoje:
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Field label="Dia" htmlFor="manual-dia" error={erros.dia?.[0]}>
-          <Input id="manual-dia" type="date" max={hoje} value={dia} onChange={(e) => setDia(e.target.value)} required />
+          <Input
+            id="manual-dia"
+            name="dia"
+            type="date"
+            max={hoje}
+            value={dia}
+            onChange={(e) => setDia(e.target.value)}
+            required
+          />
         </Field>
         <Field label="Início" htmlFor="manual-inicio" error={erros.inicio?.[0]}>
-          <Input id="manual-inicio" type="time" value={inicio} onChange={(e) => setInicio(e.target.value)} required />
+          <Input
+            id="manual-inicio"
+            name="inicio"
+            type="time"
+            value={inicio}
+            onChange={(e) => setInicio(e.target.value)}
+            required
+          />
         </Field>
         <Field label="Fim" htmlFor="manual-fim" error={erros.fim?.[0]}>
-          <Input id="manual-fim" type="time" value={fim} onChange={(e) => setFim(e.target.value)} required />
+          <Input id="manual-fim" name="fim" type="time" value={fim} onChange={(e) => setFim(e.target.value)} required />
         </Field>
       </div>
       {erroGeral ? (

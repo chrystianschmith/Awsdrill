@@ -33,7 +33,7 @@ npm run test:e2e              # Playwright: build de produção na porta 3100 co
 
 Questões entram por arquivo JSON validado (`ArquivoQuestoes` em `src/lib/simulados/schemas.ts`), sempre como pendentes,
 e só aparecem nos simulados depois de aprovadas. Toda questão cita ao menos uma fonte oficial; questão real de prova
-(dump) é proibida. Até a tela de admin (etapa 8), a moderação é pela linha de comando:
+(dump) é proibida. A moderação é feita em `/admin/questoes` (inclusive em lote) ou pela linha de comando:
 
 ```bash
 npx tsx scripts/questoes/importar.ts questoes.json          # valida e importa como pendentes
@@ -86,3 +86,32 @@ Sentry (sem DSN fica desligado) e Stripe (só taxa por transação). IA: Gemini 
 mensal em `AI_MONTHLY_BUDGET_USD` (`docs/adr/0001-ia-gemini-padrao.md`): cada chamada grava tokens e custo estimado em
 `AiUsageLog`; no teto a geração pausa e `ADMIN_ALERT_EMAIL` recebe um aviso por mês. Por usuário, 10 gerações por hora. A pipeline mensal do catálogo roda no
 GitHub Actions e não usa IA (`docs/adr/0005-pipeline-do-catalogo-sem-ia.md`). Nada de Redis, filas, busca ou storage pagos.
+
+## Deploy
+
+Nada disso foi feito ainda: cada passo cria conta ou custo e depende do OK do dono do produto.
+
+1. **Nome e domínio** definidos (sem "AWS"); trocar `BRAND` em `src/lib/brand.ts`.
+2. **Neon** (Free, região São Paulo se houver, senão a mais próxima): projeto com o banco `main`. Guardar a URL com
+   pooling (`DATABASE_URL`) e a direta (`DIRECT_URL`). No GitHub, variável `NEON_PROJECT_ID` e segredo `NEON_API_KEY`
+   para os bancos de preview (`.github/workflows/neon-preview.yml`).
+3. **Vercel** (Hobby até o lançamento comercial; Pro antes de cobrar): importar o repositório, região `gru1`
+   (`vercel.json`). O build roda `scripts/vercel-build.sh`: `prisma migrate deploy` e o seed do catálogo.
+   Proteção de deploy ligada nos previews.
+4. **Variáveis na Vercel** (Production; Preview com valores de teste), conforme `.env.example`: `APP_URL`, `DATABASE_URL`,
+   `DIRECT_URL`, `CRON_SECRET` (aleatório, 32+ bytes), `RESEND_API_KEY`, `EMAIL_FROM`, `STRIPE_SECRET_KEY`,
+   `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_MENSAL`, `STRIPE_PRICE_ANUAL`, `STRIPE_PRICE_ANUAL_PIX`, `STRIPE_TRIAL_DAYS`,
+   `SENTRY_DSN`/`NEXT_PUBLIC_SENTRY_DSN`, `AI_MONTHLY_BUDGET_USD`, `ADMIN_ALERT_EMAIL` e, para ligar o material com IA,
+   `GEMINI_API_KEY`. Nunca `STRIPE_API_BASE` em produção (só o mock dos testes usa).
+5. **Stripe**: produto Pro com os três preços (mensal e anual recorrentes no cartão, anual avulso com Pix), Portal do
+   cliente ligado e webhook em `https://<domínio>/api/stripe/webhook` com os eventos de `src/app/api/stripe/webhook`.
+   Testar primeiro em modo teste com o Stripe CLI.
+6. **Resend**: domínio verificado (SPF/DKIM) e `EMAIL_FROM` nesse domínio.
+7. **GitHub**: segredos `DATABASE_URL` (produção) e `PIPELINE_CONTACT_EMAIL` para a pipeline mensal do catálogo.
+8. **Questões**: importar os lotes revisados e aprovar no admin:
+   `for f in conteudo/questoes/*/*.json; do npx tsx scripts/questoes/importar.ts "$f"; done` com o `DATABASE_URL` de
+   produção, depois `/admin/questoes`.
+9. **Admin**: criar a própria conta pelo site e promover (`UPDATE "User" SET role = 'ADMIN' WHERE email = '…'`).
+10. **Conferir no ar**: headers (`curl -sI https://<domínio>` com CSP, HSTS, `X-Frame-Options`), cron chamado com o
+    segredo, compra de teste ponta a ponta, e-mail de confirmação chegando, e a auditoria `seguranca-vibecoding`
+    contra a URL de produção.

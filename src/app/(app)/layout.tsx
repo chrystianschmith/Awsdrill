@@ -1,3 +1,4 @@
+import { BRAND } from "@/lib/brand";
 import Link from "next/link";
 import {
   BookOpenCheck,
@@ -31,6 +32,9 @@ const PRINCIPAIS = [
   { href: "/conta", label: "Conta", Icone: CircleUser },
 ] as const;
 
+/** Barra inferior no mobile; o restante fica no menu da conta (linksMobile). */
+const BARRA_INFERIOR = ["/hoje", "/estudar", "/simulados", "/prontidao", "/progresso"] as const;
+
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
   const linksMenu: LinkMenu[] = [
@@ -57,7 +61,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
 
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col border-r border-border bg-surface md:flex">
         <div className="flex h-14 items-center px-5">
-          <Link href="/hoje" aria-label="Início">
+          <Link href="/hoje" aria-label={`${BRAND.name}, início`}>
             <Logo />
           </Link>
         </div>
@@ -78,17 +82,34 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
       </aside>
 
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-surface px-4 md:hidden">
-        <Link href="/hoje" aria-label="Início">
+        <Link href="/hoje" aria-label={`${BRAND.name}, início`}>
           <Logo />
         </Link>
         <UserMenu compact nome={user.name} email={user.email} links={linksMenu} linksMobile={linksMobile} />
       </header>
 
       <div className="md:pl-60">
-        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-5xl px-4 pb-10 pt-6 outline-none md:px-8">
+        <main id="conteudo" tabIndex={-1} className="mx-auto max-w-5xl px-4 pb-24 pt-6 outline-none md:px-8 md:pb-10">
           {children}
         </main>
       </div>
+
+      <nav
+        aria-label="Atalhos"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      >
+        <ul className="grid grid-cols-5">
+          {PRINCIPAIS.filter((p) => (BARRA_INFERIOR as readonly string[]).includes(p.href)).map(
+            ({ href, label, Icone }) => (
+              <li key={href}>
+                <NavLink href={href} variant="bottom" icon={<Icone aria-hidden />}>
+                  {label}
+                </NavLink>
+              </li>
+            ),
+          )}
+        </ul>
+      </nav>
     </>
   );
 }
