@@ -1,0 +1,144 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa hospeda um banco de dados MySQL no Amazon RDS em uma única Availability Zone. Caso essa Availability Zone apresente falha, a empresa precisa de failover automático e síncrono para um banco em espera, sem intervenção manual. Qual ação atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar Read Replicas do Amazon RDS em outra região."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar a implantação Multi-AZ no Amazon RDS."
+        },
+        {
+          "key": "C",
+          "text": "Configurar snapshots automatizados do Amazon RDS e restaurá-los em outra Availability Zone."
+        },
+        {
+          "key": "D",
+          "text": "Ativar o Amazon RDS Performance Insights para monitorar a falha e acionar um script de failover."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "A implantação Multi-AZ do Amazon RDS mantém uma instância em espera síncrona em outra Availability Zone. Em caso de falha da instância primária ou da Availability Zone, o Amazon RDS realiza failover automático para a instância em espera, com o mesmo endpoint DNS. Read Replicas usam replicação assíncrona e têm finalidade de escalabilidade de leitura, não de failover automático síncrono para alta disponibilidade do mesmo endpoint. Snapshots automatizados permitem restauração, mas não fornecem failover automático e síncrono. O Performance Insights é uma ferramenta de monitoramento, não um mecanismo de failover.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação web recebe tráfego pela internet e precisa permanecer acessível caso uma das Availability Zones em que seus servidores EC2 estão registrados fique indisponível. Os servidores devem receber tráfego apenas quando estiverem íntegros. Qual combinação atende a esse requisito com maior resiliência?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um Network Load Balancer com servidores EC2 registrados em uma única Availability Zone e verificações de integridade desativadas."
+        },
+        {
+          "key": "B",
+          "text": "Um Application Load Balancer com servidores EC2 registrados em múltiplas Availability Zones e verificações de integridade ativadas."
+        },
+        {
+          "key": "C",
+          "text": "Um Classic Load Balancer com todos os servidores EC2 em uma única sub-rede e sem health checks."
+        },
+        {
+          "key": "D",
+          "text": "Vários endereços IP elásticos apontados diretamente para instâncias EC2 em uma única Availability Zone."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Um Application Load Balancer distribui o tráfego entre destinos registrados em múltiplas Availability Zones e, com verificações de integridade ativadas, deixa de enviar tráfego para alvos não íntegros. Caso uma Availability Zone fique indisponível, o balanceador continua roteando para alvos íntegros nas demais Availability Zones, aumentando a alta disponibilidade. Registrar em uma única Availability Zone ou desativar verificações de integridade não protege contra falha de AZ. Apontar diretamente por IP elástico para instâncias em uma única AZ não oferece balanceamento nem resiliência a falhas de AZ.",
+      "fontes": ["https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa possui um site estático em um domínio próprio e precisa que, em caso de falha do endpoint principal hospedado em uma região, o tráfego seja automaticamente direcionado para um endpoint secundário em outra região, apenas quando o endpoint principal estiver não íntegro. Qual solução do Amazon Route 53 atende a esse requisito?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Política de roteamento por latência, sem verificações de integridade."
+        },
+        {
+          "key": "B",
+          "text": "Política de roteamento geolocalização, com TTL fixo e sem verificações de integridade."
+        },
+        {
+          "key": "C",
+          "text": "Política de roteamento por weighted round robin com pesos iguais entre as duas regiões."
+        },
+        {
+          "key": "D",
+          "text": "Política de roteamento failover com verificações de integridade configuradas para o endpoint primário e secundário definido."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "A política de roteamento failover do Amazon Route 53, combinada com verificações de integridade, direciona o tráfego ao registro primário enquanto ele estiver íntegro. Quando a verificação de integridade do primário falha, o Route 53 passa a responder com o registro secundário, permitindo failover automático entre regiões. Roteamento por latência escolhe com base na menor latência, não por integridade. Geolocalização roteia por localização do usuário. Weighted round robin distribui conforme pesos, não executa failover automático com base em integridade do endpoint.",
+      "fontes": ["https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy-failover.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe precisa garantir que um grupo de instâncias EC2 seja distribuído entre pelo menos duas Availability Zones e que, caso alguma instância fique não íntegra ou uma Availability Zone tenha capacidade reduzida, novas instâncias sejam lançadas automaticamente nas Availability Zones disponíveis para manter a capacidade desejada. Qual serviço ou recurso configura esse comportamento?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Um Amazon EC2 Placement Group do tipo Cluster em uma única Availability Zone."
+        },
+        {
+          "key": "B",
+          "text": "Um Auto Scaling group configurado para abranger múltiplas Availability Zones com uma capacidade desejada definida."
+        },
+        {
+          "key": "C",
+          "text": "Um Amazon EBS Snapshot agendado para replicar volumes entre Availability Zones."
+        },
+        {
+          "key": "D",
+          "text": "Um AWS CloudTrail trail configurado para reiniciar instâncias EC2 quando ocorrerem eventos."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Um Auto Scaling group pode ser configurado para lançar instâncias em sub-redes de múltiplas Availability Zones. Com verificações de integridade integradas e a capacidade desejada/min/máx definida, ele substitui instâncias não íntegras e redistribui ou lança novas instâncias para manter a capacidade desejada caso ocorra falha em uma zona. Placement Groups do tipo Cluster visam baixa latência de rede, geralmente em uma única AZ, e não garantem substituição automática entre AZs para manter capacidade. Snapshots do Amazon EBS não lançam instâncias. O AWS CloudTrail registra eventos, não é um mecanismo para manter capacidade de instâncias EC2.",
+      "fontes": ["https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-benefits.html"]
+    },
+    {
+      "dominio": "2.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "(Escolha duas.) Uma aplicação crítica precisa ser projetada para alta disponibilidade. Qual das seguintes ações contribuem diretamente para que a aplicação permaneça operando caso uma Availability Zone fique indisponível?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Implantar as instâncias EC2 do Auto Scaling group em sub-redes de duas ou mais Availability Zones."
+        },
+        {
+          "key": "B",
+          "text": "Colocar todos os servidores web e o banco de dados na mesma sub-rede de uma única Availability Zone."
+        },
+        {
+          "key": "C",
+          "text": "Utilizar um Application Load Balancer com destinos registrados em duas ou mais Availability Zones."
+        },
+        {
+          "key": "D",
+          "text": "Executar todas as instâncias EC2 em um único Placement Group do tipo Cluster em uma única Availability Zone."
+        },
+        {
+          "key": "E",
+          "text": "Armazenar todos os arquivos estáticos apenas em um volume Amazon EBS anexado a uma única instância EC2."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "Distribuir um Auto Scaling group por múltiplas Availability Zones permite que novas instâncias sejam lançadas nas zonas restantes caso uma zona falhe, mantendo a capacidade. Um Application Load Balancer com destinos em múltiplas Availability Zones roteia o tráfego apenas para alvos íntegros nas zonas disponíveis, evitando que a falha de uma única zona torne a aplicação inacessível. Colocar tudo em uma única AZ ou em um Placement Group Cluster em uma única AZ cria um ponto único de falha. Armazenar arquivos apenas em um volume Amazon EBS anexado a uma única instância também representa ponto único de falha e não oferece distribuição entre AZs.",
+      "fontes": [
+        "https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-add-availability-zone.html",
+        "https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html"
+      ]
+    }
+  ]
+}

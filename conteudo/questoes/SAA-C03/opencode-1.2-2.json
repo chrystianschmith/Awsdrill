@@ -1,0 +1,59 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe executa uma aplicação crítica em instâncias Amazon EC2 em sub-redes públicas de uma VPC. Após uma revisão, foi identificado que, caso um atacante consiga obter acesso à instância, seria possível realizar solicitações ao serviço de metadados da instância para obter credenciais temporárias associadas ao perfil da instância. A equipe quer reduzir esse risco exigindo que todas as solicitações ao Instance Metadata Service sejam autenticadas e limitadas a um único salto de rede. Qual medida deve ser adotada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o acesso anônimo ao Instance Metadata Service para todas as instâncias"
+        },
+        {
+          "key": "B",
+          "text": "Exigir o uso do IMDSv2 e configurar o limite de hops (hop limit) para 1 no Instance Metadata Service"
+        },
+        {
+          "key": "C",
+          "text": "Adicionar regras de saída liberando todo o tráfego para 169.254.169.254 na tabela de rotas"
+        },
+        {
+          "key": "D",
+          "text": "Atribuir uma chave de acesso de longa duração diretamente às instâncias por meio de variáveis de ambiente"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "O IMDSv2 exige um token obtido por meio de uma solicitação PUT autenticada e, ao definir o hop limit para 1, impede que solicitações sejam repassadas de contêineres ou proxies para o serviço de metadados, mitigando tentativas de exposição de credenciais temporárias. A alternativa A é incorreta, pois o acesso anônimo aumenta o risco. A alternativa C é incorreta, pois liberar a rota não impõe autenticação nem limite de hops. A alternativa D é incorreta, pois vai contra o uso de perfis de instância e o princípio de evitar credenciais de longa duração.",
+      "fontes": ["https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html"]
+    },
+    {
+      "dominio": "1.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema de integração envia objetos para um bucket do Amazon S3. A equipe de segurança determinou que apenas conexões HTTPS devem ser aceitas para gravar esses objetos, impedindo qualquer tentativa de envio por HTTP simples. Qual abordagem deve ser utilizada para impor essa restrição no nível do bucket?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar a criptografia padrão do bucket com SSE-S3"
+        },
+        {
+          "key": "B",
+          "text": "Adicionar uma bucket policy com uma declaração Deny utilizando a condição aws:SecureTransport igual a false"
+        },
+        {
+          "key": "C",
+          "text": "Ativar o versionamento do bucket para todos os objetos"
+        },
+        {
+          "key": "D",
+          "text": "Configurar um lifecycle rule para mover objetos para o Amazon S3 Glacier"
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Uma bucket policy com uma declaração Deny quando aws:SecureTransport é false força o uso de HTTPS ao negar explicitamente requisições HTTP. A alternativa A é incorreta, pois criptografia em repouso não impede o uso de HTTP. A alternativa C é incorreta, pois versionamento não tem relação com o protocolo de transporte. A alternativa D é incorreta, pois regras de ciclo de vida não impõem restrições de protocolo.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-best-practices.html"]
+    }
+  ]
+}

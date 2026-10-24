@@ -1,0 +1,156 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "opencode-v2",
+  "questoes": [
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação está sendo executada em uma instância Amazon EC2 e precisa ler objetos de um bucket Amazon S3. Para seguir o princípio do menor privilégio e evitar o armazenamento de credenciais de longo prazo, qual abordagem deve ser adotada?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Incorporar chaves de acesso de um usuário IAM diretamente no código da aplicação."
+        },
+        {
+          "key": "B",
+          "text": "Anexar uma função IAM (IAM role) à instância Amazon EC2 e conceder a ela apenas as permissões necessárias para o bucket."
+        },
+        {
+          "key": "C",
+          "text": "Criar um usuário IAM e salvar suas chaves em um arquivo de texto na instância para uso pela aplicação."
+        },
+        {
+          "key": "D",
+          "text": "Utilizar as credenciais da conta root para que a aplicação acesse o bucket Amazon S3."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "Anexar uma função IAM à instância Amazon EC2 permite que o serviço AWS Security Token Service forneça credenciais temporárias à aplicação, sem a necessidade de armazenar chaves de acesso de longo prazo. A alternativa A é incorreta pois expõe credenciais no código. A alternativa C é incorreta por armazenar chaves em arquivo, o que aumenta o risco de vazamento. A alternativa D é incorreta, pois utilizar credenciais root viola o princípio do menor privilégio e é altamente inseguro.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa precisa permitir que uma conta AWS externa acesse um recurso específico em sua própria conta, mas sem criar usuários IAM nessa conta externa. Qual recurso do AWS IAM deve ser utilizado para essa finalidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Grupos IAM compartilhados entre contas."
+        },
+        {
+          "key": "B",
+          "text": "Políticas baseadas em recursos aplicadas diretamente a usuários da conta externa."
+        },
+        {
+          "key": "C",
+          "text": "Chaves de acesso compartilhadas entre as contas."
+        },
+        {
+          "key": "D",
+          "text": "Uma função IAM com uma política de confiança (trust policy) que permita que a conta externa assuma essa função."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "Para acesso entre contas sem criar usuários IAM na conta que irá acessar, deve-se criar uma função IAM na conta proprietária do recurso, com uma política de confiança permitindo a conta externa, e a conta externa deve chamar a operação AssumeRole para obter credenciais temporárias. A alternativa A está incorreta, pois grupos IAM não são compartilhados entre contas. A alternativa B está incorreta, pois não é possível anexar políticas baseadas em recursos a usuários de outra conta dessa forma. A alternativa C está incorreta, pois o compartilhamento de chaves de acesso de longo prazo não é uma prática segura.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um administrador precisa conceder a um usuário IAM permissão para listar apenas um único bucket Amazon S3 e ler seus objetos, sem permissão para listar outros buckets ou para realizar qualquer operação de gravação. Qual é a melhor forma de atingir esse objetivo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar uma política IAM com permissões restritas ao ARN do bucket e às ações s3:ListBucket e s3:GetObject."
+        },
+        {
+          "key": "B",
+          "text": "Anexar a política gerenciada AmazonS3FullAccess ao usuário IAM."
+        },
+        {
+          "key": "C",
+          "text": "Adicionar o usuário ao grupo Administrators para simplificar o gerenciamento."
+        },
+        {
+          "key": "D",
+          "text": "Conceder a política AmazonS3ReadOnlyAccess, pois ela já limita o acesso apenas à leitura."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "Para seguir o princípio do menor privilégio, deve-se criar uma política IAM customizada especificando apenas o bucket desejado por meio do seu ARN e apenas as ações necessárias (s3:ListBucket para listar e s3:GetObject para ler objetos). A alternativa B concede acesso total ao Amazon S3. A alternativa C concede privilégios administrativos a todos os recursos. A alternativa D concede acesso de leitura a todos os buckets da conta, e não apenas a um bucket específico.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma equipe precisa que um processo automatizado obtenha credenciais temporárias válidas por um curto período de tempo para acessar recursos da AWS. Qual serviço do AWS IAM é utilizado para emitir essas credenciais temporárias?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Organizations"
+        },
+        {
+          "key": "B",
+          "text": "AWS Directory Service"
+        },
+        {
+          "key": "C",
+          "text": "AWS Security Token Service (AWS STS)"
+        },
+        {
+          "key": "D",
+          "text": "AWS Identity and Access Management Access Analyzer"
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "O AWS Security Token Service (AWS STS) é responsável por criar e retornar credenciais temporárias que podem ser usadas para acessar recursos da AWS. A alternativa A trata de gerenciamento de contas. A alternativa B trata de integração com diretórios. A alternativa D trata de análise de acesso compartilhado, e não da emissão de credenciais temporárias.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html",
+        "https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html"
+      ]
+    },
+    {
+      "dominio": "1.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Ao utilizar funções IAM (IAM roles) anexadas a instâncias Amazon EC2 para acessar outros serviços da AWS, quais das seguintes afirmações são verdadeiras? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "As credenciais são temporárias e renovadas automaticamente pela AWS."
+        },
+        {
+          "key": "B",
+          "text": "É obrigatório criar um novo usuário IAM para cada instância que precise de acesso."
+        },
+        {
+          "key": "C",
+          "text": "As chaves de acesso, caso sejam armazenadas manualmente, nunca expiram."
+        },
+        {
+          "key": "D",
+          "text": "Não é necessário armazenar chaves de acesso de longo prazo na instância."
+        },
+        {
+          "key": "E",
+          "text": "O uso de funções IAM impede que qualquer política seja aplicada ao recurso."
+        }
+      ],
+      "corretas": ["A", "D"],
+      "explicacao": "Quando uma função IAM é anexada a uma instância Amazon EC2, o serviço fornece credenciais temporárias por meio do AWS STS, que são renovadas automaticamente enquanto a função estiver anexada (A) e não exige o armazenamento de chaves de longo prazo na instância (D). A alternativa B é incorreta, pois não é necessário criar usuários IAM por instância. A alternativa C é incorreta, pois chaves de acesso de longo prazo não possuem renovação automática. A alternativa E é incorreta, pois políticas IAM ainda são aplicadas por meio da função anexada.",
+      "fontes": [
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html",
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html"
+      ]
+    }
+  ]
+}
