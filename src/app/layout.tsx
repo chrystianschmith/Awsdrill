@@ -10,10 +10,8 @@ const plex = localFont({
   display: "swap",
   src: [
     { path: "./fonts/plex-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/plex-400-italic.woff2", weight: "400", style: "italic" },
     { path: "./fonts/plex-500.woff2", weight: "500", style: "normal" },
     { path: "./fonts/plex-600.woff2", weight: "600", style: "normal" },
-    { path: "./fonts/plex-700.woff2", weight: "700", style: "normal" },
   ],
 });
 
