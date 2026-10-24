@@ -72,6 +72,13 @@ endpoint do webhook (eventos `checkout.session.completed`, `customer.subscriptio
 `invoice.payment_failed`) com o segredo em `STRIPE_WEBHOOK_SECRET`. Nos testes e2e o app fala com um Stripe falso
 (`tests/e2e/apoio/stripe-mock.ts`, via `STRIPE_API_BASE`), sem rede.
 
+## Administração
+
+`/admin` só existe para contas com `role = ADMIN` (as outras recebem 404, em página e em action). Para promover uma
+conta: `UPDATE "User" SET role = 'ADMIN' WHERE email = '...'` no banco. Lá ficam a fila de questões pendentes, os
+reports do material de IA, as revisões da pipeline do catálogo, o custo de IA e a lista de usuários com plano, MRR e
+churn estimados. Toda decisão é registrada em `AuditLog`.
+
 ## Custos e serviços
 
 Só serviços já usados no Prumo, nos planos gratuitos (skill `custo-minimo`): Vercel, Neon, GitHub Actions, Resend,
