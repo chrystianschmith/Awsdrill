@@ -235,9 +235,7 @@ describe("conta", () => {
     expect(await db.consent.count({ where: { userId: user.id } })).toBe(0);
     expect(await db.notificationPreference.count({ where: { userId: user.id } })).toBe(0);
     expect(
-      await db.auditLog.count({
-        where: { action: "conta.excluida", userId: null, ip: null, createdAt: { gte: inicio } },
-      }),
+      await db.auditLog.count({ where: { action: "conta.excluida", userId: null, ip: null, createdAt: { gte: inicio } } }),
     ).toBeGreaterThan(0);
   });
 });

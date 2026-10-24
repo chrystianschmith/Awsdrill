@@ -1,13 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import {
-  lerGuiaPrincipal,
-  lerPaginaDominio,
-  montarColetado,
-  urlMarkdown,
-  type PaginaDominio,
-} from "@/lib/catalogo/guia";
+import { lerGuiaPrincipal, lerPaginaDominio, montarColetado, urlMarkdown, type PaginaDominio } from "@/lib/catalogo/guia";
 import type { ExameColetado } from "@/lib/catalogo/schemas";
 import { EXAMES_INICIAIS } from "../../../prisma/catalogo/exames";
 
@@ -17,9 +11,7 @@ const URL_SAA = urlMarkdown(SAA.fonteGuia);
 
 describe("urlMarkdown", () => {
   it("troca .html por .md e tira âncora e query", () => {
-    expect(urlMarkdown("https://docs.aws.amazon.com/a/b/guia.html?x=1#y")).toBe(
-      "https://docs.aws.amazon.com/a/b/guia.md",
-    );
+    expect(urlMarkdown("https://docs.aws.amazon.com/a/b/guia.html?x=1#y")).toBe("https://docs.aws.amazon.com/a/b/guia.md");
   });
   it("recusa URL que não é página", () => {
     expect(() => urlMarkdown("https://docs.aws.amazon.com/a/b/")).toThrow();
@@ -34,9 +26,7 @@ describe("lerGuiaPrincipal (fixture SAA-C03)", () => {
   });
 
   it("lê o sumário de domínios com peso e link absoluto, igual ao seed", () => {
-    expect(guia.dominios.map((d) => [d.codigo, d.nomeEn, d.peso])).toEqual(
-      SAA.dominios.map((d) => [d.codigo, d.nomeEn, d.peso]),
-    );
+    expect(guia.dominios.map((d) => [d.codigo, d.nomeEn, d.peso])).toEqual(SAA.dominios.map((d) => [d.codigo, d.nomeEn, d.peso]));
     expect(guia.dominios[0]!.url).toBe(
       "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.md",
     );
@@ -80,12 +70,7 @@ describe("montarColetado", () => {
   const paginasDoSeed = new Map<string, PaginaDominio>(
     SAA.dominios.map((d) => [
       d.codigo,
-      {
-        codigo: d.codigo,
-        nomeEn: d.nomeEn,
-        peso: null,
-        tarefas: d.tarefas.map(({ codigo, nomeEn }) => ({ codigo, nomeEn })),
-      },
+      { codigo: d.codigo, nomeEn: d.nomeEn, peso: null, tarefas: d.tarefas.map(({ codigo, nomeEn }) => ({ codigo, nomeEn })) },
     ]),
   );
 

@@ -8,14 +8,11 @@ import { buscarEm, guiaEmMarkdown } from "../../apoio/guia-markdown";
 const HOJE = "2026-11-01";
 
 describe("verificarExame", () => {
-  it.each(EXAMES_INICIAIS.map((e) => [e.codigo, e] as const))(
-    "%s: guia igual ao gravado não muda nada",
-    async (_, exame) => {
-      const v = await verificarExame(exame, buscarEm(guiaEmMarkdown(exame)), HOJE);
-      expect(v).toMatchObject({ decisao: "SEM_MUDANCA", confianca: 1, problemas: [] });
-      expect(v.exame.lidoEm).toBe(HOJE);
-    },
-  );
+  it.each(EXAMES_INICIAIS.map((e) => [e.codigo, e] as const))("%s: guia igual ao gravado não muda nada", async (_, exame) => {
+    const v = await verificarExame(exame, buscarEm(guiaEmMarkdown(exame)), HOJE);
+    expect(v).toMatchObject({ decisao: "SEM_MUDANCA", confianca: 1, problemas: [] });
+    expect(v.exame.lidoEm).toBe(HOJE);
+  });
 
   it("mudança de peso coerente publica sozinha", async () => {
     const atual = EXAMES_INICIAIS[0]!;

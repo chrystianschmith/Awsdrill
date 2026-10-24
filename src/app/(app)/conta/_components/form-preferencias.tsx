@@ -10,17 +10,9 @@ import { preferenciasSchema, type PreferenciasInput } from "@/lib/auth/schemas";
 
 const OPCOES: { nome: keyof PreferenciasInput; label: string; descricao: string }[] = [
   { nome: "revisoes", label: "Revisões do dia", descricao: "Lembrete quando houver revisões pendentes." },
-  {
-    nome: "mudancaExame",
-    label: "Mudanças no exame",
-    descricao: "Nova versão do guia do exame que você estuda ou data de retirada.",
-  },
+  { nome: "mudancaExame", label: "Mudanças no exame", descricao: "Nova versão do guia do exame que você estuda ou data de retirada." },
   { nome: "recertificacao", label: "Recertificação", descricao: "Aviso antes de uma certificação sua vencer." },
-  {
-    nome: "avisosPagamento",
-    label: "Assinatura e pagamento",
-    descricao: "Falha de cobrança, renovação e fim do acesso Pro.",
-  },
+  { nome: "avisosPagamento", label: "Assinatura e pagamento", descricao: "Falha de cobrança, renovação e fim do acesso Pro." },
 ];
 
 export function FormPreferencias({ valores }: { valores: PreferenciasInput }) {
@@ -50,12 +42,7 @@ export function FormPreferencias({ valores }: { valores: PreferenciasInput }) {
         <legend className="sr-only">E-mails que você quer receber</legend>
         {OPCOES.map((o) => (
           <div key={o.nome} className="flex items-start gap-3">
-            <input
-              id={`pref-${o.nome}`}
-              type="checkbox"
-              className="mt-0.5 size-4 shrink-0 accent-[var(--primary)]"
-              {...register(o.nome)}
-            />
+            <input id={`pref-${o.nome}`} type="checkbox" className="mt-0.5 size-4 shrink-0 accent-[var(--primary)]" {...register(o.nome)} />
             <label htmlFor={`pref-${o.nome}`} className="grid gap-0.5 text-sm">
               <span className="font-medium">{o.label}</span>
               <span className="text-muted-foreground">{o.descricao}</span>
@@ -63,9 +50,7 @@ export function FormPreferencias({ valores }: { valores: PreferenciasInput }) {
           </div>
         ))}
       </fieldset>
-      <p className="text-xs text-muted-foreground">
-        E-mails de segurança (confirmação, redefinição e troca de senha) são sempre enviados.
-      </p>
+      <p className="text-xs text-muted-foreground">E-mails de segurança (confirmação, redefinição e troca de senha) são sempre enviados.</p>
       <Button type="submit" disabled={isSubmitting || !isDirty} className="w-fit">
         {isSubmitting ? "Salvando..." : "Salvar preferências"}
       </Button>

@@ -34,9 +34,7 @@ describe("diffExame", () => {
     ]);
     expect(d.dominiosIncluidos).toEqual([{ codigo: "5", nomeEn: "New Domain" }]);
     expect(d.dominiosRemovidos).toEqual([]);
-    expect(d.dominiosRenomeados).toEqual([
-      { codigo: "3", de: "Cloud Technology and Services", para: "Cloud Technology" },
-    ]);
+    expect(d.dominiosRenomeados).toEqual([{ codigo: "3", de: "Cloud Technology and Services", para: "Cloud Technology" }]);
     expect(d.tarefasIncluidas).toEqual([{ codigo: "2.5", nomeEn: "Nova tarefa oficial" }]);
     expect(d.tarefasRemovidas.map((t) => t.codigo)).toEqual(["1.4"]);
     expect(d.tarefasRenomeadas.map((t) => t.codigo)).toEqual(["4.1"]);
@@ -46,9 +44,7 @@ describe("diffExame", () => {
   it("aponta domínio removido", () => {
     const depois = base();
     depois.dominios.pop();
-    expect(diffExame(base(), depois).dominiosRemovidos).toEqual([
-      { codigo: "4", nomeEn: "Billing, Pricing, and Support" },
-    ]);
+    expect(diffExame(base(), depois).dominiosRemovidos).toEqual([{ codigo: "4", nomeEn: "Billing, Pricing, and Support" }]);
   });
 });
 

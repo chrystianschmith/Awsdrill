@@ -30,9 +30,7 @@ export async function aguardarEmail(para: string, assunto: string, depoisDe?: st
     .poll(
       async () => {
         const todos = await lerEmails();
-        achado = todos
-          .filter((e) => e.to === para && e.subject === assunto && (!depoisDe || e.arquivo > depoisDe))
-          .at(-1);
+        achado = todos.filter((e) => e.to === para && e.subject === assunto && (!depoisDe || e.arquivo > depoisDe)).at(-1);
         return Boolean(achado);
       },
       { message: `e-mail "${assunto}" para ${para}`, timeout: 15_000 },
