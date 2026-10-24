@@ -7,7 +7,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/auth/session";
 import { ENTITLEMENTS, FEATURE_LABELS, type Entitlements, type PlanKey } from "@/lib/assinaturas/entitlements";
 import { getEffectivePlan } from "@/lib/assinaturas/plano";
-import { PRECOS, economiaAnualCentavos, mensalEquivalenteAnualCentavos, type Intervalo } from "@/lib/assinaturas/precos";
+import {
+  PRECOS,
+  economiaAnualCentavos,
+  mensalEquivalenteAnualCentavos,
+  type Intervalo,
+} from "@/lib/assinaturas/precos";
 import { FAQ_ASSINATURA as FAQ } from "@/lib/assinaturas/faq";
 import { urlEntrarComPlano } from "@/lib/assinaturas/funil";
 import { env } from "@/lib/env";
@@ -77,9 +82,11 @@ function Cta({
   );
 }
 
-
-
-export default async function PrecosPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+export default async function PrecosPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { recurso } = await searchParams;
   const destaque = ehRecurso(recurso) ? recurso : null;
 
@@ -114,9 +121,28 @@ export default async function PrecosPage({ searchParams }: { searchParams: Promi
           <h3 className="font-semibold">Grátis</h3>
           <p className="mt-2 text-3xl font-semibold tabular">{formatBRL(0)}</p>
           <p className="text-sm text-muted-foreground">Para conhecer a plataforma com um exame.</p>
+          <ul className="mt-4 grid gap-2 text-sm">
+            {RECURSOS.filter((r) => ENTITLEMENTS.FREE[r] !== false).map((r) => (
+              <li key={r} className="flex items-start gap-2">
+                <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>
+                  {FEATURE_LABELS[r]}
+                  {typeof ENTITLEMENTS.FREE[r] === "number" ? (
+                    <span className="tabular text-muted-foreground">: {ENTITLEMENTS.FREE[r]}</span>
+                  ) : null}
+                </span>
+              </li>
+            ))}
+            <li className="flex items-start gap-2">
+              <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
+              <span>Prontidão geral, timer, metas e carteira de certificações</span>
+            </li>
+          </ul>
           <div className="mt-auto pt-6">
             {user ? (
-              <p className="text-sm text-muted-foreground">{plano === "FREE" ? "Seu plano atual." : "Incluído na sua conta."}</p>
+              <p className="text-sm text-muted-foreground">
+                {plano === "FREE" ? "Seu plano atual." : "Incluído na sua conta."}
+              </p>
             ) : (
               <Link href="/cadastro" className={cn(buttonVariants({ variant: "secondary" }), "w-full")}>
                 Criar conta grátis
@@ -141,12 +167,16 @@ export default async function PrecosPage({ searchParams }: { searchParams: Promi
               <div>
                 <p className="font-medium">Mensal</p>
                 <p className="text-sm text-muted-foreground">
-                  <span className="tabular text-base font-semibold text-foreground">{formatBRL(PRECOS.MENSAL.centavos)}</span>{" "}
+                  <span className="tabular text-base font-semibold text-foreground">
+                    {formatBRL(PRECOS.MENSAL.centavos)}
+                  </span>{" "}
                   por mês, no cartão
                 </p>
               </div>
               <div className="sm:w-44">
-                <Cta intervalo="MENSAL" logado={Boolean(user)} plano={plano}>Assinar mensal</Cta>
+                <Cta intervalo="MENSAL" logado={Boolean(user)} plano={plano}>
+                  Assinar mensal
+                </Cta>
               </div>
             </li>
             <li className="grid gap-3 py-4 sm:grid-cols-[1fr_auto] sm:items-center">
@@ -160,25 +190,33 @@ export default async function PrecosPage({ searchParams }: { searchParams: Promi
                   ) : null}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <span className="tabular text-base font-semibold text-foreground">{formatBRL(PRECOS.ANUAL.centavos)}</span>{" "}
-                  por ano no cartão, o mesmo que <span className="tabular">{formatBRL(mensalEquivalenteAnualCentavos())}</span>{" "}
-                  por mês
+                  <span className="tabular text-base font-semibold text-foreground">
+                    {formatBRL(PRECOS.ANUAL.centavos)}
+                  </span>{" "}
+                  por ano no cartão, o mesmo que{" "}
+                  <span className="tabular">{formatBRL(mensalEquivalenteAnualCentavos())}</span> por mês
                 </p>
               </div>
               <div className="sm:w-44">
-                <Cta intervalo="ANUAL" logado={Boolean(user)} plano={plano}>Assinar anual</Cta>
+                <Cta intervalo="ANUAL" logado={Boolean(user)} plano={plano}>
+                  Assinar anual
+                </Cta>
               </div>
             </li>
             <li className="grid gap-3 py-4 last:pb-0 sm:grid-cols-[1fr_auto] sm:items-center">
               <div>
                 <p className="font-medium">Anual via Pix</p>
                 <p className="text-sm text-muted-foreground">
-                  <span className="tabular text-base font-semibold text-foreground">{formatBRL(PRECOS.ANUAL_PIX.centavos)}</span>{" "}
+                  <span className="tabular text-base font-semibold text-foreground">
+                    {formatBRL(PRECOS.ANUAL_PIX.centavos)}
+                  </span>{" "}
                   à vista, 12 meses de acesso, sem renovação automática
                 </p>
               </div>
               <div className="sm:w-44">
-                <Cta intervalo="ANUAL_PIX" logado={Boolean(user)} plano={plano}>Pagar com Pix</Cta>
+                <Cta intervalo="ANUAL_PIX" logado={Boolean(user)} plano={plano}>
+                  Pagar com Pix
+                </Cta>
               </div>
             </li>
           </ul>
@@ -239,9 +277,7 @@ export default async function PrecosPage({ searchParams }: { searchParams: Promi
         <div className="mt-4 divide-y divide-border rounded-lg border border-border bg-surface">
           {FAQ.map((item) => (
             <details key={item.pergunta} className="group px-4 py-3">
-              <summary className="cursor-pointer list-none font-medium marker:hidden">
-                {item.pergunta}
-              </summary>
+              <summary className="cursor-pointer list-none font-medium marker:hidden">{item.pergunta}</summary>
               <p className="mt-2 text-sm text-muted-foreground">{item.resposta}</p>
             </details>
           ))}
