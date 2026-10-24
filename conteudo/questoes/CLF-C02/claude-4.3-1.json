@@ -1,0 +1,144 @@
+{
+  "exame": "CLF-C02",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "A equipe de segurança de uma rede de farmácias quer usar um firewall de aplicação de um fabricante conhecido, já empacotado como AMI, e pagar a licença na própria fatura da AWS, por hora de uso, sem negociar um contrato separado com o fabricante. Onde a equipe encontra e contrata esse produto?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "No AWS Artifact."
+        },
+        {
+          "key": "B",
+          "text": "No AWS Marketplace."
+        },
+        {
+          "key": "C",
+          "text": "No AWS Trusted Advisor."
+        },
+        {
+          "key": "D",
+          "text": "No AWS Health Dashboard."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B é a correta: o AWS Marketplace é o catálogo de software de terceiros (AMIs, contêineres, SaaS e outros) que pode ser contratado e cobrado na fatura da AWS, inclusive por hora de uso. A fornece relatórios de conformidade da própria AWS. C traz recomendações de boas práticas para a conta. D informa eventos que afetam os serviços e os recursos da conta.",
+      "fontes": ["https://docs.aws.amazon.com/marketplace/latest/buyerguide/what-is-marketplace.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa de logística tem cargas críticas na AWS e quer um Technical Account Manager (TAM) designado, que conheça o ambiente, faça revisões arquiteturais proativas e ajude a planejar eventos de grande volume. Qual é o plano de suporte de MENOR custo que inclui um TAM designado?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Basic Support."
+        },
+        {
+          "key": "B",
+          "text": "AWS Business Support+."
+        },
+        {
+          "key": "C",
+          "text": "AWS Enterprise Support."
+        },
+        {
+          "key": "D",
+          "text": "AWS Unified Operations."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C é a correta: entre os planos atuais, o TAM designado está incluído a partir do AWS Enterprise Support. A não inclui suporte técnico de engenheiros nem TAM. B oferece suporte técnico 24/7 e o conjunto completo de verificações do Trusted Advisor, mas não um TAM designado. D também inclui TAM, mas é o plano mais caro, voltado a cargas de missão crítica, então não é o de menor custo.",
+      "fontes": [
+        "https://aws.amazon.com/premiumsupport/plans/",
+        "https://aws.amazon.com/premiumsupport/plans/enterprise/"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma seguradora vai migrar seu core de sistemas e quer contratar especialistas da própria AWS para conduzir o projeto junto com a equipe interna, com metodologia e boas práticas da AWS. Qual oferta atende a essa necessidade?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Professional Services."
+        },
+        {
+          "key": "B",
+          "text": "AWS Trusted Advisor."
+        },
+        {
+          "key": "C",
+          "text": "AWS Artifact."
+        },
+        {
+          "key": "D",
+          "text": "AWS re:Post."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A é a correta: o AWS Professional Services é a equipe de consultoria da AWS que trabalha com os clientes em projetos como migrações e modernizações. B executa verificações automáticas na conta, sem conduzir projetos. C fornece documentos de conformidade. D é uma comunidade de perguntas e respostas, sem contratação de especialistas para um projeto.",
+      "fontes": ["https://aws.amazon.com/professional-services/"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "O responsável pela conta AWS de uma escola quer uma ferramenta que verifique automaticamente a conta e aponte instâncias ociosas, security groups com portas abertas para toda a internet e serviços perto do limite de cota, com recomendações de correção. Qual recurso faz isso?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "AWS Artifact."
+        },
+        {
+          "key": "B",
+          "text": "AWS Pricing Calculator."
+        },
+        {
+          "key": "C",
+          "text": "AWS Marketplace."
+        },
+        {
+          "key": "D",
+          "text": "AWS Trusted Advisor."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D é a correta: o AWS Trusted Advisor inspeciona a conta e recomenda melhorias em otimização de custos, segurança, tolerância a falhas, desempenho e cotas de serviço. O conjunto de verificações disponível depende do plano de suporte. A fornece documentos de conformidade. B estima custos de arquiteturas futuras, sem olhar a conta. C é o catálogo de software de terceiros.",
+      "fontes": ["https://docs.aws.amazon.com/awssupport/latest/user/trusted-advisor.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "A equipe de compras de uma empresa está avaliando o AWS Marketplace para adquirir ferramentas de monitoramento e de segurança. Quais DUAS afirmações sobre o AWS Marketplace estão corretas? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Oferece software de fornecedores terceiros em formatos como AMI, contêiner e SaaS."
+        },
+        {
+          "key": "B",
+          "text": "Só vende software desenvolvido pela própria AWS."
+        },
+        {
+          "key": "C",
+          "text": "As compras podem ser cobradas na fatura da AWS da empresa."
+        },
+        {
+          "key": "D",
+          "text": "Só pode ser usado por clientes com o plano Enterprise Support."
+        },
+        {
+          "key": "E",
+          "text": "Não permite produtos no modelo Bring Your Own License (BYOL)."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C são as corretas: o AWS Marketplace reúne software de milhares de fornecedores em formatos como AMI, contêiner e SaaS, e as assinaturas são cobradas na fatura da AWS. B está errada porque o catálogo é majoritariamente de terceiros. D está errada porque o Marketplace não depende do plano de suporte. E está errada porque há produtos oferecidos no modelo BYOL.",
+      "fontes": ["https://docs.aws.amazon.com/marketplace/latest/buyerguide/what-is-marketplace.html"]
+    }
+  ]
+}
