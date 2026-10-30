@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { DropdownMenu as M } from "radix-ui";
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sair } from "@/lib/auth/actions";
 import { OPCOES_TEMA } from "./theme-toggle";
@@ -14,20 +14,8 @@ export type LinkMenu = { href: string; label: string };
 const item =
   "flex h-9 cursor-default select-none items-center gap-2 rounded-sm px-2 text-sm outline-none data-[highlighted]:bg-surface-muted [&_svg]:size-4 [&_svg]:text-muted-foreground";
 
-/** Menu do usuário: nome, e-mail, tema, links da conta e sair. */
-export function UserMenu({
-  nome,
-  email,
-  links,
-  linksMobile = [],
-  compact = false,
-}: {
-  nome: string;
-  email: string;
-  links: LinkMenu[];
-  linksMobile?: LinkMenu[];
-  compact?: boolean;
-}) {
+/** Menu do usuário na barra superior (pílula com avatar, como no alibabadrill): conta, tema e sair. */
+export function UserMenu({ nome, email, links }: { nome: string; email: string; links: LinkMenu[] }) {
   const [tema, definirTema] = useTema();
   const formSair = useRef<HTMLFormElement>(null);
 
@@ -37,31 +25,21 @@ export function UserMenu({
       <M.Root>
         <M.Trigger
           aria-label={`Menu de ${nome}`}
-          className={cn(
-            "flex items-center gap-2 rounded-md text-left text-sm hover:bg-surface-muted",
-            compact ? "h-10 px-2" : "h-12 w-full px-3",
-          )}
+          className="flex min-h-10 items-center gap-2 rounded-full border border-border bg-surface py-1.5 pl-1.5 pr-1.5 text-left text-[0.94rem] font-semibold hover:border-primary-strong sm:pr-3"
         >
           <span
             aria-hidden
-            className="grid size-7 shrink-0 place-items-center rounded-full bg-surface-muted text-xs font-semibold uppercase"
+            className="grid size-7 shrink-0 place-items-center rounded-full bg-primary font-display text-sm font-bold uppercase text-primary-foreground"
           >
             {nome.slice(0, 1)}
           </span>
-          {compact ? null : (
-            <>
-              <span className="min-w-0 flex-1">
-                <span className="block truncate font-medium">{nome}</span>
-              </span>
-              <ChevronsUpDown aria-hidden className="size-4 text-muted-foreground" />
-            </>
-          )}
+          <span className="hidden max-w-[12ch] truncate sm:block">{nome}</span>
         </M.Trigger>
         <M.Portal>
           <M.Content
-            align={compact ? "end" : "start"}
-            side={compact ? "bottom" : "top"}
-            sideOffset={6}
+            align="end"
+            side="bottom"
+            sideOffset={8}
             className="z-50 w-64 rounded-lg border border-border bg-surface p-1 shadow-sm"
           >
             <div className="px-2 py-2">
@@ -69,16 +47,6 @@ export function UserMenu({
               <p className="truncate text-xs text-muted-foreground">{email}</p>
             </div>
             <M.Separator className="my-1 h-px bg-border" />
-            {linksMobile.length > 0 ? (
-              <M.Group className="md:hidden">
-                {linksMobile.map((l) => (
-                  <M.Item key={l.href} asChild className={item}>
-                    <Link href={l.href}>{l.label}</Link>
-                  </M.Item>
-                ))}
-                <M.Separator className="my-1 h-px bg-border" />
-              </M.Group>
-            ) : null}
             {links.map((l) => (
               <M.Item key={l.href} asChild className={item}>
                 <Link href={l.href}>{l.label}</Link>
@@ -91,7 +59,7 @@ export function UserMenu({
                 <M.RadioItem
                   key={valor}
                   value={valor}
-                  className={cn(item, "data-[state=checked]:font-medium data-[state=checked]:text-primary")}
+                  className={cn(item, "data-[state=checked]:font-medium data-[state=checked]:text-primary-strong")}
                 >
                   <Icone aria-hidden />
                   {rotulo}

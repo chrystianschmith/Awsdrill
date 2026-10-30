@@ -9,7 +9,7 @@ export function ErroConteudo({ digest, retry }: { digest?: string; retry: () => 
   return (
     <div role="alert" className="mx-auto flex max-w-md flex-col items-start gap-4 py-12">
       <p className="tabular text-sm font-medium text-muted-foreground">Erro 500</p>
-      <h1 className="text-2xl font-semibold tracking-tight">Algo deu errado do nosso lado</h1>
+      <h1 className="text-3xl font-extrabold tracking-tight">Algo deu errado do nosso lado</h1>
       <p className="text-sm text-muted-foreground">
         Seus dados estão salvos. Tente de novo; se continuar, avise o suporte informando o código abaixo.
       </p>

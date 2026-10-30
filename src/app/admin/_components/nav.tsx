@@ -16,7 +16,7 @@ const ITENS = [
 export function AdminNav() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Administração" className="-mx-4 overflow-x-auto px-4">
+    <nav aria-label="Administração" className="overflow-x-auto px-2 [scrollbar-width:none] lg:px-5">
       <ul className="flex min-w-max gap-1">
         {ITENS.map((i) => {
           const ativo = i.href === "/admin" ? pathname === "/admin" : pathname.startsWith(i.href);
@@ -26,8 +26,8 @@ export function AdminNav() {
                 href={i.href}
                 aria-current={ativo ? "page" : undefined}
                 className={cn(
-                  "inline-flex h-9 items-center rounded-md px-3 text-sm text-muted-foreground hover:bg-surface-muted hover:text-foreground",
-                  ativo && "bg-surface-muted font-medium text-foreground",
+                  "-mb-px inline-flex items-center border-b-[3px] border-transparent px-3 py-3 text-[0.94rem] font-semibold text-muted-foreground hover:text-foreground",
+                  ativo && "border-primary-strong text-foreground",
                 )}
               >
                 {i.rotulo}
