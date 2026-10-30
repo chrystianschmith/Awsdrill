@@ -1,7 +1,7 @@
-# Trilha · preparação para certificações de nuvem
+# AWS Drill · preparação para certificações de nuvem
 
 SaaS em pt-BR que leva uma pessoa do zero até a aprovação em cada certificação de nuvem, com plano pelo blueprint
-do exame, simulados por domínio, prontidão medida e recertificação. "Trilha" é um nome provisório (`src/lib/brand.ts`).
+do exame, simulados por domínio, prontidão medida e recertificação. Marca e identidade visual: ADR 0009 (`src/lib/brand.ts`).
 Não somos afiliados à Amazon Web Services; nenhuma questão real de prova é usada.
 
 Produto e escopo: [`docs/goal-contexto-aws.md`](docs/goal-contexto-aws.md) · Estado: [`docs/estado.md`](docs/estado.md) ·

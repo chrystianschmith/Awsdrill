@@ -1,4 +1,4 @@
-# Trilha (nome provisório)
+# AWS Drill
 
 SaaS em pt-BR de preparação para certificações de nuvem. Produto, escopo, fases e fora de escopo: `docs/goal-contexto-aws.md`.
 Estado atual e próximo passo: `docs/estado.md` (ler antes de começar; atualizar ao fim de cada etapa). Decisões: `docs/adr/`.

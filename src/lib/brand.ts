@@ -1,9 +1,11 @@
 /**
- * Nome provisório do produto; trocar aqui quando a marca for definida.
- * Regra do produto: "AWS" nunca entra no nome, no domínio nem no logo (teste em tests/unit/brand.test.ts).
+ * Marca do produto (ADR 0009). O nome tem "AWS" por decisão do dono do produto; o risco de marca está registrado
+ * no ADR. Nenhuma afiliação é alegada (teste em tests/unit/brand.test.ts).
  */
 export const BRAND = {
-  name: "Trilha",
+  name: "AWS Drill",
+  /** Partes do nome no logo: a segunda vai em amarelo. */
+  partes: ["AWS", "Drill"],
   tagline: "Preparação para certificações de nuvem, com plano, simulados e prontidão medida.",
   supportEmail: "contato@example.com",
 } as const;
