@@ -1,0 +1,152 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa guarda snapshots mensais de volumes Amazon EBS por 2 anos para auditoria. Esses snapshots quase nunca são restaurados e, quando são, uma espera de até 72 horas é aceitável. O custo dos snapshots antigos cresce todo mês. Qual ação reduz o custo com o MENOR esforço?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mover os snapshots com mais de 90 dias para o EBS Snapshots Archive."
+        },
+        {
+          "key": "B",
+          "text": "Copiar os snapshots para o S3 Glacier Deep Archive com a AWS CLI."
+        },
+        {
+          "key": "C",
+          "text": "Apagar os snapshots antigos e manter só o mais recente."
+        },
+        {
+          "key": "D",
+          "text": "Converter os snapshots em AMIs públicas para não pagar armazenamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o tier de arquivamento de snapshots do EBS custa bem menos para snapshots raramente usados e mantidos por longos períodos, e a restauração leva até 72 horas, dentro do aceitável. B não é um caminho suportado para snapshots do EBS. C viola a retenção de 2 anos exigida pela auditoria. D expõe dados e continua cobrando o armazenamento dos snapshots por trás das AMIs.",
+      "fontes": ["https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive.html"]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um escritório tem um NAS de 200 TB que cresce 5 TB por mês. A maior parte dos arquivos não é aberta depois de 6 meses, mas os usuários querem continuar acessando tudo pelo mesmo compartilhamento NFS, com os arquivos recentes respondendo rápido. A empresa quer parar de comprar discos. Qual solução atende com o MENOR custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Migrar tudo para o Amazon EFS Standard e montar via Direct Connect."
+        },
+        {
+          "key": "B",
+          "text": "Comprar mais gavetas para o NAS e fazer backup no Amazon S3."
+        },
+        {
+          "key": "C",
+          "text": "Usar o Amazon S3 File Gateway com cache local para os arquivos recentes e regras de lifecycle no bucket para mover os arquivos antigos para classes mais baratas."
+        },
+        {
+          "key": "D",
+          "text": "Copiar os arquivos para volumes Amazon EBS e compartilhá-los por uma instância EC2."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o S3 File Gateway expõe um compartilhamento NFS local que grava os arquivos como objetos no S3, mantém os arquivos recentes em cache para acesso rápido, e o lifecycle move os antigos para classes mais baratas, sem comprar discos. A tem custo por GB muito maior e latência de WAN para todos os arquivos. B mantém a compra de discos. D cria servidores para administrar e paga EBS, que custa mais que o S3.",
+      "fontes": [
+        "https://docs.aws.amazon.com/filegateway/latest/files3/what-is-file-s3.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema grava no Amazon S3 milhões de logs por dia, cada um com cerca de 8 KB. Uma regra de lifecycle deveria mover os logs para o S3 Standard-IA depois de 30 dias, mas a fatura não caiu, e a análise mostra que os objetos continuam no S3 Standard. Qual ação reduz o custo de forma efetiva?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Forçar a transição dos objetos de 8 KB com um filtro de tamanho mínimo na regra de lifecycle."
+        },
+        {
+          "key": "B",
+          "text": "Agrupar os logs em arquivos maiores (por exemplo, por hora e compactados) antes de armazenar ou de fazer a transição."
+        },
+        {
+          "key": "C",
+          "text": "Mudar a classe padrão do bucket para S3 One Zone-IA."
+        },
+        {
+          "key": "D",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: por padrão, o lifecycle não transiciona objetos menores que 128 KB, porque cada transição é cobrada por objeto e as classes IA cobram no mínimo 128 KB por objeto, o que torna objetos pequenos mais caros nelas; agrupar e compactar os logs reduz o número de objetos e o volume armazenado. A paga a requisição de transição por objeto e a cobrança mínima de 128 KB, o que pode aumentar o custo. C tem as mesmas cobranças mínimas e reduz a resiliência. D acelera uploads e acrescenta custo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/lifecycle-transition-general-considerations.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa vai migrar 40 TB de pastas pessoais de usuários, acessadas por SMB com permissões do Active Directory. O acesso é esporádico, com baixa exigência de IOPS, e muitos arquivos são duplicados entre pastas. Ela quer a opção gerenciada MAIS econômica. Qual configuração atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon FSx for Windows File Server com armazenamento SSD e capacidade de throughput máxima."
+        },
+        {
+          "key": "B",
+          "text": "Amazon EFS com a classe Standard."
+        },
+        {
+          "key": "C",
+          "text": "Um volume Amazon EBS io2 por usuário, compartilhado por uma instância Windows."
+        },
+        {
+          "key": "D",
+          "text": "Amazon FSx for Windows File Server com armazenamento HDD e deduplicação de dados habilitada."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o FSx for Windows oferece SMB com integração ao Active Directory; o armazenamento HDD é a opção mais barata para cargas de baixa exigência de IOPS, e a deduplicação reduz o espaço ocupado por arquivos repetidos. A paga desempenho que a carga não usa. B não oferece SMB nem permissões do Active Directory. C é caro e exige administrar o servidor de arquivos.",
+      "fontes": [
+        "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html",
+        "https://docs.aws.amazon.com/fsx/latest/WindowsGuide/using-data-dedup.html"
+      ]
+    },
+    {
+      "dominio": "4.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Para uma auditoria, uma empresa precisa restaurar 50 TB distribuídos em 3 milhões de objetos guardados no S3 Glacier Flexible Retrieval. O prazo é de 3 dias, e o objetivo é o MENOR custo. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Usar a opção de recuperação Bulk."
+        },
+        {
+          "key": "B",
+          "text": "Usar a opção de recuperação Expedited para todos os objetos."
+        },
+        {
+          "key": "C",
+          "text": "Iniciar as restaurações em massa com o S3 Batch Operations a partir de um manifesto (ou relatório do S3 Inventory)."
+        },
+        {
+          "key": "D",
+          "text": "Mudar a classe dos objetos para S3 Standard com uma cópia direta, sem restaurar."
+        },
+        {
+          "key": "E",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket antes da restauração."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: a recuperação Bulk é a mais barata do Glacier Flexible Retrieval e conclui em algumas horas, dentro do prazo, e o S3 Batch Operations dispara a restauração de milhões de objetos a partir de um manifesto, sem scripts próprios. B custa muito mais e é para necessidades urgentes de poucos objetos. D não funciona, porque objetos arquivados precisam ser restaurados antes de serem copiados. E não tem relação com restauração.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects-retrieval-options.html",
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/batch-ops.html"
+      ]
+    }
+  ]
+}

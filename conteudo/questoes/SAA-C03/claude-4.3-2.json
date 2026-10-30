@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma vez por mês, analistas rodam consultas pesadas de dois dias sobre o banco Amazon Aurora PostgreSQL de produção, e isso degrada a aplicação. Para isolar a carga, a empresa avalia manter uma réplica grande permanente. Qual opção isola a carga com o MENOR custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Manter uma réplica do Aurora grande o mês inteiro só para os analistas."
+        },
+        {
+          "key": "B",
+          "text": "Restaurar todo mês um snapshot completo em um cluster novo."
+        },
+        {
+          "key": "C",
+          "text": "Criar um clone do Aurora (copy-on-write) no início da análise e apagá-lo ao final."
+        },
+        {
+          "key": "D",
+          "text": "Rodar as consultas na instância writer fora do horário comercial."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o clone é criado em minutos, compartilha as páginas de armazenamento com a origem e só cobra pelas páginas alteradas e pela instância enquanto existir, isolando a carga só durante os dois dias. A paga uma instância grande o mês inteiro para dois dias de uso. B demora mais e paga o armazenamento completo da cópia. D ainda afeta a produção e pode não caber na janela.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma tabela do Amazon DynamoDB tem tráfego previsível: sobe gradualmente pela manhã, fica estável durante o dia e cai à noite, sem picos bruscos. Hoje ela usa o modo on-demand, e a conta da tabela é alta. Qual mudança reduz o custo mantendo o desempenho?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar para capacidade provisionada com auto scaling e comprar reserved capacity para a linha de base constante."
+        },
+        {
+          "key": "B",
+          "text": "Manter o on-demand e acrescentar um cluster DAX."
+        },
+        {
+          "key": "C",
+          "text": "Mudar para a classe de tabela Standard-IA."
+        },
+        {
+          "key": "D",
+          "text": "Transformar a tabela em global table com réplica em outra região."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: para tráfego previsível e de variação gradual, a capacidade provisionada com auto scaling custa menos por requisição que o on-demand, e a reserved capacity reduz ainda mais o custo da parte sempre usada. B acrescenta o custo do DAX sem mexer no preço por requisição. C barateia o armazenamento e encarece as requisições, o oposto do necessário para uma tabela de tráfego alto. D duplica o custo.",
+      "fontes": [
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma instância Amazon RDS for MySQL usa um volume gp2 de 6 TB, embora tenha só 1,5 TB de dados, porque o tamanho foi aumentado para obter mais IOPS. A carga precisa de 12.000 IOPS. Qual mudança reduz o custo de armazenamento mantendo o desempenho?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Migrar o armazenamento para io2 com 12.000 IOPS provisionados."
+        },
+        {
+          "key": "B",
+          "text": "Migrar para gp3, provisionando os IOPS e o throughput independentemente do tamanho e dimensionando o volume pelo espaço necessário."
+        },
+        {
+          "key": "C",
+          "text": "Criar réplicas de leitura para dividir os IOPS."
+        },
+        {
+          "key": "D",
+          "text": "Migrar o banco para instâncias com instance store."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: no gp3 os IOPS e o throughput são configurados independentemente da capacidade, então não é preciso comprar terabytes extras só para ganhar IOPS; dimensiona-se o volume pelo espaço necessário, com folga. Como o RDS não permite reduzir o armazenamento alocado, a migração para um volume menor exige uma instância nova, por exemplo com replicação ou dump e restore. A também desacopla IOPS de tamanho, mas o io2 é bem mais caro por GB e por IOPS. C não reduz o volume do primário e acrescenta instâncias. D não se aplica ao RDS.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html"]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "SINGLE",
+      "enunciado": "Uma tabela de transações no Amazon RDS for PostgreSQL tem 3 TB, mas só os últimos 12 meses são consultados no dia a dia. Os dados mais antigos precisam ficar disponíveis para consultas ocasionais de auditoria por 10 anos, e o crescimento obriga a aumentar o armazenamento do banco todo trimestre. Qual solução reduz o custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Aumentar a instância e o armazenamento a cada trimestre."
+        },
+        {
+          "key": "B",
+          "text": "Criar réplicas de leitura para os auditores."
+        },
+        {
+          "key": "C",
+          "text": "Migrar o armazenamento para io2 para melhorar o desempenho das consultas antigas."
+        },
+        {
+          "key": "D",
+          "text": "Exportar periodicamente as partições antigas para o Amazon S3 em Parquet, removê-las do banco e consultá-las com o Amazon Athena quando necessário."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: os dados históricos ficam no S3, em formato colunar, a uma fração do custo do armazenamento do banco, e continuam consultáveis por SQL com o Athena sob demanda, pagando por consulta; o banco fica menor e mais rápido. A e C aumentam o custo. B duplica o armazenamento de toda a tabela.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ExportSnapshot.html",
+        "https://docs.aws.amazon.com/athena/latest/ug/what-is.html"
+      ]
+    },
+    {
+      "dominio": "4.3",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um cluster do Amazon ElastiCache for Redis OSS com nós r6g.xlarge roda 24/7 com uso estável e deve continuar assim pelos próximos 3 anos. A empresa quer reduzir o custo do cluster. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comprar reserved nodes do ElastiCache, ou cobrir o uso com um Database Savings Plan, para a capacidade estável."
+        },
+        {
+          "key": "B",
+          "text": "Migrar o cluster para o modo serverless sem analisar a carga."
+        },
+        {
+          "key": "C",
+          "text": "Avaliar a migração para o Valkey, que tem preço menor no ElastiCache, mantendo a compatibilidade com o Redis OSS."
+        },
+        {
+          "key": "D",
+          "text": "Dobrar o número de réplicas para distribuir a carga."
+        },
+        {
+          "key": "E",
+          "text": "Desligar o cluster à noite e recriá-lo de manhã."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: para uso estável e longo, reserved nodes ou um Database Savings Plan dão desconto sobre o preço On-Demand, e o ElastiCache for Valkey, compatível com o Redis OSS, tem preço menor que o Redis OSS para a mesma capacidade. B pode custar mais para uma carga estável e alta. D aumenta o custo. E perde o cache a cada recriação e degrada a aplicação pela manhã.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/CacheNodes.Reserved.html",
+        "https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html"
+      ]
+    }
+  ]
+}

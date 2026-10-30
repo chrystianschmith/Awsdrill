@@ -1,0 +1,152 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa replica um bucket de 500 TB de us-east-1 para us-west-2 com S3 Cross-Region Replication para recuperação de desastres. Metade dos dados são arquivos temporários de processamento, sob o prefixo tmp/, que não precisam de DR. A transferência entre regiões é o maior custo de rede. Qual ação reduz o custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Desabilitar a replicação e confiar no versionamento."
+        },
+        {
+          "key": "B",
+          "text": "Filtrar a regra de replicação por prefixo ou tag, para replicar só os dados que precisam de DR."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket de origem."
+        },
+        {
+          "key": "D",
+          "text": "Replicar para uma região mais distante, com preço de armazenamento menor."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: as regras de replicação aceitam filtros por prefixo e por tag, então os temporários deixam de ser replicados e a transferência entre regiões cai pela metade. A elimina a proteção regional, que é o objetivo. C acelera uploads pela internet, não a replicação. D não reduz o volume transferido.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication-add-config.html",
+        "https://aws.amazon.com/s3/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 40 VPCs em uma região, todas ligadas a um Transit Gateway, e cada VPC tem interface endpoints próprios para os mesmos 8 serviços da AWS, em duas AZs. A cobrança por hora desses endpoints virou um item relevante da conta. O tráfego para esses serviços é pequeno. Qual arquitetura reduz o custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Remover todos os endpoints e mandar o tráfego para os serviços pelos NAT gateways de cada VPC."
+        },
+        {
+          "key": "B",
+          "text": "Criar os 8 interface endpoints também em uma terceira AZ para distribuir a carga."
+        },
+        {
+          "key": "C",
+          "text": "Centralizar os interface endpoints em uma VPC de serviços compartilhados e resolvê-los nas demais VPCs por private hosted zones do Route 53 associadas a elas."
+        },
+        {
+          "key": "D",
+          "text": "Trocar os interface endpoints por gateway endpoints para todos os serviços."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: com os endpoints centralizados, paga-se a hora de 8 endpoints em vez de 320, e as outras VPCs alcançam esses endpoints pelo Transit Gateway, resolvendo os nomes por private hosted zones; com tráfego pequeno, a cobrança de processamento do Transit Gateway não anula a economia. A troca a cobrança de endpoints pela de processamento dos NAT gateways e manda o tráfego pela internet. B aumenta o custo. D não é possível, porque gateway endpoints existem só para o Amazon S3 e o DynamoDB.",
+      "fontes": [
+        "https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/centralized-access-to-vpc-private-endpoints.html"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Microsserviços em instâncias EC2 da mesma VPC se comunicam usando os endereços Elastic IP uns dos outros, porque os nomes DNS foram configurados assim no início do projeto. A conta mostra cobrança de transferência regional nos dois sentidos para esse tráfego interno. Qual mudança reduz o custo?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comunicar os serviços pelos endereços IP privados (ou por nomes DNS privados), mantendo o tráfego dentro da VPC."
+        },
+        {
+          "key": "B",
+          "text": "Colocar um NAT gateway entre os serviços."
+        },
+        {
+          "key": "C",
+          "text": "Habilitar o Global Accelerator para o tráfego interno."
+        },
+        {
+          "key": "D",
+          "text": "Trocar os Elastic IPs por novos Elastic IPs na mesma AZ."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: tráfego entre instâncias pelos endereços IPv4 públicos ou Elastic IP é cobrado como transferência regional nos dois sentidos, mesmo dentro da região, enquanto o tráfego pelos IPs privados na mesma AZ não é cobrado (e entre AZs paga a tarifa entre AZs, menor). B acrescenta cobrança por GB processado. C acrescenta custo e não se aplica a tráfego interno da VPC. D mantém o uso do endereço público e a mesma cobrança.",
+      "fontes": ["https://aws.amazon.com/ec2/pricing/on-demand/"]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa recebe 30 TB por mês de dados de parceiros em um bucket do Amazon S3. Os parceiros enviam pela internet a partir de vários países, e a empresa está pensando em pagar o S3 Transfer Acceleration para todos os envios. Os uploads já cumprem o prazo combinado com os parceiros. Qual decisão é a MAIS econômica?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o Transfer Acceleration para todos os parceiros, porque a transferência para dentro da AWS é cobrada."
+        },
+        {
+          "key": "B",
+          "text": "Pedir aos parceiros que enviem por AWS Direct Connect."
+        },
+        {
+          "key": "C",
+          "text": "Não habilitar o Transfer Acceleration, porque a entrada de dados no S3 pela internet não é cobrada e o prazo já é cumprido."
+        },
+        {
+          "key": "D",
+          "text": "Criar buckets em cada país e replicá-los para a região principal."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: a transferência de dados da internet para o S3 não tem cobrança, e o Transfer Acceleration cobra por GB acelerado; como os prazos já são cumpridos, não há benefício que justifique o custo. A parte de uma premissa errada. B exige que cada parceiro contrate uma conexão dedicada. D acrescenta armazenamento duplicado e transferência entre regiões.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/transfer-acceleration.html",
+        "https://aws.amazon.com/s3/pricing/"
+      ]
+    },
+    {
+      "dominio": "4.4",
+      "tipo": "MULTIPLE",
+      "enunciado": "Aplicações em sub-redes privadas leem e gravam muito no Amazon S3 e no Amazon DynamoDB na mesma região, e a cobrança de processamento de dados dos NAT gateways é alta. A empresa quer reduzir esse custo sem expor as instâncias e sem administrar servidores. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Criar um gateway VPC endpoint para o Amazon S3 e associá-lo às tabelas de rotas das sub-redes privadas."
+        },
+        {
+          "key": "B",
+          "text": "Substituir os NAT gateways por instâncias NAT t3.micro."
+        },
+        {
+          "key": "C",
+          "text": "Criar um gateway VPC endpoint para o Amazon DynamoDB e associá-lo às mesmas tabelas de rotas."
+        },
+        {
+          "key": "D",
+          "text": "Mover as instâncias para sub-redes públicas com Elastic IPs."
+        },
+        {
+          "key": "E",
+          "text": "Habilitar o S3 Transfer Acceleration nos buckets."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: gateway endpoints para o S3 e o DynamoDB não têm cobrança por hora nem por GB e tiram esse tráfego do NAT gateway, mantendo as instâncias privadas. B cria servidores para administrar, com limite de banda. D expõe as instâncias à internet. E acrescenta custo e não tira o tráfego do NAT.",
+      "fontes": [
+        "https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html",
+        "https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-ddb.html"
+      ]
+    }
+  ]
+}
