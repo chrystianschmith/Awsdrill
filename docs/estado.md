@@ -115,8 +115,10 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 
 ## Próximo
 
-- **Deploy** (etapa 9, parte final): só com o OK do Chrytian e a infra criada, seguindo "Deploy" no README; depois,
-  auditoria de headers e e2e contra a URL de produção.
+- **Em produção desde 2026-10-30** (awsdrill.vercel.app, Vercel gru1 + Neon `neon-awsdrill` em sa-east-1, atrás do SSO da Vercel):
+  migrations e seed aplicados, 423 questões publicadas. Pendentes: as 10 da tarefa 4.3 do CLF-C02 (planos de suporte), à espera
+  da revisão do Chrytian. Ainda faltam Stripe, Resend, `GEMINI_API_KEY`, `ADMIN_ALERT_EMAIL`, domínio próprio e promover a conta
+  dele a ADMIN depois do cadastro; depois, auditoria de headers e e2e contra a URL de produção.
 - Flashcards no agendador de revisão (acertei/errei).
 - Para ligar a geração em produção: `GEMINI_API_KEY` e `ADMIN_ALERT_EMAIL` na Vercel (decisão do Chrytian).
 - Teste ponta a ponta em Stripe test mode real (com Stripe CLI) quando houver conta; o Pix anual não tem e2e.
