@@ -1,0 +1,150 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma função AWS Lambda em x86_64 tem 3.008 MB de memória, mas usa no máximo 400 MB, e a maior parte da duração é espera por uma API externa. O código é Python, sem bibliotecas nativas, e a função roda 50 milhões de vezes por mês. Qual ação reduz o custo sem prejudicar o tempo de resposta?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Configurar provisioned concurrency para eliminar cold starts."
+        },
+        {
+          "key": "B",
+          "text": "Aumentar o timeout para evitar novas tentativas."
+        },
+        {
+          "key": "C",
+          "text": "Mudar a arquitetura para arm64 (Graviton) e ajustar a memória a partir de medições, por exemplo com o AWS Lambda Power Tuning ou o Compute Optimizer."
+        },
+        {
+          "key": "D",
+          "text": "Migrar a função para uma instância EC2 ligada 24 horas por dia."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o Lambda em arm64 tem preço por GB-segundo menor que em x86_64, e reduzir a memória superdimensionada corta o custo de cada invocação; como a duração é dominada pela espera de rede, menos memória (e menos CPU) quase não muda o tempo de resposta, o que deve ser confirmado com medições. A acrescenta custo. B não reduz o custo. D paga capacidade ociosa o tempo todo e exige operar servidores.",
+      "fontes": [
+        "https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html",
+        "https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Um job de consolidação financeira roda uma vez por dia, por 2 horas, em uma instância grande, e não pode ser interrompido no meio. Fora dessas 2 horas a instância fica ligada sem fazer nada. O gestor propõe comprar Reserved Instances de 3 anos para essa instância. Qual opção é a MAIS econômica?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Comprar as Reserved Instances de 3 anos e manter a instância ligada."
+        },
+        {
+          "key": "B",
+          "text": "Rodar o job em Spot Instances para ter o maior desconto."
+        },
+        {
+          "key": "C",
+          "text": "Comprar um Compute Savings Plan com compromisso igual ao preço da instância por hora."
+        },
+        {
+          "key": "D",
+          "text": "Ligar a instância On-Demand só durante o job (por exemplo, com um agendamento do EventBridge ou com o AWS Batch) e desligá-la ao terminar."
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: pagando On-Demand só pelas 2 horas de uso, o custo diário cai cerca de 90% em relação à instância ligada 24 horas; descontos por compromisso só compensam para uso contínuo. A e C pagam o compromisso pelas 24 horas, das quais 22 ficam ociosas. B pode ser interrompido, o que o job não tolera.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html",
+        "https://aws.amazon.com/ec2/pricing/on-demand/"
+      ]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma API Java roda em instâncias c5 x86 que custam caro. O código usa só bibliotecas Java puras, e a equipe tem um pipeline que gera imagens multiarquitetura. A empresa quer a melhor relação preço/desempenho sem reescrever a aplicação. O que o arquiteto deve recomendar?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Testar e migrar para instâncias Graviton equivalentes (por exemplo, c7g), que oferecem melhor preço/desempenho."
+        },
+        {
+          "key": "B",
+          "text": "Migrar para instâncias c5 maiores para reduzir o número de instâncias."
+        },
+        {
+          "key": "C",
+          "text": "Usar Dedicated Instances para ganhar desempenho de hardware exclusivo."
+        },
+        {
+          "key": "D",
+          "text": "Usar instâncias burstable t3 no modo unlimited para todas as cargas."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: as instâncias Graviton (ARM) oferecem até cerca de 40% melhor preço/desempenho que as x86 comparáveis, e uma aplicação Java pura com imagem multiarquitetura costuma migrar sem reescrita, só com testes. B não muda o preço/desempenho. C custa mais, sem ganho de desempenho. D cobra créditos extras sob CPU constante e pode sair mais caro que instâncias fixas.",
+      "fontes": ["https://aws.amazon.com/ec2/graviton/"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "SINGLE",
+      "enunciado": "Uma empresa tem 60 servidores de desenvolvimento com uso médio de CPU de 5% e picos curtos, de alguns minutos, durante compilações. Hoje eles rodam em instâncias m5.large. Qual escolha reduz o custo mantendo o desempenho nos picos?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Instâncias compute optimized c6i.large."
+        },
+        {
+          "key": "B",
+          "text": "Instâncias burstable (por exemplo, t4g ou t3), que acumulam créditos de CPU no uso baixo e os gastam nos picos."
+        },
+        {
+          "key": "C",
+          "text": "Instâncias memory optimized r6i.large."
+        },
+        {
+          "key": "D",
+          "text": "Dedicated Hosts compartilhados entre os 60 servidores."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: instâncias burstable têm desempenho de linha de base baixo a um preço menor e acumulam créditos de CPU enquanto o uso está abaixo da linha de base, gastando-os em picos curtos, o perfil exato desses servidores. A e C são famílias de desempenho fixo, superdimensionadas para 5% de uso médio. D é caro e serve a licenciamento e isolamento.",
+      "fontes": ["https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances.html"]
+    },
+    {
+      "dominio": "4.2",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma empresa quer reduzir o custo dos ambientes que não são de produção: servidores de teste usados só em horário comercial e agentes de build de CI que executam tarefas curtas e podem ser repetidas se falharem. Quais DUAS ações atendem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Agendar a parada e o início dos servidores de teste fora do horário comercial com o Instance Scheduler on AWS."
+        },
+        {
+          "key": "B",
+          "text": "Comprar Reserved Instances de 3 anos para todos os ambientes de teste."
+        },
+        {
+          "key": "C",
+          "text": "Executar os agentes de build em Spot Instances."
+        },
+        {
+          "key": "D",
+          "text": "Migrar os ambientes de teste para Dedicated Hosts."
+        },
+        {
+          "key": "E",
+          "text": "Usar instâncias maiores para que as builds terminem mais rápido."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: desligar os servidores de teste fora do horário elimina a cobrança das horas ociosas (cerca de 70% da semana), e os agentes de build, que fazem tarefas curtas e repetíveis, toleram interrupções e aproveitam o grande desconto do Spot. B paga 24/7 por servidores usados cerca de 50 horas por semana. D encarece. E não reduz custo por si só.",
+      "fontes": [
+        "https://docs.aws.amazon.com/solutions/latest/instance-scheduler-on-aws/solution-overview.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html"
+      ]
+    }
+  ]
+}
