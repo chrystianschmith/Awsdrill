@@ -28,7 +28,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trilha_test
       APP_URL: http://localhost:3000
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Segredos no histórico (gitleaks)
@@ -38,7 +38,7 @@ jobs:
           docker run --rm -v "$PWD:/src" -w /src semgrep/semgrep:1.182.1 semgrep scan
           --config p/nextjs --config p/typescript --config p/secrets
           --exclude src/generated --error --quiet src tests
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .node-version
           cache: npm
@@ -78,8 +78,8 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trilha_e2e
       E2E_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/trilha_e2e
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .node-version
           cache: npm
@@ -89,7 +89,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       # O playwright.config.ts sobe o build de produção na porta 3100 (desktop 1280px e mobile 375px).
       - run: npx playwright test
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         if: failure()
         with:
           name: playwright-report

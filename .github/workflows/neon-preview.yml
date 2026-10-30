@@ -6,6 +6,9 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, closed]
 
+permissions:
+  contents: read
+
 concurrency:
   group: neon-${{ github.event.number }}
 
@@ -14,14 +17,14 @@ jobs:
     if: github.event.action != 'closed' && vars.NEON_PROJECT_ID != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
       - id: branch
-        uses: neondatabase/create-branch-action@v6
+        uses: neondatabase/create-branch-action@fb620d43d4c565abaf088b848a4e28e5c4ea4d9c # v6.3.1
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}
@@ -34,7 +37,7 @@ jobs:
     if: github.event.action == 'closed' && vars.NEON_PROJECT_ID != ''
     runs-on: ubuntu-latest
     steps:
-      - uses: neondatabase/delete-branch-action@v3
+      - uses: neondatabase/delete-branch-action@4468d825d5a88ef4012f1705a82f02ec3072f776 # v3.2.1
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch: preview/pr-${{ github.event.number }}
