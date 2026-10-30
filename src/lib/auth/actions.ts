@@ -184,7 +184,8 @@ export async function entrar(input: LoginInput): Promise<ActionResult> {
   const senhaOk =
     user && !user.deletedAt ? await verificarSenha(user.passwordHash, senha) : await verificarSenhaFicticia(senha);
   if (!user || !senhaOk) {
-    if (user) await audit("login.falhou", user.id, undefined, ip);
+    // Depois da resposta: a escrita extra não pode revelar pelo tempo que o e-mail existe.
+    if (user) enviarDepois(() => audit("login.falhou", user.id, undefined, ip), "auth.audit_login_falhou");
     return fail(MSG_LOGIN, "credenciais");
   }
 
@@ -227,19 +228,19 @@ export async function esqueciSenha(input: EsqueciInput): Promise<ActionResult<{ 
 
   const user = await db.user.findUnique({ where: { email }, select: { id: true, name: true, deletedAt: true } });
   if (user && !user.deletedAt) {
-    const token = await emitirTokenReset(user.id);
-    const link = urlApp(`/redefinir-senha?token=${token}`);
-    // O envio acontece depois da resposta, para o tempo não revelar se o e-mail existe.
-    enviarDepois(
-      () =>
-        sendEmail({
-          to: email,
-          subject: "Redefinição de senha",
-          react: createElement(EmailRedefinirSenha, { nome: user.name, link, appUrl: urlApp("") }),
-        }),
-      "auth.email_reset_falhou",
-    );
-    await audit("senha.reset_solicitado", user.id, undefined, await getIp());
+    const ip = await getIp();
+    // Token, e-mail e auditoria só depois da resposta: as escritas extras no banco não podem
+    // deixar a resposta mais lenta para e-mails cadastrados (enumeração por tempo).
+    enviarDepois(async () => {
+      const token = await emitirTokenReset(user.id);
+      const link = urlApp(`/redefinir-senha?token=${token}`);
+      await audit("senha.reset_solicitado", user.id, undefined, ip);
+      await sendEmail({
+        to: email,
+        subject: "Redefinição de senha",
+        react: createElement(EmailRedefinirSenha, { nome: user.name, link, appUrl: urlApp("") }),
+      });
+    }, "auth.email_reset_falhou");
   }
   return ok({ mensagem: MSG_ESQUECI });
 }
