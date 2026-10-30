@@ -9,7 +9,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    // Migrations usam a conexão direta (sem pooler) quando existir.
-    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
+    // Migrations usam a conexão direta (sem pooler) quando existir; DATABASE_URL_UNPOOLED vem da integração Neon da Vercel.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL_UNPOOLED"] ?? process.env["DATABASE_URL"],
   },
 });

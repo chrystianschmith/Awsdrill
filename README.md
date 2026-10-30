@@ -93,7 +93,8 @@ Nada disso foi feito ainda: cada passo cria conta ou custo e depende do OK do do
 
 1. **Nome e domínio** definidos (sem "AWS"); trocar `BRAND` em `src/lib/brand.ts`.
 2. **Neon** (Free, região São Paulo se houver, senão a mais próxima): projeto com o banco `main`. Guardar a URL com
-   pooling (`DATABASE_URL`) e a direta (`DIRECT_URL`). No GitHub, variável `NEON_PROJECT_ID` e segredo `NEON_API_KEY`
+   pooling (`DATABASE_URL`) e a direta (`DIRECT_URL`); criado pela aba Storage da Vercel, a integração já grava
+   `DATABASE_URL` e `DATABASE_URL_UNPOOLED`, que as migrations usam. No GitHub, variável `NEON_PROJECT_ID` e segredo `NEON_API_KEY`
    para os bancos de preview (`.github/workflows/neon-preview.yml`).
 3. **Vercel** (Hobby até o lançamento comercial; Pro antes de cobrar): importar o repositório, região `gru1`
    (`vercel.json`). O build roda `scripts/vercel-build.sh`: `prisma migrate deploy` e o seed do catálogo.
