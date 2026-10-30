@@ -8,6 +8,7 @@ As skills da conta têm prioridade sobre escolhas padrão: `assinaturas-planos`,
 `design-system-estudos`, `design-ui-referencias`, `motor-de-estudo`, `pipeline-editais`, `qualidade-entrega`,
 `seguranca-vibecoding`. Em conflito com uma skill, seguir a skill e registrar o motivo em `docs/adr/`.
 Regras de produto vivem em `docs/` e nas skills; não copiá-las para cá.
+O plugin Ponytail (menor mudança completa) vem ligado em `.claude/settings.json`; as skills e este arquivo valem acima dele (ADR 0009).
 
 ## Stack
 Next.js 16 (App Router, `src/proxy.ts`), React 19, TypeScript 6 estrito, Prisma 7 (cliente em `src/generated/prisma`,
