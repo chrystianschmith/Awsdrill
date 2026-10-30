@@ -97,7 +97,7 @@ export default async function HojePage() {
               rotulo="Prova"
               valor="—"
               detalhe={
-                <Link href="/exames" className="text-primary underline underline-offset-4">
+                <Link href="/exames" className="text-primary-strong underline underline-offset-4">
                   Marque a data da prova
                 </Link>
               }
@@ -133,7 +133,7 @@ export default async function HojePage() {
             <h2 id="revisoes-hoje" className="text-sm font-semibold">
               Revisões para hoje <span className="tabular font-normal text-muted-foreground">({vencidas.length})</span>
             </h2>
-            <Link href="/revisoes" className="text-xs text-primary underline underline-offset-4">
+            <Link href="/revisoes" className="text-xs text-primary-strong underline underline-offset-4">
               Ver todas
             </Link>
           </div>

@@ -137,7 +137,7 @@ export default async function ProntidaoPage() {
                             {item.topicId ? (
                               <Link
                                 href={`/material/${item.topicId}`}
-                                className="text-primary underline underline-offset-4"
+                                className="text-primary-strong underline underline-offset-4"
                                 aria-label={`Material de ${item.codigo}`}
                               >
                                 Material
@@ -145,14 +145,14 @@ export default async function ProntidaoPage() {
                             ) : null}
                             <Link
                               href={`/estudar?exame=${examVersionId}&dominio=${item.domainId}${item.topicId ? `&tarefa=${item.topicId}` : ""}`}
-                              className="text-primary underline underline-offset-4"
+                              className="text-primary-strong underline underline-offset-4"
                               aria-label={`Estudar ${item.codigo}`}
                             >
                               Estudar
                             </Link>
                             <Link
                               href={`/simulados?exame=${examVersionId}&dominio=${item.domainId}`}
-                              className="text-primary underline underline-offset-4"
+                              className="text-primary-strong underline underline-offset-4"
                               aria-label={`Treinar o domínio ${item.dominio}`}
                             >
                               Treinar

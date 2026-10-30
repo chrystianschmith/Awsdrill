@@ -105,7 +105,7 @@ export function Confirmando({ sessionId }: { sessionId: string }) {
   return (
     <div className="flex flex-col items-start gap-3" role="status" aria-live="polite">
       <p className="inline-flex items-center gap-2 text-lg font-semibold">
-        <Loader2 aria-hidden className="size-5 animate-spin text-primary" />
+        <Loader2 aria-hidden className="size-5 animate-spin text-primary-strong" />
         Confirmando pagamento...
       </p>
       <p className="text-muted-foreground">

@@ -107,7 +107,7 @@ export default async function RelatorioPage({ params }: PageProps<"/simulados/[i
                       href={u}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-fit text-primary underline underline-offset-4"
+                      className="w-fit text-primary-strong underline underline-offset-4"
                     >
                       Documentação oficial
                     </a>

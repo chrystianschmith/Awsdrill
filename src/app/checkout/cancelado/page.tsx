@@ -12,7 +12,7 @@ export default function CheckoutCanceladoPage() {
         <Logo />
       </Link>
       <section className="flex flex-col items-start gap-4 rounded-lg border border-border bg-surface p-6">
-        <h1 className="text-lg font-semibold">Pagamento não concluído</h1>
+        <h1 className="text-lg font-extrabold">Pagamento não concluído</h1>
         <p className="text-muted-foreground">
           Você saiu do checkout antes de finalizar. Nenhuma cobrança foi feita e seu plano continua o mesmo.
         </p>

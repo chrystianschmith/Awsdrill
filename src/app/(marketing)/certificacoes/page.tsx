@@ -19,10 +19,10 @@ export default async function CertificacoesPage() {
   return (
     <div className="mx-auto grid w-full max-w-4xl gap-10 px-4 py-10 sm:px-6">
       <header className="grid gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Certificações</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Certificações</h1>
         <p className="max-w-2xl text-sm text-muted-foreground">
-          Os exames que já cobrimos, na ordem sugerida da trilha. Domínios, pesos, duração e nota de corte vêm do exam guide
-          e da página oficial de cada exame; o que a fonte não informa aparece como &quot;a confirmar&quot;.
+          Os exames que já cobrimos, na ordem sugerida da trilha. Domínios, pesos, duração e nota de corte vêm do exam
+          guide e da página oficial de cada exame; o que a fonte não informa aparece como &quot;a confirmar&quot;.
         </p>
       </header>
 
@@ -51,7 +51,10 @@ function LinhaCertificacao({ cert }: { cert: CertificacaoResumo }) {
   return (
     <li className="grid gap-2 px-4 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6">
       <div className="grid gap-1">
-        <Link href={`/certificacoes/${cert.slug}`} className="w-fit font-medium text-primary underline underline-offset-4">
+        <Link
+          href={`/certificacoes/${cert.slug}`}
+          className="w-fit font-medium text-primary-strong underline underline-offset-4"
+        >
           {cert.nome}
         </Link>
         <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">

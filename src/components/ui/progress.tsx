@@ -11,7 +11,7 @@ export function Progress({ value, label, className }: { value: number; label: st
       aria-valuemax={100}
       className={cn("h-2 w-full overflow-hidden rounded-full bg-surface-muted", className)}
     >
-      <div className="h-full rounded-full bg-primary" style={{ width: `${v}%` }} />
+      <div className="h-full rounded-full bg-primary-strong" style={{ width: `${v}%` }} />
     </div>
   );
 }

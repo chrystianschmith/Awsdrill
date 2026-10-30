@@ -15,6 +15,21 @@ const plex = localFont({
   ],
 });
 
+// Títulos, marca e números grandes (variável, 600 a 800), como no alibabadrill.
+const bricolage = localFont({
+  variable: "--font-bricolage",
+  display: "swap",
+  src: [{ path: "./fonts/bricolage-latin.woff2", weight: "600 800", style: "normal" }],
+});
+
+// Timer, atalhos e letras das alternativas.
+const plexMono = localFont({
+  variable: "--font-plex-mono",
+  display: "swap",
+  preload: false,
+  src: [{ path: "./fonts/plex-mono-500.woff2", weight: "500", style: "normal" }],
+});
+
 export const metadata: Metadata = {
   title: { default: `${BRAND.name} · certificações de nuvem`, template: `%s · ${BRAND.name}` },
   description: BRAND.tagline,
@@ -24,8 +39,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f9fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#16191d" },
+    { media: "(prefers-color-scheme: light)", color: "#131311" },
+    { media: "(prefers-color-scheme: dark)", color: "#131311" },
   ],
 };
 
@@ -35,7 +50,11 @@ const temaScript = `(function(){try{var t=localStorage.getItem('tema');var d=t?t
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
-    <html lang="pt-BR" className={`${plex.variable} h-full antialiased`} suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${plex.variable} ${bricolage.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <head>
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: temaScript }} />
       </head>

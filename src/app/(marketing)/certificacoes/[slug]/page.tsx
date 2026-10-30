@@ -40,7 +40,7 @@ export default async function CertificacaoPage({ params }: PageProps<"/certifica
   return (
     <div className="mx-auto grid w-full max-w-4xl gap-10 px-4 py-10 sm:px-6">
       <header className="grid gap-3">
-        <Link href="/certificacoes" className="w-fit text-sm text-primary underline underline-offset-4">
+        <Link href="/certificacoes" className="w-fit text-sm text-primary-strong underline underline-offset-4">
           Todas as certificações
         </Link>
         <div className="grid gap-1">
@@ -49,10 +49,12 @@ export default async function CertificacaoPage({ params }: PageProps<"/certifica
             <Badge variant={e.status === "ACTIVE" ? "success" : "warning"}>{ROTULO_STATUS[e.status]}</Badge>
             {e.aConfirmar ? <Badge variant="warning">Dados a confirmar</Badge> : null}
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight text-balance">{cert.nome}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-balance">{cert.nome}</h1>
         </div>
         {cert.aposentaEm ? (
-          <p className="text-sm text-muted-foreground">Esta versão do exame será aposentada em {dataBR.format(cert.aposentaEm)}.</p>
+          <p className="text-sm text-muted-foreground">
+            Esta versão do exame será aposentada em {dataBR.format(cert.aposentaEm)}.
+          </p>
         ) : null}
         <Link href="/exames" className={buttonVariants({ className: "w-fit" })}>
           Estudar este exame
@@ -89,7 +91,7 @@ export default async function CertificacaoPage({ params }: PageProps<"/certifica
               {d.nomePt ? <p className="text-sm text-muted-foreground">{d.nomePt}</p> : null}
               {d.peso !== null ? (
                 <div aria-hidden className="mt-3 h-1.5 rounded-full bg-surface-muted">
-                  <div className="h-full rounded-full bg-primary" style={{ width: `${d.peso}%` }} />
+                  <div className="h-full rounded-full bg-primary-strong" style={{ width: `${d.peso}%` }} />
                 </div>
               ) : null}
               <ul className="mt-3 grid gap-2 text-sm">
@@ -114,22 +116,32 @@ export default async function CertificacaoPage({ params }: PageProps<"/certifica
         </h2>
         <ul className="grid list-disc gap-1 pl-5">
           <li>
-            <a href={cert.fonteGuia} className="text-primary underline underline-offset-4" rel="noopener noreferrer" target="_blank">
+            <a
+              href={cert.fonteGuia}
+              className="text-primary-strong underline underline-offset-4"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Exam guide oficial
             </a>
             {cert.revisao ? <span className="text-muted-foreground"> (revisão {cert.revisao} dos pesos)</span> : null}
           </li>
           {cert.fontePagina ? (
             <li>
-              <a href={cert.fontePagina} className="text-primary underline underline-offset-4" rel="noopener noreferrer" target="_blank">
+              <a
+                href={cert.fontePagina}
+                className="text-primary-strong underline underline-offset-4"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 Página oficial da certificação
               </a>
             </li>
           ) : null}
         </ul>
         <p className="text-muted-foreground">
-          Lido em {dataBR.format(cert.lidoEm)}. Em caso de diferença, vale a fonte oficial. Não somos afiliados à Amazon Web
-          Services.
+          Lido em {dataBR.format(cert.lidoEm)}. Em caso de diferença, vale a fonte oficial. Não somos afiliados à Amazon
+          Web Services.
         </p>
       </section>
     </div>

@@ -10,7 +10,11 @@ import { AbrirCheckout } from "../_componentes/abrir-checkout";
 
 export const metadata: Metadata = { title: "Abrindo o pagamento", robots: { index: false } };
 
-export default async function IniciarCheckoutPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+export default async function IniciarCheckoutPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const plano = planoDaUrl((await searchParams).plano);
   if (!plano) redirect("/precos");
   if (!(await getCurrentUser())) redirect(urlEntrarComPlano(plano));
@@ -23,7 +27,7 @@ export default async function IniciarCheckoutPage({ searchParams }: { searchPara
       </Link>
       <section className="grid gap-4 rounded-lg border border-border bg-surface p-6">
         <div className="grid gap-1">
-          <h1 className="text-lg font-semibold">Pro · {preco.rotulo}</h1>
+          <h1 className="text-lg font-extrabold">Pro · {preco.rotulo}</h1>
           <p className="tabular text-muted-foreground">{formatBRL(preco.centavos)}</p>
         </div>
         <AbrirCheckout intervalo={plano} />

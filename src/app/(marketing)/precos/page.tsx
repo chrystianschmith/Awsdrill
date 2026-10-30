@@ -34,7 +34,7 @@ function Valor({ recurso, valor }: { recurso: Recurso; valor: number | boolean }
   if (typeof valor === "boolean") {
     return valor ? (
       <>
-        <Check aria-hidden className="size-4 text-primary" />
+        <Check aria-hidden className="size-4 text-primary-strong" />
         <span className="sr-only">Incluído</span>
       </>
     ) : (
@@ -98,7 +98,7 @@ export default async function PrecosPage({
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:py-14">
       <header className="max-w-2xl">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Planos</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-3xl">Planos</h1>
         <p className="mt-2 text-muted-foreground">
           Comece grátis com um exame e simulados de treino. Assine o Pro para treinar no modo prova, ver a prontidão por
           domínio e estudar com material, ciclo e revisões em quantos exames quiser.
@@ -106,7 +106,7 @@ export default async function PrecosPage({
       </header>
 
       {destaque ? (
-        <p role="status" className="mt-6 rounded-lg border border-primary/30 bg-primary-soft px-4 py-3 text-sm">
+        <p role="status" className="mt-6 rounded-lg border border-primary-strong/30 bg-primary-soft px-4 py-3 text-sm">
           <strong className="font-medium">{FEATURE_LABELS[destaque]}</strong> faz parte do plano Pro. Veja abaixo o que
           muda.
         </p>
@@ -124,7 +124,7 @@ export default async function PrecosPage({
           <ul className="mt-4 grid gap-2 text-sm">
             {RECURSOS.filter((r) => ENTITLEMENTS.FREE[r] !== false).map((r) => (
               <li key={r} className="flex items-start gap-2">
-                <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
+                <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary-strong" />
                 <span>
                   {FEATURE_LABELS[r]}
                   {typeof ENTITLEMENTS.FREE[r] === "number" ? (
@@ -134,7 +134,7 @@ export default async function PrecosPage({
               </li>
             ))}
             <li className="flex items-start gap-2">
-              <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
+              <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary-strong" />
               <span>Prontidão geral, timer, metas e carteira de certificações</span>
             </li>
           </ul>
@@ -151,7 +151,7 @@ export default async function PrecosPage({
           </div>
         </div>
 
-        <div className="flex flex-col rounded-lg border-2 border-primary bg-surface p-5">
+        <div className="flex flex-col rounded-lg border-2 border-primary-strong bg-surface p-5">
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-semibold">Pro</h3>
             {plano === "PRO" ? <Badge variant="primary">Seu plano</Badge> : null}

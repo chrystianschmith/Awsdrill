@@ -23,10 +23,10 @@ export function FaixaProntidao({
       className={cn("relative h-2.5 w-full overflow-hidden rounded-full bg-surface-muted", className)}
     >
       <div
-        className="absolute inset-y-0 bg-primary/25"
+        className="absolute inset-y-0 bg-primary-strong/25"
         style={{ left: `${lowerBound}%`, width: `${Math.max(0, upperBound - lowerBound)}%` }}
       />
-      <div className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${score}%` }} />
+      <div className="absolute inset-y-0 left-0 rounded-full bg-primary-strong" style={{ width: `${score}%` }} />
     </div>
   );
 }

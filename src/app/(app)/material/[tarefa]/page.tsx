@@ -128,7 +128,7 @@ export default async function MaterialPage({ params }: PageProps<"/material/[tar
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary underline underline-offset-4"
+                    className="text-primary-strong underline underline-offset-4"
                   >
                     {url}
                   </a>

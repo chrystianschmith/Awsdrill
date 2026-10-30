@@ -13,7 +13,11 @@ const MENSAGENS = {
   usado: "Este link já foi usado.",
 } as const;
 
-export default async function RedefinirSenhaPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+export default async function RedefinirSenhaPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { token } = await searchParams;
   const tokenStr = typeof token === "string" ? token : "";
   const estado = await estadoTokenReset(tokenStr);
@@ -22,7 +26,7 @@ export default async function RedefinirSenhaPage({ searchParams }: { searchParam
     return (
       <div className="grid gap-6">
         <div className="grid gap-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Não foi possível usar este link</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight">Não foi possível usar este link</h1>
         </div>
         <Alert tone="warning">{MENSAGENS[estado]} Peça um novo link para redefinir a senha.</Alert>
         <Link href="/esqueci-senha" className={buttonVariants({ className: "w-full" })}>
@@ -35,8 +39,10 @@ export default async function RedefinirSenhaPage({ searchParams }: { searchParam
   return (
     <div className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Criar nova senha</h1>
-        <p className="text-sm text-muted-foreground">Depois de salvar, as sessões abertas em outros dispositivos serão encerradas.</p>
+        <h1 className="text-3xl font-extrabold tracking-tight">Criar nova senha</h1>
+        <p className="text-sm text-muted-foreground">
+          Depois de salvar, as sessões abertas em outros dispositivos serão encerradas.
+        </p>
       </div>
       <FormRedefinir token={tokenStr} />
     </div>

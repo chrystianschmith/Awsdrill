@@ -12,13 +12,13 @@ export default async function CadastroPage() {
   return (
     <div className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Criar conta</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Criar conta</h1>
         <p className="text-sm text-muted-foreground">Leva menos de um minuto. Você confirma o e-mail depois.</p>
       </div>
       <FormCadastro />
       <p className="text-sm text-muted-foreground">
         Já tem conta?{" "}
-        <Link href="/entrar" className="text-primary underline underline-offset-4">
+        <Link href="/entrar" className="text-primary-strong underline underline-offset-4">
           Entrar
         </Link>
       </p>

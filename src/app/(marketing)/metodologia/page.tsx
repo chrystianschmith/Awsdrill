@@ -19,7 +19,7 @@ export default function MetodologiaPage() {
   return (
     <div className="mx-auto grid w-full max-w-2xl gap-8 px-4 py-10 sm:px-6">
       <header className="grid gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Metodologia da prontidão</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Metodologia da prontidão</h1>
         <p className="text-sm text-muted-foreground">
           Versão <span className="tabular">{METODOLOGIA_VERSAO}</span>. A prontidão é uma estimativa de 0 a 100 do
           quanto você domina o conteúdo do exam guide, calculada só com as questões que você respondeu aqui. Não é nota

@@ -117,7 +117,7 @@ export function IniciarSimulado({
                 className={cn(
                   "flex gap-3 rounded-md border p-3 text-sm",
                   bloqueado ? "cursor-not-allowed opacity-60" : "cursor-pointer",
-                  modo === valor ? "border-primary bg-primary-soft" : "border-input",
+                  modo === valor ? "border-primary-strong bg-primary-soft" : "border-input",
                 )}
               >
                 <input

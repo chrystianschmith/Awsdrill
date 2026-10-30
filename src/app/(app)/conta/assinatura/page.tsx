@@ -81,7 +81,7 @@ export default async function AssinaturaPage() {
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <header>
-        <h1 className="text-xl font-semibold tracking-tight">Assinatura</h1>
+        <h1 className="text-[1.75rem] font-extrabold tracking-tight">Assinatura</h1>
         <p className="text-sm text-muted-foreground">Plano, pagamentos e faturas.</p>
       </header>
 
@@ -235,7 +235,7 @@ export default async function AssinaturaPage() {
                             href={f.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-primary underline-offset-4 hover:underline"
+                            className="inline-flex items-center gap-1 text-primary-strong underline-offset-4 hover:underline"
                           >
                             Ver
                             <ExternalLink aria-hidden className="size-3.5" />

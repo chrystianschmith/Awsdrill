@@ -141,7 +141,7 @@ export function ExecutarSimulado({ simulado }: { simulado: SimuladoDTO }) {
                 <label
                   key={o.key}
                   className={cn(
-                    "flex cursor-pointer items-start gap-3 rounded-md border p-3 text-sm",
+                    "flex cursor-pointer items-start gap-3 rounded-md border p-3.5 text-[0.94rem]",
                     fb
                       ? correta
                         ? "border-success bg-success/10"
@@ -149,7 +149,7 @@ export function ExecutarSimulado({ simulado }: { simulado: SimuladoDTO }) {
                           ? "border-danger bg-danger/10"
                           : "border-input"
                       : marcada
-                        ? "border-primary bg-primary-soft"
+                        ? "border-primary-strong bg-primary-soft"
                         : "border-input hover:bg-surface-muted",
                     fb && "cursor-default",
                   )}
@@ -163,8 +163,17 @@ export function ExecutarSimulado({ simulado }: { simulado: SimuladoDTO }) {
                     onChange={() => void alternar(o.key)}
                     className="mt-0.5"
                   />
-                  <span>
-                    <span className="font-medium">{o.key}.</span> {o.text}
+                  <span className="flex gap-3">
+                    <span
+                      aria-hidden
+                      className="grid size-6 shrink-0 place-items-center rounded-sm border border-current/30 font-mono text-[0.8rem]"
+                    >
+                      {o.key}
+                    </span>
+                    <span>
+                      <span className="sr-only">{o.key}. </span>
+                      {o.text}
+                    </span>
                   </span>
                 </label>
               );
@@ -194,7 +203,7 @@ export function ExecutarSimulado({ simulado }: { simulado: SimuladoDTO }) {
                       href={u}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-primary underline underline-offset-4"
+                      className="inline-flex items-center gap-1 text-primary-strong underline underline-offset-4"
                     >
                       Documentação oficial <ExternalLink aria-hidden className="size-3" />
                     </a>
@@ -276,9 +285,9 @@ export function ExecutarSimulado({ simulado }: { simulado: SimuladoDTO }) {
                   className={cn(
                     "tabular size-9 rounded-md border text-xs",
                     i === indice
-                      ? "border-primary ring-2 ring-primary/30"
+                      ? "border-primary-strong ring-2 ring-primary-strong/30"
                       : marcadas[x.id]?.length === x.quantasCorretas
-                        ? "border-primary bg-primary-soft"
+                        ? "border-primary-strong bg-primary-soft"
                         : "border-input",
                   )}
                 >

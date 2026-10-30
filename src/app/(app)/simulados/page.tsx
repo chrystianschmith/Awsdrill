@@ -138,13 +138,13 @@ export default async function SimuladosPage({ searchParams }: PageProps<"/simula
                   <span className="tabular text-muted-foreground">· {fmt.format(h.startedAt)}</span>
                 </span>
                 {h.status === "IN_PROGRESS" ? (
-                  <Link href={`/simulados/${h.id}`} className="text-primary underline underline-offset-4">
+                  <Link href={`/simulados/${h.id}`} className="text-primary-strong underline underline-offset-4">
                     Continuar
                   </Link>
                 ) : (
                   <Link
                     href={`/simulados/${h.id}/relatorio`}
-                    className="tabular text-primary underline underline-offset-4"
+                    className="tabular text-primary-strong underline underline-offset-4"
                     aria-label={`Relatório: ${h.corretas ?? 0} de ${h.total}`}
                   >
                     {h.corretas ?? 0}/{h.total} · relatório

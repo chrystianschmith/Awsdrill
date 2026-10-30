@@ -45,9 +45,21 @@ export function FormCadastro() {
         <Input id="nome" autoComplete="name" {...aria("nome")} {...register("nome")} />
       </Field>
       <Field label="E-mail" htmlFor="email" error={errors.email?.message}>
-        <Input id="email" type="email" autoComplete="email" inputMode="email" {...aria("email")} {...register("email")} />
+        <Input
+          id="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          {...aria("email")}
+          {...register("email")}
+        />
       </Field>
-      <Field label="Senha" htmlFor="senha" error={errors.senha?.message} hint="Pelo menos 8 caracteres. Evite senhas óbvias.">
+      <Field
+        label="Senha"
+        htmlFor="senha"
+        error={errors.senha?.message}
+        hint="Pelo menos 8 caracteres. Evite senhas óbvias."
+      >
         <Input id="senha" type="password" autoComplete="new-password" {...aria("senha")} {...register("senha")} />
       </Field>
       <div className="grid gap-1.5">
@@ -61,11 +73,11 @@ export function FormCadastro() {
           />
           <label htmlFor="aceiteTermos" className="text-sm">
             Li e aceito os{" "}
-            <Link href="/termos" target="_blank" className="text-primary underline underline-offset-4">
+            <Link href="/termos" target="_blank" className="text-primary-strong underline underline-offset-4">
               termos de uso
             </Link>{" "}
             e a{" "}
-            <Link href="/privacidade" target="_blank" className="text-primary underline underline-offset-4">
+            <Link href="/privacidade" target="_blank" className="text-primary-strong underline underline-offset-4">
               política de privacidade
             </Link>
             .

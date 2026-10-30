@@ -63,7 +63,10 @@ export default async function ExamesPage() {
                       hoje={hoje}
                     />
                     <p className="text-sm">
-                      <Link href={`/progresso#${e.codigo}`} className="text-primary underline underline-offset-4">
+                      <Link
+                        href={`/progresso#${e.codigo}`}
+                        className="text-primary-strong underline underline-offset-4"
+                      >
                         Ver domínios e tarefas
                       </Link>
                     </p>

@@ -148,7 +148,7 @@ export default async function QuestoesPendentes({ searchParams }: PageProps<"/ad
                             href={u}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="break-all text-primary underline underline-offset-4"
+                            className="break-all text-primary-strong underline underline-offset-4"
                           >
                             {u}
                           </a>

@@ -13,7 +13,7 @@ export default function PrivacidadePage() {
   return (
     <div className="mx-auto grid w-full max-w-2xl gap-8 px-4 py-10 sm:px-6">
       <header className="grid gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Política de privacidade</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Política de privacidade</h1>
         <p className="text-sm text-muted-foreground">
           Versão <span className="tabular">{VERSAO_TERMOS}</span>. Escrita para ser lida de verdade, de acordo com a Lei
           Geral de Proteção de Dados (Lei 13.709/2018).
@@ -27,8 +27,8 @@ export default function PrivacidadePage() {
             lê-la.
           </li>
           <li>
-            <strong>Uso da plataforma:</strong> certificações que você estuda, respostas a questões e simulados, revisões
-            e a prontidão calculada a partir delas.
+            <strong>Uso da plataforma:</strong> certificações que você estuda, respostas a questões e simulados,
+            revisões e a prontidão calculada a partir delas.
           </li>
           <li>
             <strong>Segurança:</strong> endereço IP e navegador usados no login, registros de ações sensíveis (login,
@@ -71,7 +71,7 @@ export default function PrivacidadePage() {
         <ul className="grid list-disc gap-2 pl-5">
           <li>
             <strong>Acessar e levar seus dados:</strong> em{" "}
-            <Link href="/conta" className="text-primary underline underline-offset-4">
+            <Link href="/conta" className="text-primary-strong underline underline-offset-4">
               Conta
             </Link>
             , use &quot;Baixar meus dados&quot; para receber um arquivo JSON com tudo o que guardamos sobre você.
@@ -100,14 +100,14 @@ export default function PrivacidadePage() {
       <Secao titulo="Contato">
         <p>
           Dúvidas ou pedidos sobre seus dados:{" "}
-          <a href={`mailto:${BRAND.supportEmail}`} className="text-primary underline underline-offset-4">
+          <a href={`mailto:${BRAND.supportEmail}`} className="text-primary-strong underline underline-offset-4">
             {BRAND.supportEmail}
           </a>
           . Respondemos em até 15 dias.
         </p>
         <p>
           Veja também os{" "}
-          <Link href="/termos" className="text-primary underline underline-offset-4">
+          <Link href="/termos" className="text-primary-strong underline underline-offset-4">
             termos de uso
           </Link>
           .

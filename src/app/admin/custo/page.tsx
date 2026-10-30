@@ -85,7 +85,7 @@ export default async function Custo() {
         aria-valuenow={Math.round(Math.min(uso, 1) * 100)}
       >
         <div
-          className={uso >= 1 ? "h-full bg-danger" : uso >= 0.8 ? "h-full bg-warning" : "h-full bg-primary"}
+          className={uso >= 1 ? "h-full bg-danger" : uso >= 0.8 ? "h-full bg-warning" : "h-full bg-primary-strong"}
           style={{ width: `${Math.min(uso, 1) * 100}%` }}
         />
       </div>

@@ -83,7 +83,7 @@ export default async function CarteiraPage() {
                           href={i.badgeUrl}
                           target="_blank"
                           rel="noopener noreferrer nofollow"
-                          className="w-fit text-primary underline underline-offset-4"
+                          className="w-fit text-primary-strong underline underline-offset-4"
                         >
                           Ver badge
                         </a>
@@ -116,7 +116,7 @@ export default async function CarteiraPage() {
         Os dados são informados por você e não são verificados com a AWS. Para renovar, veja as{" "}
         <Link
           href="https://aws.amazon.com/certification/recertification/"
-          className="text-primary underline underline-offset-4"
+          className="text-primary-strong underline underline-offset-4"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -13,11 +13,11 @@ export default function TermosPage() {
   return (
     <div className="mx-auto grid w-full max-w-2xl gap-8 px-4 py-10 sm:px-6">
       <header className="grid gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Termos de uso</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Termos de uso</h1>
         <p className="text-sm text-muted-foreground">
           Versão <span className="tabular">{VERSAO_TERMOS}</span>. Ao criar uma conta, você concorda com estes termos e
           com a{" "}
-          <Link href="/privacidade" className="text-primary underline underline-offset-4">
+          <Link href="/privacidade" className="text-primary-strong underline underline-offset-4">
             política de privacidade
           </Link>
           .
@@ -27,9 +27,9 @@ export default function TermosPage() {
       <Secao titulo="O que é o serviço">
         <p>
           O {BRAND.name} é uma ferramenta de preparação para certificações de nuvem: organiza o estudo pelos domínios e
-          pesos do guia oficial de cada exame, oferece simulados e mostra uma estimativa de prontidão. Não somos afiliados
-          à Amazon Web Services nem a qualquer provedor de nuvem, não emitimos certificações, não vendemos vouchers e não
-          garantimos aprovação.
+          pesos do guia oficial de cada exame, oferece simulados e mostra uma estimativa de prontidão. Não somos
+          afiliados à Amazon Web Services nem a qualquer provedor de nuvem, não emitimos certificações, não vendemos
+          vouchers e não garantimos aprovação.
         </p>
       </Secao>
 
@@ -70,22 +70,22 @@ export default function TermosPage() {
 
       <Secao titulo="Encerramento">
         <p>
-          Você pode excluir sua conta a qualquer momento em Conta. Se precisarmos encerrar o serviço, avisaremos com pelo
-          menos 30 dias de antecedência e você poderá exportar seus dados.
+          Você pode excluir sua conta a qualquer momento em Conta. Se precisarmos encerrar o serviço, avisaremos com
+          pelo menos 30 dias de antecedência e você poderá exportar seus dados.
         </p>
       </Secao>
 
       <Secao titulo="Mudanças nestes termos">
         <p>
-          Quando houver mudança relevante, avisaremos por e-mail ou no aplicativo e pediremos um novo aceite. A versão em
-          vigor fica sempre nesta página.
+          Quando houver mudança relevante, avisaremos por e-mail ou no aplicativo e pediremos um novo aceite. A versão
+          em vigor fica sempre nesta página.
         </p>
       </Secao>
 
       <Secao titulo="Contato">
         <p>
           Fale com a gente em{" "}
-          <a href={`mailto:${BRAND.supportEmail}`} className="text-primary underline underline-offset-4">
+          <a href={`mailto:${BRAND.supportEmail}`} className="text-primary-strong underline underline-offset-4">
             {BRAND.supportEmail}
           </a>
           . Fica eleito o foro do domicílio do consumidor.

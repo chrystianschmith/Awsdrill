@@ -237,7 +237,7 @@ export function Timer({
         {sessao.topicLabel ? <span className="block">{sessao.topicLabel}</span> : null}
       </p>
       <p
-        className={cn("tabular font-semibold tracking-tight", foco ? "text-7xl sm:text-8xl" : "text-6xl")}
+        className={cn("tabular font-display font-extrabold tracking-tight", foco ? "text-7xl sm:text-8xl" : "text-6xl")}
         role="timer"
         aria-live="off"
         aria-label="Tempo estudado"
@@ -300,7 +300,7 @@ export function Timer({
                       key={m}
                       className={cn(
                         "flex cursor-pointer items-center gap-2 rounded-md border px-3 py-2 text-sm",
-                        modo === m ? "border-primary bg-primary-soft" : "border-input",
+                        modo === m ? "border-primary-strong bg-primary-soft" : "border-input",
                       )}
                     >
                       <input

@@ -15,7 +15,11 @@ const MENSAGENS = {
   usado: "Este link já foi usado.",
 } as const;
 
-export default async function ConfirmarEmailPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+export default async function ConfirmarEmailPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { token } = await searchParams;
   const user = await getCurrentUser();
 
@@ -25,7 +29,7 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
       await audit("email.confirmado", resultado.userId);
       return (
         <div className="grid gap-6">
-          <h1 className="text-2xl font-semibold tracking-tight">E-mail confirmado</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight">E-mail confirmado</h1>
           <p className="text-sm text-muted-foreground">Tudo certo. Você vai receber os avisos que escolher em Conta.</p>
           <Link href={user ? "/hoje" : "/entrar"} className={buttonVariants({ className: "w-full" })}>
             {user ? "Ir para Hoje" : "Entrar"}
@@ -36,7 +40,9 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
     const jaConfirmado = resultado.estado === "usado" && user?.emailVerified;
     return (
       <div className="grid gap-6">
-        <h1 className="text-2xl font-semibold tracking-tight">{jaConfirmado ? "E-mail já confirmado" : "Link inválido"}</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">
+          {jaConfirmado ? "E-mail já confirmado" : "Link inválido"}
+        </h1>
         {jaConfirmado ? (
           <p className="text-sm text-muted-foreground">Seu e-mail já estava confirmado.</p>
         ) : (
@@ -48,7 +54,10 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
             <BotaoReenviarConfirmacao className="w-fit" />
           </div>
         ) : (
-          <Link href={user ? "/hoje" : "/entrar"} className={buttonVariants({ variant: "secondary", className: "w-full" })}>
+          <Link
+            href={user ? "/hoje" : "/entrar"}
+            className={buttonVariants({ variant: "secondary", className: "w-full" })}
+          >
             {user ? "Ir para Hoje" : "Entrar para pedir um novo link"}
           </Link>
         )}
@@ -59,7 +68,7 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
   return (
     <div className="grid gap-6">
       <div className="grid gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Confirme seu e-mail</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Confirme seu e-mail</h1>
         <p className="text-sm text-muted-foreground">
           {user
             ? `Enviamos um link de confirmação para ${user.email}. Ele vale por 24 horas.`
@@ -73,7 +82,10 @@ export default async function ConfirmarEmailPage({ searchParams }: { searchParam
           <BotaoReenviarConfirmacao className="w-fit" />
         </div>
       ) : null}
-      <Link href={user ? "/hoje" : "/entrar"} className="w-fit text-sm text-primary underline underline-offset-4">
+      <Link
+        href={user ? "/hoje" : "/entrar"}
+        className="w-fit text-sm text-primary-strong underline underline-offset-4"
+      >
         {user ? "Ir para Hoje" : "Entrar"}
       </Link>
     </div>

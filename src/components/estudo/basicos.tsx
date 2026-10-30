@@ -12,7 +12,7 @@ export function CabecalhoPagina({
   return (
     <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div className="grid gap-1">
-        <h1 className="text-xl font-semibold tracking-tight">{titulo}</h1>
+        <h1 className="text-[1.75rem] font-extrabold tracking-tight">{titulo}</h1>
         {descricao ? <p className="text-sm text-muted-foreground">{descricao}</p> : null}
       </div>
       {acoes ? <div className="flex flex-wrap gap-2">{acoes}</div> : null}
