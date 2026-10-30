@@ -112,6 +112,9 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
   gitleaks e bundle sem segredo, nenhum padrão proibido novo, toda action com sessão (exceto as públicas de auth, com
   rate limit) e Zod, rotas com sessão, segredo de cron ou assinatura do Stripe; taint fica de fora (ADR 0008). README
   com o passo a passo de deploy.
+- **Identidade AWS Drill (2026-10-30):** nome AWS Drill, amarelo e preto e template do `alibabadrill` (barra
+  superior preta, barra lateral fixa no desktop, abas no mobile, Bricolage Grotesque + IBM Plex). Tokens novos
+  (`--primary-strong` para texto e progresso), logo, ícones do PWA e e-mails. ADR 0009 (com o risco de marca).
 
 ## Próximo
 
@@ -127,7 +130,7 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 
 - `docs/adr/0001` Gemini grátis como IA padrão · `0002` pipeline adaptada a exam guides · `0003` repo separado com base do Prumo
   · `0004` hash do blueprint e etapa 3 em duas partes · `0005` pipeline do catálogo lê o Markdown oficial, sem IA · `0006` markdown restrito no conteúdo de IA
-  · `0007` Grátis × Pro do produto e Pix só no anual avulso · `0008` sem taint experimental do React.
+  · `0007` Grátis × Pro do produto e Pix só no anual avulso · `0008` sem taint experimental do React · `0009` marca AWS Drill e template do alibabadrill.
 - Datas de lançamento e aposentadoria das versões ficam nulas até a fonte oficial anunciar (hoje só há aposentadoria de
   idiomas, que não muda o exame).
 - Preferências de estudo (meta diária, pomodoro) ficam no `User` e são editadas em `/hoje` e `/estudar`, não na conta.
@@ -152,7 +155,7 @@ Atualizado ao fim de cada etapa. Plano aprovado: https://claude.ai/artifact/TRY6
 - Preços do Pro (R$ 29,90 / R$ 239,00) aguardam a confirmação do Chrytian; mudar só em `src/lib/assinaturas/precos.ts`.
 - Stripe: criar o produto Pro e os três preços, ativar Pix e o portal, cadastrar o webhook e as variáveis `STRIPE_*`.
 - Sem banco de produção (Neon), a importação e a moderação só rodam no Postgres local.
-- Nome definitivo do produto e domínio (hoje "Trilha", provisório em `src/lib/brand.ts`).
+- Domínio próprio (o nome AWS Drill foi decidido em 2026-10-30, ADR 0009; o risco de marca está registrado lá).
 - Infra a criar: projeto Neon (secret `NEON_API_KEY`, variable `NEON_PROJECT_ID` para o banco de preview por PR),
   projeto Vercel, projeto Sentry, produtos no Stripe, domínio no Resend.
 - GitHub: secrets `PIPELINE_CONTACT_EMAIL` (sem ele a pipeline do catálogo falha) e `DATABASE_URL` (sem ele a execução
