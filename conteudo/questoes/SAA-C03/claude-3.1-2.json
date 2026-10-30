@@ -1,0 +1,147 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação de análise baixa do Amazon S3, em instâncias EC2 na mesma região, objetos de 10 a 50 GB e só começa a processar depois do download. Cada download leva muitos minutos com uma única conexão GET, e as instâncias têm banda de rede ociosa. Qual mudança reduz o tempo de leitura?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar o S3 Transfer Acceleration no bucket."
+        },
+        {
+          "key": "B",
+          "text": "Fazer requisições GET paralelas por intervalos de bytes (byte-range fetches) do mesmo objeto."
+        },
+        {
+          "key": "C",
+          "text": "Mover os objetos para o S3 Intelligent-Tiering."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar o volume EBS das instâncias."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: requisições GET paralelas, cada uma com um intervalo de bytes, usam várias conexões ao mesmo tempo e aproveitam a banda disponível, reduzindo o tempo de leitura de objetos grandes. A acelera transferências de longa distância pela internet, não leituras dentro da região. C muda a cobrança de armazenamento, não o desempenho. D não acelera a leitura do S3.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance-guidelines.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um sistema de arquivos Amazon EFS de 1 TB no modo de throughput Bursting atende jobs que, algumas vezes por dia, precisam de alto throughput por períodos curtos e imprevisíveis. Os créditos de burst se esgotam e os jobs ficam lentos. A empresa quer desempenho nos picos sem pagar throughput alto o tempo todo. Qual mudança atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar para o modo de throughput Provisioned com o valor do pico."
+        },
+        {
+          "key": "B",
+          "text": "Gravar arquivos grandes de enchimento para aumentar o tamanho do sistema e a linha de base."
+        },
+        {
+          "key": "C",
+          "text": "Mudar para o modo de throughput Elastic."
+        },
+        {
+          "key": "D",
+          "text": "Migrar os dados para volumes EBS gp3 em cada instância."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: o throughput Elastic escala automaticamente conforme a demanda da carga e cobra pelo throughput usado, o que serve a picos curtos e imprevisíveis sem pagar capacidade alta constante. A paga o pico o tempo todo. B paga armazenamento inútil para ganhar linha de base. D perde o sistema de arquivos compartilhado.",
+      "fontes": ["https://docs.aws.amazon.com/efs/latest/ug/performance.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma aplicação Linux legada só lê arquivos por caminho de sistema de arquivos e precisa processar, em instâncias EC2, terabytes de objetos que já estão no Amazon S3, com alto throughput de leitura sequencial. Ela não edita arquivos nem precisa de bloqueios. A empresa não quer copiar os dados para outro armazenamento nem mudar o código. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Montar o bucket nas instâncias com o Mountpoint for Amazon S3."
+        },
+        {
+          "key": "B",
+          "text": "Copiar os objetos para um Amazon EFS e montar o EFS nas instâncias."
+        },
+        {
+          "key": "C",
+          "text": "Usar o Amazon S3 File Gateway em cada instância."
+        },
+        {
+          "key": "D",
+          "text": "Copiar os objetos para volumes EBS gp3 antes de cada processamento."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: o Mountpoint for Amazon S3 expõe o bucket como sistema de arquivos local, otimizado para leitura de alto throughput de objetos grandes, sem copiar dados nem mudar o código; como a aplicação não edita arquivos nem usa bloqueios, as limitações de semântica POSIX não a afetam. B e D exigem copiar terabytes e pagar armazenamento duplicado. C é um appliance para levar acesso de arquivos ao S3 a partir de ambientes on-premises, não a forma indicada de ler o S3 a partir de EC2.",
+      "fontes": ["https://docs.aws.amazon.com/AmazonS3/latest/userguide/mountpoint.html"]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um banco de dados crítico autogerenciado em uma instância EC2 precisa de um volume de bloco com latência abaixo de milissegundo, IOPS consistentes e durabilidade de 99,999% para reduzir o risco de falha do volume. Qual tipo de volume Amazon EBS atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "gp3"
+        },
+        {
+          "key": "B",
+          "text": "st1"
+        },
+        {
+          "key": "C",
+          "text": "Instance store NVMe"
+        },
+        {
+          "key": "D",
+          "text": "io2 Block Express"
+        }
+      ],
+      "corretas": ["D"],
+      "explicacao": "D atende: o io2 Block Express oferece latência abaixo de milissegundo, IOPS provisionados consistentes e durabilidade de 99,999%, pensado para bancos de dados críticos. A tem durabilidade menor (99,8% a 99,9%) e é para uso geral. B é HDD para throughput sequencial, sem a latência exigida. C é armazenamento temporário: os dados se perdem quando a instância para ou o host falha.",
+      "fontes": [
+        "https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html",
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html"
+      ]
+    },
+    {
+      "dominio": "3.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Um banco de dados em uma instância EC2 com volumes EBS não atinge os IOPS e o throughput esperados, embora os volumes estejam provisionados para mais do que a carga pede. As métricas mostram que a instância chegou ao limite de banda para o EBS. Quais DUAS ações resolvem? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Mudar para um tipo de instância com maior banda dedicada para o EBS (instância otimizada para EBS de tamanho maior)."
+        },
+        {
+          "key": "B",
+          "text": "Trocar os volumes por sc1 para aumentar o throughput."
+        },
+        {
+          "key": "C",
+          "text": "Configurar os volumes com IOPS e throughput provisionados de acordo com a carga (por exemplo, gp3 ou io2) e conferir que a soma cabe no limite de EBS da instância."
+        },
+        {
+          "key": "D",
+          "text": "Criar um RAID 1 com dois volumes para dobrar o desempenho de gravação."
+        },
+        {
+          "key": "E",
+          "text": "Reduzir o tamanho da instância para diminuir o custo."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: o desempenho do EBS é limitado tanto pelos volumes quanto pela banda de EBS da instância, então é preciso uma instância com banda suficiente e volumes provisionados para a carga, sem que a soma passe do limite da instância. B é HDD de baixo custo com desempenho menor. D espelha os dados e não aumenta o desempenho de gravação. E reduz ainda mais a banda disponível.",
+      "fontes": [
+        "https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html",
+        "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html"
+      ]
+    }
+  ]
+}

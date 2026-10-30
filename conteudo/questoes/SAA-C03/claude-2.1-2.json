@@ -1,0 +1,152 @@
+{
+  "exame": "SAA-C03",
+  "origem": "ia",
+  "versaoPrompt": "claude-v1",
+  "questoes": [
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Um serviço de pedidos publica eventos de vários tipos (criado, pago, cancelado, enviado). O serviço de estoque só quer os eventos 'pago' e 'cancelado', o de logística só os 'pago' e 'enviado', e cada um precisa processar no próprio ritmo, sem perder eventos quando estiver fora do ar. A empresa quer o MENOR acoplamento e o MENOR código de roteamento. Qual solução atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Uma única fila Amazon SQS lida pelos dois serviços, que descartam os eventos que não interessam."
+        },
+        {
+          "key": "B",
+          "text": "Um tópico Amazon SNS com uma fila Amazon SQS por serviço assinando o tópico, cada assinatura com uma filter policy pelo tipo do evento."
+        },
+        {
+          "key": "C",
+          "text": "Uma função AWS Lambda que recebe todos os eventos e chama a API de cada serviço conforme o tipo."
+        },
+        {
+          "key": "D",
+          "text": "Um stream do Amazon Kinesis com uma shard, lido pelos dois serviços."
+        }
+      ],
+      "corretas": ["B"],
+      "explicacao": "B atende: o padrão fanout SNS→SQS entrega cada evento às filas interessadas, as filter policies fazem o roteamento por atributo sem código, e cada fila guarda os eventos até o seu serviço consumir. A faz os serviços disputarem e apagarem as mensagens um do outro. C acopla o roteador às APIs dos serviços e perde eventos quando um deles está fora do ar. D obriga cada serviço a ler e filtrar tudo, e uma shard limita o throughput.",
+      "fontes": [
+        "https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html",
+        "https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma startup vai lançar uma API cujo tráfego é imprevisível: pode ficar dias quase sem requisições e depois receber milhares por segundo após uma divulgação. Ela quer pagar perto de zero quando ociosa, escalar automaticamente sem planejar capacidade e não administrar servidores. Qual arquitetura atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Amazon API Gateway, AWS Lambda e Amazon DynamoDB em modo on-demand."
+        },
+        {
+          "key": "B",
+          "text": "Instâncias Amazon EC2 em um Auto Scaling group com mínimo de 2 instâncias, atrás de um ALB, e Amazon RDS Multi-AZ."
+        },
+        {
+          "key": "C",
+          "text": "Amazon ECS em instâncias EC2 com capacity provider e Amazon Aurora provisionado."
+        },
+        {
+          "key": "D",
+          "text": "AWS Elastic Beanstalk com uma instância grande e Amazon RDS Single-AZ."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: API Gateway, Lambda e DynamoDB on-demand cobram por requisição, escalam automaticamente de zero a milhares de requisições por segundo e não têm servidores para administrar. B, C e D mantêm instâncias e bancos provisionados ligados mesmo sem tráfego, exigem planejar capacidade e, no caso de D, nem escalam bem.",
+      "fontes": [
+        "https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html",
+        "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Uma função AWS Lambda consome uma fila Amazon SQS e chama um sistema legado que aceita no máximo 50 requisições simultâneas; acima disso, ele cai. Nos picos, a fila recebe milhares de mensagens por minuto, e o Lambda escala além do que o legado suporta. A empresa quer proteger o legado sem perder mensagens e com o MENOR esforço. O que o arquiteto deve fazer?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Reduzir o retention period da fila para descartar o excesso nos picos."
+        },
+        {
+          "key": "B",
+          "text": "Trocar a fila por um tópico Amazon SNS que invoque a função diretamente."
+        },
+        {
+          "key": "C",
+          "text": "Configurar a concorrência máxima (maximum concurrency) no event source mapping do SQS para o Lambda, deixando o excesso esperar na fila."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar a memória da função para que cada chamada termine mais rápido."
+        }
+      ],
+      "corretas": ["C"],
+      "explicacao": "C atende: a concorrência máxima do event source mapping limita quantas invocações simultâneas a fila dispara, e as mensagens excedentes esperam na fila até haver capacidade, sem perda. A descarta mensagens. B elimina o buffer e invoca a função em paralelo sem limite. D não limita a simultaneidade das chamadas ao legado.",
+      "fontes": ["https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html"]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "SINGLE",
+      "enunciado": "Consumidores em instâncias EC2 consultam uma fila Amazon SQS em loop contínuo. Na maior parte do tempo a fila está vazia, e a conta mostra milhões de chamadas ReceiveMessage que voltam sem mensagens, além de CPU gasta à toa. A empresa quer reduzir o custo e manter a latência baixa quando chegar uma mensagem. Qual mudança atende?",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Habilitar long polling, configurando o tempo de espera do recebimento (por exemplo, 20 segundos)."
+        },
+        {
+          "key": "B",
+          "text": "Colocar um sleep de 5 minutos entre as consultas."
+        },
+        {
+          "key": "C",
+          "text": "Trocar a fila standard por uma fila FIFO."
+        },
+        {
+          "key": "D",
+          "text": "Aumentar o visibility timeout da fila."
+        }
+      ],
+      "corretas": ["A"],
+      "explicacao": "A atende: com long polling, a chamada ReceiveMessage espera até a chegada de uma mensagem ou o fim do tempo de espera, eliminando respostas vazias, reduzindo chamadas cobradas e entregando a mensagem assim que ela chega. B reduz chamadas, mas aumenta a latência para até 5 minutos. C não muda o comportamento de consultas vazias. D controla por quanto tempo uma mensagem recebida fica invisível, não as consultas.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html"
+      ]
+    },
+    {
+      "dominio": "2.1",
+      "tipo": "MULTIPLE",
+      "enunciado": "Uma aplicação web em um Auto Scaling group grava os arquivos enviados pelos usuários no disco local da instância e guarda a sessão na memória. Por isso o grupo não pode encerrar instâncias livremente, e um usuário às vezes não encontra o arquivo que enviou. Quais DUAS mudanças tornam a camada web stateless e escalável? (Escolha duas.)",
+      "alternativas": [
+        {
+          "key": "A",
+          "text": "Gravar os arquivos enviados no Amazon S3."
+        },
+        {
+          "key": "B",
+          "text": "Habilitar sticky sessions no load balancer."
+        },
+        {
+          "key": "C",
+          "text": "Guardar as sessões no Amazon DynamoDB ou no Amazon ElastiCache."
+        },
+        {
+          "key": "D",
+          "text": "Anexar um volume EBS io2 com Multi-Attach a todas as instâncias."
+        },
+        {
+          "key": "E",
+          "text": "Usar instâncias maiores e reduzir o número de instâncias."
+        }
+      ],
+      "corretas": ["A", "C"],
+      "explicacao": "A e C atendem: com os arquivos no S3 e as sessões em um armazenamento compartilhado, qualquer instância atende qualquer usuário e pode ser criada ou encerrada sem perda de dados. B prende o usuário a uma instância, que continua perdendo dados ao ser encerrada. D só funciona na mesma AZ, para poucas instâncias e exige um sistema de arquivos com cluster. E não remove o estado local.",
+      "fontes": [
+        "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html",
+        "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html"
+      ]
+    }
+  ]
+}
