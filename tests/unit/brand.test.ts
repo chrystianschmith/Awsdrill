@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { BRAND } from "@/lib/brand";
 
-// Nome com "AWS" por decisão do dono do produto (ADR 0009); nenhuma afiliação é alegada.
+// Nome com "AWS" por decisão do dono do produto (ADR 0010); nenhuma afiliação é alegada.
 describe("marca", () => {
   it("logo monta o nome a partir das partes", () => {
     expect(BRAND.partes.join(" ")).toBe(BRAND.name);

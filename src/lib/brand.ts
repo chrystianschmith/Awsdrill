@@ -1,5 +1,5 @@
 /**
- * Marca do produto (ADR 0009). O nome tem "AWS" por decisão do dono do produto; o risco de marca está registrado
+ * Marca do produto (ADR 0010). O nome tem "AWS" por decisão do dono do produto; o risco de marca está registrado
  * no ADR. Nenhuma afiliação é alegada (teste em tests/unit/brand.test.ts).
  */
 export const BRAND = {

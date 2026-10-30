@@ -1,4 +1,4 @@
-# 0009 · Marca AWS Drill e template visual do alibabadrill
+# 0010 · Marca AWS Drill e template visual do alibabadrill
 
 - **Decisão (2026-10-30, Chrytian):** o produto passa a se chamar **AWS Drill**, com amarelo e preto, e segue o
   template do `chrystianschmith/alibabadrill`: barra superior de largura total (preta aqui), barra lateral fixa no

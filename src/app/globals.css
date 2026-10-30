@@ -3,7 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design system do AWS Drill (template do alibabadrill, ADR 0009). Base neutra
+ * Design system do AWS Drill (template do alibabadrill, ADR 0010). Base neutra
  * quente, amarelo como cor da ação principal (sempre com texto preto) e preto
  * na barra superior. Texto, borda de seleção e progresso usam --primary-strong,
  * que no claro é um dourado escuro para manter contraste AA sobre o branco.
